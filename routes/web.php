@@ -17,6 +17,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('categories', 'CategoriesController');
     Route::post('order-categories', 'CategoriesController@order');
 
+
+    Route::post('upload/files', 'UploadController@store')->name('files.upload');
+    Route::get('upload/{file}', 'UploadController@download')->name('file.upload');
+
+
     //Applications
     Route::post('applyJob', 'ApplicationsController@applyJob')->name('apply-job');
     Route::get('job-app-status/{id}', 'ApplicationsController@appStatus');

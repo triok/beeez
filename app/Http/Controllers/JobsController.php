@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\AdminNewJobAppNotice;
 use App\Mail\ShareJob;
 use App\Models\Billing\Payouts;
+use App\Models\File;
 use App\Models\Jobs\Applications;
 use App\Models\Jobs\Bookmarks;
 use App\Models\Jobs\Categories;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
 
@@ -55,6 +57,8 @@ class JobsController extends Controller
             $job->prettyskills = $j->formatSkills($job->skills);
             $job->cats = $j->formatCats($job->categories);
             $job->price = env('CURRENCY_SYMBOL').$job->price;
+            $job->files = File::query()->where('fileable_id', $id)->get();
+            $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
 
             echo json_encode($job->toArray());
             //return view('jobs.show', compact('job'));
@@ -149,6 +153,7 @@ class JobsController extends Controller
      */
     function create()
     {
+        Session::forget('job.files');
         $difficultyLevels = DifficultyLevel::pluck('name', 'id');
         $categories = Categories::orderBy('cat_order', 'ASC')->get();
         return view('jobs.edit', compact('difficultyLevels', 'categories'));
@@ -164,14 +169,34 @@ class JobsController extends Controller
             'name'          => 'required|max:50',
             'price'         => 'required',
             'categories'    => 'required',
-            'time_for_work' => 'required'
+            'time_for_work' => 'required',
+            'access'        => 'nullable'
         ];
 
         $validator = Validator::make($request->all(), $rules);
+
         if ($validator->fails()) {
+            /** Clear session if errors validation*/
+            Session::forget('job.files');
+
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        /** @var Jobs $job */
         $job = Jobs::create($request->all());
+
+        if (Session::has('job.files')) {
+
+            foreach (Session::get('job.files') as $file) {
+                $job->files()->create([
+                    'file'          => $file['file'],
+                    'size'          => $file['size'],
+                    'type'          => $file['type'],
+                    'original_name' => $file['original_name'],
+                ]);
+            }
+            Session::forget('job.files');
+        }
 
         if (is_array($request->categories)) {
             foreach ($request->categories as $cat) {

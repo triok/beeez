@@ -26,6 +26,10 @@
             <td>Remarks:</td>
             <td colspan="3">{{$app->remarks}}</td>
         </tr>
+        <tr>
+            <td>Access</td>
+            <td colspan="3">{{$app->job->access}}</td>
+        </tr>
     </table>
 </div>
 <div class="modal-footer">

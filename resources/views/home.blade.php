@@ -56,7 +56,12 @@
                 <div class="panel panel-default box">
                     <div class="panel-heading">
                         <h4 id="{{$job->id}}">{{$job->name}}</h4>
+                        <span id="posted">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            Posted {{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}
+                        </span>
                     </div>
+
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-6">
@@ -161,6 +166,10 @@
                             aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title" id="title"></h4>
+                <span>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                   <span class="posted-time"></span>
+                </span>
             </div>
             <div class="modal-body">
 
@@ -176,8 +185,12 @@
                 <span id="skills"></span>
                 <h5><strong>Category</strong></h5>
                 <span id="cats"></span>
+
+                <ul class="files-job list-group list-group-flush" style="padding-top: 15px;"></ul>
             </div>
+
             <div class="modal-footer">
+
                 <button id="" class="btn btn-default btn-sm bookmark-modal-btn"><i class="fa fa-heart"></i></button>
                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
             </div>
