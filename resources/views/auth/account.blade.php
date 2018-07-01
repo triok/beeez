@@ -20,6 +20,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <h4>{{$user->name}}</h4>
+                            <h4>Your login: {{$user->username}}</h4>
                             <p>{{$user->email}}</p>
                             Member since: {{$user->registeredOn}}
                         </div>
@@ -50,6 +51,13 @@
                     {!! Form::model($user,['url'=>'/account/profile', 'method' => 'patch']) !!}
                     <label>@lang('Name')</label>
                     {!! Form::text('name',null,['class'=>'form-control','required'=>'required']) !!}
+
+                    <label>@lang('messages.username')</label>
+                    {!! Form::text('username', $user->login, ['class' => 'form-control', 'disabled' => true]) !!}
+                    <div class="alert alert-info">
+                        @lang('messages.login.change')
+                    </div>
+
                     <label>@lang('Email')</label>
                     {!! Form::input('email','email',null,['class'=>'form-control','required'=>'required']) !!}
                     <div class="alert alert-info">
