@@ -104,9 +104,30 @@
                     {{$application->remarks}}
                 </td>
             </tr>
+
         @endforeach
         </tbody>
     </table>
     {{$job->applications()->paginate(20)->links()}}
+
+    <h4>Files</h4>
+    <table class="table table-responsive table-striped" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Path</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach($job->files as $file)
+            <tr>
+                <td>{{$file->original_name}}</td>
+                <td>{{storage_path('app'.$file->uploadJobPath . $file->file)}}</td>
+                <td><a href="{{route('file.upload',$file)}}">download</a></td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
     @endpermission
 @endsection

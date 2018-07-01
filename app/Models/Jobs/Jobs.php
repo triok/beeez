@@ -2,17 +2,21 @@
 
 namespace App\Models\Jobs;
 
+use App\Models\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use SebastianBergmann\Diff\Diff;
 
+
+/**
+ * @property  File files
+ */
 class Jobs extends Model
 {
     use SoftDeletes;
 
     protected $fillable =[
-        'name','desc','instructions','end_date','user_id','price','difficulty_level_id','status', 'time_for_work'
+        'name','desc','instructions','end_date','user_id','price','difficulty_level_id','status', 'time_for_work', 'created_at', 'access'
     ];
 
     /**
@@ -55,10 +59,20 @@ class Jobs extends Model
     function skills(){
         return $this->belongsToMany(\App\Models\Jobs\Skills::class,'job_skills','job_id','skill_id','id');
     }
-    function getCreatedAtAttribute($value)
+
+    public function files()
     {
-        return date('d M, Y', strtotime($value));
+        return $this->morphMany(File::class, 'fileable');
     }
+
+
+
+//    function getCreatedAtAttribute($value)
+//    {
+//        return date('d M, Y', strtotime($value));
+//    }
+
+
 
     // TODO This code was altered
 //    function getEndDateAttribute($value)

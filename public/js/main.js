@@ -282,10 +282,19 @@ function showJob(jobId) {
 
         viewModal.find('#cats').html(job.cats);
         viewModal.find('#price').text(job.price);
+        viewModal.find('.posted-time').text(job.posted);
+
+        job.files.forEach(function(item, i, arr) {
+            viewModal.find('.files-job').append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
+                '<i class="fa fa-file">' +
+                '<a style="padding-left: 7px;" href="/upload/'+item.id+'" title="'+item.original_name+'">'+item.original_name+'</a></i></li>');
+        });
+
 
         var end = moment(job.end_date);
-        viewModal.find('#end-date').text(end.format('DD MMM, YYYY h:mm'));
 
+        moment.locale('en');
+        viewModal.find('#end-date').text(end.format('DD MMM, YYYY h:mm'));
 
         viewModal.find('table').addClass('table');
 
@@ -309,6 +318,8 @@ function showJob(jobId) {
         viewModal.modal({ backdrop: 'static', keyboard: false, 'show': true });
     });
 }
+
+
 /**
  * post message in work module
  * @param cmt

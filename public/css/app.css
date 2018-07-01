@@ -11598,3 +11598,11 @@ footer {
 .disclaimer p{
   font-size: 24px;
 }
+.content-form {
+  position: relative;
+  padding-bottom: 75px;
+}
+.content-form #submit {
+  position: absolute;
+  bottom: 0;
+}
