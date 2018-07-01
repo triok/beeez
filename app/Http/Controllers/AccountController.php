@@ -15,7 +15,7 @@ class AccountController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        //$this->middleware('permission:update-profile',['only'=>['updateProfile','updateBio']]);
+        $this->middleware('permission:update-profile',['only'=>['updateProfile','updateBio']]);
         $this->middleware('permission:read-profile',['only'=>['index']]);
     }
 
