@@ -13,14 +13,12 @@ class User extends Authenticatable
     use LaratrustUserTrait;
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password','stripe_public_key','stripe_secret_key'
-    ];
+
+//    protected $fillable = [
+//        'name', 'email', 'password','stripe_public_key','stripe_secret_key', 'username'
+//    ];
+
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for arrays.

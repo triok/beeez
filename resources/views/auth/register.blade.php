@@ -38,6 +38,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                            <label for="username" class="col-md-4 control-label">Username</label>
+
+                            <div class="col-md-6">
+                                <input id="username" type="text" class="form-control" name="username" required>
+
+                                @if ($errors->has('username'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">Password</label>
 
@@ -76,3 +90,42 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+
+    <script>
+        var timer;
+        var x;
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        var usernameTag = $("#username");
+        var parent = usernameTag.closest('.form-group');
+
+        usernameTag.keyup(function () {
+            var _this = $(this);
+            var username = _this.val();
+
+            if (username.length > 2) {
+                if (x) { x.abort() } // If there is an existing XHR, abort it.
+                clearTimeout(timer); // Clear the timer so we don't end up with dupes.
+                timer = setTimeout(function() { // assign timer a new timeout
+                    x = $.ajax({
+                        url: "{{route('register')}}",
+                        data: { _token: _token, username: username },
+                        type: 'POST',
+                        async: true,
+                        success: function success(response) {
+                            parent.removeClass('has-error');
+                            parent.find('.help-block').remove();
+                        },
+                        error: function error(xhr, status, error) {
+                            var errors = JSON.parse(xhr.responseText);
+
+                            parent.addClass('has-error');
+                            _this.after("<span class=\"help-block\"><strong>" + errors.username + "</strong></span>");
+                            //notice(errors.username, 'error');
+                        },
+                    }); // run ajax request and store in x variable (so we can cancel)
+                }, 1000); // 1000ms delay, tweak for faster/slower
+            }
+        });
+    </script>
+@endpush

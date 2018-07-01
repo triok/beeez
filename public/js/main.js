@@ -512,6 +512,7 @@ $('document').ready(function () {
         var job_id = $(this).attr('data-job');
         paypalPayout(app_id, job_id);
     });
+
 });
 
 /***/ })
