@@ -53,7 +53,7 @@
                     {!! Form::text('name',null,['class'=>'form-control','required'=>'required']) !!}
 
                     <label>@lang('messages.username')</label>
-                    {!! Form::text('username', $user->login, ['class' => 'form-control', 'disabled' => true]) !!}
+                    {!! Form::text('username', $user->username, ['class' => 'form-control', 'disabled' => true]) !!}
                     <div class="alert alert-info">
                         @lang('messages.login.change')
                     </div>

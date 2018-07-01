@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 class Applications extends Model
 {
+    protected $guarded = ['id'];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

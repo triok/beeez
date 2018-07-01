@@ -49,6 +49,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('register', ['middleware' => ['ability:admin,create-users'],'uses'=>'UserController@register']);
         Route::post('{id}/update', ['middleware' => ['ability:admin,update-users'],'uses'=>'UserController@updateUser']);
         Route::post('{id}/roles', ['middleware' => ['ability:admin,update-users'],'uses'=>'UserController@updateUserRoles']);
+        Route::get('find/login', 'UserController@find')->name('find.login');
     });
 
     //Settings

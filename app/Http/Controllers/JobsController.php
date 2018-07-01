@@ -25,8 +25,13 @@ use Mockery\Exception;
 
 class JobsController extends Controller
 {
+    /** @var \Illuminate\Support\Collection $usernames */
+    protected $usernames;
+
     function __construct()
     {
+        $this->usernames = User::query()->pluck('username');
+
         $this->middleware('auth');
         $this->middleware('permission:read-jobs',['only'=>['jobsAdmin']]);
         $this->middleware('permission:read-jobs-manager',['only'=>['create','store','jobsAdmin']]);
@@ -156,7 +161,8 @@ class JobsController extends Controller
         Session::forget('job.files');
         $difficultyLevels = DifficultyLevel::pluck('name', 'id');
         $categories = Categories::orderBy('cat_order', 'ASC')->get();
-        return view('jobs.edit', compact('difficultyLevels', 'categories'));
+
+        return view('jobs.edit', ['difficultyLevels' => $difficultyLevels, 'categories' => $categories, 'usernames' => $this->usernames]);
     }
 
     /**
@@ -170,10 +176,11 @@ class JobsController extends Controller
             'price'         => 'required',
             'categories'    => 'required',
             'time_for_work' => 'required',
-            'access'        => 'nullable'
+            'access'        => 'nullable',
         ];
 
         $validator = Validator::make($request->all(), $rules);
+
 
         if ($validator->fails()) {
             /** Clear session if errors validation*/
@@ -184,6 +191,22 @@ class JobsController extends Controller
 
         /** @var Jobs $job */
         $job = Jobs::create($request->all());
+
+        $query = User::query()->where('username', $request->user);
+
+        if($query->exists()) {
+            /** @var User $user */
+            $user = $query->first();
+
+            $job->user_id = $user->id;
+            $job->save();
+            $job->applications()->create([
+                'user_id'   => $user->id,
+                'status'    => 'pending',
+                'job_price' => $request->price
+            ]);
+        }
+
 
         if (Session::has('job.files')) {
 
@@ -226,7 +249,8 @@ class JobsController extends Controller
         $job = Jobs::findOrFail($id);
         $categories = Categories::get();
         $difficultyLevels = DifficultyLevel::pluck('name', 'id');
-        return view('jobs.edit', compact('job', 'difficultyLevels', 'categories'));
+
+        return view('jobs.edit', ['job' => $job, 'difficultyLevels' => $difficultyLevels, 'categories' => $categories, 'usernames' => $this->usernames]);
     }
 
     /**

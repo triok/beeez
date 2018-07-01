@@ -11,7 +11,8 @@ return [
             'application-message' => 'c,r,u,d',
             'payouts' => 'c,r,u,d',
             'logs' => 'c,r,u,d',
-            'profile' => 'r,u'
+            'profile' => 'r,u',
+            'jobs-manager' => 'c,r,u,d'
         ],
         'manager' => [
             'users' => 'c,r,u,d',
@@ -25,6 +26,7 @@ return [
         'user' => [
             'profile' => 'r,u',
             'application-message' => 'c,r,u,d',
+            'jobs-manager' => 'c,r,u,d'
         ],
     ],
 //    'permission_structure' => [

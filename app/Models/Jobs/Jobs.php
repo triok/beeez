@@ -3,6 +3,7 @@
 namespace App\Models\Jobs;
 
 use App\Models\File;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -65,8 +66,13 @@ class Jobs extends Model
         return $this->morphMany(File::class, 'fileable');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
 
 
+    // TODO This code was altered
 //    function getCreatedAtAttribute($value)
 //    {
 //        return date('d M, Y', strtotime($value));
