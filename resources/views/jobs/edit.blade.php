@@ -1,3 +1,4 @@
+{{--{{dd(config('tags.tags'))}}--}}
 @extends('layouts.app')
 @stack('styles')
 @push('styles')
@@ -96,6 +97,18 @@
                 {!! Form::checkbox('categories[]',$cat->id,null,['style'=>'']) !!} {{$cat->name}}
             </div>
         @endforeach
+    </div>
+    <br>
+    <label>Choose CMS</label>
+    <div class="row">
+        <div class="col-md-12">
+            <select name="tag" id="tag" class="form-control">
+                <option value="" selected>I do not use CMS</option>
+                @foreach(config('tags.tags') as $tag)
+                    <option value="{{$tag['value']}}">{{$tag['title']}}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
     <br/>
 

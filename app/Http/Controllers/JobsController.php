@@ -40,12 +40,28 @@ class JobsController extends Controller
 
     }
 
+    public function index()
+    {
+        if (request()->has('tag')) {
+            /** @var Jobs $jobs */
+            $jobs = Jobs::query()->whereHas('tag' , function($query) {
+                $query->where('value', request()->tag);
+            })
+                ->with('tag')
+                ->paginate(20);
+
+            return view('home', ['jobs' => count($jobs) > 0 ? $jobs : Jobs::query()->paginate(20),
+                'title' => 'All jobs with tag: '. request()->tag ]);
+        }
+    }
+
     /**
      * @param $id
      * @return Mixed
      */
     function show($id)
     {
+        /** @var Jobs $job */
         $job = Jobs::find($id);
 
         if (request()->ajax()) {
@@ -64,6 +80,7 @@ class JobsController extends Controller
             $job->price = env('CURRENCY_SYMBOL').$job->price;
             $job->files = File::query()->where('fileable_id', $id)->get();
             $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
+            $job->load('tag');
 
             echo json_encode($job->toArray());
             //return view('jobs.show', compact('job'));
@@ -177,10 +194,10 @@ class JobsController extends Controller
             'categories'    => 'required',
             'time_for_work' => 'required',
             'access'        => 'nullable',
+            'desc'          => 'required',
         ];
 
         $validator = Validator::make($request->all(), $rules);
-
 
         if ($validator->fails()) {
             /** Clear session if errors validation*/
@@ -190,9 +207,13 @@ class JobsController extends Controller
         }
 
         /** @var Jobs $job */
-        $job = Jobs::create($request->all());
+        $job = Jobs::create(array_except($request->all(), ['tag']));
 
         $query = User::query()->where('username', $request->user);
+
+        if (isset($request->tag) && $request->tag != '' && array_key_exists($request->tag, config('tags.tags'))) {
+            $job->tag()->create(['value' => $request->tag]);
+        }
 
         if($query->exists()) {
             /** @var User $user */
@@ -206,7 +227,6 @@ class JobsController extends Controller
                 'job_price' => $request->price
             ]);
         }
-
 
         if (Session::has('job.files')) {
 

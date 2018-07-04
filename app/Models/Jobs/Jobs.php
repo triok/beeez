@@ -3,6 +3,7 @@
 namespace App\Models\Jobs;
 
 use App\Models\File;
+use App\Models\Tag;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -64,6 +65,11 @@ class Jobs extends Model
     public function files()
     {
         return $this->morphMany(File::class, 'fileable');
+    }
+
+    public function tag()
+    {
+        return $this->morphOne(Tag::class, 'tageable');
     }
 
     public function user()

@@ -275,6 +275,7 @@ function deleteMySkill(skill_id) {
 function showJob(jobId) {
     $.get('/jobs/' + jobId, function (data, status) {
         var job = JSON.parse(data);
+
         var viewModal = $('#viewJobModal');
         viewModal.find('#title').html(job.name);
         viewModal.find('#desc').html(job.desc);
@@ -284,12 +285,17 @@ function showJob(jobId) {
         viewModal.find('#price').text(job.price);
         viewModal.find('.posted-time').text(job.posted);
 
+        if(job.tag !== null && job.tag !== undefined) {
+            var tag = viewModal.find('#tag-modal');
+            tag.append('<h5><strong>Tag</strong></h5>');
+            tag.append('<a href="/jobs/?tag=' + job.tag.value + '"> <span class="label label-warning">'+job.tag.value+'</span></a>');
+        }
+
         job.files.forEach(function(item, i, arr) {
             viewModal.find('.files-job').append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
                 '<i class="fa fa-file">' +
                 '<a style="padding-left: 7px;" href="/upload/'+item.id+'" title="'+item.original_name+'">'+item.original_name+'</a></i></li>');
         });
-
 
         var end = moment(job.end_date);
 

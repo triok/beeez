@@ -16,9 +16,10 @@ class AppController extends Controller
                 ->orWhere('id',$search)
                 ->orWhere('name','like','%'.$search.'%')
                 ->orWhere('desc','like','%'.$search.'%')
-                ->where('status','open')->paginate(20);
+                ->where('status','open')->paginate(20)
+                ->with('tag');
         }else{
-            $jobs = Jobs::orderBy('created_at','DESC')->where('status','open')->paginate(20);
+            $jobs = Jobs::orderBy('created_at','DESC')->where('status','open')->with('tag')->paginate(20);
 
         }
         return view('home',compact('jobs'));
