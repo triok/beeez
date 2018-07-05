@@ -30,6 +30,12 @@
             <td>Access</td>
             <td colspan="3">{{$app->job->access}}</td>
         </tr>
+        @if(isset($app->job->tag->value))
+        <tr>
+            <td>Tag</td>
+            <td colspan="3"><a href="{{route('jobs.index')}}?tag={{$app->job->tag->value}}"><span class="label label-warning">{{$app->job->tag->value}}</span></a></td>
+        </tr>
+        @endif
     </table>
 </div>
 <div class="modal-footer">

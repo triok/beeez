@@ -16,6 +16,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('job/{id}/{app}/work','JobsController@work');
     Route::resource('categories', 'CategoriesController');
     Route::post('order-categories', 'CategoriesController@order');
+    //Route::get('jobs/{tag?}','JobsController@index')->name('jobs.index');
 
 
     Route::post('upload/files', 'UploadController@store')->name('files.upload');
@@ -49,6 +50,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('register', ['middleware' => ['ability:admin,create-users'],'uses'=>'UserController@register']);
         Route::post('{id}/update', ['middleware' => ['ability:admin,update-users'],'uses'=>'UserController@updateUser']);
         Route::post('{id}/roles', ['middleware' => ['ability:admin,update-users'],'uses'=>'UserController@updateUserRoles']);
+        Route::get('find/login', 'UserController@find')->name('find.login');
     });
 
     //Settings

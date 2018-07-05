@@ -42,7 +42,7 @@ class ApplicationsController extends Controller
      */
     function applicationsAdmin()
     {
-        $applications = Applications::orderBy('created_at', 'DESC')->get();
+        $applications = Applications::orderBy('created_at', 'DESC')->with('user')->get();
         return view('applications.admin', compact('applications'));
     }
 

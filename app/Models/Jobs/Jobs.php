@@ -3,6 +3,8 @@
 namespace App\Models\Jobs;
 
 use App\Models\File;
+use App\Models\Tag;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -65,8 +67,18 @@ class Jobs extends Model
         return $this->morphMany(File::class, 'fileable');
     }
 
+    public function tag()
+    {
+        return $this->morphOne(Tag::class, 'tageable');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
 
 
+    // TODO This code was altered
 //    function getCreatedAtAttribute($value)
 //    {
 //        return date('d M, Y', strtotime($value));

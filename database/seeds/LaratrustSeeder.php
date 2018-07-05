@@ -55,9 +55,10 @@ class LaratrustSeeder extends Seeder
             $this->command->info("Creating '{$key}' user");
             // Create default user for each role
             $user = \App\User::create([
-                'name' => ucwords(str_replace("_", " ", $key)),
-                'email' => $key.'@app.com',
-                'password' => bcrypt('password')
+                'name'      => ucwords(str_replace("_", " ", $key)),
+                'email'     => $key.'@app.com',
+                'password'  => bcrypt('password'),
+                'username'  => str_slug(str_replace("_", " ", $key))
             ]);
             $user->attachRole($role);
         }
@@ -73,6 +74,7 @@ class LaratrustSeeder extends Seeder
                         'email' => $key.'@app.com',
                         'password' => bcrypt('password'),
                         'remember_token' => str_random(10),
+                        'username'  => str_slug(str_replace("_", " ", $key))
                     ]);
                     foreach ($permissions as $p => $perm) {
                         $permissionValue = $mapPermission->get($perm);
@@ -103,6 +105,7 @@ class LaratrustSeeder extends Seeder
     public function truncateLaratrustTables()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        DB::table('modules')->truncate();
         DB::table('permission_role')->truncate();
         DB::table('permission_user')->truncate();
         DB::table('role_user')->truncate();

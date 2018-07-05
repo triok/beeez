@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Queries\UserQuery;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -56,7 +57,6 @@ class UserController extends Controller
      */
     function register(Request $request)
     {
-
         $rules = [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
@@ -74,6 +74,7 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->username = $request->name;
         $user->password = bcrypt($request->password);
         $user->confirmation_code = str_random(28);
         $user->created_at = date('Y-m-d H:i:s');
@@ -152,5 +153,15 @@ class UserController extends Controller
         flash()->success('Roles updated');
         return redirect()->back();
     }
+
+//    public function find()
+//    {
+//        if (!request()->ajax()) {return;}
+//
+//        /** @var User $users */
+//        $users = UserQuery::findByLogin(request()->login)->get();
+//
+//        return response()->json(['users' => $users]);
+//    }
 
 }

@@ -30,7 +30,6 @@
                 <tr>
                   <th scope="row" class="job-name"><span id="{{$job->id}}">{{$job->name}}</span></th>
                   <td>{{ $job->time_for_work }} hr</td>
-                    {{-- /* TODO This code was altered */ --}}
 
                   <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y') }} <b>{{ \Carbon\Carbon::parse($job->end_date)->format('H:i') }}</b></td>
                   <td>{{ $job->formattedPrice }}</td>
@@ -64,15 +63,13 @@
 
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-5">
                                 <span class="label label-{{$job->difficulty->name=="advanced"?'danger':'info'}} level">{{$job->difficulty->name}}</span>
                             </div>
                             <div class="col-xs-2 text-center">
                                 <span>{{$job->formattedPrice}}</span>
                             </div>
-
-                            <div class="col-xs-4 text-right">
-                                {{-- /* TODO This code was altered */ --}}
+                            <div class="col-xs-5 text-right">
                                 <span class="small">Ends: {{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i') }}</span>
                             </div>
                         </div>
@@ -80,6 +77,15 @@
                         <div class="job-desc" id="{{$job->id}}">
                             {{str_limit(strip_tags($job->desc,200)) }}
                         </div>
+
+                        @if($job->tag)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="{{route('jobs.index')}}?tag={{$job->tag->value}}"> <span class="label label-warning">{{$job->tag->value}}</span></a>
+                            </div>
+                        </div>
+                        @endif
+                        
                         @foreach($job->skills as $skill)
                             <span class="label label-default">{{$skill->name}}</span>
                         @endforeach
@@ -185,6 +191,7 @@
                 <span id="skills"></span>
                 <h5><strong>Category</strong></h5>
                 <span id="cats"></span>
+                <span id="tag-modal"></span>
 
                 <ul class="files-job list-group list-group-flush" style="padding-top: 15px;"></ul>
             </div>

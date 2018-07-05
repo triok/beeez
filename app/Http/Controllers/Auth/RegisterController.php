@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -50,9 +52,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'username' => 'required|string|unique:users|min:3',
         ]);
     }
 
@@ -64,14 +67,35 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user= User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+        /** @var User $user */
+        $user = User::create([
+            'name'     => $data['name'],
+            'email'    => $data['email'],
             'password' => bcrypt($data['password']),
+            'username' => $data['username']
         ]);
-
         $user->attachRole(env('DEFAULT_ROLE'));
+
         return $user;
+    }
+
+    public function register(Request $request)
+    {
+        if ($request->ajax()) {
+            if (User::query()->where('username', $request['username'])->exists()) {
+                return response()->json(['username' => 'Please choose another login.'], 422);
+            }
+
+            return;
+        }
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 
 

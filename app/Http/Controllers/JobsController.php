@@ -25,8 +25,13 @@ use Mockery\Exception;
 
 class JobsController extends Controller
 {
+    /** @var \Illuminate\Support\Collection $usernames */
+    protected $usernames;
+
     function __construct()
     {
+        $this->usernames = User::query()->pluck('username');
+
         $this->middleware('auth');
         $this->middleware('permission:read-jobs',['only'=>['jobsAdmin']]);
         $this->middleware('permission:read-jobs-manager',['only'=>['create','store','jobsAdmin']]);
@@ -35,12 +40,28 @@ class JobsController extends Controller
 
     }
 
+    public function index()
+    {
+        if (request()->has('tag')) {
+            /** @var Jobs $jobs */
+            $jobs = Jobs::query()->whereHas('tag' , function($query) {
+                $query->where('value', request()->tag);
+            })
+                ->with('tag')
+                ->paginate(20);
+
+            return view('home', ['jobs' => count($jobs) > 0 ? $jobs : Jobs::query()->paginate(20),
+                'title' => 'All jobs with tag: '. request()->tag ]);
+        }
+    }
+
     /**
      * @param $id
      * @return Mixed
      */
     function show($id)
     {
+        /** @var Jobs $job */
         $job = Jobs::find($id);
 
         if (request()->ajax()) {
@@ -59,6 +80,7 @@ class JobsController extends Controller
             $job->price = env('CURRENCY_SYMBOL').$job->price;
             $job->files = File::query()->where('fileable_id', $id)->get();
             $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
+            $job->load('tag');
 
             echo json_encode($job->toArray());
             //return view('jobs.show', compact('job'));
@@ -156,7 +178,8 @@ class JobsController extends Controller
         Session::forget('job.files');
         $difficultyLevels = DifficultyLevel::pluck('name', 'id');
         $categories = Categories::orderBy('cat_order', 'ASC')->get();
-        return view('jobs.edit', compact('difficultyLevels', 'categories'));
+
+        return view('jobs.edit', ['difficultyLevels' => $difficultyLevels, 'categories' => $categories, 'usernames' => $this->usernames]);
     }
 
     /**
@@ -170,7 +193,8 @@ class JobsController extends Controller
             'price'         => 'required',
             'categories'    => 'required',
             'time_for_work' => 'required',
-            'access'        => 'nullable'
+            'access'        => 'nullable',
+            'desc'          => 'required',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -183,7 +207,26 @@ class JobsController extends Controller
         }
 
         /** @var Jobs $job */
-        $job = Jobs::create($request->all());
+        $job = Jobs::create(array_except($request->all(), ['tag']));
+
+        $query = User::query()->where('username', $request->user);
+
+        if (isset($request->tag) && $request->tag != '' && array_key_exists($request->tag, config('tags.tags'))) {
+            $job->tag()->create(['value' => $request->tag]);
+        }
+
+        if($query->exists()) {
+            /** @var User $user */
+            $user = $query->first();
+
+            $job->user_id = $user->id;
+            $job->save();
+            $job->applications()->create([
+                'user_id'   => $user->id,
+                'status'    => 'pending',
+                'job_price' => $request->price
+            ]);
+        }
 
         if (Session::has('job.files')) {
 
@@ -226,7 +269,8 @@ class JobsController extends Controller
         $job = Jobs::findOrFail($id);
         $categories = Categories::get();
         $difficultyLevels = DifficultyLevel::pluck('name', 'id');
-        return view('jobs.edit', compact('job', 'difficultyLevels', 'categories'));
+
+        return view('jobs.edit', ['job' => $job, 'difficultyLevels' => $difficultyLevels, 'categories' => $categories, 'usernames' => $this->usernames]);
     }
 
     /**
