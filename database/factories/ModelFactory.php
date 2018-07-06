@@ -34,12 +34,17 @@ $factory->define(App\Models\Jobs\Jobs::class, function (Faker\Generator $faker) 
         'difficulty_level_id'=>rand(1,3)
     ];
 });
-//TODO this code was added
 $factory->define(App\Models\Jobs\Categories::class, function (Faker\Generator $faker) {
     return [
         'name'      => $faker->sentence,
         'desc'      => $faker->sentence,
         'cat_order' => $faker->randomDigitNotNull,
         'parent_id' => null
+    ];
+});
+
+$factory->define(App\Models\Social::class, function (Faker\Generator $faker) {
+    return [
+        'title'      => $faker->sentence,
     ];
 });

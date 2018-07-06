@@ -25,7 +25,28 @@
 
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="home">
-                    @include('auth.bio')
+                    {{--@include('auth.bio')--}}
+                    {!! Form::open(['url'=>'account/bio','method'=>'post']) !!}
+
+                    <label>Tell us about yourself</label>
+                    {!! Form::textarea('bio',$user->bio,['class'=>'form-control','rows'=>3,'required'=>'required']) !!}
+
+                    <label>Skills</label>
+                    {!! Form::text('skills',null,['id'=>'skills','class'=>'form-control']) !!}
+                    @foreach($user->skills as $skill)
+                        <span class="label label-default">{{$skill->name}} &nbsp; <i id="{{$skill->id}}" class="fa fa-times delete-my-skill" style="cursor:pointer;"></i> </span>
+                    @endforeach
+
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-default">Update</button>
+                        </div>
+                    </div>
+                    {!! Form::close() !!}
+
+                    @include('partials.tokeninput',['elem'=>'skills','path'=>'/skills-json'])
+
                 </div>
                 <div role="tabpanel" class="tab-pane" id="bio">
                     <h4>Bio</h4>
@@ -34,6 +55,23 @@
                     <h4>Skills</h4>
                     @foreach($user->skills as $skill)
                         <span class="label label-default">{{$skill->name}}</span>
+                    @endforeach
+                    <hr/>
+                    @foreach($socials as $link)
+                        <label for="{{$link->slug}}">{{$link->title}}</label>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="text" name="{{$link->slug}}" id="{{$link->slug}}" class="form-control input-val" value="{{$link->pivot->link}}">
+                            </div>
+                            <div class="col-md-4">
+                                @if($link->pivot->status == config('tags.statuses.confirmed.value'))
+                                    <button type="button" class="btn btn-success" disabled>Confirmed</button>
+                                @else
+                                    <button type="button" class="btn btn-success social-confirmed" data-user="{{$user->id}}">Confirm this link</button>
+                                @endif
+                            </div>
+                        </div>
+                        <br>
                     @endforeach
                 </div>
                 <div role="tabpanel" class="tab-pane" id="profile">

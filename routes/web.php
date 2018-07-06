@@ -25,7 +25,7 @@ Route::group(['middleware' => 'web'], function () {
 
     //Applications
     Route::post('applyJob', 'ApplicationsController@applyJob')->name('apply-job');
-    Route::get('job-app-status/{id}', 'ApplicationsController@appStatus');
+    Route::get('job-aphttp://127.0.0.1:8000/account#biop-status/{id}', 'ApplicationsController@appStatus');
     Route::post('change-application-status', 'ApplicationsController@changeStatus');
     Route::get('applications', 'ApplicationsController@myApplications')->name('my-applications');
     Route::get('applications/admin','ApplicationsController@applicationsAdmin')->name('applications-admin');

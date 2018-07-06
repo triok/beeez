@@ -484,6 +484,7 @@ $('document').ready(function () {
             }
         });
     });
+
     //change job status
     $(".job-app-status-btn").click(function () {
         var jobId = $(this).attr('id');
@@ -518,6 +519,71 @@ $('document').ready(function () {
         var job_id = $(this).attr('data-job');
         paypalPayout(app_id, job_id);
     });
+
+    //update bio social
+    $('.social-btn-save').on('click', function (e) {
+        var _this = $(this);
+        var input = _this.closest('.row').find('input');
+
+        if (input.val().length == 0) return false;
+
+        $.ajax({
+            url: '/account/bio',
+            data: { _token: _token, value: input.val(), attr: input.attr('id'), action: 'save' },
+            type: 'POST',
+            success: function success(response) {
+                _this.closest('.btn-group').find('.social-btn-conf').attr('disabled', false);
+                notice(response.response, 'success');
+            },
+            error: function error(err) {
+                notice('Error! Please try again', 'error');
+            }
+        });
+    });
+
+    //update bio social
+    $('.social-btn-conf').on('click', function (e) {
+        var _this = $(this);
+        var input = _this.closest('.row').find('input');
+        _this.attr('disabled', true);
+
+        $.ajax({
+            url: '/account/bio',
+            data: { _token: _token, value: input.val(), attr: input.attr('id'), action: 'verified' },
+            type: 'POST',
+            success: function success(response) {
+                _this.closest('.btn-group').find('.social-btn-save').attr('disabled', true);
+                input.attr('disabled', true);
+
+                notice(response.response, 'success');
+            },
+            error: function error(err) {
+                notice('Error! Please try again', 'error');
+                _this.attr('disabled', false);
+            }
+        });
+    });
+
+    $('.social-confirmed').on('click', function (e) {
+        var _this = $(this);
+        var input = _this.closest('.row').find('input');
+        var user_id = _this.attr('data-user');
+
+        $.ajax({
+            url: '/account/bio',
+            data: { _token: _token,  attr: input.attr('id'), user: user_id, action: 'confirmed' },
+            type: 'POST',
+            success: function success(response) {
+                _this.attr('disabled', true);
+                _this.text('Confirmed');
+                notice(response.response, 'success');
+            },
+            error: function error(err) {
+                notice('Error! Please try again', 'error');
+            }
+        });
+    });
+
 
 });
 

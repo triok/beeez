@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Social;
 use App\Queries\UserQuery;
 use App\Role;
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -37,8 +39,15 @@ class UserController extends Controller
      */
     function user($id)
     {
-
+        /** @var User $user */
         $user = User::find($id);
+
+        /** @var Collection $socials */
+        $socials = $user->socials()->where(function($query) {
+            $query->where('status', config('tags.statuses.verified.value'))
+                  ->orWhere('status', config('tags.statuses.confirmed.value'));
+        })->get();
+
         $roles = Role::all();
         $currentRole = $user->roles->first();
         if ($currentRole == null)
@@ -46,7 +55,7 @@ class UserController extends Controller
         else
             $currentRole =$currentRole->id;
 
-        return view('admin.user', compact('user', 'roles', 'currentRole'));
+        return view('admin.user', compact('user', 'roles', 'currentRole', 'socials'));
     }
 
     /**
@@ -153,15 +162,4 @@ class UserController extends Controller
         flash()->success('Roles updated');
         return redirect()->back();
     }
-
-//    public function find()
-//    {
-//        if (!request()->ajax()) {return;}
-//
-//        /** @var User $users */
-//        $users = UserQuery::findByLogin(request()->login)->get();
-//
-//        return response()->json(['users' => $users]);
-//    }
-
 }

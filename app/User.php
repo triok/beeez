@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Jobs\Bookmarks;
+use App\Models\Social;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -47,6 +48,11 @@ class User extends Authenticatable
     }
     function role(){
         return $this->belongsToMany(\App\Models\RoleUser::class,'role_user','role_id','user_id','id');
+    }
+
+    public function socials()
+    {
+        return $this->belongsToMany(Social::class)->withPivot('status', 'link');
     }
 
     function getRegisteredOnAttribute(){

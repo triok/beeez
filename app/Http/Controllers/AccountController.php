@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SocialEvent;
 use App\Models\Billing\Billing;
 use App\Models\User\UserSkills;
 use App\User;
@@ -24,7 +25,14 @@ class AccountController extends Controller
      */
     function index()
     {
-        $user = Auth::user();
+        /** @var User $user */
+        $user = auth()->user();
+
+        $user->socLinks = collect();
+        $user->socLinks->put('facebook', ['obj' => $user->socials()->where('slug', 'facebook')->first(), 'title' => 'Facebook']);
+        $user->socLinks->put('instagram', ['obj' => $user->socials()->where('slug', 'instagram')->first(), 'title' => 'Instagram']);
+        $user->socLinks->put('linkedin', ['obj' => $user->socials()->where('slug', 'linkedin')->first(), 'title' => 'LinkedIn']);
+
         return view('auth.account', compact('user'));
     }
 
@@ -76,9 +84,17 @@ class AccountController extends Controller
      */
     function updateBio(Request $request)
     {
+
+        if ($request->ajax()) {
+            event($response = new SocialEvent($request));
+
+            return response()->json(['response' => $response->getResponse()]);
+        }
+
         $rules = [
             'bio' => 'required',
         ];
+
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();

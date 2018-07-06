@@ -2,9 +2,14 @@
 
 return [
     'tags'  => [
-        'Laravel'   => ['title' => 'Laravel',  'value' => 'Laravel',    'label' => 'default'],
-        'OpenCart'  => ['title' => 'OpenCart', 'value' => 'OpenCart',   'label' => 'primary'],
-        'ModX'      => ['title' => 'ModX',     'value' => 'ModX',       'label' => 'success'],
-        'Magento'   => ['title' => 'Magento',  'value' => 'Magento',    'label' => 'warning'],
+        'Laravel'   => ['title' => 'Laravel',  'value' => 'Laravel'],
+        'OpenCart'  => ['title' => 'OpenCart', 'value' => 'OpenCart'],
+        'ModX'      => ['title' => 'ModX',     'value' => 'ModX'],
+        'Magento'   => ['title' => 'Magento',  'value' => 'Magento'],
+    ],
+    'statuses' => [
+        'confirmed' => ['title' => 'Confirmed',  'value' => 'confirmed'],
+        'verified'  => ['title' => 'Verified',  'value' => 'verified'],
+        'init'      => ['title' => 'Init',  'value' => 'init'],
     ]
 ];
