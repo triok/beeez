@@ -13,4 +13,9 @@ class UserQuery
 
         return User::query()->where('username', 'like', '%' . $login . '%');
     }
+
+    public static function users()
+    {
+        return User::query()->where('id', '<>', auth()->id());
+    }
 }

@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Http\Controllers\Traits\Avatarable;
+use App\Http\Controllers\Traits\Imageable;
+use App\Models\Image;
 use App\Models\Jobs\Bookmarks;
 use App\Models\Social;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -11,15 +14,10 @@ use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
-    use LaratrustUserTrait;
-    use Notifiable;
-
-
-//    protected $fillable = [
-//        'name', 'email', 'password','stripe_public_key','stripe_secret_key', 'username'
-//    ];
+    use LaratrustUserTrait, Notifiable, Avatarable;
 
     protected $guarded = ['id'];
+    protected $links;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -72,5 +70,39 @@ class User extends Authenticatable
         } catch (DecryptException $e) {
             return '';
         }
+    }
+    public function avatar()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function getAvatarDir(): string
+    {
+        return '/public/avatars/' . $this->id . '/';
+    }
+
+    public function getStorageDir()
+    {
+       if (preg_match('~(default)\.(png|jpeg|jpg|gif)~', $this->avatar)) {
+
+           return '/storage/avatars/';
+       }
+        return '/storage/avatars/' . $this->id . '/';
+    }
+
+    public function socialLinks()
+    {
+        $this->links = collect();
+
+        $this->links->put('facebook', ['obj' => $this->socials()->where('slug', 'facebook')->first(), 'title' => 'Facebook']);
+        $this->links->put('instagram', ['obj' => $this->socials()->where('slug', 'instagram')->first(), 'title' => 'Instagram']);
+        $this->links->put('linkedin', ['obj' => $this->socials()->where('slug', 'linkedin')->first(), 'title' => 'LinkedIn']);
+
+        return $this->links;
+    }
+
+    public function scopeLogin($query, $value)
+    {
+        return $query->where('username', 'like', '%' . $value . '%');
     }
 }

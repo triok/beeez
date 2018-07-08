@@ -88,6 +88,10 @@
                             </ul>
                         </li>
 
+                        @permission('read-users')
+                        <li><a href="{{route('peoples.index')}}"><i class="fa fa-id-card-o"></i> Peoples</a></li>
+                        @endpermission
+
                         @permission('read-payouts')
                         <li><a href="/payouts"><i class="fa fa-money"></i> Payouts</a></li>
                         @endpermission

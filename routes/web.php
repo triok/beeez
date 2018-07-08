@@ -96,8 +96,14 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::group(['prefix'=>'payouts'],function(){
-       Route::get('/','BillingController@payouts');
+        Route::get('/','BillingController@payouts');
         Route::post('stripe','StripeController@charge')->name('stripe-charge');
+    });
+
+    Route::group(['prefix' => 'peoples'], function () {
+        Route::get('/','PeopleController@index')->name('peoples.index');
+        Route::get('/{user}','PeopleController@show')->name('peoples.show');
+        Route::post('/{user}','PeopleController@updateAvatar')->name('peoples.updateAvatar');
     });
 });
 

@@ -91,7 +91,6 @@
     </div>
 @endsection
 @push('scripts')
-
     <script>
         var timer;
         var x;

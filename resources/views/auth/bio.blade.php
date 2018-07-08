@@ -1,7 +1,15 @@
-{!! Form::open(['url'=>'account/bio','method'=>'post']) !!}
+{{--{!! Form::open(['url'=>'account/bio','method'=>'post', 'file'=>'true']) !!}--}}
+<form action="/account/bio" method="post" enctype="multipart/form-data">
+{{csrf_field()}}
+<label>Avatar</label><br>
+<img src="{{$user->getStorageDir() . $user->avatar}}" class="img-thumbnail" alt="{{$user->name}}" title="{{$user->name}}" style="width: 100px; height: 100px;">
+
+<input type="file" name="avatar" id="avatar">
 
 <label>Tell us about yourself</label>
 {!! Form::textarea('bio',$user->bio,['class'=>'form-control','rows'=>3,'required'=>'required']) !!}
+
+
 
 <label>Skills</label>
 {!! Form::text('skills',null,['id'=>'skills','class'=>'form-control']) !!}
@@ -40,6 +48,7 @@
         <button class="btn btn-default">Update</button>
     </div>
 </div>
-{!! Form::close() !!}
+</form>
+{{--{!! Form::close() !!}--}}
 
 @include('partials.tokeninput',['elem'=>'skills','path'=>'/skills-json'])

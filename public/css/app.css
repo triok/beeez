@@ -11606,3 +11606,22 @@ footer {
   position: absolute;
   bottom: 0;
 }
+.result {
+  list-style: none;
+  position: absolute;
+  background-color: #fff;
+  font-size: 17px;
+  display: block;
+  margin: 0 auto;
+  max-width: 261px;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  border: 1px solid #DDD;
+  z-index: 1001;
+  top: 36px;
+  padding: 5px;
+  width: 100%;
+  display: none;
+}

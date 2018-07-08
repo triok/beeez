@@ -28,10 +28,7 @@ class AccountController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        $user->socLinks = collect();
-        $user->socLinks->put('facebook', ['obj' => $user->socials()->where('slug', 'facebook')->first(), 'title' => 'Facebook']);
-        $user->socLinks->put('instagram', ['obj' => $user->socials()->where('slug', 'instagram')->first(), 'title' => 'Instagram']);
-        $user->socLinks->put('linkedin', ['obj' => $user->socials()->where('slug', 'linkedin')->first(), 'title' => 'LinkedIn']);
+        $user->socLinks = $user->socialLinks();
 
         return view('auth.account', compact('user'));
     }
@@ -91,15 +88,22 @@ class AccountController extends Controller
             return response()->json(['response' => $response->getResponse()]);
         }
 
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+
+            auth()->user()->updateAvatar($request->file('avatar'));
+        }
+
         $rules = [
-            'bio' => 'required',
+            'bio'   => 'required',
+            'avatar' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ];
 
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $user = User::find(Auth::user()->id);
+        /** @var User $user */
+        $user = auth()->user();
         $user->bio = $request->bio;
         $user->save();
 
