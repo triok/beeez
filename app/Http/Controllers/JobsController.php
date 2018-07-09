@@ -80,7 +80,7 @@ class JobsController extends Controller
             $job->price = env('CURRENCY_SYMBOL').$job->price;
             $job->files = File::query()->where('fileable_id', $id)->get();
             $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
-            $job->load('tag');
+            $job->load(['tag', 'user']);
 
             echo json_encode($job->toArray());
             //return view('jobs.show', compact('job'));
@@ -219,7 +219,7 @@ class JobsController extends Controller
             /** @var User $user */
             $user = $query->first();
 
-            $job->user_id = $user->id;
+            $job->user_id = auth()->id();
             $job->save();
             $job->applications()->create([
                 'user_id'   => $user->id,

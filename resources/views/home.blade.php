@@ -55,9 +55,10 @@
                 <div class="panel panel-default box">
                     <div class="panel-heading">
                         <h4 id="{{$job->id}}">{{$job->name}}</h4>
+
                         <span id="posted">
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
-                            Posted {{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}
+                            Posted {{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}} <small> by {{$job->user->username}}</small>
                         </span>
                     </div>
 
@@ -174,7 +175,7 @@
                 <h4 class="modal-title" id="title"></h4>
                 <span>
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
-                   <span class="posted-time"></span>
+                   <span class="posted-time"></span><small id="author"></small>
                 </span>
             </div>
             <div class="modal-body">

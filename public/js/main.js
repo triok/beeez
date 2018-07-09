@@ -284,6 +284,7 @@ function showJob(jobId) {
         viewModal.find('#cats').html(job.cats);
         viewModal.find('#price').text(job.price);
         viewModal.find('.posted-time').text(job.posted);
+        viewModal.find('#author').text(' by ' + job.user.username);
 
         if(job.tag !== null && job.tag !== undefined) {
             var tag = viewModal.find('#tag-modal');

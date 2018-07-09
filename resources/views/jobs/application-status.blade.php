@@ -36,6 +36,10 @@
             <td colspan="3"><a href="{{route('jobs.index')}}?tag={{$app->job->tag->value}}"><span class="label label-warning">{{$app->job->tag->value}}</span></a></td>
         </tr>
         @endif
+        <tr>
+            <td>Author</td>
+            <td colspan="3">{{$app->user->username}}</td>
+        </tr>
     </table>
 </div>
 <div class="modal-footer">
