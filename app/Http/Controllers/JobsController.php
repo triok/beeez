@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\AdminNewJobAppNotice;
 use App\Mail\ShareJob;
 use App\Models\Billing\Payouts;
 use App\Models\File;
@@ -64,6 +63,8 @@ class JobsController extends Controller
         /** @var Jobs $job */
         $job = Jobs::find($id);
 
+        $job->addView();
+
         if (request()->ajax()) {
             $job->level = $job->difficulty->name;
 
@@ -80,6 +81,8 @@ class JobsController extends Controller
             $job->price = env('CURRENCY_SYMBOL').$job->price;
             $job->files = File::query()->where('fileable_id', $id)->get();
             $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
+            $job->viewed = 'Viewed (' . $job->getViews() .')';
+
             $job->load(['tag', 'user']);
 
             echo json_encode($job->toArray());

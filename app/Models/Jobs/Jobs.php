@@ -2,20 +2,23 @@
 
 namespace App\Models\Jobs;
 
+use App\Http\Controllers\Interfaces\MorphTo;
 use App\Models\File;
 use App\Models\Tag;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Traits\Viewable;
 
 
 /**
  * @property  File files
+ * @property  Categories categories
  */
 class Jobs extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Viewable;
 
     protected $fillable =[
         'name','desc','instructions','end_date','user_id','price','difficulty_level_id','status', 'time_for_work', 'created_at', 'access'
@@ -76,21 +79,6 @@ class Jobs extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-
-    // TODO This code was altered
-//    function getCreatedAtAttribute($value)
-//    {
-//        return date('d M, Y', strtotime($value));
-//    }
-
-
-
-    // TODO This code was altered
-//    function getEndDateAttribute($value)
-//    {
-//        return date('d M, Y H:i', strtotime($value));
-//    }
 
     /**
      * add currency symbol

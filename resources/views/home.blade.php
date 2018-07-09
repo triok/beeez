@@ -176,6 +176,7 @@
                 <span>
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
                    <span class="posted-time"></span><small id="author"></small>
+                    <span class="small pull-right" id="viewed"></span>
                 </span>
             </div>
             <div class="modal-body">
