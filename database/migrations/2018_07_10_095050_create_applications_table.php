@@ -20,6 +20,7 @@ class CreateApplicationsTable extends Migration
             $table->text('remarks',500)->nullable();
             $table->text('admin_remarks',500)->nullable();
             $table->timestamp('deadline')->nullable();
+            $table->float('job_price')->nullable();
             $table->string('status')->default('pending'); //pending, approved,denied, closed,cancelled
             $table->timestamps();
 

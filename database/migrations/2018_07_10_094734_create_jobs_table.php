@@ -18,13 +18,14 @@ class CreateJobsTable extends Migration
             $table->string('name',50);
             $table->text('desc');
             $table->longText('instructions')->nullable();
-            // TODO altered date to timestamp
+            $table->string('access')->nullable();
             $table->timestamp('end_date');
             $table->integer('user_id',false,true)->nullable();
             $table->float('price')->default('0.00');
             $table->integer('difficulty_level_id',false,true)->nullable();
             $table->integer('time_for_work')->default('1');
             $table->string('status',10)->default('open'); //open, closed
+
             $table->softDeletes();
             $table->timestamps();
 

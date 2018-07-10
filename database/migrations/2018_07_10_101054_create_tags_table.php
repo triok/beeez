@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddJobPriceToApplications extends Migration
+class CreateTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddJobPriceToApplications extends Migration
      */
     public function up()
     {
-        Schema::table('applications', function (Blueprint $table) {
-            $table->float('job_price')->nullable();
+        Schema::create('tags', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('tageable_id');
+            $table->string('tageable_type');
+            $table->string('value')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddJobPriceToApplications extends Migration
      */
     public function down()
     {
-        Schema::table('applications', function (Blueprint $table) {
-            $table->dropColumn('job_price');
-        });
+        Schema::dropIfExists('tags');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TimeForWork extends Migration
+class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class TimeForWork extends Migration
      */
     public function up()
     {
-        Schema::create('time_for_work', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('value',10);
+            $table->string('name',100);
+            $table->string('desc')->nullable();
+            $table->integer('cat_order')->nullable()->default(0);
+            $table->integer('parent_id', false, true)->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class TimeForWork extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('difficulty_level');
+        Schema::dropIfExists('categories');
     }
 }

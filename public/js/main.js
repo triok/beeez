@@ -609,7 +609,6 @@ $('document').ready(function () {
                             return false;
                         }
                         response.forEach(function(entry) {
-                            console.log(entry);
                             $res += '<li class=""><a href="/peoples/'+entry.id+'">'+ entry.username + '</a></li>';
                         });
                         $(".result").show().html($res).fadeIn();
@@ -624,7 +623,9 @@ $('document').ready(function () {
         $(".result").html('').hide();
     });
     $("#login_search").on('blur', function(e) {
-        $(".result").html('').hide();
+        setTimeout((function(){
+            $(".result").html('').hide();
+        }), 2000);
     });
 
 

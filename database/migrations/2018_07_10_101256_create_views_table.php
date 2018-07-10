@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnAvatarTableUsers extends Migration
+class CreateViewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddColumnAvatarTableUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('avatar')->after('bio')->default('default.png');
+        Schema::create('views', function (Blueprint $table) {
+            $table->increments('id')->unsigned();
+            $table->morphs('viewable');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddColumnAvatarTableUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('avatar');
-        });
+        Schema::dropIfExists('views');
     }
 }

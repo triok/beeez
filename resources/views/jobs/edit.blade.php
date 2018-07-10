@@ -111,8 +111,13 @@
         </div>
     </div>
     <br/>
+        <div class="btn-toolbar" id="savesubmit">
+            <div class="btn-group btn-group-lg">
+                <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                <button type="button" class="btn btn-primary" id="save">Save</button>
+            </div>
+        </div>
 
-    <button class="btn btn-default btn-md" id="submit">Submit</button>
     {!! Form::close() !!}
     {{--</form>--}}
     <div class="clearfix"><hr/></div>
