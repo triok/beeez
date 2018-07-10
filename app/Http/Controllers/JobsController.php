@@ -124,7 +124,7 @@ class JobsController extends Controller
     function jobsByCategories($id)
     {
         $category = Categories::find($id);
-        $jobs = $category->openJobs()->paginate(20);
+        $jobs = $category->openJobs()->whereNull('user_id')->paginate(20);
         $title = 'Jobs under ' . ucwords($category->name) . ' category';
         return view('home', compact('jobs', 'category', 'title'));
     }
@@ -257,7 +257,7 @@ class JobsController extends Controller
             }
         }
         flash()->success('Job has been posted!');
-        return redirect('/jobs/' . $job->id . '/edit');
+        return redirect('/jobs/category/' . $cat);
     }
 
     /**
