@@ -288,13 +288,13 @@ function showJob(jobId) {
         viewModal.find('#author').text(' by ' + job.user.username);
 
         if(job.tag !== null && job.tag !== undefined) {
-            var tag = viewModal.find('#tag-modal');
+            var tag = viewModal.find('#tag-modal').html('');
             tag.append('<h5><strong>Tag</strong></h5>');
             tag.append('<a href="/jobs/?tag=' + job.tag.value + '"> <span class="label label-warning">'+job.tag.value+'</span></a>');
         }
-
+        var fileTag = viewModal.find('.files-job').html('');
         job.files.forEach(function(item, i, arr) {
-            viewModal.find('.files-job').append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
+            fileTag.append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
                 '<i class="fa fa-file">' +
                 '<a style="padding-left: 7px;" href="/upload/'+item.id+'" title="'+item.original_name+'">'+item.original_name+'</a></i></li>');
         });

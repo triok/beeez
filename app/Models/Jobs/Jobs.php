@@ -4,6 +4,12 @@ namespace App\Models\Jobs;
 
 use App\Http\Controllers\Interfaces\MorphTo;
 use App\Models\File;
+use App\Models\Jobs\Applications;
+use App\Models\Jobs\Bookmarks;
+use App\Models\Jobs\Categories;
+use App\Models\Jobs\DifficultyLevel;
+use App\Models\Jobs\JobCategories;
+use App\Models\Jobs\Skills;
 use App\Models\Tag;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
@@ -33,36 +39,58 @@ class Jobs extends Model
 
     function categories()
     {
-        return $this->belongsToMany(\App\Models\Jobs\Categories::class, 'job_categories', 'job_id', 'category_id');
+        return $this->belongsToMany(Categories::class, 'job_categories', 'job_id', 'category_id');
     }
 
     function difficulty()
     {
-        return $this->belongsTo(\App\Models\Jobs\DifficultyLevel::class, 'difficulty_level_id', 'id');
+        return $this->belongsTo(DifficultyLevel::class, 'difficulty_level_id', 'id');
     }
 
     function applications()
     {
-        return $this->hasMany(\App\Models\Jobs\Applications::class, 'job_id', 'id');
+        return $this->hasMany(Applications::class, 'job_id', 'id');
     }
 
     function application()
     {
-        return $this->hasOne(\App\Models\Jobs\Applications::class, 'job_id', 'id')->where('user_id', Auth::user()->id);
+        return $this->hasOne(Applications::class, 'job_id', 'id')->where('user_id', Auth::user()->id);
     }
 
     function bookmarks()
     {
-        return $this->hasMany(\App\Models\Jobs\Bookmarks::class, 'job_id', 'id');
+        return $this->hasMany(Bookmarks::class, 'job_id', 'id');
     }
 
     function jobCategories()
     {
-        return $this->hasMany(\App\Models\Jobs\JobCategories::class, 'job_id', 'id');
+        return $this->hasMany(JobCategories::class, 'job_id', 'id');
     }
 
     function skills(){
-        return $this->belongsToMany(\App\Models\Jobs\Skills::class,'job_skills','job_id','skill_id','id');
+        return $this->belongsToMany(Skills::class,'job_skills','job_id','skill_id','id');
+    }
+
+    public function hasSkill(Skills $skill)
+    {
+        return $this->skills()->get()->contains($skill);
+    }
+
+    public function hasCategory(Categories $categories)
+    {
+        return $this->categories()->get()->contains($categories);
+    }
+
+    public function hasLogin($login)
+    {
+        /** @var User $user */
+        $user = User::query()->where('username', $login)->first();
+
+        if(!isset($user)) return false;
+
+        return $this->applications()->where(function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('job_id', $this->id);
+        })->exists();
     }
 
     public function files()

@@ -4,8 +4,13 @@ namespace App;
 
 use App\Http\Controllers\Traits\Avatarable;
 use App\Http\Controllers\Traits\Imageable;
+use App\Models\Billing\Stripe;
 use App\Models\Image;
+use App\Models\Jobs\Applications;
 use App\Models\Jobs\Bookmarks;
+use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Skills;
+use App\Models\RoleUser;
 use App\Models\Social;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
@@ -32,20 +37,26 @@ class User extends Authenticatable
         return $this->hasMany(Bookmarks::class,'user_id','id');
     }
     function bookmarked(){
-        return $this->hasMany(\App\Models\Jobs\Jobs::class,'job_id','id');
+        return $this->hasMany(Jobs::class,'job_id','id');
     }
+
+    function jobs()
+    {
+        return $this->hasMany(Jobs::class);
+    }
+
     function applications(){
-        return $this->hasMany(\App\Models\Jobs\Applications::class,'user_id','id');
+        return $this->hasMany(Applications::class,'user_id','id');
     }
     function skills(){
-        return $this->belongsToMany(\App\Models\Jobs\Skills::class,'user_skills','user_id','skill_id','id');
+        return $this->belongsToMany(Skills::class,'user_skills','user_id','skill_id','id');
     }
 
     function appliedJobs(){
-        return $this->belongsToMany(\App\Models\Jobs\Jobs::class,'applications','user_id','job_id','id')->where('jobs.deleted_at','=',null);
+        return $this->belongsToMany(Jobs::class,'applications','user_id','job_id','id')->where('jobs.deleted_at','=',null);
     }
     function role(){
-        return $this->belongsToMany(\App\Models\RoleUser::class,'role_user','role_id','user_id','id');
+        return $this->belongsToMany(RoleUser::class,'role_user','role_id','user_id','id');
     }
 
     public function socials()
@@ -58,7 +69,7 @@ class User extends Authenticatable
     }
 
     function stripe(){
-        return $this->belongsTo(\App\Models\Billing\Stripe::class);
+        return $this->belongsTo(Stripe::class);
     }
 
     function getStripeSecretKeyAttribute($value){

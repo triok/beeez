@@ -111,9 +111,9 @@ class ApplicationsController extends Controller
      */
     function myApplications()
     {
-//        $jobs = Auth::user()->appliedJobs()->paginate(20);
-//        $title = 'All applied jobs';
-        $applications = Auth::user()->applications()->paginate(20);
+//        $applications = Auth::user()->applications()->paginate(20);
+        $applications = Auth::user()->jobs()->paginate(20);
+
         return view('applications.my-applications', compact('applications'));
     }
 
@@ -182,6 +182,7 @@ class ApplicationsController extends Controller
 
     /**
      * @param Request $request
+     * @throws \Exception
      */
     function deleteMessage(Request $request)
     {
