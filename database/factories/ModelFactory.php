@@ -17,6 +17,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
     return [
         'name' => $faker->name,
+        'username' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
@@ -30,7 +31,7 @@ $factory->define(App\Models\Jobs\Jobs::class, function (Faker\Generator $faker) 
         'desc'=>$faker->text(200),
         'end_date'=>\Carbon\Carbon::now()->addDays(rand(1,5)),
         'price'=>$faker->randomNumber(2),
-        'user_id'=>1,
+        'user_id'=> create(\App\User::class)->id,
         'difficulty_level_id'=>rand(1,3)
     ];
 });
@@ -46,5 +47,13 @@ $factory->define(App\Models\Jobs\Categories::class, function (Faker\Generator $f
 $factory->define(App\Models\Social::class, function (Faker\Generator $faker) {
     return [
         'title'      => $faker->sentence,
+    ];
+});
+
+$factory->define(\App\Role::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'display_name' => $faker->name,
+        'description' => $faker->sentence
     ];
 });

@@ -25,23 +25,28 @@
         <div class="row">
             <div class="col-sm-8">
                 <label>Name</label>
-                {!! Form::text('name','',['required'=>'required','class'=>'form-control']) !!}
+                {!! Form::text('name',isset($job) ? $job->name : '',['required'=>'required','class'=>'form-control']) !!}
             </div>
             <div class="col-sm-4">
                 <label>Status</label>
-                {!! Form::select('status',['open'=>'Open','closed'=>'Closed'],1,['class'=>'form-control']) !!}
+{{--                {!! Form::select('status',array_keys(config('enums.jobs.statuses')), isset($job) ? array_search($job->status, array_values(config('enums.jobs.statuses'))) : 1,['class'=>'form-control']) !!}--}}
+                <select name="status" id="status" class="form-control">
+                    @foreach(config('enums.jobs.statuses') as $status)
+                        <option value="{{$status}}" {{isset($job) && $job->status == $status ? 'selected' : '' }}>{{$status}}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
         <label>Description</label>
-        {!! Form::textarea('desc','',['class'=>'editor1']) !!}
+        {!! Form::textarea('desc', isset($job) ? $job->desc : '',['class'=>'editor1']) !!}
         <label>Instructions</label>
         <span class="label label-warning">Only visible to applicant after approval</span>
-        {!! Form::textarea('instructions','',['class'=>'editor2','id'=>'editor2']) !!}
+        {!! Form::textarea('instructions', isset($job) ? $job->instructions : '',['class'=>'editor2','id'=>'editor2']) !!}
         <br/>
         <div class="row">
             <div class="col-md-12">
                 <label for="access">Access</label>
-                {!! Form::input('text','access','',['class'=>'form-control']) !!}
+                {!! Form::input('text','access', isset($job) ? $job->access : '' ,['class'=>'form-control']) !!}
             </div>
         </div>
         <div class="row">
@@ -54,26 +59,28 @@
             </div>
             <div class="col-md-4">
                 <label>Difficulty level</label>
-                {!! Form::select('difficulty_level_id',$difficultyLevels,null,['class'=>'form-control']) !!}
+                {!! Form::select('difficulty_level_id',$difficultyLevels, isset($job) ? $job->difficulty->id : 1,['class'=>'form-control']) !!}
             </div>
             <div class="col-md-4">
                 <label>End date</label>
+
                 {{--            <input type="datetime-local" name="end_date" value="{{ isset($job)?date('Y-m-d',strtotime($job->end_date)):null}}" required class="form-control">--}}
-                {!! Form::input('datetime-local','end_date','',['required'=>'required','class'=>'form-control']) !!}
+                {!! Form::input('datetime-local','end_date',isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('d-m-Y H:i') : '',['required'=>'required','class'=>'form-control']) !!}
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
                 <label for="time_for_work">Time for work</label>
-                {!! Form::select('time_for_work', array('1' => '1 hour', '2' => '2 hours', '3' => '3 hours'), 1,['class'=>'form-control', 'id' => 'time_for_work'] )!!}
+                {!! Form::select('time_for_work', array('1' => '1 hour', '2' => '2 hours', '3' => '3 hours'), isset($job) ? $job->time_for_work : 1,['class'=>'form-control', 'id' => 'time_for_work'] )!!}
             </div>
 
             <div class="col-md-4">
                 <label for="user">Choose user</label>
                 <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="user">
                     <option selected value="">For anyone</option>
+
                     @foreach($usernames as $username)
-                        <option value="{{$username}}">{{$username}}</option>
+                        <option value="{{$username}}" {{isset($job) && $job->hasLogin($username) ? 'selected' : ''}}>{{$username}}</option>
                     @endforeach
                 </select>
             </div>
@@ -84,7 +91,7 @@
     <div class="row">
         @foreach(\App\Models\Jobs\Skills::get() as $skill)
             <div class="col-sm-3">
-                {!! Form::checkbox('skills[]',$skill->id) !!}{{ucwords($skill->name)}}
+                {!! Form::checkbox('skills[]',$skill->id, isset($job) && $job->hasSkill($skill) ? 'checked' : '') !!}{{ucwords($skill->name)}}
             </div>
         @endforeach
     </div>
@@ -94,7 +101,7 @@
     <div class="row">
         @foreach($categories as $cat)
             <div class="col-sm-3">
-                {!! Form::checkbox('categories[]',$cat->id,null,['style'=>'']) !!} {{$cat->name}}
+                {!! Form::checkbox('categories[]',$cat->id, isset($job) && $job->hasCategory($cat) ? 'checked' : '',['style'=>'']) !!} {{$cat->name}}
             </div>
         @endforeach
     </div>
@@ -105,14 +112,19 @@
             <select name="tag" id="tag" class="form-control">
                 <option value="" selected>I do not use CMS</option>
                 @foreach(config('tags.tags') as $tag)
-                    <option value="{{$tag['value']}}">{{$tag['title']}}</option>
+                    <option value="{{$tag['value']}}" {{isset($job) && isset($job->tag) && $job->tag->value == $tag['value'] ? 'selected' : ''}}>{{$tag['title']}}</option>
                 @endforeach
             </select>
         </div>
     </div>
     <br/>
+        <div class="btn-toolbar" id="savesubmit">
+            <div class="btn-group btn-group-lg">
+                <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">Submit</button>
+                <button type="submit" class="btn btn-primary" id="draft" name="draft" value="save">Save</button>
+            </div>
+        </div>
 
-    <button class="btn btn-default btn-md" id="submit">Submit</button>
     {!! Form::close() !!}
     {{--</form>--}}
     <div class="clearfix"><hr/></div>

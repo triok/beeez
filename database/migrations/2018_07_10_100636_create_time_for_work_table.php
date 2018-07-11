@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnLoginTableUsers extends Migration
+class CreateTimeForWorkTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddColumnLoginTableUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('username')->after('email');
+        Schema::create('time_for_work', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('value',10);
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddColumnLoginTableUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('username');
-        });
+        Schema::dropIfExists('time_for_work');
     }
 }

@@ -191,6 +191,7 @@ class JobsController extends Controller
      */
     function store(Request $request)
     {
+        // TODO refactor all method
         $rules = [
             'name'          => 'required|max:50',
             'price'         => 'required',
@@ -200,9 +201,11 @@ class JobsController extends Controller
             'desc'          => 'required',
         ];
 
+        /** @var Validator $validator */
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
+
             /** Clear session if errors validation*/
             Session::forget('job.files');
 
@@ -211,6 +214,13 @@ class JobsController extends Controller
 
         /** @var Jobs $job */
         $job = Jobs::create(array_except($request->all(), ['tag']));
+        $job->user_id = auth()->id();
+
+        if ($request->has('draft')) {
+            $job->status = config('enums.jobs.statuses.DRAFT');
+        }
+
+        $job->save();
 
         $query = User::query()->where('username', $request->user);
 
@@ -222,8 +232,6 @@ class JobsController extends Controller
             /** @var User $user */
             $user = $query->first();
 
-            $job->user_id = auth()->id();
-            $job->save();
             $job->applications()->create([
                 'user_id'   => $user->id,
                 'status'    => 'pending',
@@ -283,18 +291,59 @@ class JobsController extends Controller
      */
     function update(Request $request, $id)
     {
+        // TODO refactor all method
         $rules = [
-            'name' => 'required|max:50',
-            'price' => 'required',
-            'categories' => 'required'
+            'name'          => 'required|max:50',
+            'price'         => 'required',
+            'categories'    => 'required',
+            'time_for_work' => 'required',
+            'access'        => 'nullable',
+            'desc'          => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
+
         if ($validator->fails()) {
+            Session::forget('job.files');
+
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
         $job = Jobs::find($id);
         $job->fill($request->all());
-        $job->save();
+        $job->user_id = auth()->id();
+
+
+        $query = User::query()->where('username', $request->user);
+
+        if($query->exists()) {
+            /** @var User $user */
+            $user = $query->first();
+
+            $job->applications()->create([
+                'user_id'   => $user->id,
+                'status'    => 'pending',
+                'job_price' => $request->price
+            ]);
+        }
+
+        if (Session::has('job.files')) {
+
+            $job->files()->delete(); // delete all files
+
+            foreach (Session::get('job.files') as $file) {
+                $job->files()->create([
+                    'file'          => $file['file'],
+                    'size'          => $file['size'],
+                    'type'          => $file['type'],
+                    'original_name' => $file['original_name'],
+                ]);
+            }
+            Session::forget('job.files');
+        }
+
+        if (isset($request->tag) && $request->tag != '' && array_key_exists($request->tag, config('tags.tags'))) {
+            $job->tag()->create(['value' => $request->tag]);
+        }
 
         if (is_array($request->categories)) {
             JobCategories::whereJobId($id)->delete();//delete old if any
@@ -315,6 +364,12 @@ class JobsController extends Controller
                 );
             }
         }
+        if ($request->has('draft')) {
+
+            $job->status = config('enums.jobs.statuses.DRAFT');
+        }
+        $job->save();
+
         flash()->success('Job updated!');
         return redirect()->back();
     }
