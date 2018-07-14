@@ -344,10 +344,10 @@ INSERT INTO `permissions` (`id`, `name`, `display_name`, `description`, `created
 (2, 'read-users', 'Read Users', 'Read Users', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
 (3, 'update-users', 'Update Users', 'Update Users', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
 (4, 'delete-users', 'Delete Users', 'Delete Users', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
-(5, 'create-jobs', 'Create Jobs', 'Create Jobs', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
-(6, 'read-jobs', 'Read Jobs', 'Read Jobs', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
-(7, 'update-jobs', 'Update Jobs', 'Update Jobs', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
-(8, 'delete-jobs', 'Delete Jobs', 'Delete Jobs', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
+(5, 'create-jobs', 'Create Job', 'Create Job', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
+(6, 'read-jobs', 'Read Job', 'Read Job', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
+(7, 'update-jobs', 'Update Job', 'Update Job', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
+(8, 'delete-jobs', 'Delete Job', 'Delete Job', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
 (9, 'create-job-categories', 'Create Job-categories', 'Create Job-categories', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
 (10, 'read-job-categories', 'Read Job-categories', 'Read Job-categories', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
 (11, 'update-job-categories', 'Update Job-categories', 'Update Job-categories', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
@@ -374,10 +374,10 @@ INSERT INTO `permissions` (`id`, `name`, `display_name`, `description`, `created
 (32, 'delete-logs', 'Delete Logs', 'Delete Logs', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
 (33, 'read-profile', 'Read Profile', 'Read Profile', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
 (34, 'update-profile', 'Update Profile', 'Update Profile', '2018-05-22 19:23:55', '2018-05-22 19:23:55'),
-(35, 'create-jobs-manager', 'Create Jobs-manager', NULL, '2018-05-24 18:28:21', '2018-05-24 18:28:21'),
-(36, 'update-jobs-manager', 'Update Jobs-manager', NULL, '2018-05-24 18:28:21', '2018-05-24 18:28:21'),
-(37, 'read-jobs-manager', 'Read Jobs-manager', NULL, '2018-05-24 18:28:21', '2018-05-24 18:28:21'),
-(38, 'delete-jobs-manager', 'Delete Jobs-manager', NULL, '2018-05-24 18:28:21', '2018-05-24 18:28:21');
+(35, 'create-jobs-manager', 'Create Job-manager', NULL, '2018-05-24 18:28:21', '2018-05-24 18:28:21'),
+(36, 'update-jobs-manager', 'Update Job-manager', NULL, '2018-05-24 18:28:21', '2018-05-24 18:28:21'),
+(37, 'read-jobs-manager', 'Read Job-manager', NULL, '2018-05-24 18:28:21', '2018-05-24 18:28:21'),
+(38, 'delete-jobs-manager', 'Delete Job-manager', NULL, '2018-05-24 18:28:21', '2018-05-24 18:28:21');
 
 -- --------------------------------------------------------
 

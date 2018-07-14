@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 
-class Applications extends Model
+class Application extends Model
 {
     protected $guarded = ['id'];
     /**
@@ -15,7 +15,7 @@ class Applications extends Model
      */
     function user()
     {
-        return $this->belongsTo(\App\User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     /**
@@ -23,10 +23,10 @@ class Applications extends Model
      */
     function job()
     {
-        return $this->belongsTo(\App\Models\Jobs\Jobs::class, 'job_id', 'id');
+        return $this->belongsTo(Job::class, 'job_id', 'id');
     }
     function messages(){
-        return $this->hasMany(\App\Models\Jobs\Conversations::class,'application_id','id');
+        return $this->hasMany(Conversations::class,'application_id','id');
     }
 
     /**
@@ -91,7 +91,7 @@ class Applications extends Model
     function notifyOnChangeStatus($app){
         //if approved, notify user
         //if denied, tell them of status change
-        $job = Jobs::find($app->job_id);
+        $job = Job::find($app->job_id);
         $applicant = User::find($app->user_id);
         Mail::to($applicant->email, $applicant->name)->send(new NotifyUserAppStatus($job, $app, $applicant));
     }

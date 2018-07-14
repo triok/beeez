@@ -13,6 +13,6 @@ class Bookmarks extends Model
     }
 
     function job(){
-        return $this->belongsTo(\App\Models\Jobs\Jobs::class,'job_id','id');
+        return $this->belongsTo(\App\Models\Jobs\Job::class,'job_id','id');
     }
 }

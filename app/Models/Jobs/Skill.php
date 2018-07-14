@@ -4,7 +4,7 @@ namespace App\Models\Jobs;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Skills extends Model
+class Skill extends Model
 {
-    protected $fillable=['name','desc'];
+    protected $guarded = ['id'];
 }

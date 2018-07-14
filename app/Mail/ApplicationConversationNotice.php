@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
-use App\Models\Jobs\Applications;
-use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Application;
+use App\Models\Jobs\Job;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -22,7 +22,7 @@ class ApplicationConversationNotice extends Mailable
      *
      * @return void
      */
-    public function __construct(Jobs $job, Applications $application,$target)
+    public function __construct(Job $job, Application $application, $target)
     {
         $this->job = $job;
         $this->application = $application;

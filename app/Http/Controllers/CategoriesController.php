@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jobs\Bookmarks;
-use App\Models\Jobs\Categories;
+use App\Models\Jobs\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +15,7 @@ class CategoriesController extends Controller
         $this->middleware('role:admin');
     }
     public function index(){
-        $categories = Categories::orderBy('cat_order','ASC')->get();
+        $categories = Category::orderBy('cat_order','ASC')->get();
         return view('jobs.categories',compact('categories'));
     }
     /**
@@ -25,9 +25,9 @@ class CategoriesController extends Controller
      */
     public function admin($id)
     {
-        $category = Categories::find($id);
+        $category = Category::find($id);
         $jobs = $category->jobs()->paginate(20);
-        $title = 'Jobs by ' . $category->name;
+        $title = 'Job by ' . $category->name;
         return view('home', compact('jobs', 'category', 'title'));
     }
 
@@ -56,7 +56,7 @@ class CategoriesController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $cat = new Categories();
+        $cat = new Category();
         $cat->name = $request->name;
         $cat->desc = $request->desc;
 
@@ -105,7 +105,7 @@ class CategoriesController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $cat = Categories::findOrFail($id);
+        $cat = Category::findOrFail($id);
         $cat->name = $request->name;
         $cat->desc = $request->desc;
         $cat->save();
@@ -121,7 +121,7 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $cat = Categories::findOrFail($id);
+        $cat = Category::findOrFail($id);
         $cat->delete();
         flash()->success('Category deleted');
         return redirect()->back();
@@ -135,7 +135,7 @@ class CategoriesController extends Controller
         if ($request->ajax()) {
             $id_ary = explode(",", $request ->sort_order);
             for ($i = 0; $i < count($id_ary); $i++) {
-                $q = Categories::find($id_ary[$i]);
+                $q = Category::find($id_ary[$i]);
                 $q->cat_order = $i;
                 $q->save();
             }

@@ -2,13 +2,13 @@
 
 namespace App\Queries;
 
-use App\Models\Jobs\Categories;
+use App\Models\Jobs\Category;
 
 class CategoryQuery
 {
     //TODO this code was added
     public static function onlyParent()
     {
-        return Categories::query()->whereNull('parent_id');
+        return Category::query()->whereNull('parent_id');
     }
 }

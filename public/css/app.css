@@ -11625,3 +11625,9 @@ footer {
   width: 100%;
   display: none;
 }
+.sub-tasks table {
+  margin-bottom: 0;
+}
+.cursor-pointer {
+  cursor: pointer;
+}

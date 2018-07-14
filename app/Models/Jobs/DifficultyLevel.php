@@ -8,7 +8,9 @@ class DifficultyLevel extends Model
 {
     protected $table='difficulty_level';
 
+    protected $guarded = ['id'];
+
     function jobs(){
-        return $this->hasMany(\App\Models\Jobs\Jobs::class);
+        return $this->hasMany(Job::class);
     }
 }

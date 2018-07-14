@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
-use App\Models\Jobs\Applications;
-use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Application;
+use App\Models\Jobs\Job;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -20,7 +20,7 @@ class AdminNewJobAppNotice extends Mailable
      *
      * @return void
      */
-    public function __construct(Jobs $job, Applications $applicant)
+    public function __construct(Job $job, Application $applicant)
     {
         $this->job = $job;
         $this->applicant = $applicant;

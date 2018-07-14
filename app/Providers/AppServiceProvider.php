@@ -2,25 +2,29 @@
 
 namespace App\Providers;
 
+use App\Models\Jobs\Category;
+use App\Models\Jobs\DifficultyLevel;
+use App\Models\Jobs\Skill;
 use Illuminate\Support\ServiceProvider;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
     public function boot()
     {
-        //
+        /** @var Skill $skills */
+        $_skills     = Skill::query()->get();
+        /** @var Category $_categories */
+        $_categories = Category::query()->orderBy('cat_order')->get();
+        /** @var DifficultyLevel $_difficultyLevels */
+        $_difficultyLevels = DifficultyLevel::pluck('name', 'id');
+
+
+        View::share('_skills', $_skills);
+        View::share('_categories', $_categories);
+        View::share('_difficultyLevels', $_difficultyLevels);
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
     public function register()
     {
         require_once __DIR__.'/../Http/helpers.php';
