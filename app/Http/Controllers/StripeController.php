@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Billing\Payouts;
-use App\Models\Jobs\Applications;
+use App\Models\Jobs\Application;
 use App\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ class StripeController extends Controller
      */
     function charge(Request $request)
     {
-        $app = Applications::findOrFail($request->application_id);
+        $app = Application::findOrFail($request->application_id);
         $user = User::findOrFail($app->user_id);
 
         if(empty($user->stripe_secret_key)){
@@ -74,7 +74,7 @@ class StripeController extends Controller
      */
     function refund(Request $request)
     {
-        $app = Applications::findOrFail($request->application_id);
+        $app = Application::findOrFail($request->application_id);
         $user = User::findOrFail($app->user_id);
 
         if(empty($user->stripe_secret_key)){

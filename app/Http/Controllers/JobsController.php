@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreJobRequest;
+use App\Jobs\AddApplicationsJob;
+use App\Jobs\AddCategoriesJob;
+use App\Jobs\AddFilesJob;
+use App\Jobs\AddSkillsJob;
+use App\Jobs\AddSubTasksJob;
+use App\Jobs\AddTagJob;
 use App\Mail\ShareJob;
 use App\Models\Billing\Payouts;
 use App\Models\File;
-use App\Models\Jobs\Applications;
+use App\Models\Jobs\Application;
 use App\Models\Jobs\Bookmarks;
-use App\Models\Jobs\Categories;
+use App\Models\Jobs\Category;
 use App\Models\Jobs\DifficultyLevel;
 use App\Models\Jobs\JobCategories;
-use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Job;
+use App\Queries\JobQuery;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -29,7 +37,7 @@ class JobsController extends Controller
 
     function __construct()
     {
-        $this->usernames = User::query()->pluck('username');
+        $this->usernames = User::query()->pluck('username', 'id');
 
         $this->middleware('auth');
         $this->middleware('permission:read-jobs',['only'=>['jobsAdmin']]);
@@ -42,44 +50,41 @@ class JobsController extends Controller
     public function index()
     {
         if (request()->has('tag')) {
-            /** @var Jobs $jobs */
-            $jobs = Jobs::query()->whereHas('tag' , function($query) {
+            /** @var Job $jobs */
+            $jobs = JobQuery::onlyParentAndOpen()->whereHas('tag' , function($query) {
                 $query->where('value', request()->tag);
             })
-                ->with('tag')
-                ->paginate(20);
+            ->with('tag')
+            ->paginate(20);
 
-            return view('home', ['jobs' => count($jobs) > 0 ? $jobs : Jobs::query()->paginate(20),
+            return view('home', ['jobs' => count($jobs) > 0 ? $jobs : Job::query()->paginate(20),
                 'title' => 'All jobs with tag: '. request()->tag ]);
         }
     }
 
     /**
-     * @param $id
+     * @param Job $job
      * @return Mixed
      */
-    function show($id)
+    function show(Job $job)
     {
-        /** @var Jobs $job */
-        $job = Jobs::find($id);
-
         $job->addView();
 
         if (request()->ajax()) {
             $job->level = $job->difficulty->name;
 
-            $bookmark = Bookmarks::where('job_id', $id)->where('user_id', Auth::user()->id)->first();
+            $bookmark = Bookmarks::where('job_id', $job->id)->where('user_id', Auth::user()->id)->first();
             // TODO altered this code
             if (isset($bookmark))
                 $job->bookmark = $bookmark->id;
             else
                 $job->bookmark = 0;
             //skills
-            $j = new Jobs();
+            $j = new Job();
             $job->prettyskills = $j->formatSkills($job->skills);
             $job->cats = $j->formatCats($job->categories);
             $job->price = env('CURRENCY_SYMBOL').$job->price;
-            $job->files = File::query()->where('fileable_id', $id)->get();
+            $job->files = File::query()->where('fileable_id', $job->id)->get();
             $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
             $job->viewed = 'Viewed (' . $job->getViews() .')';
 
@@ -98,7 +103,7 @@ class JobsController extends Controller
      */
     function destroy($id)
     {
-        $job = Jobs::findOrFail($id);
+        $job = Job::findOrFail($id);
         //delete bookmarks
         foreach ($job->bookmarks as $bookmark) {
             $bookmark->delete();
@@ -126,9 +131,9 @@ class JobsController extends Controller
      */
     function jobsByCategories($id)
     {
-        $category = Categories::find($id);
+        $category = Category::find($id);
         $jobs = $category->openJobs()->paginate(20);
-        $title = 'Jobs under ' . ucwords($category->name) . ' category';
+        $title = 'Job under ' . ucwords($category->name) . ' category';
         return view('home', compact('jobs', 'category', 'title'));
     }
 
@@ -149,7 +154,7 @@ class JobsController extends Controller
                 return;
             }
 
-            $job = Jobs::find($request->job_id);
+            $job = Job::find($request->job_id);
             $job->message = $request->message;
             try {
                 Mail::to($request->email)->send(new ShareJob($job));
@@ -169,7 +174,8 @@ class JobsController extends Controller
      */
     function jobsAdmin()
     {
-        $jobs = Jobs::paginate(20);
+        $jobs = Job::paginate(20);
+
         return view('jobs.admin', compact('jobs'));
     }
 
@@ -179,198 +185,55 @@ class JobsController extends Controller
     function create()
     {
         Session::forget('job.files');
-        $difficultyLevels = DifficultyLevel::pluck('name', 'id');
-        $categories = Categories::orderBy('cat_order', 'ASC')->get();
 
-        return view('jobs.edit', ['difficultyLevels' => $difficultyLevels, 'categories' => $categories, 'usernames' => $this->usernames]);
+        return view('jobs.edit', ['usernames' => $this->usernames]);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    function store(Request $request)
+
+    function store(StoreJobRequest $request)
     {
-        // TODO refactor all method
-        $rules = [
-            'name'          => 'required|max:50',
-            'price'         => 'required',
-            'categories'    => 'required',
-            'time_for_work' => 'required',
-            'access'        => 'nullable',
-            'desc'          => 'required',
-        ];
-
-        /** @var Validator $validator */
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-
-            /** Clear session if errors validation*/
-            Session::forget('job.files');
-
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        /** @var Jobs $job */
-        $job = Jobs::create(array_except($request->all(), ['tag']));
-        $job->user_id = auth()->id();
+        /** @var Job $job */
+        $job = Job::query()->create(array_intersect_key($request->all(), array_flip(Job::getAllAttributes())));
+        dispatch(new AddFilesJob($job));
+        dispatch(new AddCategoriesJob($job));
+        dispatch(new AddSkillsJob($job));
+        dispatch(new AddApplicationsJob($job));
+        dispatch(new AddSubTasksJob($job));
+        dispatch(new AddTagJob($job));
 
         if ($request->has('draft')) {
-            $job->status = config('enums.jobs.statuses.DRAFT');
+            $job->update(['status' => config('enums.jobs.statuses.DRAFT')]);
         }
 
-        $job->save();
-
-        $query = User::query()->where('username', $request->user);
-
-        if (isset($request->tag) && $request->tag != '' && array_key_exists($request->tag, config('tags.tags'))) {
-            $job->tag()->create(['value' => $request->tag]);
-        }
-
-        if($query->exists()) {
-            /** @var User $user */
-            $user = $query->first();
-
-            $job->applications()->create([
-                'user_id'   => $user->id,
-                'status'    => 'pending',
-                'job_price' => $request->price
-            ]);
-        }
-
-        if (Session::has('job.files')) {
-
-            foreach (Session::get('job.files') as $file) {
-                $job->files()->create([
-                    'file'          => $file['file'],
-                    'size'          => $file['size'],
-                    'type'          => $file['type'],
-                    'original_name' => $file['original_name'],
-                ]);
-            }
-            Session::forget('job.files');
-        }
-
-        if (is_array($request->categories)) {
-            foreach ($request->categories as $cat) {
-                JobCategories::create(['category_id' => $cat, 'job_id' => $job->id]);
-            }
-        }
-        if (is_array($request->skills)) {
-            foreach ($request->skills as $skill) {
-                DB::table('job_skills')->insert(
-                    [
-                        'job_id' => $job->id,
-                        'skill_id' => $skill
-                    ]
-                );
-            }
-        }
         flash()->success('Job has been posted!');
-        return redirect('/jobs/' . $job->id . '/edit');
+
+        return redirect()->route('jobs.edit', $job);
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    function edit($id)
-    {
-        $job = Jobs::findOrFail($id);
-        $categories = Categories::get();
-        $difficultyLevels = DifficultyLevel::pluck('name', 'id');
 
-        return view('jobs.edit', ['job' => $job, 'difficultyLevels' => $difficultyLevels, 'categories' => $categories, 'usernames' => $this->usernames]);
+    function edit(Job $job)
+    {
+        return view('jobs.edit', ['job' => $job, 'usernames' => $this->usernames]);
     }
 
-    /**
-     * @param Request $request
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    function update(Request $request, $id)
+
+    function update(StoreJobRequest $request, Job $job)
     {
-        // TODO refactor all method
-        $rules = [
-            'name'          => 'required|max:50',
-            'price'         => 'required',
-            'categories'    => 'required',
-            'time_for_work' => 'required',
-            'access'        => 'nullable',
-            'desc'          => 'required',
-        ];
-        $validator = Validator::make($request->all(), $rules);
+        $job->update(array_intersect_key($request->all(), array_flip(Job::getAllAttributes())));
 
-        if ($validator->fails()) {
-            Session::forget('job.files');
+        dispatch(new AddFilesJob($job));
+        dispatch(new AddCategoriesJob($job));
+        dispatch(new AddSkillsJob($job));
+        dispatch(new AddApplicationsJob($job));
+        dispatch(new AddTagJob($job));
+        dispatch(new AddSubTasksJob($job));
 
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $job = Jobs::find($id);
-        $job->fill($request->all());
-        $job->user_id = auth()->id();
-
-
-        $query = User::query()->where('username', $request->user);
-
-        if($query->exists()) {
-            /** @var User $user */
-            $user = $query->first();
-
-            $job->applications()->create([
-                'user_id'   => $user->id,
-                'status'    => 'pending',
-                'job_price' => $request->price
-            ]);
-        }
-
-        if (Session::has('job.files')) {
-
-            $job->files()->delete(); // delete all files
-
-            foreach (Session::get('job.files') as $file) {
-                $job->files()->create([
-                    'file'          => $file['file'],
-                    'size'          => $file['size'],
-                    'type'          => $file['type'],
-                    'original_name' => $file['original_name'],
-                ]);
-            }
-            Session::forget('job.files');
-        }
-
-        if (isset($request->tag) && $request->tag != '' && array_key_exists($request->tag, config('tags.tags'))) {
-            $job->tag()->create(['value' => $request->tag]);
-        }
-
-        if (is_array($request->categories)) {
-            JobCategories::whereJobId($id)->delete();//delete old if any
-            foreach ($request->categories as $cat) {
-                JobCategories::create(['category_id' => $cat, 'job_id' => $job->id]);
-            }
-        }
-
-        if (is_array($request->skills)) {
-            DB::table('job_skills')->where('job_id', $id)->delete();
-
-            foreach ($request->skills as $skill) {
-                DB::table('job_skills')->insert(
-                    [
-                        'job_id' => $id,
-                        'skill_id' => $skill
-                    ]
-                );
-            }
-        }
         if ($request->has('draft')) {
-
-            $job->status = config('enums.jobs.statuses.DRAFT');
+            $job->update(['status' => config('enums.jobs.statuses.DRAFT')]);
         }
-        $job->save();
 
         flash()->success('Job updated!');
+
         return redirect()->back();
     }
 
@@ -380,7 +243,7 @@ class JobsController extends Controller
     function updateJobStatus(Request $request)
     {
         if ($request->ajax()) {
-            $job = Jobs::find($request->job_id);
+            $job = Job::find($request->job_id);
             $job->status = $request->status;
             $job->save();
             echo json_encode(['status' => 'success', 'message' => 'Job status set to ' . $request->status]);
@@ -394,8 +257,8 @@ class JobsController extends Controller
      */
     function work($job_id, $app_id)
     {
-        $job = Jobs::findOrFail($job_id);
-        $application = Applications::findOrFail($app_id);
+        $job = Job::findOrFail($job_id);
+        $application = Application::findOrFail($app_id);
         $payout = Payouts::where('application_id',$app_id)->first();
 
         $authorize_request_body = array(
@@ -411,5 +274,12 @@ class JobsController extends Controller
 
         return view('errors.404');
 
+    }
+
+    public function subtask()
+    {
+        $sub_id = request()->has('sub_id') ? request()->sub_id : 1;
+
+        return view('jobs.sub-job', ['usernames' => $this->usernames, 'sub_id' => $sub_id]);
     }
 }

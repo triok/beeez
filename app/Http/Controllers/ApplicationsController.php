@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Mail\AdminNewJobAppNotice;
 use App\Mail\ApplicationConversationNotice;
 use App\Mail\NotifyUserAppStatus;
-use App\Models\Jobs\Applications;
+use App\Models\Jobs\Application;
 use App\Models\Jobs\conversations;
-use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Job;
+use App\Queries\JobQuery;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class ApplicationsController extends Controller
      */
     function show($id)
     {
-        $app = Applications::findOrFail($id);
+        $app = Application::findOrFail($id);
         return view('jobs.applications.show', compact('app'));
     }
 
@@ -42,7 +43,7 @@ class ApplicationsController extends Controller
      */
     function applicationsAdmin()
     {
-        $applications = Applications::orderBy('created_at', 'DESC')->with('user')->get();
+        $applications = Application::orderBy('created_at', 'DESC')->with('user')->get();
         return view('applications.admin', compact('applications'));
     }
 
@@ -63,7 +64,7 @@ class ApplicationsController extends Controller
                 echo json_encode(['status' => $status, 'message' => $msg]);
                 return;
             }
-            $job = Jobs::find($request->job_id);
+            $job = Job::find($request->job_id);
 
             // TODO This code was altered
             if (Carbon::now() > $job->end_date) {
@@ -71,7 +72,7 @@ class ApplicationsController extends Controller
                 return;
             }
 
-            $applicant = new Applications();
+            $applicant = new Application();
             $applicant->job_id = $request->job_id;
             $applicant->user_id = Auth::user()->id;
             $applicant->remarks = $request->remarks;
@@ -82,7 +83,7 @@ class ApplicationsController extends Controller
 
             //notify admin
             //  TODO this code dublicate, line 66.
-            //$job = Jobs::find($request->job_id);
+            //$job = Job::find($request->job_id);
 
             try {
                 Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));
@@ -101,7 +102,7 @@ class ApplicationsController extends Controller
     function appStatus($id)
     {
         if (request()->ajax()) {
-            $app = Applications::find($id);
+            $app = Application::find($id);
             return view('jobs.application-status', compact('app'));
         }
     }
@@ -111,8 +112,7 @@ class ApplicationsController extends Controller
      */
     function myApplications()
     {
-//        $applications = Auth::user()->applications()->paginate(20);
-        $applications = Auth::user()->jobs()->paginate(20);
+        $applications = JobQuery::allForUser()->paginate();
 
         return view('applications.my-applications', compact('applications'));
     }
@@ -123,7 +123,7 @@ class ApplicationsController extends Controller
     function changeStatus(Request $request)
     {
         if ($request->ajax()) {
-            $app = Applications::find($request->app_id);
+            $app = Application::find($request->app_id);
             $app->status = $request->status;
             $app->save();
 
@@ -157,8 +157,8 @@ class ApplicationsController extends Controller
             ]);
 
             //notify users of a message
-            $app = Applications::find($request->app_id);
-            $job = Jobs::find($app->job_id);
+            $app = Application::find($request->app_id);
+            $job = Job::find($app->job_id);
             //user is posting
             if ((int)Auth::user()->id == (int)$app->user_id) { //notify admin
                 try {

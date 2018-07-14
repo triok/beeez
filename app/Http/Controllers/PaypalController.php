@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Billing\Payouts;
-use App\Models\Jobs\Applications;
-use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Application;
+use App\Models\Jobs\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -48,8 +48,8 @@ class PaypalController extends Controller
      */
     function pay(Request $request)
     {
-        $job = Jobs::find($request->job_id);
-        $application = Applications::find($request->app_id);
+        $job = Job::find($request->job_id);
+        $application = Application::find($request->app_id);
 
         $item_amount = $application->job_price;
         $paypal_email = $application->user->email;
@@ -85,7 +85,7 @@ class PaypalController extends Controller
         else
             $ids = explode('|', $request->cm);
 
-        $application = Applications::find($ids[1]);
+        $application = Application::find($ids[1]);
         $application->status = 'closed';
         $application->save();
 
@@ -165,7 +165,7 @@ class PaypalController extends Controller
             Payouts::create($data);
         }
 
-        $application = Applications::find($ids[1]);
+        $application = Application::find($ids[1]);
         $application->status = 'closed';
         $application->save();
 

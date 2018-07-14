@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
-use App\Models\Jobs\Applications;
-use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Application;
+use App\Models\Jobs\Job;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -19,11 +19,11 @@ class NotifyUserAppStatus extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param Jobs $job
-     * @param Applications $application
+     * @param Job $job
+     * @param Application $application
      * @param User $applicant
      */
-    public function __construct(Jobs $job, Applications $application, User $applicant)
+    public function __construct(Job $job, Application $application, User $applicant)
     {
         $this->job = $job;
         $this->application=$application;

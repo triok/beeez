@@ -15,13 +15,13 @@ class JobCategories extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     function jobs(){
-        return $this->belongsTo(\App\Models\Jobs\Jobs::class,'job_id','id');
+        return $this->belongsTo(\App\Models\Jobs\Job::class,'job_id','id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     function categories(){
-        return $this->belongsToMany(\App\Models\Jobs\Categories::class,'categor_id','id');
+        return $this->belongsToMany(\App\Models\Jobs\Category::class,'categor_id','id');
     }
 }

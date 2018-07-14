@@ -21,7 +21,7 @@ class JobsSeeder extends Seeder
         }
 
         //categories
-        $cat  = new \App\Models\Jobs\Categories();
+        $cat  = new \App\Models\Jobs\Category();
         $cat->name='default';
         $cat->desc= 'Default category';
         $cat->save();

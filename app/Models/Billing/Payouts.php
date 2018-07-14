@@ -2,8 +2,8 @@
 
 namespace App\Models\Billing;
 
-use App\Models\Jobs\Applications;
-use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Application;
+use App\Models\Jobs\Job;
 use Illuminate\Database\Eloquent\Model;
 
 class Payouts extends Model
@@ -20,7 +20,7 @@ class Payouts extends Model
          return $this->belongsTo(\App\User::class,'user_id','id');
      }
      function application(){
-         return $this->belongsTo(\App\Models\Jobs\Applications::class,'application_id','id');
+         return $this->belongsTo(\App\Models\Jobs\Application::class,'application_id','id');
      }
 
 }

@@ -7,7 +7,7 @@ Auth::routes();
 Route::group(['middleware' => 'web'], function () {
     Route::get('/', 'AppController@index');
 
-    //Jobs
+    //Job
     Route::resource('jobs', 'JobsController');
     Route::get('jobs/category/{id}', 'JobsController@jobsByCategories');
     Route::post('shareJob', 'JobsController@shareJob')->name('share-job');
@@ -16,6 +16,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('job/{id}/{app}/work','JobsController@work');
     Route::resource('categories', 'CategoriesController');
     Route::post('order-categories', 'CategoriesController@order');
+    Route::get('job/subtask', 'JobsController@subtask');
     //Route::get('jobs/{tag?}','JobsController@index')->name('jobs.index');
 
 
@@ -23,7 +24,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('upload/{file}', 'UploadController@download')->name('file.upload');
 
 
-    //Applications
+    //Application
     Route::post('applyJob', 'ApplicationsController@applyJob')->name('apply-job');
     Route::get('job-app-status/{id}', 'ApplicationsController@appStatus');
     Route::post('change-application-status', 'ApplicationsController@changeStatus');
@@ -73,7 +74,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('role','Auth\AuthController@showRole');
     Route::post('update-role/{id}','Auth\AuthController@updateRole');
 
-    //Skills
+    //Skill
     Route::resource('skills', 'SkillsController');
     Route::post('skills/delete/{id}', 'SkillsController@destroy');
     Route::get('skills-json','SkillsController@skillsJson');

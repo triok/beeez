@@ -20,13 +20,14 @@
             {!! Form::model($job,['url'=>route('jobs.update',$job->id),'method'=>'patch']) !!}
         @else
             <h2><i class="fa fa-plus"></i> New Job</h2>
-            {!! Form::open(['url'=>'/jobs', 'files' => true]) !!}
+            {!! Form::open(['url'=>'/jobs', 'files' => true, 'enctype' => 'multipart/form-data']) !!}
         @endif
         <div class="row">
             <div class="col-sm-8">
                 <label>Name</label>
-                {!! Form::text('name',isset($job) ? $job->name : '',['required'=>'required','class'=>'form-control']) !!}
+                {!! Form::text('name',isset($job) ? $job->name : 'up',['required'=>'required','class'=>'form-control']) !!}
             </div>
+
             <div class="col-sm-4">
                 <label>Status</label>
 {{--                {!! Form::select('status',array_keys(config('enums.jobs.statuses')), isset($job) ? array_search($job->status, array_values(config('enums.jobs.statuses'))) : 1,['class'=>'form-control']) !!}--}}
@@ -37,16 +38,29 @@
                 </select>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <a href="javascript:void(0);" id="separate-link">Separate this task</a>
+                <div class="sub-tasks hide" style="padding-bottom: 20px;">
+                    @include('jobs.sub-job', ['sub_id' => 1])
+                    @include('jobs.sub-job', ['sub_id' => 2])
+                    <input type="hidden" name="sub-count-tasks" value="2">
+                    <div class="btn-toolbar" role="toolbar">
+                        <button type="button" class="btn btn-success btn-sm" id="taskAdd"><i class="fa fa-plus"></i> Add sub task</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <label>Description</label>
-        {!! Form::textarea('desc', isset($job) ? $job->desc : '',['class'=>'editor1']) !!}
+        {!! Form::textarea('desc', isset($job) ? $job->desc : 'up',['class'=>'editor1']) !!}
         <label>Instructions</label>
         <span class="label label-warning">Only visible to applicant after approval</span>
-        {!! Form::textarea('instructions', isset($job) ? $job->instructions : '',['class'=>'editor2','id'=>'editor2']) !!}
+        {!! Form::textarea('instructions', isset($job) ? $job->instructions : 'up',['class'=>'editor2','id'=>'editor2']) !!}
         <br/>
         <div class="row">
             <div class="col-md-12">
                 <label for="access">Access</label>
-                {!! Form::input('text','access', isset($job) ? $job->access : '' ,['class'=>'form-control']) !!}
+                {!! Form::input('text','access', isset($job) ? $job->access : 'up' ,['class'=>'form-control']) !!}
             </div>
         </div>
         <div class="row">
@@ -54,18 +68,20 @@
                 <label>Price</label>
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    {!! Form::input('input','price',isset($job)?str_replace('$','',$job->formattedPrice):null,['class'=>'form-control']) !!}
+                    {!! Form::input('input','price',isset($job) ? str_replace('$','111',$job->formattedPrice): null,['class'=>'form-control']) !!}
                 </div>
             </div>
+
             <div class="col-md-4">
                 <label>Difficulty level</label>
-                {!! Form::select('difficulty_level_id',$difficultyLevels, isset($job) ? $job->difficulty->id : 1,['class'=>'form-control']) !!}
+                {!! Form::select('difficulty_level_id',$_difficultyLevels, isset($job) ? $job->difficulty->id : 1,['class'=>'form-control']) !!}
             </div>
             <div class="col-md-4">
                 <label>End date</label>
 
                 {{--            <input type="datetime-local" name="end_date" value="{{ isset($job)?date('Y-m-d',strtotime($job->end_date)):null}}" required class="form-control">--}}
-                {!! Form::input('datetime-local','end_date',isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('d-m-Y H:i') : '',['required'=>'required','class'=>'form-control']) !!}
+{{--                {!! Form::input('datetime-local','end_date',isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('d-m-Y H:i') : '2018-07-05T01:01',['required'=>'required','class'=>'form-control']) !!}--}}
+                {!! Form::input('datetime-local','end_date', '2018-07-05T01:01',['required'=>'required','class'=>'form-control']) !!}
             </div>
         </div>
         <div class="row">
@@ -78,9 +94,8 @@
                 <label for="user">Choose user</label>
                 <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="user">
                     <option selected value="">For anyone</option>
-
-                    @foreach($usernames as $username)
-                        <option value="{{$username}}" {{isset($job) && $job->hasLogin($username) ? 'selected' : ''}}>{{$username}}</option>
+                    @foreach($usernames as $key => $username)
+                        <option value="{{$key}}" {{isset($job) && $job->hasLogin($key) ? 'selected' : ''}}>{{$username}}</option>
                     @endforeach
                 </select>
             </div>
@@ -89,7 +104,7 @@
 
     <label>Skills:</label>
     <div class="row">
-        @foreach(\App\Models\Jobs\Skills::get() as $skill)
+        @foreach($_skills as $skill)
             <div class="col-sm-3">
                 {!! Form::checkbox('skills[]',$skill->id, isset($job) && $job->hasSkill($skill) ? 'checked' : '') !!}{{ucwords($skill->name)}}
             </div>
@@ -99,7 +114,7 @@
     <br/>
     <label>Categories</label>
     <div class="row">
-        @foreach($categories as $cat)
+        @foreach($_categories as $cat)
             <div class="col-sm-3">
                 {!! Form::checkbox('categories[]',$cat->id, isset($job) && $job->hasCategory($cat) ? 'checked' : '',['style'=>'']) !!} {{$cat->name}}
             </div>
@@ -126,7 +141,6 @@
         </div>
 
     {!! Form::close() !!}
-    {{--</form>--}}
     <div class="clearfix"><hr/></div>
     <div class="row">
         <div class="col-md-12">
@@ -146,6 +160,7 @@
 @push('scripts')
     <script src="/plugins/dropzone/dropzone.js" type="text/javascript"></script>
     <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="/js/custom.js"></script>
     <script type="text/javascript">
 
         var myDropzone = Dropzone.options.dropzone = {

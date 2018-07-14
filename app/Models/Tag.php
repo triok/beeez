@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Job;
 use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
@@ -16,6 +16,6 @@ class Tag extends Model
 
     public function jobs()
     {
-        return $this->hasMany(Jobs::class, 'id', 'tageable_id');
+        return $this->hasMany(Job::class, 'id', 'tageable_id');
     }
 }

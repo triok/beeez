@@ -6,10 +6,10 @@ use App\Http\Controllers\Traits\Avatarable;
 use App\Http\Controllers\Traits\Imageable;
 use App\Models\Billing\Stripe;
 use App\Models\Image;
-use App\Models\Jobs\Applications;
+use App\Models\Jobs\Application;
 use App\Models\Jobs\Bookmarks;
-use App\Models\Jobs\Jobs;
-use App\Models\Jobs\Skills;
+use App\Models\Jobs\Job;
+use App\Models\Jobs\Skill;
 use App\Models\RoleUser;
 use App\Models\Social;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -37,23 +37,23 @@ class User extends Authenticatable
         return $this->hasMany(Bookmarks::class,'user_id','id');
     }
     function bookmarked(){
-        return $this->hasMany(Jobs::class,'job_id','id');
+        return $this->hasMany(Job::class,'job_id','id');
     }
 
     function jobs()
     {
-        return $this->hasMany(Jobs::class);
+        return $this->hasMany(Job::class);
     }
 
     function applications(){
-        return $this->hasMany(Applications::class,'user_id','id');
+        return $this->hasMany(Application::class,'user_id','id');
     }
     function skills(){
-        return $this->belongsToMany(Skills::class,'user_skills','user_id','skill_id','id');
+        return $this->belongsToMany(Skill::class,'user_skills','user_id','skill_id','id');
     }
 
     function appliedJobs(){
-        return $this->belongsToMany(Jobs::class,'applications','user_id','job_id','id')->where('jobs.deleted_at','=',null);
+        return $this->belongsToMany(Job::class,'applications','user_id','job_id','id')->where('jobs.deleted_at','=',null);
     }
     function role(){
         return $this->belongsToMany(RoleUser::class,'role_user','role_id','user_id','id');

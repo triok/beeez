@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jobs\Skills;
+use App\Models\Jobs\Skill;
 use App\Models\User\UserSkills;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +27,7 @@ class SkillsController extends Controller
      */
     public function index()
     {
-        $skills = Skills::paginate(25);
+        $skills = Skill::paginate(25);
         return view('jobs.skills', compact('skills'));
     }
 
@@ -47,7 +47,7 @@ class SkillsController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        Skills::create($request->all());
+        Skill::create($request->all());
         flash()->success('Skill added!');
         return redirect()->back();
     }
@@ -61,7 +61,7 @@ class SkillsController extends Controller
     public function show($id)
     {
         if (request()->ajax()) {
-            $skill = Skills::findOrFail($id);
+            $skill = Skill::findOrFail($id);
             echo json_encode($skill->toArray());
         }
     }
@@ -82,7 +82,7 @@ class SkillsController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $skill = Skills::find($id);
+        $skill = Skill::find($id);
         $skill->fill($request->all());
         $skill->save();
         flash()->success('Skill update!');
@@ -97,7 +97,7 @@ class SkillsController extends Controller
      */
     public function destroy($id)
     {
-        $skill = Skills::findOrFail($id);
+        $skill = Skill::findOrFail($id);
         $skill->delete();
         flash()->success('Skill deleted!');
         return redirect()->back();
@@ -106,7 +106,7 @@ class SkillsController extends Controller
     function skillsJson()
     {
         $term = $_GET['q'];
-        $skills = Skills::where('name', 'LIKE', "%$term%")
+        $skills = Skill::where('name', 'LIKE', "%$term%")
             ->orWhere('desc', 'LIKE', "%$term%")->get();
 
         $json = array();

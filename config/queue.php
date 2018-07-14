@@ -68,7 +68,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Failed Queue Jobs
+    | Failed Queue Job
     |--------------------------------------------------------------------------
     |
     | These options configure the behavior of failed queue job logging so you

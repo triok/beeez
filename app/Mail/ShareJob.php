@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Jobs\Jobs;
+use App\Models\Jobs\Job;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -17,7 +17,7 @@ class ShareJob extends Mailable
      *
      * @return void
      */
-    public function __construct(Jobs $job)
+    public function __construct(Job $job)
     {
         $this->job =$job;
     }

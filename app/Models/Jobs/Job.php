@@ -4,12 +4,6 @@ namespace App\Models\Jobs;
 
 use App\Http\Controllers\Interfaces\MorphTo;
 use App\Models\File;
-use App\Models\Jobs\Applications;
-use App\Models\Jobs\Bookmarks;
-use App\Models\Jobs\Categories;
-use App\Models\Jobs\DifficultyLevel;
-use App\Models\Jobs\JobCategories;
-use App\Models\Jobs\Skills;
 use App\Models\Tag;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
@@ -20,15 +14,32 @@ use App\Http\Controllers\Traits\Viewable;
 
 /**
  * @property  File files
- * @property  Categories categories
+ * @property  Category categories
+ * @property  Job jobs
+ * @property  Skill skills
+ * @property  Application applications
+ * @property  integer id
+ * @property  string name
+ * @property  string desc
+ * @property  string instructions
+ * @property  string access
+ * @property  string end_date
+ * @property  integer user_id
+ * @property  double price
+ * @property  integer difficulty_level_id
+ * @property  integer time_for_work
+ * @property  string status
+ * @property  integer parent_id
  */
-class Jobs extends Model
+
+class Job extends Model
 {
     use SoftDeletes, Viewable;
 
-    protected $fillable =[
-        'name','desc','instructions','end_date','user_id','price','difficulty_level_id','status', 'time_for_work', 'created_at', 'access'
-    ];
+//    protected $fillable =[
+//        'name','desc','instructions','end_date','user_id','price','difficulty_level_id','status', 'time_for_work', 'created_at', 'access'
+//    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be mutated to dates.
@@ -37,9 +48,18 @@ class Jobs extends Model
      */
     protected $dates = ['deleted_at'];
 
-    function categories()
+    public function categories()
     {
-        return $this->belongsToMany(Categories::class, 'job_categories', 'job_id', 'category_id');
+        return $this->belongsToMany(Category::class, 'job_categories', 'job_id', 'category_id')->withTimestamps();
+    }
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class,'job_skills','job_id','skill_id')->withTimestamps();
+    }
+
+    public function jobs()
+    {
+        return $this->hasMany(static::class, 'parent_id');
     }
 
     function difficulty()
@@ -49,12 +69,12 @@ class Jobs extends Model
 
     function applications()
     {
-        return $this->hasMany(Applications::class, 'job_id', 'id');
+        return $this->hasMany(Application::class);
     }
 
     function application()
     {
-        return $this->hasOne(Applications::class, 'job_id', 'id')->where('user_id', Auth::user()->id);
+        return $this->hasOne(Application::class, 'job_id', 'id')->where('user_id', Auth::user()->id);
     }
 
     function bookmarks()
@@ -67,24 +87,22 @@ class Jobs extends Model
         return $this->hasMany(JobCategories::class, 'job_id', 'id');
     }
 
-    function skills(){
-        return $this->belongsToMany(Skills::class,'job_skills','job_id','skill_id','id');
-    }
 
-    public function hasSkill(Skills $skill)
+
+    public function hasSkill(Skill $skill)
     {
         return $this->skills()->get()->contains($skill);
     }
 
-    public function hasCategory(Categories $categories)
+    public function hasCategory(Category $categories)
     {
         return $this->categories()->get()->contains($categories);
     }
 
-    public function hasLogin($login)
+    public function hasLogin($id)
     {
         /** @var User $user */
-        $user = User::query()->where('username', $login)->first();
+        $user = User::query()->whereKey($id)->first();
 
         if(!isset($user)) return false;
 
@@ -107,6 +125,7 @@ class Jobs extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 
     /**
      * add currency symbol
@@ -158,5 +177,11 @@ class Jobs extends Model
             $res .='<a href="/jobs/category/'.$cat->id.'"><span class="label label-default">'.$cat->name.'</span></a> ';
         }
         return $res;
+    }
+
+    public static function getAllAttributes()
+    {
+        return ['name', 'desc', 'instructions', 'access', 'end_date', 'user_id', 'price',
+            'difficulty_level_id', 'time_for_work', 'status', 'parent_id'];
     }
 }

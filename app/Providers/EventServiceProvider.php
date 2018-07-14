@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Jobs\Job;
+use App\Observers\JobObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -27,6 +29,6 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        Job::observe(new JobObserver);
     }
 }

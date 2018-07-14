@@ -18,7 +18,7 @@
                             {{--//TODO this code was added --}}
                             <select name="parent_id" class="form-control">
                                 <option value="">Parent category</option>
-                                @foreach(\App\Models\Jobs\Categories::query()->get() as $category)
+                                @foreach(\App\Models\Jobs\Category::query()->get() as $category)
                                     <option value="{{$category->id}}">{{$category->name}}</option>
                                 @endforeach
                             </select>
