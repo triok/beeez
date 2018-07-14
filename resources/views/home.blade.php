@@ -5,7 +5,7 @@
         @if(isset($title))
             {{$title}}
         @else
-            Current jobs
+            @lang('home.title')
         @endif
     </h3>
 
@@ -17,11 +17,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                  <th scope="col">Task</th>
-                  <th scope="col">Time for work</th>
-                  <th scope="col">Before</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Work!</th>
+                  <th scope="col">@lang('home.task')</th>
+                  <th scope="col">@lang('home.timefor')</th>
+                  <th scope="col">@lang('home.before')</th>
+                  <th scope="col">@lang('home.price')</th>
+                  <th scope="col">@lang('home.work')</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,9 +39,9 @@
                       @else
                           @if(\Carbon\Carbon::now() <= $job->end_date)
 
-                              <button id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> apply </button>
+                              <button id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.apply') </button>
                           @else
-                              <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> apply </button>
+                              <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.enddate') </button>
                           @endif
                       @endif
                   </td>
@@ -55,7 +55,6 @@
                 <div class="panel panel-default box">
                     <div class="panel-heading">
                         <h4 id="{{$job->id}}">{{$job->name}}</h4>
-
                         <span id="posted">
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
                             Posted {{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}} <small> by {{$job->user->username}}</small>
@@ -175,7 +174,7 @@
                 <h4 class="modal-title" id="title"></h4>
                 <span>
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
-                   <span class="posted-time"></span><small id="author"></small>
+                    <span class="posted-time"></span><small id="author"></small>
                     <span class="small pull-right" id="viewed"></span>
                 </span>
             </div>

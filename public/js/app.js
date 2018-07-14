@@ -11067,6 +11067,15 @@ $('document').ready(function () {
     $('[data-toggle=offcanvas]').click(function () {
         $('.row-offcanvas').toggleClass('active');
     });
+    //Menu shadow after scrolling
+    $(window).scroll(function () {
+        var height = $(window).scrollTop();
+        if (height > 50) {
+            $('#navigation').addClass('navbar-shadow');
+        } else {
+            $('#navigation').removeClass('navbar-shadow');
+        }
+    });
     //scroll to top
     $(window).scroll(function () {
         var height = $(window).scrollTop();

@@ -34,6 +34,8 @@
                 <a class="navbar-brand" href="{{url('/')}}">
                     <div>Lavoro</div>
                 </a>
+                <a href="{{ url('setlocale/en') }}">En </a>|
+                <a href="{{ url('setlocale/ru') }}"> Ru</a>
             </div>
             <div class="" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
@@ -45,8 +47,8 @@
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}">Register</a></li>
+                        <li><a href="{{ route('login') }}">@lang('layout.login-title')</a></li>
+                        <li><a href="{{ route('register') }}">@lang('layout.register-title')</a></li>
                     @else
 
                         <li class="dropdown">
@@ -58,7 +60,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 @permission('read-jobs-manager')
                                 <li>
-                                    <a href="{{ route('jobs-admin') }}"><i class="fa fa-dashboard"></i>Jobs manager</a>
+                                    <a href="{{ route('jobs-admin') }}"><i class="fa fa-dashboard"></i>@lang('layout.current-tasks')</a>
                                 </li>
                                 @endpermission
 
@@ -81,7 +83,7 @@
                                 @endpermission
 
                                 @permission('create-jobs')
-                                <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> Post new job </a></li>
+                                <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i>@lang('layout.post-new')</a></li>
                                 @endpermission
 
 
@@ -99,17 +101,17 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
-                                <i class="fa fa-user-circle"></i> Account<span class="caret"></span>
+                                <i class="fa fa-user-circle"></i> @lang('layout.account')<span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/account"><i class="fa fa-user"></i> My Account</a></li>
+                                <li><a href="/account"><i class="fa fa-user"></i> @lang('layout.profile')</a></li>
                                 <li>
-                                    <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark"></i> Bookmarks
+                                    <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark"></i> @lang('layout.bookmarks')
                                         <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> Applications
+                                    <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
                                         <span class="badge">{{count(Auth::user()->applications->where('status','!=','complete'))}}</span>
                                     </a>
                                 </li>
@@ -203,13 +205,13 @@
     <div class="container">
         <hr>
         <ul class="list-inline footer-list">
-            <li>2018 Lavoro</li>
-            <li>About us</li>
-            <li>Help</li>
-            <li>Security</li>
-            <li>Terms</li>
-            <li>Contacts</li>
-            <li>Social</li>
+            <li>@lang('layout.sign')</li>
+            <li>@lang('layout.about')</li>
+            <li>@lang('layout.help')</li>
+            <li>@lang('layout.security')</li>
+            <li>@lang('layout.terms')</li>
+            <li>@lang('layout.contacts')</li>
+            <li>@lang('layout.social')</li>
         </ul>
         <hr>
         <ul class="list-inline footer-social">

@@ -19,7 +19,7 @@ class CreateJobsTable extends Migration
             $table->text('desc');
             $table->longText('instructions')->nullable();
             $table->string('access')->nullable();
-            $table->timestamp('end_date');
+            $table->timestamp('end_date')->nullable();
             $table->integer('user_id',false,true)->nullable();
             $table->float('price')->default('0.00');
             $table->integer('difficulty_level_id',false,true)->nullable();

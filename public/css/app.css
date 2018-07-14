@@ -11631,3 +11631,10 @@ footer {
 .cursor-pointer {
   cursor: pointer;
 }
+/*Start*/
+.navbar-shadow {
+  box-shadow: 0 2px 10px 0 rgba(0,0,0,0.15);
+  transition: .3s;
+  background: white;
+  
+}

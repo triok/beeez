@@ -106,5 +106,12 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/{user}','PeopleController@show')->name('peoples.show');
         Route::post('/{user}','PeopleController@updateAvatar')->name('peoples.updateAvatar');
     });
+    // Locale
+    Route::get('setlocale/{locale}', function ($locale) {
+        if (in_array($locale, \Config::get('app.locales'))) {
+          Session::put('locale', $locale);
+        }
+          return redirect()->back();
+    });    
 });
 

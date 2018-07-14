@@ -7,11 +7,13 @@ use App\Models\Jobs\DifficultyLevel;
 use App\Models\Jobs\Skill;
 use Illuminate\Support\ServiceProvider;
 use View;
+use Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        Schema::defaultStringLength(191);
         /** @var Skill $skills */
         $_skills     = Skill::query()->get();
         /** @var Category $_categories */

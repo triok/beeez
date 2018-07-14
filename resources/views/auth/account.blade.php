@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <h2>@lang('My Account')</h2>
+    <h2>@lang('account.title')</h2>
     <div class="row">
         <div class="col-md-4">
             <ul class="nav nav-tabs nav-pills nav-stacked" role="tablist">

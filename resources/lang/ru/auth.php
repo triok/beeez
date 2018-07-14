@@ -12,21 +12,20 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
     // Register
-    'register-title'    => 'Register',
-    'name'              => 'Your name',
+    'register-title'    => 'Регистрация',
+    'name'              => 'Ваше имя',
     'email'             => 'E-mail',
-    'login'             => 'Login',
-    'password'          => 'Password', 
+    'login'             => 'Логин',
+    'password'          => 'Пароль', 
     'failed'            => 'These credentials do not match our records.',
     'throttle'          => 'Too many login attempts. Please try again in :seconds seconds.',
-    'new-password'      => 'New Password',
-    'confirm-password'  => 'Confirm password',
-    'register-button'   => 'Register',
+    'new-password'      => 'Новый пароль',
+    'confirm-password'  => 'Повторите пароль',
+    'register-button'   => 'Зарегистрироваться',
 
-    // Login
-    'login-title'       => 'Login',
-    'remember-me'       => 'Remember me',
-    'forgot'            => 'Forgot Your Password?'
+     // Login
+    'login-title'       => 'Войти',
+    'remember-me'       => 'Запомнить меня',
+    'forgot'            => 'Забыли пароль?'
 ];
