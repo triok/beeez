@@ -13,6 +13,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Comment;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\DifficultyLevel;
 use App\Models\Modules;
@@ -91,5 +92,16 @@ $factory->define(Application::class, function (Faker\Generator $faker) {
 $factory->define(Modules::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->title,
+    ];
+});
+
+$factory->define(Comment::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->title,
+        'commentable_id' => create(Job::class)->id,
+        'commentable_type' => Job::class,
+        'body' => $faker->text,
+        'author_id' => create(User::class)->id,
+        'author_type' => User::class,
     ];
 });

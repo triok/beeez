@@ -3,9 +3,11 @@
 namespace App\Models\Jobs;
 
 use App\Http\Controllers\Interfaces\MorphTo;
+use App\Http\Controllers\Traits\Commentable;
 use App\Models\File;
 use App\Models\Tag;
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +36,7 @@ use App\Http\Controllers\Traits\Viewable;
 
 class Job extends Model
 {
-    use SoftDeletes, Viewable;
+    use SoftDeletes, Viewable, Commentable;
 
 //    protected $fillable =[
 //        'name','desc','instructions','end_date','user_id','price','difficulty_level_id','status', 'time_for_work', 'created_at', 'access'
@@ -62,6 +64,14 @@ class Job extends Model
         return $this->hasMany(static::class, 'parent_id');
     }
 
+    public function jobsWithOut()
+    {
+        return $this->hasMany(static::class, 'parent_id')
+                ->where(function(Builder $builder) {
+                    $builder->where('id', '<>', $this->id)->where('parent_id', $this->parent_id);
+                });
+    }
+
     function difficulty()
     {
         return $this->belongsTo(DifficultyLevel::class, 'difficulty_level_id', 'id');
@@ -87,11 +97,21 @@ class Job extends Model
         return $this->hasMany(JobCategories::class, 'job_id', 'id');
     }
 
-
-
     public function hasSkill(Skill $skill)
     {
         return $this->skills()->get()->contains($skill);
+    }
+
+    public function hasParent()
+    {
+        return $this->parent_id !== null;
+    }
+
+    public function parent()
+    {
+        if ($this->hasParent()) {
+            return $this->belongsTo(static::class, 'parent_id');
+        }
     }
 
     public function hasCategory(Category $categories)

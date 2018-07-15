@@ -268,6 +268,8 @@ function deleteMySkill(skill_id) {
     Date.prototype.format = function (mask, utc) {
         return dateFormat(this, mask, utc);
     };
+
+    var viewModal= null;
 /**
  * display job
  * @param jobId
@@ -276,7 +278,7 @@ function showJob(jobId) {
     $.get('/jobs/' + jobId, function (data, status) {
         var job = JSON.parse(data);
 
-        var viewModal = $('#viewJobModal');
+        viewModal = $('#viewJobModal');
         viewModal.find('#title').html(job.name);
         viewModal.find('#desc').html(job.desc);
         if (job.prettyskills === "") viewModal.find('#skills').html('<span class="label label-warning">None specified</span>');else viewModal.find('#skills').html(job.prettyskills);
@@ -297,6 +299,15 @@ function showJob(jobId) {
             fileTag.append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
                 '<i class="fa fa-file">' +
                 '<a style="padding-left: 7px;" href="/upload/'+item.id+'" title="'+item.original_name+'">'+item.original_name+'</a></i></li>');
+        });
+
+        var jobsList = viewModal.find('.jobs-list').html('');
+        if (job.jobs.length > 0){ jobsList.append("<h5><strong>Tasks list:</strong></h5>");}
+
+        job.jobs.forEach(function(item, i, arr) {
+            jobsList.append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
+                '<i class="fa fa-link">' +
+                '<a style="padding-left: 7px;" href="/jobs/'+item.id+'" title="'+item.name+'">'+item.name+'</a></i></li>');
         });
 
         var end = moment(job.end_date);

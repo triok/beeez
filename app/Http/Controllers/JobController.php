@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
 
-class JobsController extends Controller
+class JobController extends Controller
 {
     /** @var \Illuminate\Support\Collection $usernames */
     protected $usernames;
@@ -74,7 +74,7 @@ class JobsController extends Controller
             $job->level = $job->difficulty->name;
 
             $bookmark = Bookmarks::where('job_id', $job->id)->where('user_id', Auth::user()->id)->first();
-            // TODO altered this code
+
             if (isset($bookmark))
                 $job->bookmark = $bookmark->id;
             else
@@ -88,13 +88,13 @@ class JobsController extends Controller
             $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
             $job->viewed = 'Viewed (' . $job->getViews() .')';
 
-            $job->load(['tag', 'user']);
+            $job->load(['tag', 'user', 'jobs']);
 
-            echo json_encode($job->toArray());
+            return json_encode($job->toArray());
             //return view('jobs.show', compact('job'));
-        } else {
-            return view('jobs.show', compact('job'));
         }
+
+        return view('jobs.show', compact('job'));
     }
 
     /**

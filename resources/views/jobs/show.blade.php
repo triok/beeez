@@ -109,6 +109,7 @@
         </tbody>
     </table>
     {{$job->applications()->paginate(20)->links()}}
+    @endpermission
 
     <h4>Files</h4>
     <table class="table table-responsive table-striped" cellpadding="0" cellspacing="0">
@@ -120,14 +121,87 @@
         </tr>
         </thead>
         <tbody>
-            @foreach($job->files as $file)
+        @foreach($job->files as $file)
             <tr>
                 <td>{{$file->original_name}}</td>
                 <td>{{storage_path('app'.$file->uploadJobPath . $file->file)}}</td>
                 <td><a href="{{route('file.upload',$file)}}">download</a></td>
             </tr>
-            @endforeach
+        @endforeach
         </tbody>
     </table>
-    @endpermission
+
+    <h4>Related tasks</h4>
+    @if($job->jobs()->count() > 0 || $job->hasParent())
+    <table class="table table-responsive table-striped" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Access</th>
+            <th>End date</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Link</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if($job->jobs()->count() > 0)
+            @include('jobs.sub-job-list', $job)
+
+        @endif
+
+        @if($job->hasParent())
+            <tr>
+                <td>{{$job->parent->name}}</td>
+                <td>{{$job->parent->access}}</td>
+                <td>{{ \Carbon\Carbon::parse($job->parent->end_date)->format('d M, Y H:i') }}</td>
+                <td>{{$job->parent->formattedPrice}}</td>
+                <td><span class="label label-warning">{{$job->parent->status}}</span></td>
+                <td><a href="{{route('jobs.show', $job->parent->id)}}"><i class="fa fa-link"></i></a></td>
+            </tr>
+            @foreach($job->parent->jobs as $subJob)
+                @continue($subJob->id == $job->id)
+                <tr>
+                    <td>{{$subJob->name}}</td>
+                    <td>{{$subJob->access}}</td>
+                    <td>{{ \Carbon\Carbon::parse($subJob->end_date)->format('d M, Y H:i') }}</td>
+                    <td>{{$subJob->formattedPrice}}</td>
+                    <td><span class="label label-warning">{{$subJob->status}}</span></td>
+                    <td><a href="{{route('jobs.show', $subJob)}}"><i class="fa fa-link"></i></a></td>
+                </tr>
+            @endforeach
+        @endif
+
+        </tbody>
+    </table>
+    @else
+        <div class="alert alert-danger">No related tasks</div>
+    @endif
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-container">
+                <h4>Comment:</h4>
+                <form action="{{route('comments.store')}}" method="post">
+                    {{csrf_field()}}
+                    <textarea name="body" id="body" required rows="3" class="form-control"></textarea>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Send</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="comments">
+                <h3 class="title-comments">Comments ({{$job->commentCount()}})</h3>
+                <ul class="media-list">
+                    @forelse($job->comments as $comment)
+                        @include('jobs.comment', ['tag' => 'li'])
+                    @empty
+                        <li class="media">
+                            <div class="alert alert-danger">No comments found!</div>
+                        </li>
+                    @endforelse
+                </ul>
+            </div>
+        </div>
+    </div>
 @endsection

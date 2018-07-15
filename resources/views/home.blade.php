@@ -194,7 +194,8 @@
                 <span id="cats"></span>
                 <span id="tag-modal"></span>
 
-                <ul class="files-job list-group list-group-flush" style="padding-top: 15px;"></ul>
+                <ul class="files-job list-group list-group-flush" id="files-job" style="padding-top: 15px;"></ul>
+                <ul class="jobs-list list-group list-group-flush"></ul>
             </div>
 
             <div class="modal-footer">
