@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-sm-8">
                 <label>Name</label>
-                {!! Form::text('name',isset($job) ? $job->name : 'up',['required'=>'required','class'=>'form-control']) !!}
+                {!! Form::text('name',isset($job) ? $job->name : '',['required'=>'required','class'=>'form-control']) !!}
             </div>
 
             <div class="col-sm-4">
@@ -41,26 +41,18 @@
         <div class="row">
             <div class="col-md-12">
                 <a href="javascript:void(0);" id="separate-link">Separate this task</a>
-                <div class="sub-tasks hide" style="padding-bottom: 20px;">
-                    @include('jobs.sub-job', ['sub_id' => 1])
-                    @include('jobs.sub-job', ['sub_id' => 2])
-                    <input type="hidden" name="sub-count-tasks" value="2">
-                    <div class="btn-toolbar" role="toolbar">
-                        <button type="button" class="btn btn-success btn-sm" id="taskAdd"><i class="fa fa-plus"></i> Add sub task</button>
-                    </div>
-                </div>
             </div>
         </div>
         <label>Description</label>
-        {!! Form::textarea('desc', isset($job) ? $job->desc : 'up',['class'=>'editor1']) !!}
+        {!! Form::textarea('desc', isset($job) ? $job->desc : '',['class'=>'editor1']) !!}
         <label>Instructions</label>
         <span class="label label-warning">Only visible to applicant after approval</span>
-        {!! Form::textarea('instructions', isset($job) ? $job->instructions : 'up',['class'=>'editor2','id'=>'editor2']) !!}
+        {!! Form::textarea('instructions', isset($job) ? $job->instructions : '',['class'=>'editor2','id'=>'editor2']) !!}
         <br/>
         <div class="row">
             <div class="col-md-12">
                 <label for="access">Access</label>
-                {!! Form::input('text','access', isset($job) ? $job->access : 'up' ,['class'=>'form-control']) !!}
+                {!! Form::input('text','access', isset($job) ? $job->access : '' ,['class'=>'form-control']) !!}
             </div>
         </div>
         <div class="row">
@@ -80,8 +72,9 @@
                 <label>End date</label>
 
                 {{--            <input type="datetime-local" name="end_date" value="{{ isset($job)?date('Y-m-d',strtotime($job->end_date)):null}}" required class="form-control">--}}
-{{--                {!! Form::input('datetime-local','end_date',isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('d-m-Y H:i') : '2018-07-05T01:01',['required'=>'required','class'=>'form-control']) !!}--}}
-                {!! Form::input('datetime-local','end_date', '2018-07-05T01:01',['required'=>'required','class'=>'form-control']) !!}
+                {!! Form::input('datetime-local','end_date',isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('d-m-Y H:i') : '',['required'=>'required','class'=>'form-control']) !!}
+{{--                {!! Form::input('datetime-local','end_date', '2018-07-05T01:01',['required'=>'required','class'=>'form-control']) !!}--}}
+
             </div>
         </div>
         <div class="row">
@@ -133,16 +126,24 @@
         </div>
     </div>
     <br/>
-        <div class="btn-toolbar" id="savesubmit">
-            <div class="btn-group btn-group-lg">
-                <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">Submit</button>
-                <button type="submit" class="btn btn-primary" id="draft" name="draft" value="save">Save</button>
+    <div class="col-md-12">
+        <div class="sub-tasks hide">
+            @include('jobs.sub-job', ['sub_id' => 1])
+            <div class="btn-toolbar" role="toolbar">
+                <button type="button" class="btn btn-success btn-sm" id="taskAdd"><i class="fa fa-plus"></i> Add sub task</button>
             </div>
         </div>
+    </div>
+    <div class="btn-toolbar" id="savesubmit">
+        <div class="btn-group btn-group-lg">
+            <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">Submit</button>
+            <button type="submit" class="btn btn-primary" id="draft" name="draft" value="save">Save</button>
+        </div>
+    </div>
 
     {!! Form::close() !!}
     <div class="clearfix"><hr/></div>
-    <div class="row">
+    <div class="row file-upload" >
         <div class="col-md-12">
             {!! Form::open([ 'route' => ['files.upload'], 'files' => true, 'enctype' => 'multipart/form-data', 'class' => 'dropzone', 'id' => 'dropzone' ]) !!}
             <div>
@@ -161,25 +162,4 @@
     <script src="/plugins/dropzone/dropzone.js" type="text/javascript"></script>
     <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="/js/custom.js"></script>
-    <script type="text/javascript">
-
-        var myDropzone = Dropzone.options.dropzone = {
-            maxFilesize: 5,
-            addRemoveLinks: true,
-            maxFiles: 10,
-            parallelUploads: 1,
-            //autoQueue: false,
-
-            init:function() {
-                this.on("addedfile", function(file) {
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{route('files.upload')}}",
-                        data: {file: file.name, _token: "{{ csrf_token() }}"},
-                        dataType: 'html',
-                    });
-                });
-            },
-        };
-    </script>
 @endpush

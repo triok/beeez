@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Jobs\Job;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -49,6 +50,7 @@ class AddSubTasksJob implements ShouldQueue
         $subJob->desc                = $data['sub-'.$indx.'-desription'];
         $subJob->instructions        = $data['sub-'.$indx.'-instruction'];
         $subJob->access              = $data['sub-'.$indx.'-access'];
+        $subJob->end_date            = $data['sub-'.$indx.'-end_date'] ?? Carbon::now()->addDay(1);
         $subJob->price               = $data['sub-'.$indx.'-price'] ?? 0;
         $subJob->difficulty_level_id = $data['sub-'.$indx.'-difficulty_level'];
         $subJob->time_for_work       = $data['sub-'.$indx.'-time_for_work'];
@@ -93,7 +95,6 @@ class AddSubTasksJob implements ShouldQueue
                     'original_name' => $file->getClientOriginalName(),
                 ]);
             }
-
         }
 
         return $subJob;

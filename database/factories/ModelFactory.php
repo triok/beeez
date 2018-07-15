@@ -15,6 +15,7 @@
 
 use App\Models\Jobs\Application;
 use App\Models\Jobs\DifficultyLevel;
+use App\Models\Modules;
 use Carbon\Carbon;
 use App\User;
 use App\Models\Jobs\Job;
@@ -84,5 +85,11 @@ $factory->define(Application::class, function (Faker\Generator $faker) {
         'deadline' => Carbon::now()->addDay(5),
         'job_price' => $faker->randomDigitNotNull(),
         'status' => $faker->randomElement(array_values(config('enums.jobs.statuses'))),
+    ];
+});
+
+$factory->define(Modules::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->title,
     ];
 });

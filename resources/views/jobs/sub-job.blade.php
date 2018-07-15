@@ -14,11 +14,11 @@
     </tr>
     <tr class="form-group">
         <td> <label for="sub-{{$sub}}-desription">Description:</label></td>
-        <td><textarea class="form-control" rows="3" id="sub-{{$sub}}-desription" name="sub-{{$sub}}-desription"></textarea></td>
+        <td><textarea class="form-control editor1" rows="3" id="sub-{{$sub}}-desription" name="sub-{{$sub}}-desription"></textarea></td>
     </tr>
     <tr class="form-group">
         <td> <label for="sub-{{$sub}}-instruction">Instruction:</label></td>
-        <td><textarea class="form-control" rows="3" id="sub-instruction-{{$sub}}" name="sub-{{$sub}}-instruction"></textarea></td>
+        <td><textarea class="form-control editor2" rows="3" id="sub-instruction-{{$sub}}" name="sub-{{$sub}}-instruction"></textarea></td>
     </tr>
     <tr class="form-group">
         <td> <label for="sub-{{$sub}}-access">Access:</label></td>

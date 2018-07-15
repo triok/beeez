@@ -11625,12 +11625,10 @@ footer {
   width: 100%;
   display: none;
 }
-.sub-tasks table {
-  margin-bottom: 0;
-}
-.cursor-pointer {
-  cursor: pointer;
-}
+.sub-tasks { padding-bottom: 20px;}
+.sub-tasks table { margin-bottom: 0; }
+.cursor-pointer { cursor: pointer; }
+.dropzone.dz-clickable * { text-align: center; }
 /*Start*/
 .navbar-shadow {
   box-shadow: 0 2px 10px 0 rgba(0,0,0,0.15);
@@ -11638,3 +11636,4 @@ footer {
   background: white;
   
 }
+
