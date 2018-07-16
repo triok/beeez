@@ -8,16 +8,16 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/', 'AppController@index');
 
     //Job
-    Route::resource('jobs', 'JobsController');
-    Route::get('jobs/category/{id}', 'JobsController@jobsByCategories');
-    Route::post('shareJob', 'JobsController@shareJob')->name('share-job');
-    Route::get('jobsAdmin', 'JobsController@jobsAdmin')->name('jobs-admin');
-    Route::patch('update-job-status', 'JobsController@updateJobStatus')->name('job-status');
-    Route::get('job/{id}/{app}/work','JobsController@work');
+    Route::resource('jobs', 'JobController');
+    Route::get('jobs/category/{id}', 'JobController@jobsByCategories');
+    Route::post('shareJob', 'JobController@shareJob')->name('share-job');
+    Route::get('jobsAdmin', 'JobController@jobsAdmin')->name('jobs-admin');
+    Route::patch('update-job-status', 'JobController@updateJobStatus')->name('job-status');
+    Route::get('job/{id}/{app}/work','JobController@work');
     Route::resource('categories', 'CategoriesController');
     Route::post('order-categories', 'CategoriesController@order');
-    Route::get('job/subtask', 'JobsController@subtask');
-    //Route::get('jobs/{tag?}','JobsController@index')->name('jobs.index');
+    Route::get('job/subtask', 'JobController@subtask');
+    //Route::get('jobs/{tag?}','JobController@index')->name('jobs.index');
 
 
     Route::post('upload/files', 'UploadController@store')->name('files.upload');
@@ -112,6 +112,9 @@ Route::group(['middleware' => 'web'], function () {
           Session::put('locale', $locale);
         }
           return redirect()->back();
-    });    
+    });
+
+    // Comments
+    Route::post('/comments','CommentController@store')->name('comments.store');
 });
 

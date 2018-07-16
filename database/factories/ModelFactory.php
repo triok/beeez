@@ -13,8 +13,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Comment;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\DifficultyLevel;
+use App\Models\Modules;
 use Carbon\Carbon;
 use App\User;
 use App\Models\Jobs\Job;
@@ -84,5 +86,22 @@ $factory->define(Application::class, function (Faker\Generator $faker) {
         'deadline' => Carbon::now()->addDay(5),
         'job_price' => $faker->randomDigitNotNull(),
         'status' => $faker->randomElement(array_values(config('enums.jobs.statuses'))),
+    ];
+});
+
+$factory->define(Modules::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->title,
+    ];
+});
+
+$factory->define(Comment::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->title,
+        'commentable_id' => create(Job::class)->id,
+        'commentable_type' => Job::class,
+        'body' => $faker->text,
+        'author_id' => create(User::class)->id,
+        'author_type' => User::class,
     ];
 });
