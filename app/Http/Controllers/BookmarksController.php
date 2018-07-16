@@ -8,6 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
+use Lang;
 
 class BookmarksController extends Controller
 {
@@ -147,7 +148,7 @@ class BookmarksController extends Controller
                 $jobs[] = $bookmark->job;
         }
         $jobs = self::bJobs($jobs, $request, 20);
-        $title = 'My Bookmarks';
+        $title = __('layout.bookmarks');
         return view('home', compact('jobs', 'bookmarks', 'title'));
 
     }

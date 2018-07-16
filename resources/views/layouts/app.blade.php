@@ -54,7 +54,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
-                                <i class="fa fa-dashboard"></i> Jobs Manager<span class="caret"></span>
+                                <i class="fa fa-dashboard"></i> @lang('layout.jobs-manager')<span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -137,7 +137,7 @@
                             <a href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                <i class="fa fa-lock"></i> Logout
+                                <i class="fa fa-lock"></i> @Lang('layout.logout')
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                   style="display: none;">
@@ -154,7 +154,7 @@
         <div class="row row-offcanvas row-offcanvas-left">
 
             <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-                <div class="Categories">Categories</div> 
+                <div class="Categories">@lang('layout.categories')</div> 
                 <ul class="nav">
                     
 
