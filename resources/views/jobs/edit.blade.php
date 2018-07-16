@@ -162,4 +162,24 @@
     <script src="/plugins/dropzone/dropzone.js" type="text/javascript"></script>
     <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="/js/custom.js"></script>
+    <script>
+        var myDropzone = Dropzone.options.dropzone = {
+            maxFilesize: 5,
+            addRemoveLinks: true,
+            maxFiles: 10,
+            parallelUploads: 1,
+            //autoQueue: false,
+
+            init:function() {
+                this.on("addedfile", function(file) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{route('files.upload')}}",
+                        data: {file: file.name, _token: "{{ csrf_token() }}"},
+                        dataType: 'html',
+                    });
+                });
+            },
+        };
+    </script>
 @endpush

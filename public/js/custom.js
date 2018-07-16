@@ -1,23 +1,9 @@
 var _token = $('meta[name="csrf-token"]').attr('content');
-
-var myDropzone = Dropzone.options.dropzone = {
-    maxFilesize: 5,
-    addRemoveLinks: true,
-    maxFiles: 10,
-    parallelUploads: 1,
-    //autoQueue: false,
-
-    init:function() {
-        this.on("addedfile", function(file) {
-            $.ajax({
-                type: 'POST',
-                url: "{{route('files.upload')}}",
-                data: {file: file.name, _token: "{{ csrf_token() }}"},
-                dataType: 'html',
-            });
-        });
-    },
-};
+var parent  = author = null;
+var mess = '<div class="alert alert-info fade in" id="reply-container">\n' +
+    '<a href="#" class="close" data-dismiss="alert">&times;</a>\n' +
+    'Reply to comment <strong class="reply-user"></strong>\n' +
+    '</div>';
 
 window.onload = function(){
 
@@ -38,6 +24,10 @@ window.onload = function(){
 
 
     $(document).on('click', '#taskAdd', addSubTask);
+    $(document).on('click', '.comment-reply .reply', addComment);
+    $(document).on('click', '.form-container .alert .close', function () {
+        $('#parent').val('');
+    });
 
 };
 
@@ -72,6 +62,21 @@ function addSubTask() {
         $('.selectpicker').selectpicker('refresh');
 
     });
+}
+function addComment()
+{
+    parent = $(this).closest('.media');
+    $('#parent').val(parent.attr('data-id'));
+    author = parent.find('.author').first().text();
+
+    if(!$('#reply-container').length) {
+        $('.form-container h4').after(mess);
+    }
+
+    $('#reply-container .reply-user').text(author)
+
+    document.getElementById("body").focus();
+
 }
 
 
