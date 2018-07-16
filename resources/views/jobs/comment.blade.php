@@ -1,12 +1,12 @@
-<{{$tag}} class="media">
+<{{$tag ?? 'li'}} class="media" data-id="{{$comment->id}}">
     <div class="media-left">
-        <a href="javascript:void(0);">
-            <img class="media-object img-rounded" src="{{$comment->author->getStorageDir() . $comment->author->avatar}}" alt="{{$comment->author->name}}">
-        </a>
+
+        <img class="media-object img-rounded" src="{{$comment->author->getStorageDir() . $comment->author->avatar}}" alt="{{$comment->author->name}}">
+
     </div>
     <div class="media-body">
         <div class="media-heading">
-            <div class="author">{{$comment->author->name}}</div>
+            <div class="author">{{$comment->author->username}}</div>
             <div class="metadata">
                 <span class="date">{{\Carbon\Carbon::parse($comment->created_at)->format('d.m.Y H:i')}}</span>
             </div>
@@ -25,12 +25,14 @@
             {{--<span class="devide">--}}
          {{--|--}}
         {{--</span>--}}
+        @if(($job->user_id === auth()->id() || auth()->user()->hasRole('admin')) && (auth()->id() != $comment->author->id))
         <span class="comment-reply">
-            <a href="#" class="reply">ответить</a>
+            <a href="javascript:void(0);" class="reply">ответить</a>
         </span>
+        @endif
         </div>
         @foreach($comment->comments as $comment)
             @include('jobs.comment', ['tag' => 'div'])
         @endforeach
     </div>
-</{{$tag}}>
+</{{$tag ?? 'li'}}>

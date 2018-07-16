@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
 use App\Models\Jobs\Job;
+use App\Observers\CommentObserver;
 use App\Observers\JobObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SocialEvent' => [
             'App\Listeners\SocialEventListener',
         ],
+        'App\Events\CommentAddedEvent' => [
+            'App\Listeners\CommentAddedEventListener',
+        ],
     ];
 
     /**
@@ -30,5 +35,6 @@ class EventServiceProvider extends ServiceProvider
         parent::boot();
 
         Job::observe(new JobObserver);
+        Comment::observe(new CommentObserver);
     }
 }

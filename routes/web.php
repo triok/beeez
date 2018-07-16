@@ -115,6 +115,6 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     // Comments
-    Route::resource('comments', 'CommentController');
+    Route::post('/comments','CommentController@store')->name('comments.store');
 });
 

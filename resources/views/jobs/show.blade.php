@@ -184,6 +184,8 @@
                 <h4>Comment:</h4>
                 <form action="{{route('comments.store')}}" method="post">
                     {{csrf_field()}}
+                    <input type="hidden" name="parent" id="parent" value="">
+                    <input type="hidden" name="job" value="{{$job->id}}">
                     <textarea name="body" id="body" required rows="3" class="form-control"></textarea>
                     <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Send</button>
                 </form>
@@ -205,3 +207,6 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script src="/js/custom.js"></script>
+@endpush
