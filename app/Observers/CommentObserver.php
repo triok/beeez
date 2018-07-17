@@ -16,6 +16,6 @@ class CommentObserver
         /** @var Job $job */
         $job = Job::query()->find(request()->job);
 
-        Mail::to($job->user->email)->send(new NewCommentMail($comment, $job));
+        !isset($job) ?: Mail::to($job->user->email)->send(new NewCommentMail($comment, $job));
     }
 }
