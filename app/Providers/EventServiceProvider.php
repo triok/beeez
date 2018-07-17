@@ -6,7 +6,6 @@ use App\Models\Comment;
 use App\Models\Jobs\Job;
 use App\Observers\CommentObserver;
 use App\Observers\JobObserver;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -19,9 +18,6 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\SocialEvent' => [
             'App\Listeners\SocialEventListener',
-        ],
-        'App\Events\CommentAddedEvent' => [
-            'App\Listeners\CommentAddedEventListener',
         ],
     ];
 
