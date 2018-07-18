@@ -22,7 +22,6 @@ window.onload = function(){
         $(this).closest('.table').find('tbody').toggleClass('hide');
     });
 
-
     $(document).on('click', '#taskAdd', addSubTask);
     $(document).on('click', '.comment-reply .reply', addComment);
     $(document).on('click', '.form-container .alert .close', function () {
@@ -63,6 +62,7 @@ function addSubTask() {
 
     });
 }
+
 function addComment()
 {
     parent = $(this).closest('.media');

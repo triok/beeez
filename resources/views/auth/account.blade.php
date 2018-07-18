@@ -5,11 +5,11 @@
         <div class="col-md-4">
             <ul class="nav nav-tabs nav-pills nav-stacked" role="tablist">
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
-                                                          data-toggle="tab">@lang('Home')</a></li>
+                                                          data-toggle="tab">@lang('account.home')</a></li>
                 <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
                                            data-toggle="tab">@lang('Profile')</a></li>
                 <li role="presentation">
-                    <a href="#bio" aria-controls="bio" role="tab" data-toggle="tab">@lang('Bio')</a>
+                    <a href="#bio" aria-controls="bio" role="tab" data-toggle="tab">@lang('account.bio')</a>
                 </li>
             </ul>
         </div>

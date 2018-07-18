@@ -7,11 +7,11 @@ return [
     | Layout Language Lines
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used for layout view (footer and header). You are free to modify
+    | The following language lines are used for People/Teams view. You are free to modify
     | these language lines according to your application's requirements.
     |
     */
-    // Header
+    
     'login-title'       => 'Login',
     'register-title'    => 'Register',
     'categories'        => 'Categories',
