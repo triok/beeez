@@ -109,15 +109,14 @@ class Job extends Model
 
     public function parent()
     {
-        if ($this->hasParent()) {
-            return $this->belongsTo(static::class, 'parent_id');
-        }
+        return $this->belongsTo(static::class, 'parent_id');
     }
 
     public function hasCategory(Category $categories)
     {
         return $this->categories()->get()->contains($categories);
     }
+
 
     public function hasLogin($id)
     {

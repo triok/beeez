@@ -51,7 +51,7 @@ class JobController extends Controller
     {
         if (request()->has('tag')) {
             /** @var Job $jobs */
-            $jobs = JobQuery::onlyParentAndOpen()->whereHas('tag' , function($query) {
+            $jobs = JobQuery::onlyOpen()->whereHas('tag' , function($query) {
                 $query->where('value', request()->tag);
             })
             ->with('tag')
@@ -87,8 +87,11 @@ class JobController extends Controller
             $job->files = File::query()->where('fileable_id', $job->id)->get();
             $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
             $job->viewed = 'Viewed (' . $job->getViews() .')';
+            $job->jobs   = $job->load('jobs');
+            $job->parent = $job->load('parent');
+            $job->parentJobs = $job->parent()->with('jobs')->get();
 
-            $job->load(['tag', 'user', 'jobs']);
+            $job->load(['tag', 'user']);
 
             return json_encode($job->toArray());
             //return view('jobs.show', compact('job'));
