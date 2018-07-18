@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class AppController extends Controller
 {
 
-    function index(){
+    public function index(){
+
         if(isset($_GET['job'])){
 
             $search = $_GET['job'];
@@ -20,7 +21,7 @@ class AppController extends Controller
                 ->where('status',config('enums.jobs.statuses.OPEN'))->paginate(20)
                 ->with(['tag']);
         }else{
-            $jobs = JobQuery::onlyParentAndOpen()->with(['tag'])->paginate(20);
+            $jobs = JobQuery::onlyOpen()->with(['tag'])->paginate(20);
         }
         return view('home',compact('jobs'));
     }

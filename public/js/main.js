@@ -302,13 +302,24 @@ function showJob(jobId) {
         });
 
         var jobsList = viewModal.find('.jobs-list').html('');
-        if (job.jobs.length > 0){ jobsList.append("<h5><strong>Tasks list:</strong></h5>");}
+        if (job.jobs.length > 0 || job.parent){ jobsList.append("<h5><strong>Tasks list:</strong></h5>");}
 
         job.jobs.forEach(function(item, i, arr) {
             jobsList.append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
                 '<i class="fa fa-link">' +
                 '<a style="padding-left: 7px;" href="/jobs/'+item.id+'" title="'+item.name+'">'+item.name+'</a></i></li>');
         });
+        if(job.parent) {
+            job.parentJobs[0].jobs.forEach(function(item, i, arr) {
+                if (item.id == job.id) return;
+                jobsList.append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
+                    '<i class="fa fa-link">' +
+                    '<a style="padding-left: 7px;" href="/jobs/'+item.id+'" title="'+item.name+'">'+item.name+'</a></i></li>');
+            });
+            jobsList.append('<li data-id="'+job.parent.id+'" class="list-group-item" style="border:0; padding: 0;">' +
+                '<i class="fa fa-link">' +
+                '<a style="padding-left: 7px;" href="/jobs/'+job.parent.id+'" title="'+job.parent.name+'">'+job.parent.name+'</a></i></li>');
+        }
 
         var end = moment(job.end_date);
 

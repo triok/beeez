@@ -2,17 +2,24 @@
 
 namespace App\Queries;
 
-
 use App\Models\Jobs\Job;
 use Illuminate\Database\Eloquent\Builder;
 
 class JobQuery
 {
+    private $job;
+
     public static function onlyParentAndOpen()
     {
         return Job::query()->where(function (Builder $query) {
             $query->where('status',config('enums.jobs.statuses.OPEN'))
                 ->whereNull('parent_id');
+        });
+    }
+    public static function onlyOpen()
+    {
+        return Job::query()->where(function (Builder $query) {
+            $query->where('status',config('enums.jobs.statuses.OPEN'));
         });
     }
 
