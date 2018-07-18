@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('content')
-    <h2>My Applications</h2>
+    <h2>@lang('application.title')</h2>
     <table class="table table-responsive">
         <thead>
         <tr>
-            <td>Date</td>
-            <td>Job</td>
+            <td>@lang('application.date')</td>
+            <td>@lang('application.job')</td>
             {{--<td>Offer</td>--}}
-            <td>Status</td>
+            <td>@lang('application.status')</td>
             <td></td>
         </tr>
         </thead>

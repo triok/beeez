@@ -24,6 +24,7 @@ return [
             'profile' => 'r,u'
         ],
         'user' => [
+            'jobs' => 'c,r',
             'profile' => 'r,u',
             'application-message' => 'c,r,u,d',
             'jobs-manager' => 'c,r,u,d'
