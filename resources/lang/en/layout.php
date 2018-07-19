@@ -21,7 +21,7 @@ return [
     'current-tasks'     => 'Current tasks',
     'post-new'          => 'Post new job',
     'profile'           => 'Profile',
-    'bookmarks'         => 'Bookmarks',
+    'bookmarks'         => 'Bookmark',
     'applications'      => 'My applications',        
 
     // Footer

@@ -3,10 +3,10 @@
 namespace App\Models\Jobs;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Bookmarks extends Model
+class Bookmark extends Model
 {
+    protected $guarded = ['id'];
 
     function user(){
         return $this->belongsTo(\App\User::class,'user_id','id');

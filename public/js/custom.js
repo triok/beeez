@@ -29,8 +29,23 @@ window.onload = function(){
         $('#parent').val('');
     });
 
-};
+    $(document).on('click', '.delete', deleteTask);
 
+};
+function deleteTask() {
+    var id = $(this).attr('data-id');
+    $.ajax({
+        url: '/jobs/' + id,
+        type: 'DELETE',
+        success: function success(response) {
+            var msg = JSON.parse(response);
+            notice(msg.message, msg.status);
+        },
+        error: function error(_error10) {
+            notice('Error! Please try again', 'error');
+        }
+    });
+}
 function addSubTask() {
     var load = $('<div>');
     var subTasks = $('.sub-tasks');

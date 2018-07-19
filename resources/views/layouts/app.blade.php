@@ -21,7 +21,6 @@
     <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
 </head>
 <body>
-
 <div class="page-container" id="app">
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
@@ -75,6 +74,12 @@
                                 </li>
                                 @endpermission
 
+                                <li>
+                                    <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
+                                        <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>
+                                    </a>
+                                </li>
+
                                 @permission('read-job-applications')
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ route('applications-admin') }}"><i class="fa fa-briefcase"></i>
@@ -110,11 +115,7 @@
                                         <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
-                                        <span class="badge">{{count(Auth::user()->applications->where('status','!=','complete'))}}</span>
-                                    </a>
-                                </li>
+
                                 <li role="separator" class="divider"></li>
                                 @permission('read-users')
                                 <li><a href="{{ route('users') }}"><i class="fa fa-group"></i> Users</a></li>

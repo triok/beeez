@@ -66,7 +66,6 @@ class ApplicationsController extends Controller
             }
             $job = Job::find($request->job_id);
 
-            // TODO This code was altered
             if (Carbon::now() > $job->end_date) {
                 echo json_encode(['status' => 'error', 'message' => 'job is closed']);
                 return;
@@ -76,14 +75,10 @@ class ApplicationsController extends Controller
             $applicant->job_id = $request->job_id;
             $applicant->user_id = Auth::user()->id;
             $applicant->remarks = $request->remarks;
-            $applicant->created_at = date('Y-m-d H:i:s');
             $applicant->status = 'pending';
             $applicant->job_price = $job->price;
             $applicant->save();
 
-            //notify admin
-            //  TODO this code dublicate, line 66.
-            //$job = Job::find($request->job_id);
 
             try {
                 Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));
@@ -94,7 +89,6 @@ class ApplicationsController extends Controller
             echo json_encode(['status' => 'success', 'message' => 'Application has been sent successfully']);
         }
     }
-
     /**
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -112,8 +106,8 @@ class ApplicationsController extends Controller
      */
     function myApplications()
     {
-        $applications = JobQuery::allForUser()->paginate();
-
+//        $applications = JobQuery::allForUser()->paginate(request('count', 15));
+        $applications = Auth::user()->applications()->where('status','!=','complete')->paginate(request('count', 15));
         return view('applications.my-applications', compact('applications'));
     }
 

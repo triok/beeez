@@ -13,7 +13,7 @@ use App\Mail\ShareJob;
 use App\Models\Billing\Payouts;
 use App\Models\File;
 use App\Models\Jobs\Application;
-use App\Models\Jobs\Bookmarks;
+use App\Models\Jobs\Bookmark;
 use App\Models\Jobs\Category;
 use App\Models\Jobs\DifficultyLevel;
 use App\Models\Jobs\JobCategories;
@@ -68,64 +68,69 @@ class JobController extends Controller
      */
     function show(Job $job)
     {
+
         $job->addView();
 
-        if (request()->ajax()) {
-            $job->level = $job->difficulty->name;
-
-            $bookmark = Bookmarks::where('job_id', $job->id)->where('user_id', Auth::user()->id)->first();
-
-            if (isset($bookmark))
-                $job->bookmark = $bookmark->id;
-            else
-                $job->bookmark = 0;
-            //skills
-            $j = new Job();
-            $job->prettyskills = $j->formatSkills($job->skills);
-            $job->cats = $j->formatCats($job->categories);
-            $job->price = env('CURRENCY_SYMBOL').$job->price;
-            $job->files = File::query()->where('fileable_id', $job->id)->get();
-            $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
-            $job->viewed = 'Viewed (' . $job->getViews() .')';
-            $job->jobs   = $job->load('jobs');
-            $job->parent = $job->load('parent');
-            $job->parentJobs = $job->parent()->with('jobs')->get();
-
-            $job->load(['tag', 'user']);
-
-            return json_encode($job->toArray());
-            //return view('jobs.show', compact('job'));
-        }
+//        if (request()->ajax()) {
+//            $job->level = $job->difficulty->name;
+//
+//            $bookmark = Bookmark::where('job_id', $job->id)->where('user_id', Auth::user()->id)->first();
+//
+//            if (isset($bookmark))
+//                $job->bookmark = $bookmark->id;
+//            else
+//                $job->bookmark = 0;
+//            //skills
+//            $j = new Job();
+//            $job->prettyskills = $j->formatSkills($job->skills);
+//            $job->cats = $j->formatCats($job->categories);
+//            $job->price = env('CURRENCY_SYMBOL').$job->price;
+//            $job->files = File::query()->where('fileable_id', $job->id)->get();
+//            $job->posted = "Posted " . Carbon::parse($job->created_at)->diffForHumans();
+//            $job->viewed = 'Viewed (' . $job->getViews() .')';
+//            $job->jobs   = $job->load('jobs');
+//            $job->parent = $job->load('parent');
+//            $job->parentJobs = $job->parent()->with('jobs')->get();
+//
+            $job->with(['tag', 'user', 'jobs', 'parent', 'categories']);
+//
+//            return json_encode($job->toArray());
+////            return view('jobs.show', compact('job'));
+//        }
 
         return view('jobs.show', compact('job'));
     }
 
     /**
-     * @param $id
+     * @param Job $job
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    function destroy($id)
+    function destroy(Job $job)
     {
-        $job = Job::findOrFail($id);
-        //delete bookmarks
-        foreach ($job->bookmarks as $bookmark) {
-            $bookmark->delete();
-        }
-        //delete applications
-        foreach ($job->applications as $app) {
-            $app->delete();
+        if(request()->ajax()) {
+            $job->bookmark()->delete();
+            $job->applications()->delete();
+
+            if ($job->delete()) {
+                $status = 'success';
+                $msg = 'Job has been unlisted';
+                flash()->success('Job has been unlisted');
+            } else {
+                $status = 'error';
+                $msg = 'Error deleting job';
+                flash()->success('Error deleting job');
+            }
+            echo json_encode(['status' => $status, 'message' => $msg]);
         }
 
-        if ($job->delete()) {
-            $status = 'success';
-            $msg = 'Job has been unlisted';
-            flash()->success('Job has been unlisted');
-        } else {
-            $status = 'error';
-            $msg = 'Error deleting job';
-            flash()->success('Error deleting job');
-        }
-        echo json_encode(['status' => $status, 'message' => $msg]);
+        $job->bookmark()->delete();
+        $job->applications()->delete();
+        $job->delete();
+
+        flash()->success('Job has been unlisted');
+
+        return redirect()->back();
     }
 
     /**
@@ -136,6 +141,7 @@ class JobController extends Controller
     {
         $category = Category::find($id);
         $jobs = $category->openJobs()->paginate(20);
+
         $title = 'Job under ' . ucwords($category->name) . ' category';
         return view('home', compact('jobs', 'category', 'title'));
     }
