@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jobs\Bookmarks;
+use App\Models\Jobs\Bookmark;
 use App\Models\Jobs\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

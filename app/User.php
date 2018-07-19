@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\Imageable;
 use App\Models\Billing\Stripe;
 use App\Models\Image;
 use App\Models\Jobs\Application;
-use App\Models\Jobs\Bookmarks;
+use App\Models\Jobs\Bookmark;
 use App\Models\Jobs\Job;
 use App\Models\Jobs\Skill;
 use App\Models\RoleUser;
@@ -34,7 +34,7 @@ class User extends Authenticatable
     ];
 
     function bookmarks(){
-        return $this->hasMany(Bookmarks::class,'user_id','id');
+        return $this->hasMany(Bookmark::class,'user_id','id');
     }
     function bookmarked(){
         return $this->hasMany(Job::class,'job_id','id');
