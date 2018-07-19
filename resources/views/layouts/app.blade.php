@@ -19,10 +19,11 @@
     <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed|Ubuntu+Mono" rel="stylesheet">
 </head>
 <body>
 <div class="page-container" id="app">
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div id="navigation" class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
@@ -95,9 +96,9 @@
                             </ul>
                         </li>
 
-                        @permission('read-users')
-                        <li><a href="{{route('peoples.index')}}"><i class="fa fa-id-card-o"></i> Peoples</a></li>
-                        @endpermission
+                        
+                        <li><a href="{{route('peoples.index')}}"><i class="fa fa-id-card-o"></i> @lang('peoples.title')</a></li>
+                        
 
                         @permission('read-payouts')
                         <li><a href="/payouts"><i class="fa fa-money"></i> Payouts</a></li>

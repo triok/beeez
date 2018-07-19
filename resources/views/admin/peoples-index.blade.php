@@ -3,18 +3,18 @@
 
    <div class="row">
       <div class="col-md-12">
-         <h2>Peoples</h2>
+         <h2>@lang('peoples.title')</h2>
          <div class="row">
             <div class="col-md-4 col-md-offset-8">
-               <input type="text" class="form-control pull-right" id="login_search" placeholder="Enter login ...">
+               <input type="text" class="form-control pull-right" id="login_search" placeholder="@lang('peoples.search')">
                <ul class="result"></ul>
             </div>
          </div>
          <table class="table table-striped table-responsive table-full-width">
             <thead>
             <tr>
-               <th>Name</th>
-               <th>Login</th>
+               <th>@lang('peoples.name')</th>
+               <th>@lang('peoples.login')</th>
             </tr>
             </thead>
             <tbody>
