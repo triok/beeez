@@ -158,13 +158,6 @@
                         @foreach($job->jobs as $subJob)
                         <li>
                             <strong><a href="{{route('jobs.show', $subJob)}}"  target="_self">{{$subJob->name}}</a> </strong>
-                            <span class="type text-muted d-block d-md-inline">
-                                <form action="{{route('jobs.destroy', $subJob)}}" method="post" class="delete-form">
-                                    <input type="hidden" name="_method" value="delete" />
-                                    {{csrf_field()}}
-                                    <button type="submit">Delete</button>
-                                </form>
-                            </span>
                         </li>
                         @endforeach
 
@@ -173,28 +166,12 @@
                             @if(isset($job->parent))
                                 <li>
                                     <strong><a href="{{route('jobs.show', $job->parent)}}" target="_self">{{$job->parent->name}}</a> </strong>
-                                    <span class="type text-muted d-block d-md-inline">
-                                        <form action="{{route('jobs.destroy', $job->parent)}}" method="post" class="delete-form">
-                                            <input type="hidden" name="_method" value="delete" />
-                                            {{csrf_field()}}
-                                            <input type="hidden" name="_method" value="delete" />
-                                            <button type="submit">Delete</button>
-                                        </form>
-                                    </span>
                                 </li>
                             @endif
                             @foreach($parents as $parentJob)
                                 @continue($parentJob->id == $job->id)
                                 <li>
                                     <strong><a href="{{route('jobs.show', $parentJob)}}"  target="_self">{{$parentJob->name}}</a> </strong>
-                                    <span class="type text-muted d-block d-md-inline">
-                                        <form action="{{route('jobs.destroy', $parentJob)}}" method="post" class="delete-form">
-                                            <input type="hidden" name="_method" value="delete" />
-                                            {{csrf_field()}}
-                                            <input type="hidden" name="_method" value="delete" />
-                                            <button type="submit" class="btn btn-outline-light">Delete</button>
-                                        </form>
-                                    </span>
                                 </li>
                             @endforeach
                         @endif

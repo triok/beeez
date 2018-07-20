@@ -24,6 +24,7 @@ window.onload = function(){
 
     $(document).on('click', '#taskAdd', addSubTask);
     $(document).on('click', '.comment-reply .reply', addComment);
+    $(document).on('click', '.table .rm-sb', removeSubTask);
     $(document).on('click', '.form-container .alert .close', function () {
         $('#parent').val('');
     });
@@ -31,6 +32,17 @@ window.onload = function(){
     $(document).on('click', '.delete', deleteTask);
 
 };
+
+function removeSubTask()
+{
+    var subTasks = $('.sub-tasks').find('.sub-item');
+
+    if (subTasks.length <= 1) return false;
+
+    if(confirm("Are you sure you want to delete?")) {
+        $(this).closest('.sub-item').remove();
+    }
+}
 function deleteTask() {
     var id = $(this).attr('data-id');
     $.ajax({
