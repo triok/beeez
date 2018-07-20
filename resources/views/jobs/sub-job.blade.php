@@ -5,7 +5,13 @@
 <div class="sub-item">
 <table class="table" id="sub-{{$sub}}-task">
 
-    <caption><h4 class="popover-title cursor-pointer" id="sub-{{$sub}}-title">Task # {{$sub}}<span id="sub-{{$sub}}-num"></span></h4></caption>
+    <caption>
+        <h4 class="popover-title cursor-pointer" id="sub-{{$sub}}-title">Task # {{$sub}}<span id="sub-{{$sub}}-num"></span>
+            @if($sub != 1)
+                <span class="pull-right rm-sb" style="padding: 0 5px;"><i class="fa fa-times" aria-hidden="true"></i></span>
+            @endif
+        </h4>
+    </caption>
 
     <tbody class="{{$sub == 1 ? '' : 'hide'}}">
     <tr class="form-group">
