@@ -2,6 +2,7 @@
 
 namespace App\Models\Jobs;
 
+use App\Filters\QueryFilter;
 use App\Http\Controllers\Interfaces\MorphTo;
 use App\Http\Controllers\Traits\Commentable;
 use App\Models\File;
@@ -143,6 +144,11 @@ class Job extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeFilter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
     }
 
 

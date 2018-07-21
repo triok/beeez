@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\JobFilters;
 use App\Models\Jobs\Job;
 use App\Queries\JobQuery;
 use Illuminate\Http\Request;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 class AppController extends Controller
 {
 
-    public function index(){
+    public function index(JobFilters $filters){
 
         if(isset($_GET['job'])){
 
@@ -18,12 +19,16 @@ class AppController extends Controller
                 ->orWhere('id',$search)
                 ->orWhere('name','like','%'.$search.'%')
                 ->orWhere('desc','like','%'.$search.'%')
-                ->where('status',config('enums.jobs.statuses.OPEN'))->paginate(20)
-                ->with(['tag']);
+                ->where('status',config('enums.jobs.statuses.OPEN'))
+                ->with(['tag'])
+                ->paginate(20);
+
         }else{
-            $jobs = JobQuery::onlyOpen()->with(['tag'])->paginate(20);
+            $jobs = JobQuery::onlyOpen()->paginate(20);
         }
         return view('home',compact('jobs'));
+
+        //return Job::filter($filters)->get();
     }
 
 }
