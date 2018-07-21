@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jobs\Bookmarks;
+use App\Models\Jobs\Bookmark;
+use App\Models\Jobs\Job;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -38,31 +39,40 @@ class BookmarksController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param Job $job
+     * @return \Illuminate\Http\RedirectResponse
      */
-    function store(Request $request)
-    {
-        if ($request->ajax()) {
-            $bookmark = Bookmarks::whereJobId($request->job_id)->whereUserId(Auth::user()->id)->first();
-            if (count($bookmark) == 0) {
-                $bk = new Bookmarks();
-                $bk->job_id = $request->job_id;
-                $bk->user_id = Auth::user()->id;
-                $bk->created_at = date('Y-m-d H:i:s');
-                if ($bk->save()) {
-                    $status = 'success';
-                    $msg = 'Bookmark saved!';
-                } else {
-                    $status = 'error';
-                    $msg = 'Unable to save bookmark';
-                }
-            }
+//    function store(Request $request)
+//    {
+//        if ($request->ajax()) {
+//            $bookmark = Bookmark::whereJobId($request->job_id)->whereUserId(Auth::user()->id)->first();
+//            if (count($bookmark) == 0) {
+//                $bk = new Bookmark();
+//                $bk->job_id = $request->job_id;
+//                $bk->user_id = Auth::user()->id;
+//                $bk->created_at = date('Y-m-d H:i:s');
+//                if ($bk->save()) {
+//                    $status = 'success';
+//                    $msg = 'Bookmark saved!';
+//                } else {
+//                    $status = 'error';
+//                    $msg = 'Unable to save bookmark';
+//                }
+//            }
+//
+//        } else {
+//            $status = 'error';
+//            $msg = 'Request was invalid';
+//        }
+//        echo json_encode(['status' => $status, 'message' => $msg]);
+//    }
 
-        } else {
-            $status = 'error';
-            $msg = 'Request was invalid';
-        }
-        echo json_encode(['status' => $status, 'message' => $msg]);
+    function store(Job $job)
+    {
+        $query = $job->bookmark();
+        !$query->exists() ? $query->create(['user_id' => auth()->id()]) : $query->delete();
+
+        return redirect()->back();
     }
 
     /**
@@ -103,7 +113,7 @@ class BookmarksController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $b = Bookmarks::findOrFail($id);
+        $b = Bookmark::findOrFail($id);
         $b->name = $request->name;
         $b->desc = $request->desc;
         $b->save();
@@ -117,7 +127,7 @@ class BookmarksController extends Controller
     function destroy(Request $request)
     {
         if ($request->ajax()) {
-            $bk = Bookmarks::find($request->id);
+            $bk = Bookmark::find($request->id);
             if ($bk->delete()) {
                 $status = 'success';
                 $msg = 'Bookmark removed!';

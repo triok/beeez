@@ -28,7 +28,7 @@
 
                 @foreach($jobs as $job)
                 <tr>
-                  <th scope="row" class="job-name"><span id="{{$job->id}}">{{$job->name}}</span></th>
+                  <th scope="row" class="job-name"><a href="{{route('jobs.show', $job)}}" id="{{$job->id}}">{{$job->name}}</a></th>
                   <td>{{ $job->time_for_work }} hr</td>
 
                   <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y') }} <b>{{ \Carbon\Carbon::parse($job->end_date)->format('H:i') }}</b></td>
@@ -54,7 +54,7 @@
             <div class='col-sm-6 col-xs-12 col-md-6 col-lg-6'>
                 <div class="panel panel-default box">
                     <div class="panel-heading">
-                        <h4 id="{{$job->id}}">{{$job->name}}</h4>
+                        <h4 id="{{$job->id}}"><a href="{{route('jobs.show', $job)}}">{{$job->name}}</a></h4>
                         <span id="posted">
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
                             Posted {{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}} <small> by {{$job->user->username}}</small>
@@ -112,8 +112,8 @@
                                 </div>
                                 <div class="col-xs-5 text-center">
 
-                                    @if(Auth::check() && count($job->bookmarks->where('user_id',Auth::user()->id)))
-                                        <button id="{{$job->bookmarks->where('user_id',Auth::user()->id)->first()->id}}"
+                                    @if(Auth::check() && isset($job->bookmark))
+                                        <button id="{{$job->bookmark->id}}"
                                                 class="btn btn-default btn-sm bookmark-job-remove"><i
                                                     class="fa fa-heart text-danger"></i>
                                         </button>

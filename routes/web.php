@@ -9,7 +9,7 @@ Route::group(['middleware' => 'web'], function () {
 
     //Job
     Route::resource('jobs', 'JobController');
-    Route::get('jobs/category/{id}', 'JobController@jobsByCategories');
+    Route::get('jobs/category/{id}', 'JobController@jobsByCategories')->name('jobs.category');
     Route::post('shareJob', 'JobController@shareJob')->name('share-job');
     Route::get('jobsAdmin', 'JobController@jobsAdmin')->name('jobs-admin');
     Route::patch('update-job-status', 'JobController@updateJobStatus')->name('job-status');
@@ -33,9 +33,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('application/post-message', 'ApplicationsController@postMessage');
     Route::post('application/delete-message', 'ApplicationsController@deleteMessage');
 
-    //Bookmarks
+    //Bookmark
     Route::get('my-bookmarks', 'BookmarksController@userBookmarks')->name('my-bookmarks');
-    Route::post('bookmark', 'BookmarksController@store')->name('bookmark');
+    Route::post('bookmark/{job}', 'BookmarksController@store')->name('bookmark.store');
     Route::delete('bookmark', 'BookmarksController@destroy')->name('bookmark-remove');
 
     Route::group(['prefix' => 'account'], function () {

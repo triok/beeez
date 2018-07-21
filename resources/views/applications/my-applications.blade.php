@@ -16,7 +16,7 @@
         @foreach($applications as $application)
             <tr>
                 <td>{{\Carbon\Carbon::parse($application->created_at)->format('d M, Y')}}</td>
-                <td>{{$application->name}}</td>
+                <td>{{$application->job->name}}</td>
                 <td>{!! $application->prettyStatus !!}</td>
                 <td>
                 @if($application->status == config('enums.jobs.statuses.DRAFT'))

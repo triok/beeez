@@ -1,4 +1,3 @@
-{{--{{dd(config('tags.tags'))}}--}}
 @extends('layouts.app')
 @stack('styles')
 @push('styles')

@@ -88,11 +88,14 @@ class Job extends Model
         return $this->hasOne(Application::class, 'job_id', 'id')->where('user_id', Auth::user()->id);
     }
 
-    function bookmarks()
+    function bookmark()
     {
-        return $this->hasMany(Bookmarks::class, 'job_id', 'id');
+        return $this->hasOne(Bookmark::class);
     }
-
+    function bookmarkUser()
+    {
+        return $this->hasOne(Bookmark::class)->where('user_id', auth()->id());
+    }
     function jobCategories()
     {
         return $this->hasMany(JobCategories::class, 'job_id', 'id');
