@@ -21,7 +21,8 @@ class Category extends Model
     }
     public function openJobs()
     {
-        return $this->belongsToMany(Job::class,'job_categories','category_id','job_id','id')->where('status','open');
+        return $this->belongsToMany(Job::class,'job_categories','category_id','job_id','id')
+            ->where('status','open');
     }
 
     public function subcategories()

@@ -8,6 +8,6 @@ class JobObserver
 {
     public function creating(Job $job)
     {
-        $job->user_id = auth()->id();
+        auth()->check() ? $job->user_id = auth()->id() : null;
     }
 }

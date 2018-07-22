@@ -10,7 +10,7 @@
     </h3>
 
     @if(isset($category))
-        <div class="alert bg-info small">{{$category->name}}</div>
+        <div class="alert bg-info small">{{ ucwords($category->name) }}</div>
     @endif
 
     <div class="row current-jobs">
@@ -27,27 +27,45 @@
             <tbody>
 
                 @foreach($jobs as $job)
-                <tr>
-                  <th scope="row" class="job-name"><a href="{{route('jobs.show', $job)}}" id="{{$job->id}}">{{$job->name}}</a></th>
+                <tr class="{!! count($job->applications) > 0 && auth()->check() ? 'in-progress': '' !!}">
+
+                  <th scope="row" class="job-name">
+                      <a href="{{route('jobs.show', $job)}}" id="{{$job->id}}">{{$job->name}}</a>
+                      {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
+
+                  </th>
                   <td>{{ $job->time_for_work }} hr</td>
 
                   <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y') }} <b>{{ \Carbon\Carbon::parse($job->end_date)->format('H:i') }}</b></td>
                   <td>{{ $job->formattedPrice }}</td>
                   <td>
-                      @if(Auth::check() && isset($job->application))
-                        <button id="{{$job->application->id}}" class="btn btn-success btn-sm job-app-status-btn"><i  class="fa fa-briefcase"></i> check status </button>
-                      @else
-                          @if(\Carbon\Carbon::now() <= $job->end_date)
-
-                              <button id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.apply') </button>
+                      {{--{{dd($job->applications)}}--}}
+                      @if(Auth::check())
+                          @if(count($job->applications) > 0)
+                              @if(isset($job->application))
+                                  <button data-id="{{$job->id}}" {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-sm btn-review">
+                                      <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                      @lang('home.complete')
+                                  </button>
+                              @else
+                                  <button disabled class="btn btn-warning btn-sm "><i class="fa fa-history" aria-hidden="true"></i> @lang('home.in_progress') </button>
+                              @endif
                           @else
-                              <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.enddate') </button>
+                              @if(\Carbon\Carbon::now() <= $job->end_date)
+                                  <form action="{{route('jobs.apply', $job)}}" method="post">
+                                      {{csrf_field()}}
+                                      <button class="btn btn-default btn-sm" type="submit"><i class="fa fa-briefcase"></i> @lang('home.apply') </button>
+                                  </form>
+                              @else
+                                  <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.enddate') </button>
+                              @endif
                           @endif
+                      @else
+                          <button id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.apply') </button>
                       @endif
                   </td>
                 </tr>
                 @endforeach
-
             </tbody>
         </table>
         @foreach($jobs as $job)
@@ -251,4 +269,30 @@
     </div>
 </div>
 
+<div class="modal fade" id="completeJobForm" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">You can add some comment or files.</h4>
+            </div>
+
+            <form action="" method="post" enctype="multipart/form-data" id="form-complete">
+                {{csrf_field()}}
+                <div class="modal-body">
+                    <textarea name="message" rows="3" class="form-control" placeholder="Enter an optional message" required></textarea>
+                    <input type="file" multiple name="files[]">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary btn-sm "><i class="fa fa-send"></i> Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@endpush
+@push('scripts')
+    <script src="/js/custom.js"></script>
 @endpush

@@ -9,7 +9,7 @@ Route::group(['middleware' => 'web'], function () {
 
     //Job
     Route::resource('jobs', 'JobController');
-    Route::get('jobs/category/{id}', 'JobController@jobsByCategories')->name('jobs.category');
+    Route::get('jobs/category/{category}', 'JobController@jobsByCategories')->name('jobs.category');
     Route::post('shareJob', 'JobController@shareJob')->name('share-job');
     Route::get('jobsAdmin', 'JobController@jobsAdmin')->name('jobs-admin');
     Route::patch('update-job-status', 'JobController@updateJobStatus')->name('job-status');
@@ -25,13 +25,15 @@ Route::group(['middleware' => 'web'], function () {
 
 
     //Application
-    Route::post('applyJob', 'ApplicationsController@applyJob')->name('apply-job');
+//    Route::post('applyJob', 'ApplicationsController@applyJob')->name('apply-job');
+    Route::post('jobs/{job}/apply', 'ApplicationsController@applyJob')->name('jobs.apply');
     Route::get('job-app-status/{id}', 'ApplicationsController@appStatus');
     Route::post('change-application-status', 'ApplicationsController@changeStatus');
     Route::get('applications', 'ApplicationsController@myApplications')->name('my-applications');
     Route::get('applications/admin','ApplicationsController@applicationsAdmin')->name('applications-admin');
     Route::post('application/post-message', 'ApplicationsController@postMessage');
     Route::post('application/delete-message', 'ApplicationsController@deleteMessage');
+    Route::post('jobs/{job}/review', 'ApplicationsController@review')->name('jobs.review');
 
     //Bookmark
     Route::get('my-bookmarks', 'BookmarksController@userBookmarks')->name('my-bookmarks');

@@ -13,13 +13,15 @@
                     <section class="air-card-divider-sm">
                         <ol class="sands-category list-inline">
                             @foreach($job->categories as $category)
-                                <li><a href="{{route('jobs.category', $category->id)}}" class="category list-inline-item">{{$category->name}}</a></li>
+                                <li><a href="{{route('jobs.category', $category)}}" class="category list-inline-item">{{$category->name}}</a></li>
                             @endforeach
                         </ol>
                         <div class="clearfix"></div>
                         <div class="m-md-top nowrap text-muted">
                             Posted <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> by {{auth()->user()->username}}
                         </div>
+                        {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
+
                     </section>
 
                     <section class="air-card-divider-sm">
@@ -104,24 +106,50 @@
                         <section >
                             <div class="row buttons">
                                 <div class="primary col-lg-12 col-sm-6 col-xs-6">
-                                    @if(isset($job->application))
-                                        <button id="{{$job->application->id}}" class="btn btn-primary btn-block job-app-status-btn" type="button">
-                                            <i class="fa fa-briefcase"></i>
-                                            Check Status
-                                        </button>
-                                    @else
-                                        @if(\Carbon\Carbon::now() <= $job->end_date)
-                                            <button id="{{$job->id}}" class="btn btn-primary btn-block apply-job-btn" type="button">
-                                                <i class="fa fa-briefcase"></i>
-                                                @lang('home.apply')
+                                    @if(count($job->applications) > 0)
+                                        @if(isset($job->application))
+                                            <button data-id="{{$job->id}}" {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-block btn-review">
+                                                <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                                @lang('home.complete')
                                             </button>
                                         @else
-                                            <button disabled id="{{$job->id}}" class="btn btn-primary btn-block apply-job-btn" type="button">
-                                                <i class="fa fa-briefcase"></i>
-                                                @lang('home.enddate')
-                                            </button>
+                                            <button disabled class="btn btn-warning btn-block "><i class="fa fa-history" aria-hidden="true"></i> @lang('home.in_progress') </button>
+
+                                        @endif
+                                    @else
+                                        @if(\Carbon\Carbon::now() <= $job->end_date)
+                                            <form action="{{route('jobs.apply', $job)}}" method="post">
+                                                {{csrf_field()}}
+                                                <button class="btn btn-default btn-block" type="submit"><i class="fa fa-briefcase"></i> @lang('home.apply') </button>
+                                            </form>
+                                        @else
+                                            <button disabled id="{{$job->id}}" class="btn btn-default btn-block apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.enddate') </button>
                                         @endif
                                     @endif
+
+                                    {{--@if(isset($job->application))--}}
+                                        {{--<button id="{{$job->application->id}}" class="btn btn-primary btn-block job-app-status-btn" type="button">--}}
+                                            {{--<i class="fa fa-briefcase"></i>--}}
+                                            {{--Check Status--}}
+                                        {{--</button>--}}
+                                        {{--<button disabled class="btn btn-primary btn-block" type="button">--}}
+                                            {{--<i class="fa fa-history" aria-hidden="true"></i>--}}
+                                            {{--@lang('home.in_progress')--}}
+                                        {{--</button>--}}
+
+                                    {{--@else--}}
+                                        {{--@if(\Carbon\Carbon::now() <= $job->end_date)--}}
+                                            {{--<button id="{{$job->id}}" class="btn btn-primary btn-block apply-job-btn" type="button">--}}
+                                                {{--<i class="fa fa-briefcase"></i>--}}
+                                                {{--@lang('home.apply')--}}
+                                            {{--</button>--}}
+                                        {{--@else--}}
+                                            {{--<button disabled id="{{$job->id}}" class="btn btn-primary btn-block apply-job-btn" type="button">--}}
+                                                {{--<i class="fa fa-briefcase"></i>--}}
+                                                {{--@lang('home.enddate')--}}
+                                            {{--</button>--}}
+                                        {{--@endif--}}
+                                    {{--@endif--}}
 
                                 </div>
                                 <form action="{{route('bookmark.store', $job)}}" method="post">
@@ -213,199 +241,7 @@
 @push('scripts')
     <script src="/js/custom.js"></script>
 @endpush
-@push('styles')
-    <style>
 
-        .p-0-top-bottom {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-        }
-        .m-0-top-bottom {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-        }
-        .air-card {
-            position: relative;
-            background-color: #fff;
-            padding: 30px;
-        }
-        .air-card header, .air-card footer {
-            margin: 0 -30px;
-            padding: 0 30px;
-        }
-        .air-card header {
-            border-bottom: 1px solid #E0E0E0;
-        }
-        .air-card section {
-            border-bottom: 1px solid #E0E0E0;
-            margin: 0 -30px;
-            padding: 20px 30px;
-        }
-        .sands-category > li >  a, .file-list > li > a {
-            color: #37A000;
-            font-weight: 500;
-        }
-        .buttons  a.btn-primary:hover,
-        .buttons  a.btn-primary:focus,
-        .buttons  a.btn-primary:active,
-        .buttons  a.btn-primary.active {
-            color: #fff;
-            background-color: #008329;
-        }
-        .sands-category {
-            list-style: none;
-            padding: 0;
-        }
-        .text-muted {
-            color: #656565 !important;
-        }
-        .nowrap {
-            white-space: nowrap;
-        }
-        .jd-card .content .job-description {
-            overflow-wrap: break-word;
-        }
-        .jd-card .content ul.job-features {
-            list-style: none;
-            margin-right: -10px;
-            display: flex;
-            flex-wrap: wrap;
-            padding-left: 0;
-        }
-        .jd-card .content section>*:last-child {
-            margin-bottom: 0 !important;
-        }
-        .jd-card .content ul.job-features>li {
-            width: 33.33%;
-            position: relative;
-            padding-right: 10px;
-        }
-        .jobdetails-tier-level-icon {
-            speak: none;
-            font-style: normal;
-            font-weight: normal;
-            font-variant: normal;
-            text-transform: none;
-            width: 20px;
-            height: 20px;
-            font-size: 13px;
-            line-height: 20px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-        .jd-card .content ul.job-features>li>i {
-            position: absolute;
-            left: 0;
-            margin-left: 0;
-        }
-        .jd-card .content ul.job-features>li>i.jobdetails-tier-level-icon {
-            letter-spacing: -2px;
-        }
-        .jd-card .content ul.job-features>li strong {
-            display: block;
-        }
-        @media (min-width: 992px){
-            .jd-card>.row>aside {
-                float: right;
-                max-width: 30%;
-            }
-        }
-        .jd-card .sidebar-actions {
-            order: 1;
-        }
-        @media (min-width: 992px) {
-            .jd-card .sidebar-actions {
-                float: right;
-                margin-bottom: 0;
-                padding-bottom: 0;
-            }
-        }
-        @media (min-width: 992px) {
-            .jd-card .sidebar-actions .sidebar {
-                padding: 30px 30px 0 0;
-            }
-        }
-        @media (min-width: 992px) {
-            .jd-card>.row>aside:first-of-type>.sidebar>section:first-child {
-                border-top: 0;
-                padding-top: 30px;
-                padding-bottom: 30px;
-            }
-        }
-        .jd-card .sidebar-actions .sidebar section:first-child {
-            padding-top: 0;
-        }
-        .air-card section:last-child {
-            border-bottom: none;
-        }
-        .air-card section {
-            border-bottom: 1px solid #E0E0E0;
-            margin: 0 -30px;
-            padding: 20px 30px;
-        }
-        .jd-card .sidebar-actions .row.buttons {
-            margin-left: -7.5px;
-            margin-right: -7.5px;
-        }
-        .jd-card .sidebar-actions .btn {
-            margin: 0 0 15px 0;
-        }
-        .air-card section .btn-primary {
-            color: #fff;
-            background-color: #37A000;
-            border-color: transparent;
-        }
-        .o-tag-skill {
-            cursor: pointer;
-            font-weight: normal;
-            margin: 0 6px 10px 0;
-
-        }
-        .m-xs-bottom {
-            margin-bottom: 5px !important;
-        }
-        .o-tag-skill, .tokenizer-wrapper>.tokenizer-token-list {
-            background-color: #E0E0E0;
-            border-radius: 4px;
-            color: #222;
-            font-size: 12px;
-            display: inline-block;
-            cursor: default;
-            padding: 5px 10px;
-            line-height: 1;
-        }
-        .o-tag-skill:hover, .o-tag-skill:active {
-            background-color: #008329;
-            color: #fff;
-        }
-        .tag-list {
-            display: block;
-        }
-        .m-sm-right {
-            margin-right: 10px !important;
-        }
-        section.other-jobs a {
-            color: #37A000;
-        }
-        section.other-jobs a.delete {
-            color: red;
-        }
-        .delete-form {
-            display: inline-block;
-        }
-        .delete-form button {
-            border: none;
-            background: no-repeat;
-            color: red;
-        }
-        .delete-form button:hover {
-            text-decoration: underline;
-        }
-
-    </style>
-@endpush
 @push('modals')
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel">
@@ -498,6 +334,29 @@
                     <button class="btn btn-primary btn-sm">Send</button>
                 </div>
                 {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="completeJobForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">You can add some comment or files.</h4>
+                </div>
+
+                <form action="" method="post" enctype="multipart/form-data" id="form-complete">
+                    {{csrf_field()}}
+                    <div class="modal-body">
+                        <textarea name="message" rows="3" class="form-control" placeholder="Enter an optional message" required></textarea>
+                        <input type="file" multiple name="files[]">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary btn-sm "><i class="fa fa-send"></i> Send</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

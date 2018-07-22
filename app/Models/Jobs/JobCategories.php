@@ -9,19 +9,23 @@ class JobCategories extends Model
     /**
      * @var array
      */
-    protected $fillable=['category_id','job_id'];
+//    protected $fillable=['category_id','job_id'];
+
+    protected $guarded = ['id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    function jobs(){
-        return $this->belongsTo(\App\Models\Jobs\Job::class,'job_id','id');
+    function jobs()
+    {
+        return $this->belongsTo(Job::class,'job_id','id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    function categories(){
-        return $this->belongsToMany(\App\Models\Jobs\Category::class,'categor_id','id');
+    function categories()
+    {
+        return $this->belongsToMany(Category::class,'categor_id','id');
     }
 }

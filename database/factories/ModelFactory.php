@@ -41,7 +41,7 @@ $factory->define(Job::class, function (Faker\Generator $faker) {
         'instructions'        => $faker->sentence,
         'access'              => $faker->text(10),
         'end_date'            => Carbon::now()->addDays(rand(1,5)),
-        'user_id'             => create(User::class)->id,
+        'user_id'             => User::query()->exists() ? $faker->randomElement(User::query()->pluck('id')->toArray()) : create(User::class)->id,
         'price'               => $faker->randomNumber(2),
         'difficulty_level_id' => create(DifficultyLevel::class)->id,
         'time_for_work'       => random_int(1, 3),

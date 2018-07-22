@@ -163,7 +163,7 @@
                     @foreach(\App\Queries\CategoryQuery::onlyParent()->orderBy('cat_order','ASC')->get() as $cat)
                         <li>
                             <div style="display: flex; justify-content: space-between;"> 
-                             <a href="/jobs/category/{{$cat->id}}">{{ucwords($cat->name)}}</a>
+                             <a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->name)}}</a>
                             <i class="fa fa-plus" data-toggle="collapse" data-target="#navbarToggler{{$cat->id}}" aria-controls="navbarToggler" aria-expanded="true" aria-label="Toggle navigation" style="display: block;"></i>
                             </div>
 

@@ -19,6 +19,8 @@ return [
     'price'             => 'Price',
     'work'              => 'Work!',
     'apply'             => 'Apply',
-    'enddate'           => 'Expired'
+    'enddate'           => 'Expired',
+    'in_progress'       => 'In progress',
+    'complete'          => 'Complete',
 
 ];

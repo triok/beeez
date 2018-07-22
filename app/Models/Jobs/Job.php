@@ -85,7 +85,7 @@ class Job extends Model
 
     function application()
     {
-        return $this->hasOne(Application::class, 'job_id', 'id')->where('user_id', Auth::user()->id);
+        return $this->hasOne(Application::class, 'job_id', 'id')->where('user_id', auth()->id());
     }
 
     function bookmark()
@@ -149,6 +149,11 @@ class Job extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @param $query
+     * @param QueryFilter $filters
+     * @return Builder
+     */
     public function scopeFilter($query, QueryFilter $filters)
     {
         return $filters->apply($query);

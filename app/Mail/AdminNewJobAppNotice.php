@@ -15,10 +15,12 @@ class AdminNewJobAppNotice extends Mailable
 
     public $job;
     public $applicant;
+
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param Job $job
+     * @param Application $applicant
      */
     public function __construct(Job $job, Application $applicant)
     {
