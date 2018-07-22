@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\JobFilters;
 use App\Http\Requests\StoreJobRequest;
 use App\Jobs\AddApplicationsJob;
 use App\Jobs\AddCategoriesJob;
@@ -47,19 +48,15 @@ class JobController extends Controller
 
     }
 
-    public function index()
+    public function index(JobFilters $filters)
     {
-        if (request()->has('tag')) {
-            /** @var Job $jobs */
-            $jobs = JobQuery::onlyOpen()->whereHas('tag' , function($query) {
-                $query->where('value', request()->tag);
-            })
-            ->with('tag')
-            ->paginate(20);
+        $jobs = Job::filter($filters)->whereNotIn('status', [config('enums.jobs.statuses.DRAFT')])
+            ->paginate(request('count', 20));
 
-            return view('home', ['jobs' => count($jobs) > 0 ? $jobs : Job::query()->paginate(20),
-                'title' => 'All jobs with tag: '. request()->tag ]);
-        }
+        $title =  count($jobs) > 0 ? 'All jobs with tag: '. request()->tag : null;
+
+        return view('home', ['jobs' => count($jobs) > 0 ? $jobs : Job::query()->paginate(request('count', 20)),
+                'title' => $title ]);
     }
 
     /**
@@ -134,13 +131,12 @@ class JobController extends Controller
     }
 
     /**
-     * @param $id
+     * @param Category $category
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    function jobsByCategories($id)
+    function jobsByCategories(Category $category)
     {
-        $category = Category::find($id);
-        $jobs = $category->openJobs()->paginate(20);
+        $jobs = $category->jobs()->whereNotIn('status', [config('enums.jobs.statuses.DRAFT')])->paginate(20);
 
         $title = 'Job under ' . ucwords($category->name) . ' category';
         return view('home', compact('jobs', 'category', 'title'));

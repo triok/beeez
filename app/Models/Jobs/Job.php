@@ -2,6 +2,7 @@
 
 namespace App\Models\Jobs;
 
+use App\Filters\QueryFilter;
 use App\Http\Controllers\Interfaces\MorphTo;
 use App\Http\Controllers\Traits\Commentable;
 use App\Models\File;
@@ -84,7 +85,7 @@ class Job extends Model
 
     function application()
     {
-        return $this->hasOne(Application::class, 'job_id', 'id')->where('user_id', Auth::user()->id);
+        return $this->hasOne(Application::class, 'job_id', 'id')->where('user_id', auth()->id());
     }
 
     function bookmark()
@@ -146,6 +147,16 @@ class Job extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @param $query
+     * @param QueryFilter $filters
+     * @return Builder
+     */
+    public function scopeFilter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
     }
 
 

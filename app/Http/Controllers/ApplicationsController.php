@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Mail\AdminNewJobAppNotice;
 use App\Mail\ApplicationConversationNotice;
+use App\Mail\NewCommentMail;
 use App\Mail\NotifyUserAppStatus;
+use App\Mail\TaskReview;
+use App\Mail\UserTaskReview;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\conversations;
 use App\Models\Jobs\Job;
@@ -47,47 +50,86 @@ class ApplicationsController extends Controller
         return view('applications.admin', compact('applications'));
     }
 
+    public function review(Job $job)
+    {
+        if ($job->status == config('enums.jobs.statuses.IN_REVIEW')) return redirect()->back();
+
+        $job->application()->update(['status' => config('enums.jobs.statuses.IN_REVIEW')]);
+        $job->update(['status' => config('enums.jobs.statuses.IN_REVIEW')]);
+
+        try {
+            Mail::to($job->user->email, $job->user->name)->send(new TaskReview($job, auth()->user()));
+            flash()->success('Your task was successfully submitted for review');
+
+        } catch (Exception $e) {
+            flash()->error('The task is sent for review, but we have problems with notifying about work plans. Please contact them directly.');
+        }
+
+        return redirect()->back();
+    }
+
     /**
-     * @param Request $request
+     * @param Job $job
      * @return null|void
      */
-    function applyJob(Request $request)
+    function applyJob(Job $job)
     {
-        if ($request->ajax()) {
-            $rules = [
-                'job_id' => 'required',
-            ];
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                $msg = 'Please try again!';
-                $status = 'error';
-                echo json_encode(['status' => $status, 'message' => $msg]);
-                return;
-            }
-            $job = Job::find($request->job_id);
+        if (Carbon::now() > $job->end_date || $job->application()->exists()) return;
 
-            if (Carbon::now() > $job->end_date) {
-                echo json_encode(['status' => 'error', 'message' => 'job is closed']);
-                return;
-            }
+        $applicant = Application::query()->create([
+            'user_id'   => auth()->id(),
+            'job_id'    => $job->id,
+            'deadline'  => $job->end_date,
+            'job_price' => $job->price,
+            'status'    => config('enums.applications.statuses.IN_PROGRESS')
+        ]);
 
-            $applicant = new Application();
-            $applicant->job_id = $request->job_id;
-            $applicant->user_id = Auth::user()->id;
-            $applicant->remarks = $request->remarks;
-            $applicant->status = 'pending';
-            $applicant->job_price = $job->price;
-            $applicant->save();
+        $job->update(['status' => config('enums.applications.statuses.IN_PROGRESS')]);
 
-
-            try {
-                Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));
-            } catch (Exception $e) {
-                echo json_encode(['status' => 'success', 'message' => 'Application has been saved but we had trouble notifying job poster. Please contact them directly.']);
-                return null;
-            }
-            echo json_encode(['status' => 'success', 'message' => 'Application has been sent successfully']);
+        try {
+            Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));
+            flash()->success('Application has been sent successfully!');
+        } catch (Exception $e) {
+            flash()->error('Application has been saved but we had trouble notifying job poster. Please contact them directly.');
         }
+
+        return redirect()->back();
+
+//        if ($request->ajax()) {
+//            $rules = [
+//                'job_id' => 'required',
+//            ];
+//            $validator = Validator::make($request->all(), $rules);
+//            if ($validator->fails()) {
+//                $msg = 'Please try again!';
+//                $status = 'error';
+//                echo json_encode(['status' => $status, 'message' => $msg]);
+//                return;
+//            }
+//            $job = Job::find($request->job_id);
+//
+//            if (Carbon::now() > $job->end_date) {
+//                echo json_encode(['status' => 'error', 'message' => 'job is closed']);
+//                return;
+//            }
+//
+//            $applicant = new Application();
+//            $applicant->job_id = $request->job_id;
+//            $applicant->user_id = Auth::user()->id;
+//            $applicant->remarks = $request->remarks;
+//            $applicant->status = 'pending';
+//            $applicant->job_price = $job->price;
+//            $applicant->save();
+//
+//
+//            try {
+//                Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));
+//            } catch (Exception $e) {
+//                echo json_encode(['status' => 'success', 'message' => 'Application has been saved but we had trouble notifying job poster. Please contact them directly.']);
+//                return null;
+//            }
+//            echo json_encode(['status' => 'success', 'message' => 'Application has been sent successfully']);
+//        }
     }
     /**
      * @param $id
@@ -107,7 +149,7 @@ class ApplicationsController extends Controller
     function myApplications()
     {
 //        $applications = JobQuery::allForUser()->paginate(request('count', 15));
-        $applications = Auth::user()->applications()->where('status','!=','complete')->paginate(request('count', 15));
+        $applications = Auth::user()->applications()->where('status','!=','complete')->with('job')->paginate(request('count', 15));
         return view('applications.my-applications', compact('applications'));
     }
 

@@ -24,7 +24,7 @@ class CreateJobsTable extends Migration
             $table->float('price')->default('0.00');
             $table->integer('difficulty_level_id',false,true)->nullable();
             $table->integer('time_for_work')->default('1');
-            $table->string('status',10)->default('open'); //open, closed, draft
+            $table->string('status',100)->default('open'); //open, closed, draft
             $table->integer('parent_id', false, true)->nullable();
 
             $table->softDeletes();

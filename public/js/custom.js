@@ -30,11 +30,24 @@ window.onload = function(){
     });
 
     $(document).on('click', '.delete', deleteTask);
+    $(document).on('click', '.delete', deleteTask);
+    $(document).on('click', '.btn-review', completeJob);
+
+    $('#form-complete').submit(function(e) {
+        e.preventDefault();
+
+        if (confirm('Are you sure?')) {
+            $(this).unbind('submit').submit();
+
+        }
+        return false;
+
+
+    });
 
 };
 
-function removeSubTask()
-{
+function removeSubTask() {
     var subTasks = $('.sub-tasks').find('.sub-item');
 
     if (subTasks.length <= 1) return false;
@@ -89,9 +102,7 @@ function addSubTask() {
 
     });
 }
-
-function addComment()
-{
+function addComment() {
     parent = $(this).closest('.media');
     $('#parent').val(parent.attr('data-id'));
     author = parent.find('.author').first().text();
@@ -105,5 +116,12 @@ function addComment()
     document.getElementById("body").focus();
 
 }
+function completeJob() {
+    var id = parseInt($(this).attr('data-id'));
+    var container = $('#completeJobForm');
 
+    container.find('form').attr('action', '/jobs/'+ id +'/review');
+    container.modal({ backdrop: 'static', keyboard: false, 'show': true });
+
+}
 
