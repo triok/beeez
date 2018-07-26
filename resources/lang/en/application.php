@@ -14,7 +14,9 @@ return [
     // Header
     'title'       => 'My applications',
     'date'        => 'Date',
+    'enddate'     => 'End date',    
     'job'         => 'Name',
-    'status'       => 'Status',
+    'status'      => 'Status',
+    'nojobs'      => 'No current jobs yet.',
 
 ];

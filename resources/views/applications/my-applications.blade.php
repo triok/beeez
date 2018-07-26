@@ -1,10 +1,12 @@
 @extends('layouts.app')
 @section('content')
     <h2>@lang('application.title')</h2>
+    @if (count($applications) > 0)
     <table class="table table-responsive">
         <thead>
         <tr>
             <td>@lang('application.date')</td>
+            <td>@lang('application.enddate')</td>            
             <td>@lang('application.job')</td>
             {{--<td>Offer</td>--}}
             <td>@lang('application.status')</td>
@@ -17,7 +19,8 @@
         @foreach($applications as $application)
             <tr>
                 <td>{{\Carbon\Carbon::parse($application->created_at)->format('d M, Y')}}</td>
-                <td>{{$application->job->name}}</td>
+                <td>{{\Carbon\Carbon::parse($application->job->end_date)->format('d M, Y, H:i')}}</td>                
+                <td><a href="{{route('jobs.show', $application->job)}}" id="{{$application->job->id}}">{{$application->job->name}}</a></td>
                 <td>{!! $application->status == config('enums.jobs.statuses.IN_REVIEW') ? '<p class="label label-danger">Your task is under review</p>' : $application->prettyStatus !!}</td>
                 <td>
                     <button data-id="{{$application->job->id}}" {!! $application->job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-sm btn-review">
@@ -61,6 +64,9 @@
         @endforeach
         </tbody>
     </table>
+    @else
+    @lang('application.nojobs')
+    @endif
     {!! $applications->links() !!}
 @endsection
 

@@ -5,6 +5,7 @@ return [
     'jobs' => [
         'statuses' => [
             'OPEN'        => 'open',
+            'PRIVATE'     => 'private',            
             'CLOSED'      => 'closed',
             'DRAFT'       => 'draft',
             'COMPLETE'    => 'complete',
@@ -15,6 +16,7 @@ return [
     'applications' => [
         'statuses'        => [
             'OPEN'        => 'open',
+            'PRIVATE'     => 'private',
             'CLOSED'      => 'closed',
             'DRAFT'       => 'draft',
             'COMPLETE'    => 'complete',

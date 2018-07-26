@@ -27,6 +27,7 @@
             <tbody>
 
                 @foreach($jobs as $job)
+
                 <tr class="{!! count($job->applications) > 0 && auth()->check() ? 'in-progress': '' !!}">
 
                   <th scope="row" class="job-name">
@@ -35,6 +36,11 @@
 
                   </th>
                   <td>{{ $job->time_for_work }} hr</td>
+
+                <tr>
+                  <th scope="row" class="job-name"><a href="{{route('jobs.show', $job)}}" id="{{$job->id}}">{{$job->name}}</a></th>
+                  <td>{{ $job->time_for_work }} @lang('home.hours')</td>
+
 
                   <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y') }} <b>{{ \Carbon\Carbon::parse($job->end_date)->format('H:i') }}</b></td>
                   <td>{{ $job->formattedPrice }}</td>

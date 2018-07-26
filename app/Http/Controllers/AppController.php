@@ -11,7 +11,7 @@ class AppController extends Controller
     {
         /** @var Job $jobs */
         $jobs = Job::filter($filters)
-            ->whereNotIn('status', [config('enums.jobs.statuses.DRAFT')])
+            ->whereNotIn('status', [config('enums.jobs.statuses.DRAFT'), config('enums.jobs.statuses.PRIVATE')])
             ->orderBy('created_at', 'desc')
             ->paginate(request('count', 20));
 

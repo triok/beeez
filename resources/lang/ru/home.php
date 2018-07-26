@@ -22,5 +22,6 @@ return [
     'enddate'           => 'Просрочено',
     'in_progress'       => 'В работе',
     'complete'          => 'Завершить',
+    'hours'             => 'ч',
 
 ];

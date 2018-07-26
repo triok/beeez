@@ -26,8 +26,8 @@
                 <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i')}}</td>
                 <td>{{$job->formattedPrice}}</td>
                 <td>{{$job->difficulty->name}}</td>
-                <td><a href="/jobs/{{$job->id}}">{{count($job->applications)}}</a></td>
-                <td>{{count($job->bookmarks)}}</td>
+                <td><a href="/jobs/{{$job->id}}">{{ $job->applications }}</a></td>
+                <td>{{ $job->bookmarks }}</td>
                 <td>
                     <a href="/jobs/{{$job->id}}/edit"><i class="fa fa-pencil btn btn-xs btn-default edit-job"></i></a>
                     <i class="fa fa-trash btn btn-xs btn-danger delete-job" id="{{$job->id}}"></i>

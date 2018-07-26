@@ -22,5 +22,6 @@ return [
     'enddate'           => 'Expired',
     'in_progress'       => 'In progress',
     'complete'          => 'Complete',
+    'hours'             => 'hr',
 
 ];

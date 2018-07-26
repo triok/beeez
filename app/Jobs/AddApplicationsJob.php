@@ -26,7 +26,7 @@ class AddApplicationsJob implements ShouldQueue
 
         $this->job->applications()->create([
             'user_id'   => request()->user,
-            'status'    => 'pending',
+            'status'    => 'private',
             'job_price' => request()->price
         ]);
 

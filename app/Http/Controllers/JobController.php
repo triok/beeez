@@ -136,7 +136,7 @@ class JobController extends Controller
      */
     function jobsByCategories(Category $category)
     {
-        $jobs = $category->jobs()->whereNotIn('status', [config('enums.jobs.statuses.DRAFT')])->paginate(20);
+        $jobs = $category->jobs()->whereNotIn('status', [config('enums.jobs.statuses.DRAFT'), config('enums.jobs.statuses.PRIVATE')])->paginate(20);
 
         $title = 'Job under ' . ucwords($category->name) . ' category';
         return view('home', compact('jobs', 'category', 'title'));
@@ -208,6 +208,10 @@ class JobController extends Controller
 
         if ($request->has('draft')) {
             $job->update(['status' => config('enums.jobs.statuses.DRAFT')]);
+        }
+
+        if ($request->has('user')) {
+            $job->update(['status' => config('enums.jobs.statuses.PRIVATE')]);
         }
 
         flash()->success('Job has been posted!');

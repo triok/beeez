@@ -44,7 +44,7 @@ class AuthController extends Controller
 
         if (request()->ajax()) {
             $module = Modules::find($module_id);
-            $levels = ['create', 'read', 'update', 'delete'];
+            $levels = ['createa', 'read', 'update', 'delete'];
             $rolePerms = array();
             foreach ($levels as $level) {
                 $perm = Permission::where('name', $level . '-' . $module->name)->first();
@@ -76,7 +76,7 @@ class AuthController extends Controller
             $perms = $request->permissions;
             if (is_array($perms)) {
                 //flush all permissions for this module
-                $ps = ['create', 'update', 'read', 'delete'];
+                $ps = ['createa', 'update', 'read', 'delete'];
                 foreach ($ps as $p) {
                     $permission = $p . '-' . $module->name;
                     $res = Permission::firstOrCreate(['name' => $permission, 'display_name' => ucwords($p) . ' ' . ucwords($module->name)]);
