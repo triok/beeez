@@ -22,6 +22,7 @@ return [
     'enddate'           => 'Просрочено',
     'in_progress'       => 'В работе',
     'complete'          => 'Завершить',
+    'add_rating'         => 'Добавить отзыв',
     'hours'             => 'ч',
 
 ];

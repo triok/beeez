@@ -8,6 +8,7 @@ use App\Mail\NewCommentMail;
 use App\Mail\NotifyUserAppStatus;
 use App\Mail\TaskReview;
 use App\Mail\UserTaskReview;
+use App\Models\Comment;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\conversations;
 use App\Models\Jobs\Job;
@@ -68,6 +69,73 @@ class ApplicationsController extends Controller
         return redirect()->back();
     }
 
+    public function rating(Job $job)
+    {
+        if($application = $job->applications()->first()) {
+            if (auth()->user()->id == $job->user_id) {
+                if ($job->status != config('enums.jobs.statuses.IN_REVIEW')) {
+                    flash()->error('Your do not have an access to add comments for this job.');
+
+                    return redirect()->back();
+                }
+
+                $this->addRatingForUser($application->user_id);
+
+                $application->update(['status' => config('enums.jobs.statuses.COMPLETE')]);
+                $job->update(['status' => config('enums.jobs.statuses.COMPLETE')]);
+
+                return redirect()->back();
+            }
+
+            if (auth()->user()->id == $application->user_id) {
+                if ($job->status != config('enums.jobs.statuses.COMPLETE')) {
+                    flash()->error('Your do not have an access to add comments for this job.');
+
+                    return redirect()->back();
+                }
+
+                $this->addRatingForUser($job->user_id);
+
+                $application->update(['status' => config('enums.jobs.statuses.CLOSED')]);
+                $job->update(['status' => config('enums.jobs.statuses.CLOSED')]);
+
+                return redirect()->back();
+            }
+        }
+
+        flash()->error('Your do not have an access to add comments for this job.');
+
+        return redirect()->back();
+    }
+
+    protected function addRatingForUser($commentable_id)
+    {
+        $user = User::find($commentable_id);
+
+        $rating = (in_array(request()->rating, ['negative', 'positive']) ? request()->rating : null);
+
+        if ($rating == 'negative') {
+            $user->rating_negative++;
+        }
+
+        if ($rating == 'positive') {
+            $user->rating_positive++;
+        }
+
+        $user->save();
+
+        Comment::query()->create([
+            'commentable_id' => $commentable_id,
+            'commentable_type' => User::class,
+            'body' => request()->message,
+            'rating' => $rating,
+            'author_id' => auth()->id(),
+            'author_type' => User::class,
+        ]);
+
+        flash()->success('Your comment was successfully added.');
+    }
+
     /**
      * @param Job $job
      * @return null|void
@@ -77,11 +145,11 @@ class ApplicationsController extends Controller
         if (Carbon::now() > $job->end_date || $job->application()->exists()) return;
 
         $applicant = Application::query()->create([
-            'user_id'   => auth()->id(),
-            'job_id'    => $job->id,
-            'deadline'  => $job->end_date,
+            'user_id' => auth()->id(),
+            'job_id' => $job->id,
+            'deadline' => $job->end_date,
             'job_price' => $job->price,
-            'status'    => config('enums.applications.statuses.IN_PROGRESS')
+            'status' => config('enums.applications.statuses.IN_PROGRESS')
         ]);
 
         $job->update(['status' => config('enums.applications.statuses.IN_PROGRESS')]);
@@ -131,6 +199,7 @@ class ApplicationsController extends Controller
 //            echo json_encode(['status' => 'success', 'message' => 'Application has been sent successfully']);
 //        }
     }
+
     /**
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -149,7 +218,7 @@ class ApplicationsController extends Controller
     function myApplications()
     {
 //        $applications = JobQuery::allForUser()->paginate(request('count', 15));
-        $applications = Auth::user()->applications()->where('status','!=','complete')->with('job')->paginate(request('count', 15));
+        $applications = Auth::user()->applications()->where('status', '!=', 'complete')->with('job')->paginate(request('count', 15));
         return view('applications.my-applications', compact('applications'));
     }
 

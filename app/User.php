@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Http\Controllers\Traits\Avatarable;
+use App\Http\Controllers\Traits\Commentable;
 use App\Http\Controllers\Traits\Imageable;
 use App\Models\Billing\Stripe;
 use App\Models\Image;
@@ -19,7 +20,7 @@ use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
-    use LaratrustUserTrait, Notifiable, Avatarable;
+    use LaratrustUserTrait, Notifiable, Avatarable, Commentable;
 
     protected $guarded = ['id'];
     protected $links;

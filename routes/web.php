@@ -34,6 +34,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('application/post-message', 'ApplicationsController@postMessage');
     Route::post('application/delete-message', 'ApplicationsController@deleteMessage');
     Route::post('jobs/{job}/review', 'ApplicationsController@review')->name('jobs.review');
+    Route::post('jobs/{job}/rating', 'ApplicationsController@rating')->name('jobs.rating');
 
     //Bookmark
     Route::get('my-bookmarks', 'BookmarksController@userBookmarks')->name('my-bookmarks');
