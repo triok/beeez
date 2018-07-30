@@ -27,6 +27,27 @@ class PeopleController extends Controller
         return  view('admin.peoples-show', compact('user'));
     }
 
+//    public function update(UpdateUserRequest $request, User $user)
+//    {
+//        // TODO this place
+//        if (isset($request->avatar)) {
+//
+//            $file = request()->file('avatar');
+//            $name = time().$file->getClientOriginalName();
+////            request()->file->storeAs('/public/jobs/upload', $name);
+//            $request['avatar'] = $name;
+//
+//        }
+//        dd($request->all());
+//
+//        $user->update($request);
+//
+//
+//        flash()->success('Avatar success updated!');
+//
+//        return redirect()->back();
+//    }
+
     public function updateAvatar(User $user)
     {
         $this->validate(request(), ['avatar' => 'required|image|mimes:jpeg,jpg,png,gif']);

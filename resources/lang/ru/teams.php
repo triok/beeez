@@ -12,9 +12,6 @@ return [
     |
     */
     
-    'title'       => 'Peoples',
-    'name'        => 'Name',
-    'login'       => 'Login',
-    'search'      => 'Enter login...',
+    'title'       => 'Команды',
 
 ];

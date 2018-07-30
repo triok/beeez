@@ -13,12 +13,12 @@
                     <section class="air-card-divider-sm">
                         <ol class="sands-category list-inline">
                             @foreach($job->categories as $category)
-                                <li><a href="{{route('jobs.category', $category)}}" class="category list-inline-item">{{$category->name}}</a></li>
+                                <li><span>@lang('show.category')</span><a href="{{route('jobs.category', $category)}}" class="category list-inline-item"> {{$category->name}}</a></li>
                             @endforeach
                         </ol>
                         <div class="clearfix"></div>
                         <div class="m-md-top nowrap text-muted">
-                            Posted <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> by {{$job->user->username}}
+                            @lang('show.posted') <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> @lang('show.by') {{auth()->user()->username}}
                             (<span class="text-success">{{$job->user->rating_positive}}</span>/<span class="text-danger">{{$job->user->rating_negative}}</span>)
                         </div>
                         {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
@@ -26,13 +26,13 @@
                     </section>
 
                     <section class="air-card-divider-sm">
-                        <label>Description:</label>
+                        <label>@lang('show.description')</label>
                         <div class="job-description">
                             {!! $job->desc !!}
                         </div>
                     </section>
                     <section class="air-card-divider-sm">
-                        <label>Instruction:</label>
+                        <label>@lang('show.instruction')</label>
                         <div class="job-description">
                             {!! $job->instructions !!}
                         </div>
@@ -42,16 +42,16 @@
                         <ul class="job-features">
                             <li>
                                 <strong><i class="fa fa-usd" aria-hidden="true"></i> {{$job->price}}</strong>
-                                <small class="text-muted">Fixed-price</small>
+                                <small class="text-muted">@lang('show.fixedprice')</small>
                             </li>
                             <li>
                                 <strong><i class="fa fa-eye"></i> {{$job->getViews()}}</strong>
-                                <small class="text-muted">Viewed</small>
+                                <small class="text-muted">@lang('show.viewed')</small>
                             </li>
                             @if(isset($job->tag))
                             <li>
                                 <strong><i class="fa fa-tag" aria-hidden="true"></i> <a href="{{route('jobs.index')}}?tag={{$job->tag->value}}" class="text-muted">{{$job->tag->value}}</a></strong>
-                                <small class="text-muted">Tag</small>
+                                <small class="text-muted">@lang('show.tag')</small>
                             </li>
                             @endif
                         </ul>
@@ -59,19 +59,19 @@
                     <section class="air-card-divider-sm">
                         <ul class="list-unstyled">
                             <li>
-                                <strong class="m-sm-right">Job Status:</strong><span class="label label-default">{{$job->status}}</span>
+                                <strong class="m-sm-right">@lang('show.status')</strong><span class="label label-default">{{$job->status}}</span>
                             </li>
                             <li>
                                 <strong class="m-sm-right">Job Access:</strong><span>{{$job->access}}</span>
                             </li>
                             <li>
-                                <strong class="m-sm-right">Ends:</strong><span><i class="fa fa-clock-o" aria-hidden="true"></i> {{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i') }}</span>
+                                <strong class="m-sm-right">@lang('show.enddate')</strong><span><i class="fa fa-clock-o" aria-hidden="true"></i> {{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i') }}</span>
                             </li>
                             <li>
-                                <strong class="m-sm-right">Difficulty:</strong><span class="label label-default"> {{ $job->difficulty->name }}</span>
+                                <strong class="m-sm-right">@lang('show.difficulty')</strong><span class="label label-default"> {{ $job->difficulty->name }}</span>
                             </li>
                             <li>
-                                <strong class="m-sm-right">Time for work:</strong><span> {{ $job->time_for_work }} {{ $job->time_for_work == 1 ? 'hour' : 'hours' }}</span>
+                                <strong class="m-sm-right">@lang('show.timefor')</strong><span> {{ $job->time_for_work }} {{ $job->time_for_work == 1 ? 'hour' : 'hours' }}</span>
                             </li>
                         </ul>
                     </section>
@@ -176,18 +176,26 @@
                                 <form action="{{route('bookmark.store', $job)}}" method="post">
                                     {{csrf_field()}}
                                     <div class=" col-lg-12 col-sm-6 col-xs-6">
-                                        <button class="btn btn-danger btn-block" type="submit">
+                                        <button class="btn btn-info btn-block" type="submit">
                                             <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                            {{!isset($job->bookmarkUser) ? 'Save Job' : 'Saved'}}
+                                            <?php if (!isset($job->bookmarkUser)) { ?>
+                                                @lang('show.save')
+                                            <?php } else { ?> 
+                                                @lang('show.saved')                                                
+                                            <?php } ?>
                                         </button>
                                     </div>
                                 </form>
-                                <div class=" col-lg-12 col-sm-6 col-xs-6">
+                                <div class="col-lg-12 col-sm-6 col-xs-6">
                                     <button id="{{$job->id}}" data-title="{{$job->name}}" class="btn btn-success btn-block share-job-btn">
-                                        <i class="fa fa-share" aria-hidden="true"></i> Share Job
+                                        <i class="fa fa-share" aria-hidden="true"></i> @lang('show.share')
                                     </button>
                                 </div>
-
+                                <div class="col-lg-12 col-sm-6 col-xs-6">
+                                    <button id="{{$job->id}}" data-title="{{$job->name}}" class="btn btn-danger btn-block share-job-btn">
+                                        <i class="fa fa-warning" aria-hidden="true"></i> @lang('show.complain')
+                                    </button>
+                                </div>
                             </div>
                         </section>
                     </div>

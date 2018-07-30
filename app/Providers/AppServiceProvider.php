@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::share('_skills', $_skills);
         View::share('_categories', $_categories);
-        View::share('_difficultyLevels', $_difficultyLevels);
+       View::share('_difficultyLevels', $_difficultyLevels);
     }
 
     public function register()

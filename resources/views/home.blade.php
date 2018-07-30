@@ -35,12 +35,7 @@
                       {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
 
                   </th>
-                  <td>{{ $job->time_for_work }} hr</td>
-
-                <tr>
-                  <th scope="row" class="job-name"><a href="{{route('jobs.show', $job)}}" id="{{$job->id}}">{{$job->name}}</a></th>
                   <td>{{ $job->time_for_work }} @lang('home.hours')</td>
-
 
                   <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y') }} <b>{{ \Carbon\Carbon::parse($job->end_date)->format('H:i') }}</b></td>
                   <td>{{ $job->formattedPrice }}</td>

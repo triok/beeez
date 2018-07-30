@@ -98,7 +98,7 @@
 
                         
                         <li><a href="{{route('peoples.index')}}"><i class="fa fa-id-card-o"></i> @lang('peoples.title')</a></li>
-                        
+                        <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>                        
 
                         @permission('read-payouts')
                         <li><a href="/payouts"><i class="fa fa-money"></i> Payouts</a></li>
