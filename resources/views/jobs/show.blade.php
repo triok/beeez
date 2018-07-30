@@ -18,7 +18,8 @@
                         </ol>
                         <div class="clearfix"></div>
                         <div class="m-md-top nowrap text-muted">
-                            Posted <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> by {{auth()->user()->username}}
+                            Posted <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> by {{$job->user->username}}
+                            (<span class="text-success">{{$job->user->rating_positive}}</span>/<span class="text-danger">{{$job->user->rating_negative}}</span>)
                         </div>
                         {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
 
@@ -107,15 +108,35 @@
                             <div class="row buttons">
                                 <div class="primary col-lg-12 col-sm-6 col-xs-6">
                                     @if(count($job->applications) > 0)
-                                        @if(isset($job->application))
-                                            <button data-id="{{$job->id}}" {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-block btn-review">
-                                                <i class="fa fa-handshake-o" aria-hidden="true"></i>
-                                                @lang('home.complete')
-                                            </button>
-                                        @else
-                                            <button disabled class="btn btn-warning btn-block "><i class="fa fa-history" aria-hidden="true"></i> @lang('home.in_progress') </button>
-
+                                        @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
+                                            @if(isset($job->application))
+                                                <button data-id="{{$job->id}}" {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-block btn-review">
+                                                    <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                                    @lang('home.complete')
+                                                </button>
+                                            @else
+                                                <button disabled class="btn btn-warning btn-block "><i class="fa fa-history" aria-hidden="true"></i> @lang('home.in_progress') </button>
+                                            @endif
                                         @endif
+
+                                        @if (isset($job->application) && auth()->user()->id == $job->application->user_id)
+                                            @if ($job->status == config('enums.jobs.statuses.COMPLETE'))
+                                                <button data-id="{{$job->id}}" class="btn btn-primary btn-block btn-rating" type="button">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    @lang('home.add_rating')
+                                                </button>
+                                            @endif
+                                        @endif
+
+                                         @if (auth()->user()->id == $job->user_id)
+                                            @if ($job->status == config('enums.jobs.statuses.IN_REVIEW'))
+                                                <button data-id="{{$job->id}}" class="btn btn-primary btn-block btn-rating" type="button">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    @lang('home.complete')
+                                                </button>
+                                            @endif
+                                        @endif
+
                                     @else
                                         @if(\Carbon\Carbon::now() <= $job->end_date)
                                             <form action="{{route('jobs.apply', $job)}}" method="post">
@@ -351,6 +372,42 @@
                     <div class="modal-body">
                         <textarea name="message" rows="3" class="form-control" placeholder="Enter an optional message" required></textarea>
                         <input type="file" multiple name="files[]">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary btn-sm "><i class="fa fa-send"></i> Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ratingJobForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">You can add some comment.</h4>
+                </div>
+
+                <form action="" method="post" enctype="multipart/form-data" id="form-complete">
+                    {{csrf_field()}}
+                    {!! Form::hidden('job_id') !!}
+                    <div class="modal-body">
+                        <textarea name="message" rows="3" class="form-control" placeholder="Enter an optional message" required></textarea>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="rating" id="input-rating-1" value="positive" checked>
+                                Positive
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="rating" id="input-rating-2" value="negative">
+                                Negative
+                            </label>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>

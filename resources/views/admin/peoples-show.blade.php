@@ -13,7 +13,10 @@
                             <img src="{{$user->getStorageDir() . $user->avatar}}" class="img-thumbnail" alt="{{$user->name}}" title="{{$user->name}}" style="width: 100px; height: 100px;">
                         </div>
                         <div class="col-md-8">
-                            <p><b>Login:</b> <span>{{$user->username}}</span></p>
+                            <p>
+                                <b>Login:</b> <span>{{$user->username}}</span>
+                                (<span class="text-success">{{$user->rating_positive}}</span>/<span class="text-danger">{{$user->rating_negative}}</span>)
+                            </p>
                             <p><b>Date registration:</b> <span>{{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}</span></p>
                             <p><b>Social links:</b></p>
                             <div class="row">
@@ -30,8 +33,37 @@
                                 </div>
                             </div>
 
-                        </div>
+                            <h3 style="border-bottom: 1px solid rgba(34, 36, 38, .15);">Comments </h3>
+                            <div class="row">
+                                @forelse($user->comments as $comment)
+                                    <div class="col-md-9">
+                                        <div class="media-body">
+                                            <div class="media-heading">
+                                                <div class="author">{{$comment->author->username}}</div>
+                                                <div class="metadata">
+                                                    <span class="date">{{\Carbon\Carbon::parse($comment->created_at)->format('d.m.Y H:i')}}</span>
 
+                                                    @if($comment->rating == 'positive')
+                                                        <span class="text-success">Positive</span>
+                                                    @endif
+
+                                                    @if($comment->rating == 'negative')
+                                                        <span class="text-success">Negative</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="media-text text-justify">{{$comment->body}}</div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <div class="col-md-9">
+                                        <div class="media-body">
+                                            <div class="media-text text-justify">No comments found!</div>
+                                        </div>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -20,7 +20,10 @@
             <tbody>
             @foreach($users as $user)
                <tr>
-                  <td>{{$user->name}}</td>
+                  <td>
+                     {{$user->name}}
+                     (<span class="text-success">{{$user->rating_positive}}</span>/<span class="text-danger">{{$user->rating_negative}}</span>)
+                  </td>
                   <td><a href="{{route('peoples.show', $user)}}">{{$user->username}}</a></td>
                </tr>
             @endforeach
