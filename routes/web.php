@@ -110,11 +110,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('/{user}','PeopleController@updateAvatar')->name('peoples.updateAvatar');
     });
 
-    Route::group(['prefix' => 'teams'], function () {
-        Route::get('/','TeamsController@index')->name('teams.index');
-        Route::get('/{user}','PeopleController@show')->name('teams.show');
-        Route::post('/{user}','PeopleController@updateAvatar')->name('peoples.updateAvatar');
-    });    
+    Route::resource('teams', 'TeamsController');
+
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
         if (in_array($locale, \Config::get('app.locales'))) {
