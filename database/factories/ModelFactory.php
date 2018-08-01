@@ -17,6 +17,8 @@ use App\Models\Comment;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\DifficultyLevel;
 use App\Models\Modules;
+use App\Models\Team;
+use App\Models\TeamType;
 use Carbon\Carbon;
 use App\User;
 use App\Models\Jobs\Job;
@@ -103,5 +105,24 @@ $factory->define(Comment::class, function (Faker\Generator $faker) {
         'body' => $faker->text,
         'author_id' => create(User::class)->id,
         'author_type' => User::class,
+    ];
+});
+
+$factory->define(TeamType::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});
+
+$factory->define(Team::class, function (Faker\Generator $faker) {
+    $name = $faker->sentence(rand(1, 3));
+
+    return [
+        'user_id' => create(User::class)->id,
+        'team_type_id' => $faker->randomElement(TeamType::pluck('id')->all()),
+        'name' => $name,
+        'slug' => str_slug($name),
+        'logo' => null,
+        'description' => $faker->text,
     ];
 });
