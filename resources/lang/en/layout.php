@@ -18,6 +18,7 @@ return [
     'logout'            => 'Logout',
     'Account'           => 'Account',
     'jobs-manager'      => 'Jobs manager',
+    'projects'          => 'Projects',    
     'current-tasks'     => 'Current tasks',
     'post-new'          => 'Post new job',
     'profile'           => 'Profile',

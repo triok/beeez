@@ -58,9 +58,12 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="{{ route('projects') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a>
+                                </li>                                
                                 @permission('read-jobs-manager')
                                 <li>
-                                    <a href="{{ route('jobs-admin') }}"><i class="fa fa-dashboard"></i>@lang('layout.current-tasks')</a>
+                                    <a href="{{ route('jobs-admin') }}"><i class="fa fa-dashboard"></i> @lang('layout.current-tasks')</a>
                                 </li>
                                 @endpermission
 

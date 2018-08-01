@@ -18,6 +18,7 @@ return [
     'logout'            => 'Выйти',
     'account'           => 'Аккаунт',
     'jobs-manager'      => 'Работа',
+    'projects'          => 'Проекты',       
     'current-tasks'     => 'Текущие задания',
     'post-new'          => 'Новое задание',
     'profile'           => 'Профиль',
