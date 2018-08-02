@@ -21,10 +21,12 @@ class JobsSeeder extends Seeder
         }
 
         //categories
-        $cat  = new \App\Models\Jobs\Category();
-        $cat->name='default';
-        $cat->desc= 'Default category';
-        $cat->save();
-
+        $cats = ['Rewriting','Graphics','Design','Programming','Content'];
+        foreach ($cats as $cat) {
+            $cat  = new \App\Models\Jobs\Category();
+            $cat->name= $cat;
+            $cat->desc= 'Default category';
+            $cat->save();            
+        }
     }
 }

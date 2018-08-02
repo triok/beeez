@@ -2,7 +2,7 @@
 @section('content')
     <h2>@lang('projects.title-create')</h2>
     <div class="col-sm-6">
-    <form action="{{route('comments.store')}}" method="post">
+    <form action="{{ route('project-show') }}" method="post">
         {{csrf_field()}}
         <input name="title" class="form-control" placeholder="Project title">
         <br>

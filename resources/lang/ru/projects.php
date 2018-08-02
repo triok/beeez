@@ -23,4 +23,13 @@ return [
     // Projects create
     'title-create'   => 'Создайте новый проект',
 
+    // Project show
+    'job-name'       => 'Название',
+    'deadline'       => 'Выполнить до',       
+    'executor'       => 'Исполнитель',
+    'price'          => 'Цена',
+    'published'      => 'Опубликовано',  
+    'jobs-total'     => 'Всего заданий:',
+    'summ-total'     => ', на сумму: ',
+    'jobs-complete'  => 'Заданий выполнено:',             
 ];

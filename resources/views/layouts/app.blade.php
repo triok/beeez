@@ -92,7 +92,7 @@
                                 @endpermission
 
                                 @permission('create-jobs')
-                                <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i>@lang('layout.post-new')</a></li>
+                                <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>
                                 @endpermission
 
 

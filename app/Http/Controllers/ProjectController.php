@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function show() {
+    public function list() {
 
     	//
 
@@ -17,5 +17,11 @@ class ProjectController extends Controller
     	//
 
     	return view('projects.project-create');
-    }    
+    }
+    public function show() {
+
+    	//
+
+    	return view('projects.project-show');
+    }          
 }
