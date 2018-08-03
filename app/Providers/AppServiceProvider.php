@@ -13,18 +13,18 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-//        Schema::defaultStringLength(191);
+        Schema::defaultStringLength(191);
         /** @var Skill $skills */
-//        $_skills     = Skill::query()->get();
+        $_skills     = Skill::query()->get();
         /** @var Category $_categories */
-//        $_categories = Category::query()->orderBy('cat_order')->get();
+        $_categories = Category::query()->orderBy('cat_order')->get();
         /** @var DifficultyLevel $_difficultyLevels */
-//        $_difficultyLevels = DifficultyLevel::pluck('name', 'id');
+        $_difficultyLevels = DifficultyLevel::pluck('name', 'id');
 
 
-//        View::share('_skills', $_skills);
-//        View::share('_categories', $_categories);
-//       View::share('_difficultyLevels', $_difficultyLevels);
+        View::share('_skills', $_skills);
+        View::share('_categories', $_categories);
+        View::share('_difficultyLevels', $_difficultyLevels);
     }
 
     public function register()

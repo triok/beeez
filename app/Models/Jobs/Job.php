@@ -6,6 +6,7 @@ use App\Filters\QueryFilter;
 use App\Http\Controllers\Interfaces\MorphTo;
 use App\Http\Controllers\Traits\Commentable;
 use App\Models\File;
+use App\Models\Project;
 use App\Models\Tag;
 use App\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -63,6 +64,11 @@ class Job extends Model
     public function jobs()
     {
         return $this->hasMany(static::class, 'parent_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
 
     public function jobsWithOut()

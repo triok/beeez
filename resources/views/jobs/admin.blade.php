@@ -25,7 +25,11 @@
                 {{--// TODO This code was altered--}}
                 <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i')}}</td>
                 <td>{{$job->formattedPrice}}</td>
-                <td>{{$job->difficulty->name}}</td>
+                <td>
+                    @if($job->difficulty)
+                        {{$job->difficulty->name}}
+                    @endif
+                </td>
                 <td><a href="/jobs/{{$job->id}}">{{ $job->applications }}</a></td>
                 <td>{{ $job->bookmarks }}</td>
                 <td>

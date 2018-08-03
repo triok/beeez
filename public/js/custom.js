@@ -46,6 +46,16 @@ window.onload = function(){
 
     });
 
+    $('.form-delete').submit(function(e) {
+        e.preventDefault();
+
+        if (confirm('Are you sure?')) {
+            $(this).unbind('submit').submit();
+
+        }
+
+        return false;
+    });
 };
 
 function removeSubTask() {

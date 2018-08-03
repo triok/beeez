@@ -19,6 +19,7 @@ use App\Models\Jobs\Category;
 use App\Models\Jobs\DifficultyLevel;
 use App\Models\Jobs\JobCategories;
 use App\Models\Jobs\Job;
+use App\Models\Project;
 use App\Queries\JobQuery;
 use App\User;
 use Carbon\Carbon;
@@ -191,7 +192,7 @@ class JobController extends Controller
     {
         Session::forget('job.files');
 
-        return view('jobs.edit', ['usernames' => $this->usernames]);
+        return view('jobs.edit', ['usernames' => $this->usernames, 'projects' => auth()->user()->projects]);
     }
 
 
@@ -214,15 +215,16 @@ class JobController extends Controller
             $job->update(['status' => config('enums.jobs.statuses.PRIVATE')]);
         }
 
+        $this->addJobToProject($job);
+
         flash()->success('Job has been posted!');
 
         return redirect()->route('jobs.edit', $job);
     }
 
-
     function edit(Job $job)
     {
-        return view('jobs.edit', ['job' => $job, 'usernames' => $this->usernames]);
+        return view('jobs.edit', ['job' => $job, 'usernames' => $this->usernames, 'projects' => auth()->user()->projects]);
     }
 
 
@@ -240,6 +242,8 @@ class JobController extends Controller
         if ($request->has('draft')) {
             $job->update(['status' => config('enums.jobs.statuses.DRAFT')]);
         }
+
+        $this->addJobToProject($job);
 
         flash()->success('Job updated!');
 
@@ -290,5 +294,17 @@ class JobController extends Controller
         $sub_id = request()->has('sub_id') ? request()->sub_id : 1;
 
         return view('jobs.sub-job', ['usernames' => $this->usernames, 'sub_id' => $sub_id]);
+    }
+
+    protected function addJobToProject(Job $job) {
+        if (request()->has('project_id')) {
+            $project = Project::where('user_id', auth()->user()->id)->find(request()->get('project_id'));
+
+            if($project) {
+                $job->update(['project_id' => request()->get('project_id')]);
+            } else {
+                $job->update(['project_id' => null]);
+            }
+        }
     }
 }

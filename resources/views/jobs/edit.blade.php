@@ -65,7 +65,7 @@
 
             <div class="col-md-4">
                 <label>Difficulty level</label>
-                {!! Form::select('difficulty_level_id',$_difficultyLevels, isset($job) ? $job->difficulty->id : 1,['class'=>'form-control']) !!}
+                {!! Form::select('difficulty_level_id',$_difficultyLevels, (isset($job) && $job->difficulty) ? $job->difficulty->id : 1,['class'=>'form-control']) !!}
             </div>
             <div class="col-md-4">
                 <label>End date</label>
@@ -113,6 +113,24 @@
         @endforeach
     </div>
     <br>
+
+    <label>Project</label>
+    <div class="row">
+        <div class="col-md-12">
+            <select name="project_id" id="input-projects" class="form-control">
+                <option value="">No projects yet</option>
+                @foreach($projects as $project)
+                    @if((isset($job) && $project->id == $job->project_id) || $project->id == old('project_id'))
+                        <option selected value="{{ $project->id }}">{{ $project->name }}</option>
+                    @else
+                        <option value="{{ $project->id }}">{{ $project->name }}</option>
+                    @endif
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <br/>
+
     <label>Choose CMS</label>
     <div class="row">
         <div class="col-md-12">

@@ -65,10 +65,20 @@
                                 <strong class="m-sm-right">Job Access:</strong><span>{{$job->access}}</span>
                             </li>
                             <li>
+                                <strong class="m-sm-right">Project:</strong>
+                                @if($job->project)
+                                    <span>{{$job->project->name}}</span>
+                                @else
+                                    <span>нет</span>
+                                @endif
+                            </li>
+                            <li>
                                 <strong class="m-sm-right">@lang('show.enddate')</strong><span><i class="fa fa-clock-o" aria-hidden="true"></i> {{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i') }}</span>
                             </li>
                             <li>
+                                @if(isset($job->difficulty))
                                 <strong class="m-sm-right">@lang('show.difficulty')</strong><span class="label label-default"> {{ $job->difficulty->name }}</span>
+                                @endif
                             </li>
                             <li>
                                 <strong class="m-sm-right">@lang('show.timefor')</strong><span> {{ $job->time_for_work }} {{ $job->time_for_work == 1 ? 'hour' : 'hours' }}</span>
