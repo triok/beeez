@@ -13,6 +13,7 @@ use App\Models\Jobs\Job;
 use App\Models\Jobs\Skill;
 use App\Models\RoleUser;
 use App\Models\Social;
+use App\Models\Project;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -116,5 +117,15 @@ class User extends Authenticatable
     public function scopeLogin($query, $value)
     {
         return $query->where('username', 'like', '%' . $value . '%');
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    public function addProject($attributes)
+    {
+        return $this->projects()->create($attributes);
     }
 }

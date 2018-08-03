@@ -59,7 +59,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="{{ route('projects') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a>
+                                    <a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a>
                                 </li>                                
                                 @permission('read-jobs-manager')
                                 <li>

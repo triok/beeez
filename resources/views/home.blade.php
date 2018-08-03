@@ -83,7 +83,9 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-5">
+                                @if($job->difficulty)
                                 <span class="label label-{{$job->difficulty->name=="advanced"?'danger':'info'}} level">{{$job->difficulty->name}}</span>
+                                @endif
                             </div>
                             <div class="col-xs-2 text-center">
                                 <span>{{$job->formattedPrice}}</span>

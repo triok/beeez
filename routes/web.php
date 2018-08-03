@@ -24,9 +24,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('upload/{file}', 'UploadController@download')->name('file.upload');
 
     //Projects
-    Route::get('projects', 'ProjectController@list')->name('projects');    
-    Route::get('new-project', 'ProjectController@create')->name('new-project');
-    Route::post('project-show', 'ProjectController@show')->name('project-show');      
+    Route::resource('projects', 'ProjectsController');
 
     //Application
 //    Route::post('applyJob', 'ApplicationsController@applyJob')->name('apply-job');
