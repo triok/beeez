@@ -52,6 +52,13 @@ function shareJob(job_id, jobTitle) {
     modal.find('input[name=job_id]').val(job_id);
     modal.find('.modal-title span').text(jobTitle);
 }
+//complain job
+function complainJob(job_id, jobTitle) {
+    var modal = $('#complainJobModal');
+    modal.modal('show');
+    modal.find('input[name=job_id]').val(job_id);
+    modal.find('.modal-title span').text(jobTitle);
+}
 //apply job
 function applyJob(job_id, jobTitle) {
     var applyModal = $('#applyJobModal');
@@ -340,6 +347,32 @@ $('document').ready(function () {
                 var msg = JSON.parse(response);
                 notice(msg.message, msg.status);
                 form.find('input').val('');
+                form.find('textarea').val('');
+                window.location.reload();
+            },
+            error: function (error) {
+                notice('Error! Please try again', 'error');
+            }
+        });
+    });
+    //complain job
+    $('.complain-job-btn').click(function () {
+        var job_id = $(this).attr('id');
+        var jobTitle = $(this).attr('data-title');
+        complainJob(job_id, jobTitle);
+    });
+    //complain job form
+    $('.complain-job-form').on('submit', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        form.append('<input type="hidden" name="_token" value="' + _token + '">');
+        $.ajax({
+            url: '/complainJob',
+            data: $(this).serialize(), //$('form').serialize(),
+            type: 'POST',
+            success: function (response) {
+                var msg = JSON.parse(response);
+                notice(msg.message, msg.status);
                 form.find('textarea').val('');
                 window.location.reload();
             },

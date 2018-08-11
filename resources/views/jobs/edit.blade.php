@@ -108,7 +108,7 @@
     <div class="row">
         @foreach($_categories as $cat)
             <div class="col-sm-3">
-                {!! Form::checkbox('categories[]',$cat->id, isset($job) && $job->hasCategory($cat) ? 'checked' : '',['style'=>'']) !!} {{$cat->name}}
+                {!! Form::checkbox('categories[]',$cat->id, isset($job) && $job->hasCategory($cat) ? 'checked' : '',['style'=>'']) !!} {{$cat->nameEu}}
             </div>
         @endforeach
     </div>

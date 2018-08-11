@@ -53,7 +53,8 @@ $factory->define(Job::class, function (Faker\Generator $faker) {
 });
 $factory->define(App\Models\Jobs\Category::class, function (Faker\Generator $faker) {
     return [
-        'name'      => $faker->sentence,
+        'nameEu'      => $faker->sentence,
+        'nameRu'      => $faker->sentence,
         'desc'      => $faker->sentence,
         'cat_order' => $faker->randomDigitNotNull,
         'parent_id' => null

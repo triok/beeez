@@ -165,25 +165,34 @@
 
                     @foreach(\App\Queries\CategoryQuery::onlyParent()->orderBy('cat_order','ASC')->get() as $cat)
                         <li>
-                            <div style="display: flex; justify-content: space-between;"> 
-                             <a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->name)}}</a>
+                            <div style="display: flex; justify-content: space-between;">
+                                @if(($locale = App::getLocale())=="ru")
+                                    <a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->nameRu)}}</a>
+                                @else
+                                    <a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->nameEu)}}</a>
+                                @endif
+
+                             {{--<a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->nameEu)}}</a>--}}
+
                             <i class="fa fa-plus" data-toggle="collapse" data-target="#navbarToggler{{$cat->id}}" aria-controls="navbarToggler" aria-expanded="true" aria-label="Toggle navigation" style="display: block;"></i>
                             </div>
 
-                            
-
                             @if(count($cat->subcategories) > 0)
-
-
-
-
 
                                 <ul class="navbar-collapse collapse subcategory-ul" id="navbarToggler{{$cat->id}}" aria-expanded="true">
                                     @foreach($cat->subcategories as $subcategory)
                                         <li class="subcategory-li">
-                                            <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->name)}}
-                                                <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
-                                            </a>
+
+                                            @if(($locale = App::getLocale())=="ru")
+                                                <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->nameRu)}}
+                                                    <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
+                                                </a>
+                                                    @else
+                                                        <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->nameEu)}}
+                                                            <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
+                                                        </a>
+                                                            @endif
+
                                         </li>
                                     @endforeach
                                 </ul>

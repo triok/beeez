@@ -17,13 +17,11 @@ class AddSubTasksJob implements ShouldQueue
     protected $job;
     /** @var array $arSub */
     private $arSub;
-
     public function __construct(Job $job)
     {
         $this->job = $job;
         $this->arSub = array();
     }
-
 
     public function handle()
     {
@@ -36,11 +34,11 @@ class AddSubTasksJob implements ShouldQueue
 
             if(empty($this->arSub)) break;
             if (!isset($this->arSub['sub-' . $j . '-name']) || $this->arSub['sub-' . $j . '-name'] == '') continue;
-
             $this->create($this->arSub, $j);
         }
         unset($this->arSub);
     }
+
 
     private function create(array $data, int $indx = 1)
     {
@@ -53,6 +51,7 @@ class AddSubTasksJob implements ShouldQueue
         $subJob->end_date            = $data['sub-'.$indx.'-end_date'] ?? Carbon::now()->addDay(1);
         $subJob->price               = $data['sub-'.$indx.'-price'] ?? 0;
         $subJob->difficulty_level_id = $data['sub-'.$indx.'-difficulty_level'];
+        $subJob->status              = request()->has('draft')? config('enums.jobs.statuses.DRAFT'): config('enums.jobs.statuses.OPEN');
         $subJob->time_for_work       = $data['sub-'.$indx.'-time_for_work'];
         $subJob->parent_id           = $this->job->id;
         $subJob->save();

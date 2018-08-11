@@ -10,6 +10,7 @@ use App\Jobs\AddFilesJob;
 use App\Jobs\AddSkillsJob;
 use App\Jobs\AddSubTasksJob;
 use App\Jobs\AddTagJob;
+use App\Mail\ComplainToAdmin;
 use App\Mail\ShareJob;
 use App\Models\Billing\Payouts;
 use App\Models\File;
@@ -175,6 +176,25 @@ class JobController extends Controller
         }
     }
 
+    function complainJob(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $job = Job::find($request->job_id);
+            $job->message = $request->message;
+            try {
+                Mail::to(env('MAIL_ADMIN'))->send(new ComplainToAdmin($job));
+                $status = 'success';
+                $msg = 'Message has been sent.';
+            } catch (Exception $e) {
+                $status = 'error';
+                $msg = 'We had trouble sending your request. Please try again.';
+            }
+
+            echo json_encode(['status' => $status, 'message' => $msg]);
+        }
+    }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -199,6 +219,7 @@ class JobController extends Controller
     function store(StoreJobRequest $request)
     {
         /** @var Job $job */
+
         $job = Job::query()->create(array_intersect_key($request->all(), array_flip(Job::getAllAttributes())));
         dispatch(new AddFilesJob($job));
         dispatch(new AddCategoriesJob($job));

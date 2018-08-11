@@ -87,7 +87,7 @@
         <td><label for="sub-{{$sub}}-categories[]">Categories:</label></td>
         <td>
             @foreach($_categories as $category)
-                <label class="checkbox-inline"><input type="checkbox" name="sub-{{$sub}}-categories[]"  id="sub-category-{{$category->id}}" value="{{$category->id}}">{{ucwords($category->name)}}</label>
+                <label class="checkbox-inline"><input type="checkbox" name="sub-{{$sub}}-categories[]"  id="sub-category-{{$category->id}}" value="{{$category->id}}">{{ucwords($category->nameEu)}}</label>
             @endforeach
         </td>
     </tr>

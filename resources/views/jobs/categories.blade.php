@@ -14,12 +14,13 @@
                         {!! Form::open(['url'=>'categories']) !!}
                         <div class="input-group">
 
-                            {{Form::text('name',null,['class'=>'form-control','placeholder'=>'Enter new category name'])}}
+                            {{Form::text('nameEu',null,['class'=>'form-control','placeholder'=>'Enter new category name en'])}}
+                            {{Form::text('nameRu',null,['class'=>'form-control','placeholder'=>'Enter new category name ru'])}}
                             {{--//TODO this code was added --}}
                             <select name="parent_id" class="form-control">
                                 <option value="">Parent category</option>
                                 @foreach(\App\Models\Jobs\Category::query()->get() as $category)
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                    <option value="{{$category->id}}">{{$category->nameEu}}({{$category->nameRu}})</option>
                                 @endforeach
                             </select>
                             <span class="input-group-btn">
@@ -34,11 +35,11 @@
                         <tbody  class="sortable-rows">
                         @foreach($categories as $category)
                             <tr class="sort-row" id="{{$category->id}}">
-                                <td class="col-xs-4"><a href="#">{{$category->name}} </a></td>
+                                <td class="col-xs-4"><a href="#">{{$category->nameEu}}({{$category->nameRu}}) </a></td>
                                 <td class="col-xs-5">{{$category->desc}}</td>
                                 <td class="col-xs-3">
                                     <a href="#" class="btn btn-default btn-xs edit-cat-btn"
-                                       data-desc="{{$category->desc}}" data-name="{{$category->name}}"
+                                       data-desc="{{$category->desc}}" data-name="{{$category->nameEu}}"
                                        id="{{$category->id}}"><i
                                                 class="fa fa-edit"></i></a>
                                     <a href="/categories/" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
