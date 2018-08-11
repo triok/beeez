@@ -60,20 +60,20 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 38);
+/******/ 	return __webpack_require__(__webpack_require__.s = 40);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 38:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(39);
+module.exports = __webpack_require__(41);
 
 
 /***/ }),
 
-/***/ 39:
+/***/ 41:
 /***/ (function(module, exports) {
 
 /**
@@ -126,6 +126,13 @@ function removeBookMark(id) {
 //share job
 function shareJob(job_id, jobTitle) {
     var modal = $('#shareJobModal');
+    modal.modal('show');
+    modal.find('input[name=job_id]').val(job_id);
+    modal.find('.modal-title span').text(jobTitle);
+}
+//complain job
+function complainJob(job_id, jobTitle) {
+    var modal = $('#complainJobModal');
     modal.modal('show');
     modal.find('input[name=job_id]').val(job_id);
     modal.find('.modal-title span').text(jobTitle);
@@ -249,27 +256,6 @@ function deleteMySkill(skill_id) {
         }
     });
 }
-
-    var month = new Array();
-    month[0] = "January";
-    month[1] = "February";
-    month[2] = "March";
-    month[3] = "April";
-    month[4] = "May";
-    month[5] = "June";
-    month[6] = "July";
-    month[7] = "August";
-    month[8] = "September";
-    month[9] = "October";
-    month[10] = "November";
-    month[11] = "December";
-
-
-    Date.prototype.format = function (mask, utc) {
-        return dateFormat(this, mask, utc);
-    };
-
-    var viewModal= null;
 /**
  * display job
  * @param jobId
@@ -277,55 +263,14 @@ function deleteMySkill(skill_id) {
 function showJob(jobId) {
     $.get('/jobs/' + jobId, function (data, status) {
         var job = JSON.parse(data);
-
-        viewModal = $('#viewJobModal');
+        var viewModal = $('#viewJobModal');
         viewModal.find('#title').html(job.name);
         viewModal.find('#desc').html(job.desc);
         if (job.prettyskills === "") viewModal.find('#skills').html('<span class="label label-warning">None specified</span>');else viewModal.find('#skills').html(job.prettyskills);
 
         viewModal.find('#cats').html(job.cats);
         viewModal.find('#price').text(job.price);
-        viewModal.find('.posted-time').text(job.posted);
-        viewModal.find('#viewed').text(job.viewed);
-        viewModal.find('#author').text(' by ' + job.user.username);
-
-        if(job.tag !== null && job.tag !== undefined) {
-            var tag = viewModal.find('#tag-modal').html('');
-            tag.append('<h5><strong>Tag</strong></h5>');
-            tag.append('<a href="/jobs/?tag=' + job.tag.value + '"> <span class="label label-warning">'+job.tag.value+'</span></a>');
-        }
-        var fileTag = viewModal.find('.files-job').html('');
-        job.files.forEach(function(item, i, arr) {
-            fileTag.append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
-                '<i class="fa fa-file">' +
-                '<a style="padding-left: 7px;" href="/upload/'+item.id+'" title="'+item.original_name+'">'+item.original_name+'</a></i></li>');
-        });
-
-        var jobsList = viewModal.find('.jobs-list').html('');
-        if (job.jobs.length > 0 || job.parent){ jobsList.append("<h5><strong>Tasks list:</strong></h5>");}
-
-        job.jobs.forEach(function(item, i, arr) {
-            jobsList.append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
-                '<i class="fa fa-link">' +
-                '<a style="padding-left: 7px;" href="/jobs/'+item.id+'" title="'+item.name+'">'+item.name+'</a></i></li>');
-        });
-        if(job.parent) {
-            job.parentJobs[0].jobs.forEach(function(item, i, arr) {
-                if (item.id == job.id) return;
-                jobsList.append('<li data-id="'+item.id+'" class="list-group-item" style="border:0; padding: 0;">' +
-                    '<i class="fa fa-link">' +
-                    '<a style="padding-left: 7px;" href="/jobs/'+item.id+'" title="'+item.name+'">'+item.name+'</a></i></li>');
-            });
-            jobsList.append('<li data-id="'+job.parent.id+'" class="list-group-item" style="border:0; padding: 0;">' +
-                '<i class="fa fa-link">' +
-                '<a style="padding-left: 7px;" href="/jobs/'+job.parent.id+'" title="'+job.parent.name+'">'+job.parent.name+'</a></i></li>');
-        }
-
-        var end = moment(job.end_date);
-
-        moment.locale('en');
-        viewModal.find('#end-date').text(end.format('DD MMM, YYYY h:mm'));
-
+        viewModal.find('#end-date').text(job.end_date);
         viewModal.find('table').addClass('table');
 
         var d_level = 'info';
@@ -348,8 +293,6 @@ function showJob(jobId) {
         viewModal.modal({ backdrop: 'static', keyboard: false, 'show': true });
     });
 }
-
-
 /**
  * post message in work module
  * @param cmt
@@ -438,11 +381,11 @@ $('document').ready(function () {
         deleteJob(id);
     });
     //view job
-    $('.box .job-desc, .job-name span').click(function () {
-        var jobId = $(this).attr('id');
-        // window.location.href='/jobs/'+jobId;
-        showJob(jobId);
-    });
+    // $('.box .job-desc, .box .panel-heading h4').click(function () {
+    //     var jobId = $(this).attr('id');
+    //     // window.location.href='/jobs/'+jobId;
+    //     showJob(jobId);
+    // });
     //bookmark job
     $('.bookmark-job').click(function () {
         var job_id = $(this).attr('id');
@@ -480,6 +423,32 @@ $('document').ready(function () {
             }
         });
     });
+    //complain job
+    $('.complain-job-btn').click(function () {
+        var job_id = $(this).attr('id');
+        var jobTitle = $(this).attr('data-title');
+        complainJob(job_id, jobTitle);
+    });
+    //complain job form
+    $('.complain-job-form').on('submit', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        form.append('<input type="hidden" name="_token" value="' + _token + '">');
+        $.ajax({
+            url: '/complainJob',
+            data: $(this).serialize(), //$('form').serialize(),
+            type: 'POST',
+            success: function success(response) {
+                var msg = JSON.parse(response);
+                notice(msg.message, msg.status);
+                form.find('textarea').val('');
+                window.location.reload();
+            },
+            error: function error(_error11) {
+                notice('Error! Please try again', 'error');
+            }
+        });
+    });
     //apply
     $('.apply-job-btn').click(function () {
         var job_id = $(this).attr('id');
@@ -503,12 +472,11 @@ $('document').ready(function () {
                     window.location.reload();
                 }, 2000);
             },
-            error: function error(_error11) {
+            error: function error(_error12) {
                 notice('Error! Please try again', 'error');
             }
         });
     });
-
     //change job status
     $(".job-app-status-btn").click(function () {
         var jobId = $(this).attr('id');
@@ -543,120 +511,7 @@ $('document').ready(function () {
         var job_id = $(this).attr('data-job');
         paypalPayout(app_id, job_id);
     });
-
-    //update bio social
-    $('.social-btn-save').on('click', function (e) {
-        var _this = $(this);
-        var input = _this.closest('.row').find('input');
-
-        if (input.val().length == 0) return false;
-
-        $.ajax({
-            url: '/account/bio',
-            data: { _token: _token, value: input.val(), attr: input.attr('id'), action: 'save' },
-            type: 'POST',
-            success: function success(response) {
-                _this.closest('.btn-group').find('.social-btn-conf').attr('disabled', false);
-                notice(response.response, 'success');
-            },
-            error: function error(err) {
-                notice('Error! Please try again', 'error');
-            }
-        });
-    });
-
-    //update bio social
-    $('.social-btn-conf').on('click', function (e) {
-        var _this = $(this);
-        var input = _this.closest('.row').find('input');
-        _this.attr('disabled', true);
-
-        $.ajax({
-            url: '/account/bio',
-            data: { _token: _token, value: input.val(), attr: input.attr('id'), action: 'verified' },
-            type: 'POST',
-            success: function success(response) {
-                _this.closest('.btn-group').find('.social-btn-save').attr('disabled', true);
-                input.attr('disabled', true);
-
-                notice(response.response, 'success');
-            },
-            error: function error(err) {
-                notice('Error! Please try again', 'error');
-                _this.attr('disabled', false);
-            }
-        });
-    });
-
-    $('.social-confirmed').on('click', function (e) {
-        var _this = $(this);
-        var input = _this.closest('.row').find('input');
-        var user_id = _this.attr('data-user');
-
-        $.ajax({
-            url: '/account/bio',
-            data: { _token: _token,  attr: input.attr('id'), user: user_id, action: 'confirmed' },
-            type: 'POST',
-            success: function success(response) {
-                _this.attr('disabled', true);
-                _this.text('Confirmed');
-                notice(response.response, 'success');
-            },
-            error: function error(err) {
-                notice('Error! Please try again', 'error');
-            }
-        });
-    });
-
-    var timer;
-    var x;
-
-
-    $("#login_search").keyup(function () {
-        var _this = $(this), value = $(this).val();
-
-        if (value.length > 2) {
-            if (x) { x.abort() } // If there is an existing XHR, abort it.
-            clearTimeout(timer); // Clear the timer so we don't end up with dupes.
-            timer = setTimeout(function() { // assign timer a new timeout
-                x = $.ajax({
-                    url: "/api/v1/users",
-                    data: { _token: _token, q: value},
-                    type: 'GET',
-                    success: function success(response) {
-                        $res = '';
-
-                        if (response.length == 0) {
-                            $(".result").html('<li>No results</li>').fadeIn();
-                            return false;
-                        }
-                        response.forEach(function(entry) {
-                            $res += '<li class=""><a href="/peoples/'+entry.id+'">'+ entry.username + '</a></li>';
-                        });
-                        $(".result").show().html($res).fadeIn();
-
-                    },
-                    error: function error(xhr, status, error) {
-                        notice('Error! Please try again', 'error');
-                    },
-                }); // run ajax request and store in x variable (so we can cancel)
-            }, 1000); // 1000ms delay, tweak for faster/slower
-        }
-        $(".result").html('').hide();
-    });
-    $("#login_search").on('blur', function(e) {
-        setTimeout((function(){
-            $(".result").html('').hide();
-        }), 2000);
-    });
-
-
-
-
-
 });
-
-
 
 /***/ })
 

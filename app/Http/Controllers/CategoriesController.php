@@ -27,7 +27,7 @@ class CategoriesController extends Controller
     {
         $category = Category::find($id);
         $jobs = $category->jobs()->paginate(20);
-        $title = 'Job by ' . $category->name;
+        $title = 'Job by ' . $category->nameEu;
         return view('home', compact('jobs', 'category', 'title'));
     }
 
@@ -50,19 +50,23 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|max:50',
+            'nameEu' => 'required|max:50',
+            'nameRu' => 'required|max:50',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $cat = new Category();
-        $cat->name = $request->name;
+        $cat->nameEu = $request->nameEu;
+        $cat->nameRu = $request->nameRu;
         $cat->desc = $request->desc;
 
         //TODO this code was added
         $cat->parent_id = $request->parent_id;
         $cat->save();
+
+
         flash()->success('Category saved!');
         return redirect()->back();
     }
@@ -99,14 +103,16 @@ class CategoriesController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'name' => 'required|max:50',
+            'nameEu' => 'required|max:50',
+            'nameRu' => 'required|max:50',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $cat = Category::findOrFail($id);
-        $cat->name = $request->name;
+        $cat->nameEu = $request->nameEu;
+        $cat->nameRu = $request->nameRu;
         $cat->desc = $request->desc;
         $cat->save();
         flash()->success('Category updated!');

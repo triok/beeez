@@ -11,6 +11,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('jobs', 'JobController');
     Route::get('jobs/category/{category}', 'JobController@jobsByCategories')->name('jobs.category');
     Route::post('shareJob', 'JobController@shareJob')->name('share-job');
+    Route::post('complainJob', 'JobController@complainJob')->name('complain-job');
     Route::get('jobsAdmin', 'JobController@jobsAdmin')->name('jobs-admin');
     Route::patch('update-job-status', 'JobController@updateJobStatus')->name('job-status');
     Route::get('job/{id}/{app}/work','JobController@work');
