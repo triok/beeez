@@ -50,6 +50,7 @@
                     <code>job-skills</code>
                     <code>payouts</code>
                     <code>logs</code>
+                    <code>pages</code>
                 </p>
             </div>
 

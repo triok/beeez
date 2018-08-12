@@ -34,7 +34,7 @@
                 <a class="navbar-brand" href="{{url('/')}}">
                     <div>Lavoro</div>
                 </a>
-                <a href="{{ url('setlocale/en') }}">En </a>|
+                <a href="{{ url('setlocale/en') }}">En</a> |
                 <a href="{{ url('setlocale/ru') }}"> Ru</a>
             </div>
             <div class="" id="app-navbar-collapse">
@@ -106,7 +106,9 @@
                         @permission('read-payouts')
                         <li><a href="/payouts"><i class="fa fa-money"></i> Payouts</a></li>
                         @endpermission
-
+                        @permission('read-pages')
+                        <li><a href="admin/pages"><i class="fa fa-file-powerpoint-o"></i> Pages</a></li>
+                        @endpermission
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
@@ -220,12 +222,9 @@
         <hr>
         <ul class="list-inline footer-list">
             <li>@lang('layout.sign')</li>
-            <li>@lang('layout.about')</li>
-            <li>@lang('layout.help')</li>
-            <li>@lang('layout.security')</li>
-            <li>@lang('layout.terms')</li>
-            <li>@lang('layout.contacts')</li>
-            <li>@lang('layout.social')</li>
+            @foreach ($pages as $page)
+            <li><a href="/page/{{ $page->id }}">{{ $page->title }}</a></li>
+            @endforeach
         </ul>
         <hr>
         <ul class="list-inline footer-social">

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Role;
+use App\Models\Page;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+
 
 class AdminController extends Controller
 {
@@ -136,5 +139,43 @@ class AdminController extends Controller
         flash()->success('Debug log has been emptied');
         return redirect()->back();
     }
+    function showPages()
+    {
+        return view('admin.pages');
+    }
+ 
+    function createPage() 
+    {
+        return view('admin.createpage');
+    }
+    function storePage(Request $request) 
+    {
+        $page = new Page();
+        $page->title = $request->input('title');
+        $page->description = $request->input('description');
+        $page->created_at = date('Y-m-d H:i:s');
+        $page->save();
+        flash()->success('Page saved!');
 
+        return redirect('admin/pages');
+    }
+    function editPage($id) 
+    {
+        $page = Page::where('id', '=', $id)->first();
+        return view('admin.editpage', compact('page'));        
+    }
+    function updatePage($id, Request $request) 
+    {
+        $page = Page::find($id);
+        $page->title = $request->input('title');
+        $page->description = $request->input('description');
+        $page->save();
+        flash()->success('Page updated!');                
+        return redirect('admin/pages');      
+    }                
+    function deletePage($id)
+    {
+        Page::where('id', '=', $id)->delete();
+        return redirect()->back();
+    }
 }

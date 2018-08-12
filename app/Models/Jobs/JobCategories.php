@@ -9,7 +9,7 @@ class JobCategories extends Model
     /**
      * @var array
      */
-//    protected $fillable=['category_id','job_id'];
+    // protected $fillable=['category_id','job_id'];
 
     protected $guarded = ['id'];
 

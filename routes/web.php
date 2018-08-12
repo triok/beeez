@@ -6,6 +6,9 @@ Auth::routes();
 
 Route::group(['middleware' => 'web'], function () {
     Route::get('/', 'AppController@index');
+    
+    // Info pages
+    Route::get('/page/{id}','AppController@showPage');
 
     //Job
     Route::resource('jobs', 'JobController');
@@ -69,6 +72,12 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('logs', ['middleware'=>['ability:admin,delete-logs'],'uses'=>'AdminController@emptyLog'])->name('empty-log');
         Route::get('debug', ['middleware'=>['ability:admin,read-logs'],'uses'=>'AdminController@debug']);
         Route::post('debug', ['middleware'=>['ability:admin,delete-logs'],'uses'=>'AdminController@emptyDebugLog'])->name('empty-debug');
+        Route::get('pages', 'AdminController@showPages');
+        Route::get('create-page', 'AdminController@createPage');
+        Route::post('store-page', 'AdminController@storePage');        
+        Route::get('delete/{id}', 'AdminController@deletePage');
+        Route::get('edit/{id}', 'AdminController@editPage');
+        Route::post('update-page/{id}', 'AdminController@updatePage');        
     });
 
     //Roles
@@ -125,5 +134,7 @@ Route::group(['middleware' => 'web'], function () {
 
     // Comments
     Route::post('/comments','CommentController@store')->name('comments.store');
+
+
 });
 

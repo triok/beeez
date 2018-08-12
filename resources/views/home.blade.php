@@ -114,7 +114,7 @@
                     </div>
                     <div class="panel-footer">
                         <div class="row">
-                            @if($job->status =="closed" && !Auth::user()->hasRole('admin'))
+                            @if($job->status =="closed")
                                 <div class="col-xs-3 col-xs-offset-4">
                                     <div class="label label-danger">Job is closed</div>
                                 </div>

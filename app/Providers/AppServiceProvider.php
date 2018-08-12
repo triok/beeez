@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Jobs\Category;
 use App\Models\Jobs\DifficultyLevel;
 use App\Models\Jobs\Skill;
+use App\Models\Page;
 use Illuminate\Support\ServiceProvider;
 use View;
 use Schema;
@@ -20,8 +21,10 @@ class AppServiceProvider extends ServiceProvider
         $_categories = Category::query()->orderBy('cat_order')->get();
         /** @var DifficultyLevel $_difficultyLevels */
         $_difficultyLevels = DifficultyLevel::pluck('name', 'id');
+        /** @var Pages $_pages */
+        $_pages = Page::all();
 
-
+        View::share('pages', $_pages);
         View::share('_skills', $_skills);
         View::share('_categories', $_categories);
         View::share('_difficultyLevels', $_difficultyLevels);

@@ -18,11 +18,13 @@ use App\Models\Jobs\Application;
 use App\Models\Jobs\DifficultyLevel;
 use App\Models\Modules;
 use App\Models\Project;
+use App\Models\Page;
 use App\Models\Team;
 use App\Models\TeamType;
 use Carbon\Carbon;
 use App\User;
 use App\Models\Jobs\Job;
+use App\Models\Jobs\JobCategories;
 
 $factory->define(User::class, function (Faker\Generator $faker) {
     static $password;
@@ -49,15 +51,24 @@ $factory->define(Job::class, function (Faker\Generator $faker) {
         'difficulty_level_id' => create(DifficultyLevel::class)->id,
         'time_for_work'       => random_int(1, 3),
         'status'              => $faker->randomElement(array_values(config('enums.jobs.statuses'))),
+        'parent_id'           => random_int(1, 12),
     ];
 });
+
 $factory->define(App\Models\Jobs\Category::class, function (Faker\Generator $faker) {
     return [
-        'nameEu'      => $faker->sentence,
-        'nameRu'      => $faker->sentence,
+        'nameEu'    => $faker->sentence,
+        'nameRu'    => $faker->sentence,
         'desc'      => $faker->sentence,
         'cat_order' => $faker->randomDigitNotNull,
         'parent_id' => null
+    ];
+});
+
+$factory->define(JobCategories::class, function (Faker\Generator $faker) {
+  return [
+        'category_id'         => $faker->randomElement(App\Models\Jobs\Category::pluck('id')->toArray()),
+        'job_id'              => $faker->randomElement(Job::pluck('id')->toArray()),
     ];
 });
 
@@ -71,7 +82,7 @@ $factory->define(\App\Role::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'display_name' => $faker->name,
-        'description' => $faker->sentence
+        'description' => $faker->sentence,
     ];
 });
 
@@ -113,6 +124,13 @@ $factory->define(Comment::class, function (Faker\Generator $faker) {
 $factory->define(TeamType::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
+    ];
+});
+
+$factory->define(Page::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->title,
+        'description' => $faker->text,
     ];
 });
 

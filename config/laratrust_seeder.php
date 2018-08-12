@@ -12,7 +12,8 @@ return [
             'payouts' => 'c,r,u,d',
             'logs' => 'c,r,u,d',
             'profile' => 'r,u',
-            'jobs-manager' => 'c,r,u,d'
+            'jobs-manager' => 'c,r,u,d',
+            'pages' => 'c,r,u,d'
         ],
         'manager' => [
             'users' => 'c,r,u,d',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Filters\JobFilters;
 use App\Models\Jobs\Job;
+use App\Models\Page;
 
 class AppController extends Controller
 {
@@ -17,4 +18,9 @@ class AppController extends Controller
 
         return view('home',compact('jobs'));
     }
+    function showPage($id)
+    {
+        $page = Page::find($id);
+        return view('page', compact('page'));
+    } 
 }

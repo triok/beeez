@@ -16,7 +16,7 @@ return [
     'register-title'    => 'Register',
     'categories'        => 'Categories',
     'logout'            => 'Logout',
-    'Account'           => 'Account',
+    'account'           => 'Account',
     'jobs-manager'      => 'Jobs manager',
     'projects'          => 'Projects',    
     'current-tasks'     => 'Current tasks',

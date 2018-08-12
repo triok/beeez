@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\Jobs\Category;
+use App\Models\Jobs\JobCategories;
+use App\Models\Jobs\Job;
 
 class JobsSeeder extends Seeder
 {
@@ -19,14 +22,11 @@ class JobsSeeder extends Seeder
             $dif->created_at = date('Y-m-d H:i:s');
             $dif->save();
         }
-
-        //categories
-        $cats = ['Rewriting','Graphics','Design','Programming','Content'];
-        foreach ($cats as $cat) {
-            $cat  = new \App\Models\Jobs\Category();
-            $cat->name= $cat;
-            $cat->desc= 'Default category';
-            $cat->save();            
+        for ($i=0; $i < 40; $i++) { 
+            create(Job::class);
+        }
+        for ($i=0; $i < 40; $i++) {
+         create(JobCategories::class);
         }
     }
 }
