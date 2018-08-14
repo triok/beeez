@@ -21,8 +21,10 @@ return [
     'apply'             => 'Выполнить',
     'enddate'           => 'Просрочено',
     'in_progress'       => 'В работе',
+    'in_review'         => 'В работе',     
     'complete'          => 'Завершить',
-    'add_rating'         => 'Добавить отзыв',
+    'completed'         => 'Выполнено',    
+    'add_rating'        => 'Добавить отзыв',
     'hours'             => 'ч',
 
 ];

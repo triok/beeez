@@ -18,7 +18,7 @@
                         </ol>
                         <div class="clearfix"></div>
                         <div class="m-md-top nowrap text-muted">
-                            @lang('show.posted') <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> @lang('show.by') {{auth()->user()->username}}
+                            @lang('show.posted') <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> @lang('show.by') {{ $job->user->name }}
                             (<span class="text-success">{{$job->user->rating_positive}}</span>/<span class="text-danger">{{$job->user->rating_negative}}</span>)
                         </div>
                         {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
@@ -117,7 +117,7 @@
                         <section >
                             <div class="row buttons">
                                 <div class="primary col-lg-12 col-sm-6 col-xs-6">
-                                    @if(count($job->applications) > 0)
+                                    @if($job->applications)
                                         @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
                                             @if(isset($job->application))
                                                 <button data-id="{{$job->id}}" {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-block btn-review">
@@ -183,6 +183,7 @@
                                     {{--@endif--}}
 
                                 </div>
+                                @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
                                 <form action="{{route('bookmark.store', $job)}}" method="post">
                                     {{csrf_field()}}
                                     <div class=" col-lg-12 col-sm-6 col-xs-6">
@@ -201,6 +202,7 @@
                                         <i class="fa fa-share" aria-hidden="true"></i> @lang('show.share')
                                     </button>
                                 </div>
+                                @endif
                                 <div class="col-lg-12 col-sm-6 col-xs-6">
                                     <button id="{{$job->id}}" data-title="{{$job->name}}" class="btn btn-danger btn-block complain-job-btn">
                                         <i class="fa fa-warning" aria-hidden="true"></i> @lang('show.complain')

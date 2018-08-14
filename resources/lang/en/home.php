@@ -21,7 +21,9 @@ return [
     'apply'             => 'Apply',
     'enddate'           => 'Expired',
     'in_progress'       => 'In progress',
+    'in_review'         => 'In progress',    
     'complete'          => 'Complete',
+    'completed'         => 'Completed',     
     'hours'             => 'hr',
 
 ];

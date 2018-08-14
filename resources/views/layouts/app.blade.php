@@ -19,7 +19,7 @@
     <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed|Ubuntu+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed|Ubuntu+Mono|Noto+Sans|Fira+Sans|Comfortaa:300,400,700" rel="stylesheet">
 </head>
 <body>
 <div class="page-container" id="app">
@@ -32,6 +32,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="{{url('/')}}">
+                    <img src="/img/light-bulb.svg" alt="">
                     <div>Lavoro</div>
                 </a>
                 <a href="{{ url('setlocale/en') }}">En</a> |
@@ -54,7 +55,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
-                                <i class="fa fa-dashboard"></i> @lang('layout.jobs-manager')<span class="caret"></span>
+                                <i class="fa fa-dot-circle-o" aria-hidden="true"></i> @lang('layout.jobs-manager')<span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -100,7 +101,7 @@
                         </li>
 
                         
-                        <li><a href="{{route('peoples.index')}}"><i class="fa fa-id-card-o"></i> @lang('peoples.title')</a></li>
+                        <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
                         <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>                        
 
                         @permission('read-payouts')
@@ -160,7 +161,7 @@
     <div class="container-fluid">
         <div class="row row-offcanvas row-offcanvas-left">
 
-            <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+            <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
                 <div class="Categories">@lang('layout.categories')</div> 
                 <ul class="nav">
                     
@@ -182,6 +183,7 @@
                             @if(count($cat->subcategories) > 0)
 
                                 <ul class="navbar-collapse collapse subcategory-ul" id="navbarToggler{{$cat->id}}" aria-expanded="true">
+
                                     @foreach($cat->subcategories as $subcategory)
                                         <li class="subcategory-li">
 
@@ -189,11 +191,11 @@
                                                 <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->nameRu)}}
                                                     <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
                                                 </a>
-                                                    @else
-                                                        <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->nameEu)}}
-                                                            <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
-                                                        </a>
-                                                            @endif
+                                            @else
+                                               <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->nameEu)}}
+                                                    <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
+                                                </a>
+                                            @endif
 
                                         </li>
                                     @endforeach

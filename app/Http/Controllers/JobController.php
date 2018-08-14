@@ -23,6 +23,7 @@ use App\Models\Jobs\Job;
 use App\Models\Project;
 use App\Queries\JobQuery;
 use App\User;
+use App\Queries\UserQuery;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -96,8 +97,8 @@ class JobController extends Controller
 //            return json_encode($job->toArray());
 ////            return view('jobs.show', compact('job'));
 //        }
-
-        return view('jobs.show', compact('job'));
+        $users = UserQuery::users();
+        return view('jobs.show', compact('job', 'users'));
     }
 
     /**
