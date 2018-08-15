@@ -52,11 +52,15 @@
                                   <button disabled class="btn btn-warning btn-sm "><i class="fa fa-history" aria-hidden="true"></i> @lang('home.in_progress') </button>
                               @endif
                           @else
-                              @if(\Carbon\Carbon::now() <= $job->end_date)
+                              @if(\Carbon\Carbon::now() <= $job->end_date && $job->status == config('enums.jobs.statuses.OPEN'))
                                   <form action="{{route('jobs.apply', $job)}}" method="post">
                                       {{csrf_field()}}
                                       <button class="btn btn-default btn-sm" type="submit"><i class="fa fa-briefcase"></i> @lang('home.apply') </button>
                                   </form>
+                              @elseif($job->status == config('enums.jobs.statuses.IN_PROGRESS') || $job->status == config('enums.jobs.statuses.IN_REVIEW')) 
+                                  <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.in_progress') </button>
+                              @elseif($job->status == config('enums.jobs.statuses.COMPLETE'))
+                                  <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.complete') </button>
                               @else
                                   <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i class="fa fa-briefcase"></i> @lang('home.enddate') </button>
                               @endif

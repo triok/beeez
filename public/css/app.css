@@ -1402,7 +1402,7 @@ html {
 }
 
 body {
-  font-family: 'Ubuntu Mono', monospace;
+  font-family: 'Comfortaa', cursive;
   font-size: 14px;
   line-height: 1.6;
   color: #636b6f;
@@ -5286,7 +5286,9 @@ tbody.collapse.in {
     border-radius: 4px;
   }
 }
-
+.navbar-header a {
+  color:red;
+}
 .navbar-header:before,
 .navbar-header:after {
   content: " ";
@@ -5425,8 +5427,21 @@ tbody.collapse.in {
 }
 .navbar-brand div {
   margin-left: 15px;
+  padding-top: 3px;
+  color: #5d5050;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.3s;
 }
-
+.navbar-brand div:hover {
+  text-shadow: 3px -1px 3px rgb(193, 185, 75);
+}
+.navbar-brand img{
+  width: 35px;
+}
+.nav i{
+  color: #47afa5;
+}
 .navbar-brand:hover,
 .navbar-brand:focus {
   text-decoration: none;
@@ -5674,6 +5689,7 @@ tbody.collapse.in {
   .navbar-right {
     float: right !important;
     margin-right: -15px;
+    border-left: 1px dashed #47afa5;
   }
 
   .navbar-right ~ .navbar-right {
@@ -5682,7 +5698,7 @@ tbody.collapse.in {
 }
 
 .navbar-default {
-  background-color: #f9e44fcf;
+  background-color: rgb(249, 249, 249);
   border-color: #eeeeee;
 }
 
@@ -5701,7 +5717,10 @@ tbody.collapse.in {
 }
 
 .navbar-default .navbar-nav > li > a {
-  color: #777;
+  color: #5d5050;
+  font-weight: 700;
+  font-size: 15px;
+}
 }
 
 .navbar-default .navbar-nav > li > a:hover,
@@ -10003,6 +10022,7 @@ button.close {
 
 .fa-dot-circle-o:before {
   content: "\F192";
+  color: red;
 }
 
 .fa-wheelchair:before {
@@ -11368,14 +11388,14 @@ body {
   padding-top: 51px;
 }
 
-.col-xs-12 {
-  background-color: #fff;
-}
-
 #sidebar {
-  height: 100%;
-  padding-right: 0;
-  padding-top: 20px;
+  height: 500px;
+  padding: 35px;
+  margin: 25px;
+  background: #f9f9f9;
+  border-radius: 20px;
+  border: 1px dashed #47afa5;
+  box-shadow: 3px 3px 8px #dad5d5;
 }
 
 #sidebar .nav {
@@ -11387,7 +11407,13 @@ body {
   border: 0 #f2f2f2 solid;
   border-bottom-width: 1px;
 }
-
+#main {
+  margin: 28px 0px;
+  padding: 15px 20px;
+  border-radius: 11px;
+  background: #f9f9f9;
+  border: 1px solid #47afa5;
+}
 /* collapsed sidebar styles */
 
 @media screen and (max-width: 767px) {
@@ -11542,15 +11568,11 @@ body {
 .Categories {
   font-size: 24px;
 }
-.subcategory-ul {
-  padding: 5px 0px 5px 15px;
-}
+
 .subcategory-li {
   border: none!important;
 }
 .current-jobs {
-  border-left: solid 1px #dadada;
-  min-height: 500px;
   padding: 0px 20px;
 }
 .job-name {
@@ -11592,9 +11614,9 @@ footer {
   width: 40px;
 }
 .disclaimer {
-  background: url(/img/background.jpeg);
+  /*background: url(/img/background.jpeg);*/
   text-align: center;
-  min-height: 950px;
+  min-height: 250px;
   background-size: cover;
 }
 .disclaimer p{
