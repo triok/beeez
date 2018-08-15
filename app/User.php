@@ -18,10 +18,11 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
+use Cmgmyr\Messenger\Traits\Messagable;
 
 class User extends Authenticatable
 {
-    use LaratrustUserTrait, Notifiable, Avatarable, Commentable;
+    use LaratrustUserTrait, Notifiable, Avatarable, Commentable, Messagable;
 
     protected $guarded = ['id'];
     protected $links;

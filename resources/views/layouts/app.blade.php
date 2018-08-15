@@ -103,6 +103,7 @@
                         
                         <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
                         <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>                        
+                        <li><a href="{{route('messages')}}"><i class="fa fa-envelope"></i> @lang('messages.title') @include('messenger.unread-count')</a></li>
 
                         @permission('read-payouts')
                         <li><a href="/payouts"><i class="fa fa-money"></i> Payouts</a></li>
