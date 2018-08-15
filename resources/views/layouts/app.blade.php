@@ -161,9 +161,11 @@
 
     <div class="container-fluid">
         <div class="row row-offcanvas row-offcanvas-left">
-
+            @hasSection('users')
+                @yield('users')
+            @else
             <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
-                <div class="Categories">@lang('layout.categories')</div> 
+                <div class="Categories">@lang('layout.categories')</div>
                 <ul class="nav">
                     
 
@@ -205,8 +207,8 @@
                         </li>
                     @endforeach
                 </ul>
-
             </div>
+            @endif
 
             <div class="col-xs-12 col-sm-9" id="main">
                 @yield('content')

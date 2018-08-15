@@ -1,13 +1,17 @@
 <div class="media">
-    <a class="pull-left" href="#">
-        <img src="//www.gravatar.com/avatar/{{ md5($message->user->email) }} ?s=64"
-             alt="{{ $message->user->name }}" class="img-circle">
+    <a class="pull-left" href="#" style="padding-right: 20px;">
+        <img src="{{$message->user->getStorageDir() . $message->user->avatar}}"
+             class="img-thumbnail"
+             style="width: 60px; height: 60px;">
     </a>
+
+    <div class="pull-right">
+        <small>Posted {{ $message->created_at->diffForHumans() }}</small>
+    </div>
+
     <div class="media-body">
-        <h5 class="media-heading">{{ $message->user->name }}</h5>
-        <p>{{ $message->body }}</p>
-        <div class="text-muted">
-            <small>Posted {{ \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}</small>
-        </div>
+        <b>{{ $message->user->name }}</b>
+
+        <p style="padding-top: 7px;">{{ $message->body }}</p>
     </div>
 </div>

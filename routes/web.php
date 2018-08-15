@@ -135,6 +135,8 @@ Route::group(['middleware' => 'web'], function () {
     // Comments
     Route::post('/comments','CommentController@store')->name('comments.store');
 
+    Route::resource('threads', 'ThreadsController');
+
     Route::group(['prefix' => 'messages'], function () {
         Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
         Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);
@@ -142,6 +144,5 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessagesController@show']);
         Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
     });
-
 });
 

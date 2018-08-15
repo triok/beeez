@@ -183,6 +183,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Cmgmyr\Messenger\MessengerServiceProvider::class,
+
     ],
 
     /*

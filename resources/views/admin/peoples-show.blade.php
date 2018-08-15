@@ -33,6 +33,16 @@
                                 </div>
                             </div>
 
+                            @if(auth()->user()->id != $user->id)
+                                <form action="{{route('threads.store')}}" method="post">
+                                    {{csrf_field()}}
+                                    <input type="hidden" name="user_id" value="{{$user->id}}">
+                                    <button class="btn btn-primary btn-xs">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i> Send Message
+                                    </button>
+                                </form>
+                            @endif
+
                             <h3 style="border-bottom: 1px solid rgba(34, 36, 38, .15);">Comments </h3>
                             <div class="row">
                                 @forelse($user->comments as $comment)
