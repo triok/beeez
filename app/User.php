@@ -11,6 +11,8 @@ use App\Models\Jobs\Application;
 use App\Models\Jobs\Bookmark;
 use App\Models\Jobs\Job;
 use App\Models\Jobs\Skill;
+use App\Models\Message;
+use App\Models\Participant;
 use App\Models\RoleUser;
 use App\Models\Social;
 use App\Models\Project;
@@ -18,10 +20,12 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
+use Cmgmyr\Messenger\Traits\Messagable;
+use Cmgmyr\Messenger\Models\Models;
 
 class User extends Authenticatable
 {
-    use LaratrustUserTrait, Notifiable, Avatarable, Commentable;
+    use LaratrustUserTrait, Notifiable, Avatarable, Commentable, Messagable;
 
     protected $guarded = ['id'];
     protected $links;
@@ -127,5 +131,22 @@ class User extends Authenticatable
     public function addProject($attributes)
     {
         return $this->projects()->create($attributes);
+    }
+
+    /**
+     * Returns the new messages count for user.
+     *
+     * @param null $thread_id
+     * @return int
+     */
+    public function unreadMessagesCountForThread($thread_id)
+    {
+        $participant = Participant::where('user_id', auth()->user()->id)
+            ->where('thread_id', '=', $thread_id)
+            ->first();
+
+        return Message::where('thread_id', '=', $thread_id)
+            ->where('updated_at', '>', $participant->last_read)
+            ->count();
     }
 }

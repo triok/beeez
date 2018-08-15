@@ -103,6 +103,7 @@
                         
                         <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
                         <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>                        
+                        <li><a href="{{route('messages')}}"><i class="fa fa-envelope"></i> @lang('messages.title') @include('messenger.unread-count')</a></li>
 
                         @permission('read-payouts')
                         <li><a href="/payouts"><i class="fa fa-money"></i> Payouts</a></li>
@@ -160,9 +161,11 @@
 
     <div class="container-fluid">
         <div class="row row-offcanvas row-offcanvas-left">
-
+            @hasSection('users')
+                @yield('users')
+            @else
             <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
-                <div class="Categories">@lang('layout.categories')</div> 
+                <div class="Categories">@lang('layout.categories')</div>
                 <ul class="nav">
                     
 
@@ -204,8 +207,8 @@
                         </li>
                     @endforeach
                 </ul>
-
             </div>
+            @endif
 
             <div class="col-xs-12 col-sm-9" id="main">
                 @yield('content')

@@ -31,6 +31,7 @@
     27 => 'Laratrust\\LaratrustServiceProvider',
     28 => 'Laracasts\\Flash\\FlashServiceProvider',
     29 => 'Collective\\Html\\HtmlServiceProvider',
+    30 => 'Cmgmyr\\Messenger\\MessengerServiceProvider',
   ),
   'eager' => 
   array (
@@ -50,6 +51,7 @@
     13 => 'App\\Providers\\RouteServiceProvider',
     14 => 'Laratrust\\LaratrustServiceProvider',
     15 => 'Laracasts\\Flash\\FlashServiceProvider',
+    16 => 'Cmgmyr\\Messenger\\MessengerServiceProvider',
   ),
   'deferred' => 
   array (

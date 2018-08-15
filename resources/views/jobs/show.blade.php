@@ -208,6 +208,18 @@
                                         <i class="fa fa-warning" aria-hidden="true"></i> @lang('show.complain')
                                     </button>
                                 </div>
+
+                                @if(auth()->user()->id != $job->user_id)
+                                    <form action="{{route('threads.store')}}" method="post">
+                                        {{csrf_field()}}
+                                        <input type="hidden" name="job_id" value="{{$job->id}}">
+                                        <div class="col-lg-12 col-sm-6 col-xs-6">
+                                            <button class="btn btn-primary btn-block">
+                                                <i class="fa fa-envelope" aria-hidden="true"></i> Send Message
+                                            </button>
+                                        </div>
+                                    </form>
+                                @endif
                             </div>
                         </section>
                     </div>
