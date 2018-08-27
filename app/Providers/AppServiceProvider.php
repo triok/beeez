@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
             /** @var Skill $skills */
             $_skills = Skill::query()->get();
             /** @var Category $_categories */
-            $_categories = Category::query()->orderBy('cat_order')->get();
+            $_categories = Category::where('parent_id', NULL)->orderBy('cat_order')->get();
             /** @var DifficultyLevel $_difficultyLevels */
             $_difficultyLevels = DifficultyLevel::pluck('name', 'id');
             /** @var Pages $_pages */
