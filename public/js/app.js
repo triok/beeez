@@ -11382,7 +11382,15 @@ $('document').ready(function () {
         $("html, body").animate({ scrollTop: 0 }, "slow");
         return false;
     });
-
+	// Menu shadow after scrolling
+	$(window).scroll(function () {
+        var height = $(window).scrollTop();
+        if (height > 50) {
+            $('#navigation').addClass('navmenu');
+        } else {
+            $('#navigation').removeClass('navmenu');
+        }
+    });
     $('[data-toggle=tooltip]').tooltip();
 
     // show active tab on reload

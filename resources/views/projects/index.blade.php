@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container" id="main">
     <h2>@lang('projects.title')</h2>
 
-    <div class="col-sm-2 pull-right">
+    <div class="col-sm-3 pull-right">
         <a href="{{ route('projects.create') }}" class="btn btn-success btn-block">
             <i class="fa fa-sitemap"></i> @lang('projects.create')
         </a>
@@ -48,6 +49,7 @@
         @endif
         </tbody>
     </table>
+</div>    
 @endsection
 
 @push('scripts')

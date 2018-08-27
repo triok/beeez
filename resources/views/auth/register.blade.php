@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container" id="main">
     <div class="row">
         <div class="col-md-8">
             <h2>@lang('auth.register-title')</h2>
@@ -89,6 +90,7 @@
             </div>
         </div>
     </div>
+</div>    
 @endsection
 @push('scripts')
     <script>

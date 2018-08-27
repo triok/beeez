@@ -1,1 +1,1 @@
-<p>Sorry, no messages.</p>
+<p>@lang('messages.nomessage')</p>

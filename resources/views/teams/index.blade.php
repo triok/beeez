@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-
+<div class="container" id="main">
    <div class="row">
       <div class="col-md-12">
          <h2>@lang('teams.title')</h2>
@@ -35,6 +35,6 @@
          </table>
          {!! $teams->links() !!}
       </div>
-      </div>
    </div>
+</div>
 @endsection

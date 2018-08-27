@@ -1,6 +1,6 @@
 @extends('layouts.app')
-
 @section('content')
+<div class="container" id="main">
     <div class="content-form">
         <h2><i class="fa fa-pencil"></i> {{ $team->name }}</h2>
 
@@ -44,6 +44,7 @@
 
         {!! Form::close() !!}
     </div>
+</div>    
 @endsection
 
 @include('partials.summer',['editor'=>'.editor1'])

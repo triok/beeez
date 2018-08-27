@@ -22,27 +22,86 @@
     <link href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed|Ubuntu+Mono|Noto+Sans|Fira+Sans|Comfortaa:300,400,700" rel="stylesheet">
 </head>
 <body>
-<div class="page-container" id="app">
-    <div id="navigation" class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{url('/')}}">
-                    <img src="/img/light-bulb.svg" alt="">
-                    <div>Lavoro</div>
-                </a>
-                <a href="{{ url('setlocale/en') }}">En</a> |
-                <a href="{{ url('setlocale/ru') }}"> Ru</a>
-            </div>
-            <div class="" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
 
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="side" class="" style="min-height: 1200px; background: #fafafa;">
+        <div class="side-header">
+            <a class="navbar-brand" href="{{url('/')}}">
+                <h3>Lavoro</h3>
+                <img src="/img/light-bulb.svg" alt="">
+            </a>
+
+            <strong>Lavoro</strong>
+        </div>
+
+        <ul class="list-unstyled components">
+            @if (Auth::guest())
+            <li id="welcome" class="left-sidebar active" style="text-align: center; padding: 20px 0px;">
+                <p>Добро пожаловать!</p>
+                <p>Зарегистрируйтесь или войдите в систему, что бы получить доступ ко всем функциям.</p>
+            </li>
+            <li class="left-sidebar">
+                <a href="{{url('/page/2')}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fa fa-hashtag"></i>
+                    <span>О площадке</span>
+                </a>
+            </li>
+            <li class="left-sidebar">
+                <a href="{{url('/page/5')}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fa fa-thumbs-o-up"></i>
+                    <span>Контакты</span>
+                </a>
+            </li>                                
+            @else
+            <li id="welcome" class="left-sidebar active" style="text-align: center; padding: 20px 0px;">
+               <p>Вы авторизовались!</p> 
+            </li>
+            <li class="left-sidebar dropright" style=" padding: 10px 0px 10px 20px;">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> @lang('layout.jobs-manager')</a>
+                <ul class="dropdown-menu" role="menu">
+                <li>1</li>
+                <li>2</li>
+                </ul>               
+            </li>
+            <li class="left-sidebar" style=" padding: 10px 0px 10px 20px;">
+               <p>Пользователи</p> 
+            </li>  
+            <li class="left-sidebar" style=" padding: 10px 0px 10px 20px;">
+               <p>Команды</p> 
+            </li>  
+            <li class="left-sidebar" style=" padding: 10px 0px 10px 20px;">
+               <p>Организации</p> 
+            </li>                                                  
+            @endif
+        </ul>
+
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content" class="" style="min-height: 500px; padding-top: 10px">
+
+        <nav class="navbar navbar-expand-lg" style="background: #fafafa">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="button-collapse">
+
+                        <button type="button" id="sidebarCollapse" class="btn btn-default">
+                            <i class="fa fa-align-left"></i>
+                        </button>                             
+
+                       
+                    </li>
+                    <li>
+                        <a href="{{ url('setlocale/en') }}">En</a>                 
+                    </li>
+                    <li>
+                        <a href="{{ url('setlocale/ru') }}"> Ru</a>                          
+                    </li>                    
                 </ul>
+<!--                 //////////////////////////////////////////// -->
+
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
@@ -57,50 +116,43 @@
                                aria-expanded="false">
                                 <i class="fa fa-dot-circle-o" aria-hidden="true"></i> @lang('layout.jobs-manager')<span class="caret"></span>
                             </a>
-
                             <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a>
-                                </li>                                
-                                @permission('read-jobs-manager')
-                                <li>
-                                    <a href="{{ route('jobs-admin') }}"><i class="fa fa-dashboard"></i> @lang('layout.current-tasks')</a>
-                                </li>
-                                @endpermission
-
-                                @permission('read-job-categories')
-                                <li><a href="{{ route('categories.index') }}"><i class="fa fa-th-list"></i>
-                                        Categories</a></li>
-                                @endpermission
-
-                                @permission('read-job-skills')
-                                <li>
-                                    <a href="{{ route('skills.index') }}"><i class="fa fa-th-list"></i> Skills</a>
-                                </li>
-                                @endpermission
-
+                                <li><a href="{{ url('/') }}"><i class="fa fa-search"></i> @lang('layout.findwork')</a></li>
                                 <li>
                                     <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
                                         <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>
                                     </a>
                                 </li>
+                                <li><a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>
 
+                                @role('admin')                                                                
+                                @permission('read-jobs-manager')
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="{{ route('jobs-admin') }}"><i class="fa fa-dashboard"></i> @lang('layout.current-tasks')</a>
+                                </li>
+                                @endpermission
+                                @permission('read-job-categories')
+                                <li><a href="{{ route('categories.index') }}"><i class="fa fa-th-list"></i>
+                                        Categories</a></li>
+                                @endpermission
+                                @permission('read-job-skills')
+                                <li>
+                                    <a href="{{ route('skills.index') }}"><i class="fa fa-th-list"></i> Skills</a>
+                                </li>
+                                @endpermission
                                 @permission('read-job-applications')
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ route('applications-admin') }}"><i class="fa fa-briefcase"></i>
                                         Job Applications</a></li>
                                 <li role="separator" class="divider"></li>
+                                <li role="separator" class="divider"></li>
                                 @endpermission
-
-                                @permission('create-jobs')
-                                <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>
-                                @endpermission
-
-
+                                @endrole
                             </ul>
                         </li>
-
-                        
                         <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
                         <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>                        
                         <li><a href="{{route('messages')}}"><i class="fa fa-envelope"></i> @lang('messages.title') @include('messenger.unread-count')</a></li>
@@ -123,23 +175,18 @@
                                         <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
                                     </a>
                                 </li>
-
-                                <li role="separator" class="divider"></li>
+                                @role('admin')
                                 @permission('read-users')
                                 <li><a href="{{ route('users') }}"><i class="fa fa-group"></i> Users</a></li>
                                 @endpermission
-                                <li role="separator" class="divider"></li>
-
-                                @role('admin')
                                 <li><a href="/admin/settings"><i class="fa fa-wrench"></i> Settings</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/roles"><i class="fa fa-key"></i> Roles</a></li>
-                                @endrole
-
                                 @permission('read-logs')
                                 <li><a href="/admin/logs"><i class="fa fa-history"></i> System logs</a></li>
                                 <li><a href="/admin/debug"><i class="fa fa-bug"></i> Debug logs</a></li>
                                 @endpermission
+                                @endrole                                
                             </ul>
                         </li>
                         <li>
@@ -155,67 +202,31 @@
                         </li>
                     @endif
                 </ul>
+
+
+
+
+<!-- ////////////////////////////////// -->
             </div>
-        </div>
+        </nav>
+    @yield('content')
+
     </div>
 
-    <div class="container-fluid">
-        <div class="row row-offcanvas row-offcanvas-left">
-            @hasSection('users')
-                @yield('users')
-            @else
-            <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
-                <div class="Categories">@lang('layout.categories')</div>
-                <ul class="nav">
-                    
-
-                    @foreach(\App\Queries\CategoryQuery::onlyParent()->orderBy('cat_order','ASC')->get() as $cat)
-                        <li>
-                            <div style="display: flex; justify-content: space-between;">
-                                @if(($locale = App::getLocale())=="ru")
-                                    <a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->nameRu)}}</a>
-                                @else
-                                    <a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->nameEu)}}</a>
-                                @endif
-
-                             {{--<a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->nameEu)}}</a>--}}
-
-                            <i class="fa fa-plus" data-toggle="collapse" data-target="#navbarToggler{{$cat->id}}" aria-controls="navbarToggler" aria-expanded="true" aria-label="Toggle navigation" style="display: block;"></i>
-                            </div>
-
-                            @if(count($cat->subcategories) > 0)
-
-                                <ul class="navbar-collapse collapse subcategory-ul" id="navbarToggler{{$cat->id}}" aria-expanded="true">
-
-                                    @foreach($cat->subcategories as $subcategory)
-                                        <li class="subcategory-li">
-
-                                            @if(($locale = App::getLocale())=="ru")
-                                                <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->nameRu)}}
-                                                    <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
-                                                </a>
-                                            @else
-                                               <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->nameEu)}}
-                                                    <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
-                                                </a>
-                                            @endif
-
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <div class="col-xs-12 col-sm-9" id="main">
-                @yield('content')
-            </div>
-        </div>
-    </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <button id="back2Top" class="btn btn-default btn-sm" title="Back to top"><i class="fa fa-chevron-up"></i></button>
 

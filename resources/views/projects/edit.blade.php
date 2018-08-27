@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<div class="container" id="main">
     <h2>Edit project</h2>
 
     {!! Form::open(['url' => route('projects.update', $project), 'method'=>'patch']) !!}
@@ -27,4 +28,5 @@
     </div>
 
     {!! Form::close() !!}
+<div>    
 @endsection

@@ -5,30 +5,35 @@
     <link rel="stylesheet" href="/plugins/bootstrap-select/bootstrap-select.min.css" />
 @endpush
 @section('content')
+<div class="container-fluid">
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas"  role="navigation">
+        <div id="sidebar"> 
+            <div class="Categories">@lang('edit.create')</div>
+            <div>
 
-    <div class="content-form">
-        <div class="text-right">
-            @if(isset($job))
-                <a href="/jobs/create" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> </a>
-            @endif
-            <a href="/jobsAdmin" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> </a>
+                <a href="javascript:void(0);" id="separate-link">@lang('edit.separate')</a>
+
+            </div> 
         </div>
+    </div>
 
+<div class="col-sm-9" id="main">
+    <div class="content-form">
         @if(isset($job))
             <h2><i class="fa fa-pencil"></i> {{$job->name}}</h2>
             {!! Form::model($job,['url'=>route('jobs.update',$job->id),'method'=>'patch']) !!}
         @else
-            <h2><i class="fa fa-plus"></i> New Job</h2>
+            <h2><i class="fa fa-plus"></i> @lang('edit.newjob')</h2>
             {!! Form::open(['url'=>'/jobs', 'files' => true, 'enctype' => 'multipart/form-data']) !!}
         @endif
         <div class="row">
             <div class="col-sm-8">
-                <label>Name</label>
-                {!! Form::text('name',isset($job) ? $job->name : '',['required'=>'required','class'=>'form-control']) !!}
+                <label data-toggle="tooltip" data-placement="left" title="@lang('edit.tooltip-name')">@lang('edit.name')</label>
+                {!! Form::text('name',isset($job) ? $job->name : '',['required'=>'required','class'=>'form-control','placeholder'=>'Например: Придумать уникальный текст на тему "Применение камня в интерьере"']) !!}
             </div>
 
             <div class="col-sm-4">
-                <label>Status</label>
+                <label>@lang('edit.status')</label>
 {{--                {!! Form::select('status',array_keys(config('enums.jobs.statuses')), isset($job) ? array_search($job->status, array_values(config('enums.jobs.statuses'))) : 1,['class'=>'form-control']) !!}--}}
                 <select name="status" id="status" class="form-control">
                     @foreach(config('enums.jobs.statuses') as $status)
@@ -37,38 +42,36 @@
                 </select>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <a href="javascript:void(0);" id="separate-link">Separate this task</a>
-            </div>
-        </div>
-        <label>Description</label>
+        <label data-toggle="tooltip" data-placement="left" title="@lang('edit.tooltip-desc')">@lang('edit.desc')</label>
         {!! Form::textarea('desc', isset($job) ? $job->desc : '',['class'=>'editor1']) !!}
-        <label>Instructions</label>
-        <span class="label label-warning">Only visible to applicant after approval</span>
+        <label data-toggle="tooltip" data-placement="left" title="@lang('edit.tooltip-inst')">@lang('edit.instruction')</label>
         {!! Form::textarea('instructions', isset($job) ? $job->instructions : '',['class'=>'editor2','id'=>'editor2']) !!}
         <br/>
         <div class="row">
             <div class="col-md-12">
-                <label for="access">Access</label>
-                {!! Form::input('text','access', isset($job) ? $job->access : '' ,['class'=>'form-control']) !!}
+                <label for="access">@lang('edit.access')</label>
+                <span class="label label-warning">@lang('edit.visible')</span>
+                {!! Form::textarea('access', isset($job) ? $job->access : '' ,['class'=>'form-control', 'rows'=>'4']) !!}
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
-                <label>Price</label>
+                <label>@lang('edit.price')</label>
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
                     {!! Form::input('input','price',isset($job) ? str_replace('$','111',$job->formattedPrice): null,['class'=>'form-control']) !!}
                 </div>
             </div>
-
+        </div>
+        <div class="row">        
             <div class="col-md-4">
-                <label>Difficulty level</label>
+                <label>@lang('edit.difficulty')</label>
                 {!! Form::select('difficulty_level_id',$_difficultyLevels, (isset($job) && $job->difficulty) ? $job->difficulty->id : 1,['class'=>'form-control']) !!}
             </div>
+        </div>
+        <div class="row">    
             <div class="col-md-4">
-                <label>End date</label>
+                <label>@lang('edit.enddate')</label>
 
                 {{--            <input type="datetime-local" name="end_date" value="{{ isset($job)?date('Y-m-d',strtotime($job->end_date)):null}}" required class="form-control">--}}
                 {!! Form::input('datetime-local','end_date',isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('d-m-Y H:i') : '',['required'=>'required','class'=>'form-control']) !!}
@@ -78,14 +81,15 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <label for="time_for_work">Time for work</label>
+                <label for="time_for_work">@lang('edit.timefor')</label>
                 {!! Form::select('time_for_work', array('1' => '1 hour', '2' => '2 hours', '3' => '3 hours'), isset($job) ? $job->time_for_work : 1,['class'=>'form-control', 'id' => 'time_for_work'] )!!}
             </div>
-
+        </div>
+        <div class="row">        
             <div class="col-md-4">
-                <label for="user">Choose user</label>
+                <label for="user">@lang('edit.chooseuser')</label>
                 <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="user">
-                    <option selected value="">For anyone</option>
+                    <option selected value="">@lang('edit.anyone')</option>
                     @foreach($usernames as $key => $username)
                         <option value="{{$key}}" {{isset($job) && $job->hasLogin($key) ? 'selected' : ''}}>{{$username}}</option>
                     @endforeach
@@ -94,17 +98,17 @@
         </div>
 
 
-    <label>Skills:</label>
+<!--     <label>Skills:</label>
     <div class="row">
         @foreach($_skills as $skill)
             <div class="col-sm-3">
                 {!! Form::checkbox('skills[]',$skill->id, isset($job) && $job->hasSkill($skill) ? 'checked' : '') !!}{{ucwords($skill->name)}}
             </div>
         @endforeach
-    </div>
+    </div> -->
 
     <br/>
-    <label>Categories</label>
+    <label>@lang('edit.category')</label>
     <div class="row">
         @foreach($_categories as $cat)
             <div class="col-sm-3">
@@ -114,11 +118,11 @@
     </div>
     <br>
 
-    <label>Project</label>
+    <label>@lang('edit.project')</label>
     <div class="row">
         <div class="col-md-12">
             <select name="project_id" id="input-projects" class="form-control">
-                <option value="">No projects yet</option>
+                <option value="">@lang('edit.noproject')</option>
                 @foreach($projects as $project)
                     @if((isset($job) && $project->id == $job->project_id) || $project->id == old('project_id'))
                         <option selected value="{{ $project->id }}">{{ $project->name }}</option>
@@ -131,11 +135,11 @@
     </div>
     <br/>
 
-    <label>Choose CMS</label>
+    <label>@lang('edit.cms')</label>
     <div class="row">
         <div class="col-md-12">
             <select name="tag" id="tag" class="form-control">
-                <option value="" selected>I do not use CMS</option>
+                <option value="" selected>@lang('edit.nocms')</option>
                 @foreach(config('tags.tags') as $tag)
                     <option value="{{$tag['value']}}" {{isset($job) && isset($job->tag) && $job->tag->value == $tag['value'] ? 'selected' : ''}}>{{$tag['title']}}</option>
                 @endforeach
@@ -151,11 +155,11 @@
             </div>
         </div>
     </div>
-    <div class="btn-toolbar" id="savesubmit">
-        <div class="btn-group btn-group-lg">
-            <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">Submit</button>
-            <button type="submit" class="btn btn-primary" id="draft" name="draft" value="save">Save</button>
-        </div>
+    <div class="" id="savesubmit">
+
+            <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">@lang('edit.submit')</button>
+            <button type="submit" class="btn btn-primary" id="draft" name="draft" value="save">@lang('edit.save')</button>
+
     </div>
 
     {!! Form::close() !!}
@@ -171,7 +175,8 @@
     </div>
     </div>
 
-
+</div>
+</div>
 @endsection
 @include('partials.summer',['editor'=>'.editor1'])
 @include('partials.tinymce',['editor'=>'.editor2'])

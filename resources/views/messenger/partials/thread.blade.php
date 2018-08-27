@@ -5,7 +5,7 @@
         <a href="{{ route('messages.show', $thread->id) }}">{{ $thread->participant()->name }}</a>
         ({{ $thread->userUnreadMessagesCount(Auth::id()) }} unread)</h4>
     <p>
-        {{ $thread->latestMessage->body }}
+
     </p>
     <!--
     <p>

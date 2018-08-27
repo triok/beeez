@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container" id="main">
     <h2>{{ $project->name }}</h2>
 
     @permission('create-jobs')
@@ -46,4 +47,5 @@
         </p>
         <p><span>@lang('projects.jobs-complete')</span> 0</p>
     </div>
+</div>    
 @endsection

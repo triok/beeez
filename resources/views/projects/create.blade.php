@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<div class="container" id="main">
     <h2>@lang('projects.title-create')</h2>
 
     {!! Form::open(['url' => route('projects.store')]) !!}
@@ -27,4 +28,5 @@
     </div>
 
     {!! Form::close() !!}
+</div>
 @endsection

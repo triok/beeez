@@ -1,11 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-md-12">
+<div class="container-fluid">
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas"  role="navigation">
+        <div id="sidebar">
+            <div class="Categories">@lang('messages.users')</div>
+                <ul class="nav">
+                @include('messenger.partials.flash')
+
+                @each('messenger.partials.thread', $threads, 'thread', 'messenger.partials.no-threads')                       
+                </ul>            
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-9" id="main">
         @each('messenger.partials.messages', $thread->messages, 'message')
 
         @include('messenger.partials.form-message')
+   
     </div>
+</div>
+
 @stop
 
 @section('users')
