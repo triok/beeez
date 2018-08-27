@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<div class="wrapper">
+<div class="wrapper" id="app">
     <!-- Sidebar  -->
     <nav id="side" class="" style="min-height: 1200px; background: #fafafa;">
         <div class="side-header">
