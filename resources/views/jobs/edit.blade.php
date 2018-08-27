@@ -74,7 +74,7 @@
                 <label>@lang('edit.enddate')</label>
 
                 {{--            <input type="datetime-local" name="end_date" value="{{ isset($job)?date('Y-m-d',strtotime($job->end_date)):null}}" required class="form-control">--}}
-                {!! Form::input('datetime-local','end_date',isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('d-m-Y H:i') : '',['required'=>'required','class'=>'form-control']) !!}
+                {!! Form::input('datetime-local','end_date',(isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('Y-m-d\TH:i') : ''),['required'=>'required','class'=>'form-control']) !!}
 {{--                {!! Form::input('datetime-local','end_date', '2018-07-05T01:01',['required'=>'required','class'=>'form-control']) !!}--}}
 
             </div>
