@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content=""/>
     <link href="/css/app.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
     @stack('styles')
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -16,6 +17,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script src="/js/lang.js"></script>
     <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
@@ -23,7 +25,7 @@
 </head>
 <body>
 
-<div class="wrapper">
+<div class="wrapper" id="app">
     <!-- Sidebar  -->
     <nav id="side" class="" style="min-height: 1200px; background: #fafafa;">
         <div class="side-header">
@@ -252,6 +254,7 @@
     </div>
 </footer>
 <script src="/js/app.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="/plugins/listjs/listjs.min.js" type="text/javascript"></script>
 
 {{--//TODO This code  was altered--}}

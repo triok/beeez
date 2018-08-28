@@ -59,7 +59,7 @@
                 <label>@lang('edit.price')</label>
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    {!! Form::input('input','price',isset($job) ? str_replace('$','111',$job->formattedPrice): null,['class'=>'form-control']) !!}
+                    {!! Form::input('input','price',isset($job) ? str_replace('$','',$job->formattedPrice): null,['class'=>'form-control']) !!}
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
                 <label>@lang('edit.enddate')</label>
 
                 {{--            <input type="datetime-local" name="end_date" value="{{ isset($job)?date('Y-m-d',strtotime($job->end_date)):null}}" required class="form-control">--}}
-                {!! Form::input('datetime-local','end_date',isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('d-m-Y H:i') : '',['required'=>'required','class'=>'form-control']) !!}
+                {!! Form::input('datetime-local','end_date',(isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('Y-m-d\TH:i') : ''),['required'=>'required','class'=>'form-control']) !!}
 {{--                {!! Form::input('datetime-local','end_date', '2018-07-05T01:01',['required'=>'required','class'=>'form-control']) !!}--}}
 
             </div>
@@ -108,13 +108,20 @@
     </div> -->
 
     <br/>
-    <label>@lang('edit.category')</label>
     <div class="row">
-        @foreach($_categories as $cat)
-            <div class="col-sm-3">
-                {!! Form::checkbox('categories[]',$cat->id, isset($job) && $job->hasCategory($cat) ? 'checked' : '',['style'=>'']) !!} {{$cat->nameEu}}
-            </div>
-        @endforeach
+        <div class="col-md-4">
+            <label for="categories">@lang('edit.category')</label>
+            <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="categories[]">
+                <option selected value="">@lang('edit.nocategory')</option>
+                @foreach($_categories as $cat)
+                    <option value="{{$cat->id}}" {{isset($job) && $job->hasCategory($cat) ? 'selected' : ''}}>{{$cat->nameEu}}</option>
+
+                    @foreach($cat->subcategories as $subcat)
+                    <option value="{{$subcat->id}}" {{isset($job) && $job->hasCategory($subcat) ? 'selected' : ''}}>&nbsp;&nbsp;&nbsp;{{$subcat->nameEu}}</option>
+                    @endforeach
+                @endforeach
+            </select>
+        </div>
     </div>
     <br>
 
