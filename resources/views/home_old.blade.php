@@ -43,9 +43,96 @@
         </div>
     </div>
 
-    <router-view></router-view>
-@endsection
+    <div class="col-sm-9" id="main2">
+        <h3>
+            @if(isset($title))
+                {{$title}}
+            @else
+                @lang('home.title')
+            @endif
+        </h3>
 
+        @if(isset($category))
+            <div class="alert bg-info small">{{ ucwords($category->nameRu) }}</div>
+        @endif
+
+        <div class="row current-jobs">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">@lang('home.task')</th>
+                    <th scope="col">@lang('home.timefor')</th>
+                    <th scope="col">@lang('home.before')</th>
+                    <th scope="col">@lang('home.price')</th>
+                    <th scope="col">@lang('home.work')</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach($jobs as $job)
+
+                    <tr class="{!! count($job->applications) > 0 && auth()->check() ? 'in-progress': '' !!}">
+
+                        <th scope="row" class="job-name">
+                            <a href="{{route('jobs.show', $job)}}" id="{{$job->id}}">{{$job->name}}</a>
+                            {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
+
+                        </th>
+                        <td>{{ $job->time_for_work }} @lang('home.hours')</td>
+
+                        <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y') }}
+                            <b>{{ \Carbon\Carbon::parse($job->end_date)->format('H:i') }}</b></td>
+                        <td>{{ $job->formattedPrice }}</td>
+                        <td>
+                            {{--{{dd($job->applications)}}--}}
+                            @if(Auth::check())
+                                @if(count($job->applications) > 0)
+                                    @if(isset($job->application))
+                                        <button data-id="{{$job->id}}"
+                                                {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-sm btn-review">
+                                            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                            @lang('home.complete')
+                                        </button>
+                                    @else
+                                        <button disabled class="btn btn-warning btn-sm "><i class="fa fa-history"
+                                                                                            aria-hidden="true"></i> @lang('home.in_progress')
+                                        </button>
+                                    @endif
+                                @else
+                                    @if(\Carbon\Carbon::now() <= $job->end_date && $job->status == config('enums.jobs.statuses.OPEN'))
+                                        <form action="{{route('jobs.apply', $job)}}" method="post">
+                                            {{csrf_field()}}
+                                            <button class="btn btn-default btn-sm" type="submit"><i
+                                                        class="fa fa-briefcase"></i> @lang('home.apply') </button>
+                                        </form>
+                                    @elseif($job->status == config('enums.jobs.statuses.IN_PROGRESS') || $job->status == config('enums.jobs.statuses.IN_REVIEW'))
+                                        <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn">
+                                            <i class="fa fa-briefcase"></i> @lang('home.in_progress') </button>
+                                    @elseif($job->status == config('enums.jobs.statuses.COMPLETE'))
+                                        <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn">
+                                            <i class="fa fa-briefcase"></i> @lang('home.complete') </button>
+                                    @else
+                                        <button disabled id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn">
+                                            <i class="fa fa-briefcase"></i> @lang('home.enddate') </button>
+                                    @endif
+                                @endif
+                            @else
+                                <button id="{{$job->id}}" class="btn btn-default btn-sm apply-job-btn"><i
+                                            class="fa fa-briefcase"></i> @lang('home.apply') </button>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">{{$jobs->links()}}</div>
+        </div>
+    </div>
+
+@endsection
 @push('modals')
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel">
