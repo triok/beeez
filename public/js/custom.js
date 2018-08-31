@@ -64,6 +64,9 @@ $(document).ready(function () {
         $('#side').toggleClass('active');
     });
 
+    $('#input-category-name').on('click', function () {
+        $('#modal-categories').modal({ backdrop: 'static', keyboard: false, 'show': true });
+    });
 });
 
 function removeSubTask() {
@@ -156,3 +159,15 @@ function ratingJob() {
     container.modal({ backdrop: 'static', keyboard: false, 'show': true });
 }
 
+function showSubCategories(id) {
+    $('.subcategories').css('display', 'none');
+
+    $('#subcategories-' + id).css('display', 'block');
+}
+
+function setCategory(id, name) {
+    $('#input-category-id').val(id);
+    $('#input-category-name').val(name);
+
+    $('#modal-categories').modal('toggle');
+}
