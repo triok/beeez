@@ -138,7 +138,11 @@ function addComment() {
         $('.form-container h4').after(mess);
     }
 
-    $('#reply-container .reply-user').text(author)
+    $('#reply-container .reply-user').text(author);
+
+    var message = "<В ответ на комментарий пользователя: " + author + ">\n";
+
+    $('#body').text(message);
 
     document.getElementById("body").focus();
 

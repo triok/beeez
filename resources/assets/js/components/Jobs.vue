@@ -1,5 +1,15 @@
 <template>
     <div class="col-sm-9" id="main">
+        <ol class="breadcrumb" v-if="category">
+            <li><a href="/">Главная</a></li>
+            <li v-if="category && category.parent">
+                <a :href="'/jobs/category/'+ category.parent.id">{{ category.parent.nameRu }}</a>
+            </li>
+            <li v-if="category">
+                <a :href="'/jobs/category/'+ category.id">{{ category.nameRu }}</a>
+            </li>
+        </ol>
+
         <div v-show="show_title">
             <h3 v-if="category">Job under category</h3>
             <h3 v-if="!category">{{ trans('home.title') }}</h3>
@@ -49,7 +59,7 @@
                                 <i class="fa fa-history"></i> {{ trans('home.in_progress') }}
                             </button>
 
-                            <form :action="'/jobs/'+job.id+'/apply'" method="post" v-if="!job.ended && job.status == 'open'">
+                            <form :action="'/jobs/'+job.id+'/apply'" method="post" v-if="job.allow_apply">
                                 <input type="hidden" name="_token" :value="csrf">
                                 <button class="btn btn-default btn-sm" type="submit">
                                     <i class="fa fa-briefcase"></i> {{ trans('home.apply') }}

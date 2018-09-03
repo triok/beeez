@@ -179,6 +179,10 @@ function deleteMySkill(skill_id) {
         }
     });
 }
+
+var viewModal= null;
+
+/**
 /**
  * display job
  * @param jobId
@@ -189,10 +193,7 @@ function showJob(jobId) {
         var viewModal = $('#viewJobModal');
         viewModal.find('#title').html(job.name);
         viewModal.find('#desc').html(job.desc);
-        if (job.prettyskills === "")
-            viewModal.find('#skills').html('<span class="label label-warning">None specified</span>');
-        else
-            viewModal.find('#skills').html(job.prettyskills);
+        if (job.prettyskills === "") viewModal.find('#skills').html('<span class="label label-warning">None specified</span>');else viewModal.find('#skills').html(job.prettyskills);
 
         viewModal.find('#cats').html(job.cats);
         viewModal.find('#price').text(job.price);
@@ -200,8 +201,7 @@ function showJob(jobId) {
         viewModal.find('table').addClass('table');
 
         var d_level = 'info';
-        if (job.level === 'advanced')
-            d_level = 'danger';
+        if (job.level === 'advanced') d_level = 'danger';
         viewModal.find('#difficulty').addClass('label label-' + d_level).text(job.level);
 
         var bkmrkbtn = viewModal.find('.bookmark-modal-btn');
@@ -217,7 +217,7 @@ function showJob(jobId) {
             bkmrkbtn.find('i').removeClass('text-danger');
         }
 
-        viewModal.modal({backdrop: 'static', keyboard: false, 'show': true});
+        viewModal.modal({ backdrop: 'static', keyboard: false, 'show': true });
     });
 }
 /**
@@ -448,4 +448,111 @@ $('document').ready(function () {
 
     })
 
+    //update bio social
+    $('.social-btn-save').on('click', function (e) {
+        var _this = $(this);
+        var input = _this.closest('.row').find('input');
+
+        if (input.val().length == 0) return false;
+
+        $.ajax({
+            url: '/account/bio',
+            data: { _token: _token, value: input.val(), attr: input.attr('id'), action: 'save' },
+            type: 'POST',
+            success: function success(response) {
+                _this.closest('.btn-group').find('.social-btn-conf').attr('disabled', false);
+                notice(response.response, 'success');
+            },
+            error: function error(err) {
+                notice('Error! Please try again', 'error');
+            }
+        });
+    });
+
+    //update bio social
+    $('.social-btn-conf').on('click', function (e) {
+        var _this = $(this);
+        var input = _this.closest('.row').find('input');
+        _this.attr('disabled', true);
+
+        $.ajax({
+            url: '/account/bio',
+            data: { _token: _token, value: input.val(), attr: input.attr('id'), action: 'verified' },
+            type: 'POST',
+            success: function success(response) {
+                _this.closest('.btn-group').find('.social-btn-save').attr('disabled', true);
+                input.attr('disabled', true);
+
+                notice(response.response, 'success');
+            },
+            error: function error(err) {
+                notice('Error! Please try again', 'error');
+                _this.attr('disabled', false);
+            }
+        });
+    });
+
+    $('.social-confirmed').on('click', function (e) {
+        var _this = $(this);
+        var input = _this.closest('.row').find('input');
+        var user_id = _this.attr('data-user');
+
+        $.ajax({
+            url: '/account/bio',
+            data: { _token: _token,  attr: input.attr('id'), user: user_id, action: 'confirmed' },
+            type: 'POST',
+            success: function success(response) {
+                _this.attr('disabled', true);
+                _this.text('Confirmed');
+                notice(response.response, 'success');
+            },
+            error: function error(err) {
+                notice('Error! Please try again', 'error');
+            }
+        });
+    });
+
+    // avatar, login search, peoples
+    var timer;
+    var x;
+
+
+    $("#login_search").keyup(function () {
+        var _this = $(this), value = $(this).val();
+
+        if (value.length > 2) {
+            if (x) { x.abort() } // If there is an existing XHR, abort it.
+            clearTimeout(timer); // Clear the timer so we don't end up with dupes.
+            timer = setTimeout(function() { // assign timer a new timeout
+                x = $.ajax({
+                    url: "/api/v1/users",
+                    data: { _token: _token, q: value},
+                    type: 'GET',
+                    success: function success(response) {
+                        $res = '';
+
+                        if (response.length == 0) {
+                            $(".result").html('<li>No results</li>').fadeIn();
+                            return false;
+                        }
+                        response.forEach(function(entry) {
+                            console.log(entry);
+                            $res += '<li class=""><a href="/peoples/'+entry.id+'">'+ entry.username + '</a></li>';
+                        });
+                        $(".result").show().html($res).fadeIn();
+
+                    },
+                    error: function error(xhr, status, error) {
+                        notice('Error! Please try again', 'error');
+                    },
+                }); // run ajax request and store in x variable (so we can cancel)
+            }, 1000); // 1000ms delay, tweak for faster/slower
+        }
+        $(".result").html('').hide();
+    });
+    $("#login_search").on('blur', function(e) {
+        setTimeout((function(){
+            $(".result").html('').hide();
+        }), 2000);
+    });
 });

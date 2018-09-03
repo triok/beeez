@@ -107,6 +107,22 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            {{ currency()->getUserCurrency() }}<span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                                @foreach(currency()->getActiveCurrencies() as $currency)
+                                    <li>
+                                        <a href="?currency={{ $currency['code'] }}" class="btn btn-link btn-block">
+                                            {{ $currency['code'] }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                        </ul>
+                    </li>
+
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ route('login') }}">@lang('layout.login-title')</a></li>
