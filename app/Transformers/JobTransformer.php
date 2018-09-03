@@ -16,7 +16,7 @@ class JobTransformer extends Transformer
         return [
             "id" => $job->id,
             "name" => $job->name,
-            "price" => env('CURRENCY_SYMBOL') . $job->price,
+            "price" => $job->formattedPrice,
             "time_for_work" => $job->time_for_work,
             "status" => $job->status,
             "application" => $job->application,

@@ -16,8 +16,8 @@ class CurrenciesTableSeeder extends Seeder
         currency()->create([
             'name' => 'Рубль',
             'code' => 'RUB',
-            'symbol' => '$',
-            'format' => '$1,0.00',
+            'symbol' => '₽',
+            'format' => '1 руб.',
             'exchange_rate' => 1.00000000,
             'active' => 1,
         ]);
@@ -25,9 +25,9 @@ class CurrenciesTableSeeder extends Seeder
         currency()->create([
             'name' => 'Dollar',
             'code' => 'USD',
-            'symbol' => '₽',
-            'format' => '₽1,0.00',
-            'exchange_rate' => 67.00000000,
+            'symbol' => '$',
+            'format' => '$1,0.00',
+            'exchange_rate' => 0.01470000,
             'active' => 1,
         ]);
     }
