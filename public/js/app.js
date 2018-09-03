@@ -46989,7 +46989,7 @@ var render = function() {
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        !job.ended && job.status == "open"
+                        job.allow_apply
                           ? _c(
                               "form",
                               {
