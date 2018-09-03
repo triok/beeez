@@ -248,7 +248,7 @@ class JobController extends Controller
     function edit(Job $job)
     {
         unset($this->usernames[Auth::id()]);
-        
+
         return view('jobs.edit', ['job' => $job, 'usernames' => $this->usernames, 'projects' => auth()->user()->projects]);
     }
 

@@ -9,6 +9,10 @@ class CategoriesController extends Controller
 {
     public function show(Category $category)
     {
-        return response()->json(['data' => $category]);
+        $response['data'] = $category;
+
+        $response['data']['parent'] = $category->parent;
+
+        return response()->json($response);
     }
 }
