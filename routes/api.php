@@ -19,4 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1', 'namespace' => '\API'], function () {
     Route::get('users', 'UserController@index')->name('users.index');
+
+    Route::get('teams', 'TeamController@index');
 });

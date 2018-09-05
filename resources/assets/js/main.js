@@ -536,14 +536,13 @@ $('document').ready(function () {
                             return false;
                         }
                         response.forEach(function(entry) {
-                            console.log(entry);
                             $res += '<li class=""><a href="/peoples/'+entry.id+'">'+ entry.username + '</a></li>';
                         });
                         $(".result").show().html($res).fadeIn();
 
                     },
                     error: function error(xhr, status, error) {
-                        notice('Error! Please try again', 'error');
+                        // notice('Error! Please try again', 'error');
                     },
                 }); // run ajax request and store in x variable (so we can cancel)
             }, 1000); // 1000ms delay, tweak for faster/slower
@@ -551,6 +550,44 @@ $('document').ready(function () {
         $(".result").html('').hide();
     });
     $("#login_search").on('blur', function(e) {
+        setTimeout((function(){
+            $(".result").html('').hide();
+        }), 2000);
+    });
+
+    $("#team_search").keyup(function () {
+        var _this = $(this), value = $(this).val();
+
+        if (value.length > 2) {
+            if (x) { x.abort() } // If there is an existing XHR, abort it.
+            clearTimeout(timer); // Clear the timer so we don't end up with dupes.
+            timer = setTimeout(function() { // assign timer a new timeout
+                x = $.ajax({
+                    url: "/api/v1/teams",
+                    data: { _token: _token, q: value},
+                    type: 'GET',
+                    success: function success(response) {
+                        $res = '';
+
+                        if (response.length == 0) {
+                            $(".result").html('<li>No results</li>').fadeIn();
+                            return false;
+                        }
+                        response.forEach(function(entry) {
+                            $res += '<li class=""><a href="/teams/'+entry.slug+'">'+ entry.name + '</a></li>';
+                        });
+                        $(".result").show().html($res).fadeIn();
+
+                    },
+                    error: function error(xhr, status, error) {
+                        // notice('Error! Please try again', 'error');
+                    },
+                }); // run ajax request and store in x variable (so we can cancel)
+            }, 1000); // 1000ms delay, tweak for faster/slower
+        }
+        $(".result").html('').hide();
+    });
+    $("#team_search").on('blur', function(e) {
         setTimeout((function(){
             $(".result").html('').hide();
         }), 2000);
