@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<div class="container" id="main">
     <div class="row">
         <div class="col-md-12">
             <hr>
@@ -71,4 +72,5 @@
             </div>
         </div>
     </div>
+</div>    
 @endsection

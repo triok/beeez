@@ -1,0 +1,1 @@
+<p>@lang('messages.nomessage')</p>

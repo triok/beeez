@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    {{--{{dd($job->tag)}}--}}
+<div class="container" id="main">
     <div class="jd-container standalone">
         <div class="jd-card air-card p-0-top-bottom m-0-top-bottom">
             <div class="row">
@@ -10,23 +10,44 @@
                         <h2>{{$job->name}}</h2>
                     </header>
 
-                    <section class="air-card-divider-sm">
-                        <ol class="sands-category list-inline">
+                    <section class="air-card-divider-sm header-section">
+                        <div class="sands-category list-inline">
                             @foreach($job->categories as $category)
-                                <li><span>@lang('show.category')</span><a href="{{route('jobs.category', $category)}}" class="category list-inline-item"> {{$category->name}}</a></li>
+                                <li><span>@lang('show.category')</span> <a href="{{route('jobs.category', $category)}}" class="category list-inline-item">{{$category->nameRu}}</a></li>
                             @endforeach
-                        </ol>
+                        </div>
                         <div class="clearfix"></div>
                         <div class="m-md-top nowrap text-muted">
-                            @lang('show.posted') <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> @lang('show.by') {{ $job->user->name }}
-                            (<span class="text-success">{{$job->user->rating_positive}}</span>/<span class="text-danger">{{$job->user->rating_negative}}</span>)
+                            @lang('show.posted') <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> @lang('show.by') <a href="{{route('peoples.show', $job->user)}}"><span class="username">{{ $job->user->name }}</span></a>
+                             (<span class="text-success">{{$job->user->rating_positive}}</span>/<span class="text-danger">{{$job->user->rating_negative}}</span>)
                         </div>
                         {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
 
+                        <div class="m-md-top nowrap text-muted">
+                            <span>@lang('show.viewed')</span>
+                            <strong><i class="fa fa-eye"></i> {{$job->getViews()}}</strong>
+                        </div>
+                    </section>
+
+
+                    <section class="air-card-divider-sm">
+                        <ul class="job-features">
+                            <li data-toggle="tooltip" data-placement="left" title="@lang('show.price')">
+                                <strong><i class="fa fa-usd" aria-hidden="true" ></i> {{$job->price}}</strong>
+                                <small class="text-muted">@lang('show.fixedprice')</small>
+                            </li>
+ 
+                            @if(isset($job->tag))
+                            <li>
+                                <strong><i class="fa fa-tag" aria-hidden="true"></i> <a href="{{route('jobs.index')}}?tag={{$job->tag->value}}" class="text-muted">{{$job->tag->value}}</a></strong>
+                                <small class="text-muted">@lang('show.tag')</small>
+                            </li>
+                            @endif
+                        </ul>
                     </section>
 
                     <section class="air-card-divider-sm">
-                        <label>@lang('show.description')</label>
+                        <label data-toggle="tooltip" data-placement="left" title="@lang('show.tooltip-desc')">@lang('show.description')</label>
                         <div class="job-description">
                             {!! $job->desc !!}
                         </div>
@@ -39,29 +60,22 @@
                     </section>
 
                     <section class="air-card-divider-sm">
-                        <ul class="job-features">
-                            <li>
-                                <strong><i class="fa fa-usd" aria-hidden="true"></i> {{$job->price}}</strong>
-                                <small class="text-muted">@lang('show.fixedprice')</small>
-                            </li>
-                            <li>
-                                <strong><i class="fa fa-eye"></i> {{$job->getViews()}}</strong>
-                                <small class="text-muted">@lang('show.viewed')</small>
-                            </li>
-                            @if(isset($job->tag))
-                            <li>
-                                <strong><i class="fa fa-tag" aria-hidden="true"></i> <a href="{{route('jobs.index')}}?tag={{$job->tag->value}}" class="text-muted">{{$job->tag->value}}</a></strong>
-                                <small class="text-muted">@lang('show.tag')</small>
-                            </li>
-                            @endif
-                        </ul>
-                    </section>
-                    <section class="air-card-divider-sm">
                         <ul class="list-unstyled">
                             <li>
-                                <strong class="m-sm-right">@lang('show.status')</strong><span class="label label-default">{{$job->status}}</span>
+                                <strong class="m-sm-right">@lang('show.timefor')</strong><span> {{ $job->time_for_work }} {{ $job->time_for_work == 1 ? 'hour' : 'hours' }}</span>
                             </li>
                             <li>
+                                <strong class="m-sm-right">@lang('show.enddate')</strong><span class="enddate"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i') }}</span>
+                            </li>
+                            <li>
+                                <strong class="m-sm-right">@lang('show.status')</strong>
+                                    @if($job->status == config('enums.jobs.statuses.OPEN'))
+                                        <span class="label label-success">{{$job->status}}</span>
+                                    @else
+                                        <span class="label label-default">{{$job->status}}</span>
+                                    @endif
+                            </li>
+<!--                             <li>
                                 <strong class="m-sm-right">Job Access:</strong><span>{{$job->access}}</span>
                             </li>
                             <li>
@@ -71,34 +85,30 @@
                                 @else
                                     <span>нет</span>
                                 @endif
-                            </li>
-                            <li>
-                                <strong class="m-sm-right">@lang('show.enddate')</strong><span><i class="fa fa-clock-o" aria-hidden="true"></i> {{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i') }}</span>
-                            </li>
+                            </li> -->
+
                             <li>
                                 @if(isset($job->difficulty))
                                 <strong class="m-sm-right">@lang('show.difficulty')</strong><span class="label label-default"> {{ $job->difficulty->name }}</span>
                                 @endif
                             </li>
-                            <li>
-                                <strong class="m-sm-right">@lang('show.timefor')</strong><span> {{ $job->time_for_work }} {{ $job->time_for_work == 1 ? 'hour' : 'hours' }}</span>
-                            </li>
+
                         </ul>
                     </section>
                     <section class="air-card-divider-sm">
-                        <h4>Skills and expertise</h4>
+                        <label>@lang('show.skills')</label>
                         <div class="tag-list">
                             @forelse($job->skills as $skill)
                                 <span  class="o-tag-skill">{{$skill->name}}</span>
                             @empty
-                                <span class="label label-warning">None specified</span>
+                                <span class="label label-warning">@lang('show.noskills')</span>
                             @endforelse
                         </div>
                     </section>
                     @if(count($job->files) > 0)
                     <section class="air-card-divider-sm">
                         <div class="m-lg-bottom">
-                            <h4>Attachment</h4>
+                            <label>@lang('show.attachments')</label>
                             <ul class="list-unstyled file-list">
                                 @foreach($job->files as $file)
                                 <li>
@@ -112,7 +122,7 @@
                     @endif
 
                 </div>
-                <aside class="sidebar-actions col-lg-4">
+                <aside class="sidebar-actions col-lg-3">
                     <div class="sidebar">
                         <section >
                             <div class="row buttons">
@@ -219,7 +229,7 @@
 
         <div class="air-card p-0-top-bottom">
             <header>
-                <h2>Related jobs</h2>
+                <h2>@lang('show.related')</h2>
             </header>
             <div>
                 <section class="other-jobs">
@@ -246,38 +256,38 @@
                         @endif
 
                         @if($job->jobs()->count() <= 0 && !isset($parents))
-                            <li><div class="alert alert-danger">No related tasks</div></li>
+                            <li><div class="alert alert-warning">@lang('show.norelated')</div></li>
                         @endif
                     </ul>
                 </section>
             </div>
         </div>
         <div class="air-card p-0-top-bottom">
-            <div class="form-container">
-                <h4>Comment:</h4>
-                <form action="{{route('comments.store')}}" method="post">
-                    {{csrf_field()}}
-                    <input type="hidden" name="parent" id="parent" value="">
-                    <input type="hidden" name="job" value="{{$job->id}}">
-                    <textarea name="body" id="body" required rows="3" class="form-control"></textarea>
-                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Send</button>
-                </form>
-            </div>
             <div class="comments">
-                <h2 style="border-bottom: 1px solid rgba(34, 36, 38, .15);">Comments ({{$job->commentCount()}})</h2>
+                <h2>@lang('show.questions') ({{$job->commentCount()}})</h2>
                 <ul class="media-list">
                     @forelse($job->comments as $comment)
                         @include('jobs.comment', ['tag' => 'li'])
                     @empty
                         <li class="media">
-                            <div class="alert alert-danger">No comments found!</div>
+                            <div class="alert alert-warning">@lang('show.noquestions')</div>
                         </li>
                     @endforelse
                 </ul>
             </div>
+            <div class="form-container">
+                <h2>@lang('show.question')</h2>
+                <form action="{{route('comments.store')}}" method="post">
+                    {{csrf_field()}}
+                    <input type="hidden" name="parent" id="parent" value="">
+                    <input type="hidden" name="job" value="{{$job->id}}">
+                    <textarea name="body" id="body" required rows="3" class="form-control"></textarea>
+                    <button type="submit" class="btn btn-info" style="margin-top: 10px;">@lang('show.send')</button>
+                </form>
+            </div>
         </div>
     </div>
-
+</div>
 @endsection
 @push('scripts')
     <script src="/js/custom.js"></script>

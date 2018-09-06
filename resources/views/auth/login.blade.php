@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-8">
+
+        <div class="col-md-4 col-md-offset-4 auth">
 
             <h2>@lang('auth.login-title')</h2>
 
@@ -53,5 +53,6 @@
                 </div>
             </div>
         </div>
-    </div>
+
+   
 @endsection

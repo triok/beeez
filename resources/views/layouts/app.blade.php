@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content=""/>
     <link href="/css/app.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
     @stack('styles')
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -16,33 +17,146 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script src="/js/lang.js"></script>
     <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed|Ubuntu+Mono|Noto+Sans|Fira+Sans|Comfortaa:300,400,700" rel="stylesheet">
 </head>
 <body>
-<div class="page-container" id="app">
-    <div id="navigation" class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{url('/')}}">
-                    <img src="/img/light-bulb.svg" alt="">
-                    <div>Lavoro</div>
-                </a>
-                <a href="{{ url('setlocale/en') }}">En</a> |
-                <a href="{{ url('setlocale/ru') }}"> Ru</a>
-            </div>
-            <div class="" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
 
+<div class="wrapper" id="app">
+    <!-- Sidebar  -->
+    <nav id="side" class="" style="min-height: 1200px; background: #fafafa;">
+        <div class="side-header">
+            <a class="navbar-brand" href="{{url('/')}}">
+                <h3>Lavoro</h3>
+                <img src="/img/light-bulb.svg" alt="">
+            </a>
+
+            <strong>Lavoro</strong>
+        </div>
+
+        <ul class="list-unstyled components">
+            @if (Auth::guest())
+            <li id="welcome" class="left-sidebar active" style="text-align: center; padding: 20px 0px;">
+                <p>Добро пожаловать!</p>
+                <p>Зарегистрируйтесь или войдите в систему, что бы получить доступ ко всем функциям.</p>
+            </li>
+            <li class="left-sidebar">
+                <a href="{{url('/page/2')}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fa fa-hashtag"></i>
+                    <span>О площадке</span>
+                </a>
+            </li>
+            <li class="left-sidebar">
+                <a href="{{url('/page/5')}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fa fa-thumbs-o-up"></i>
+                    <span>Контакты</span>
+                </a>
+            </li>                                
+            @else
+            <li id="welcome" class="left-sidebar active" style="text-align: center; padding: 20px 0px;">
+               <p>Добро пожаловать,</p>
+               <p>name!</p> 
+            </li>
+            <li class="left-sidebar dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>@lang('layout.jobs-manager')</span></a>
+                <ul class="dropdown-menu" role="menu">
+                <h6 class="dropdown-header">@lang('layout.jobs-manager')</h6>
+                <li role="separator" class="divider"></li>                
+                <li><a href="{{ url('/') }}"><i class="fa fa-search"></i> @lang('layout.findwork')</a></li>
+                <li>
+                    <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
+                       <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>
+                    </a>
+                </li>
+                <li><a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>                
+                </ul>               
+            </li>
+            <li class="left-sidebar dropdown" >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i><span>@lang('peoples.title')</span></a>
+                <ul class="dropdown-menu" role="menu">
+                <h6 class="dropdown-header">@lang('peoples.title')</h6>
+                <li role="separator" class="divider"></li>
+                <li>
+                    <a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i>Найти пользователя</a>                    
+                </li>
+                </ul>               
+            </li>  
+            <li class="left-sidebar dropdown" >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-group" aria-hidden="true"></i><span>@lang('teams.title')</span></a>
+                <ul class="dropdown-menu" role="menu">
+                <h6 class="dropdown-header">@lang('teams.title')</h6>
+                <li role="separator" class="divider"></li>
+                <li>
+                    <a href="{{route('teams.index')}}"><i class="fa fa-search"></i>Найти команду</a>                    
+                </li>
+                <li>
+                    <a href="{{route('teams.index')}}"><i class="fa fa-group"></i>Мои команды</a>                    
+                </li>
+                <li role="separator" class="divider"></li>                
+                <li>
+                    <a href="{{route('teams.create')}}"><i class="fa fa-plus"></i>Создать команду</a>                    
+                </li>                                                
+                </ul>                  
+            </li>  
+            <li class="left-sidebar dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-briefcase" aria-hidden="true"></i><span>Организации</span></a>
+                <ul class="dropdown-menu" role="menu">
+                <h6 class="dropdown-header">Организации</h6>
+                <li role="separator" class="divider"></li>
+                <li>
+                    <a href="{{route('teams.index')}}"><i class="fa fa-search"></i>Все организации</a>                    
+                </li>
+                <li>
+                    <a href="{{route('teams.index')}}"><i class="fa fa-briefcase"></i>Мои организации</a>                    
+                </li>
+                <li role="separator" class="divider"></li>                
+                <li>
+                    <a href="{{route('teams.create')}}"><i class="fa fa-plus"></i>Добавить организацию</a>                    
+                </li>                                                
+                </ul>  
+            </li>
+            <li class="left-sidebar dropdown">
+                <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark"></i><span>@lang('layout.bookmarks')</span>
+                    <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
+                </a>
+            </li>                                                              
+            @endif
+        </ul>
+
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content" class="" style="min-height: 500px; padding-top: 10px">
+
+        <nav class="navbar navbar-expand-lg" style="background: #fafafa">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="button-collapse">
+
+                        <button type="button" id="sidebarCollapse" class="btn btn-default">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>                             
+
+                       
+                    </li>
+                    <li>
+                        <a href="{{ url('setlocale/en') }}">En</a>                 
+                    </li>
+                    <li>
+                        <a href="{{ url('setlocale/ru') }}"> Ru</a>                          
+                    </li>                    
                 </ul>
+<!--                 //////////////////////////////////////////// -->
+
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
@@ -53,56 +167,52 @@
                     @else
 
                         <li class="dropdown">
+                            @role('admin')
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
                                 <i class="fa fa-dot-circle-o" aria-hidden="true"></i> @lang('layout.jobs-manager')<span class="caret"></span>
                             </a>
-
                             <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a>
-                                </li>                                
-                                @permission('read-jobs-manager')
-                                <li>
-                                    <a href="{{ route('jobs-admin') }}"><i class="fa fa-dashboard"></i> @lang('layout.current-tasks')</a>
-                                </li>
-                                @endpermission
-
-                                @permission('read-job-categories')
-                                <li><a href="{{ route('categories.index') }}"><i class="fa fa-th-list"></i>
-                                        Categories</a></li>
-                                @endpermission
-
-                                @permission('read-job-skills')
-                                <li>
-                                    <a href="{{ route('skills.index') }}"><i class="fa fa-th-list"></i> Skills</a>
-                                </li>
-                                @endpermission
-
+                                <li><a href="{{ url('/') }}"><i class="fa fa-search"></i> @lang('layout.findwork')</a></li>
                                 <li>
                                     <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
                                         <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>
                                     </a>
                                 </li>
+                                <li><a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>
 
+                                                                                                
+                                @permission('read-jobs-manager')
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="{{ route('jobs-admin') }}"><i class="fa fa-dashboard"></i> @lang('layout.current-tasks')</a>
+                                </li>
+                                @endpermission
+                                @permission('read-job-categories')
+                                <li><a href="{{ route('categories.index') }}"><i class="fa fa-th-list"></i>
+                                        Categories</a></li>
+                                @endpermission
+                                @permission('read-job-skills')
+                                <li>
+                                    <a href="{{ route('skills.index') }}"><i class="fa fa-th-list"></i> Skills</a>
+                                </li>
+                                @endpermission
                                 @permission('read-job-applications')
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ route('applications-admin') }}"><i class="fa fa-briefcase"></i>
                                         Job Applications</a></li>
                                 <li role="separator" class="divider"></li>
+                                <li role="separator" class="divider"></li>
                                 @endpermission
-
-                                @permission('create-jobs')
-                                <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>
-                                @endpermission
-
-
+                                
                             </ul>
                         </li>
-
-                        
                         <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
-                        <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>                        
+                        <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>  
+                        @endrole                      
+                        <li><a href="{{route('messages')}}"><i class="fa fa-envelope"></i> @lang('messages.title') @include('messenger.unread-count')</a></li>
 
                         @permission('read-payouts')
                         <li><a href="/payouts"><i class="fa fa-money"></i> Payouts</a></li>
@@ -118,101 +228,58 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="/account"><i class="fa fa-user"></i> @lang('layout.profile')</a></li>
                                 <li>
-                                    <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark"></i> @lang('layout.bookmarks')
-                                        <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
+                                    <a href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                             document.getElementById('logout-form').submit();">
+                                        <i class="fa fa-lock"></i> @Lang('layout.logout')
                                     </a>
-                                </li>
-
-                                <li role="separator" class="divider"></li>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                          style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>                                
+                                @role('admin')
                                 @permission('read-users')
                                 <li><a href="{{ route('users') }}"><i class="fa fa-group"></i> Users</a></li>
                                 @endpermission
-                                <li role="separator" class="divider"></li>
-
-                                @role('admin')
                                 <li><a href="/admin/settings"><i class="fa fa-wrench"></i> Settings</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/roles"><i class="fa fa-key"></i> Roles</a></li>
-                                @endrole
-
                                 @permission('read-logs')
                                 <li><a href="/admin/logs"><i class="fa fa-history"></i> System logs</a></li>
                                 <li><a href="/admin/debug"><i class="fa fa-bug"></i> Debug logs</a></li>
                                 @endpermission
+                                @endrole                                
                             </ul>
                         </li>
-                        <li>
-                            <a href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                <i class="fa fa-lock"></i> @Lang('layout.logout')
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                  style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
-                        </li>
+
                     @endif
                 </ul>
+
+
+
+
+<!-- ////////////////////////////////// -->
             </div>
-        </div>
+        </nav>
+    @yield('content')
+
     </div>
 
-    <div class="container-fluid">
-        <div class="row row-offcanvas row-offcanvas-left">
-
-            <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
-                <div class="Categories">@lang('layout.categories')</div> 
-                <ul class="nav">
-                    
-
-                    @foreach(\App\Queries\CategoryQuery::onlyParent()->orderBy('cat_order','ASC')->get() as $cat)
-                        <li>
-                            <div style="display: flex; justify-content: space-between;">
-                                @if(($locale = App::getLocale())=="ru")
-                                    <a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->nameRu)}}</a>
-                                @else
-                                    <a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->nameEu)}}</a>
-                                @endif
-
-                             {{--<a href="{{route('jobs.category', $cat)}}">{{ucwords($cat->nameEu)}}</a>--}}
-
-                            <i class="fa fa-plus" data-toggle="collapse" data-target="#navbarToggler{{$cat->id}}" aria-controls="navbarToggler" aria-expanded="true" aria-label="Toggle navigation" style="display: block;"></i>
-                            </div>
-
-                            @if(count($cat->subcategories) > 0)
-
-                                <ul class="navbar-collapse collapse subcategory-ul" id="navbarToggler{{$cat->id}}" aria-expanded="true">
-
-                                    @foreach($cat->subcategories as $subcategory)
-                                        <li class="subcategory-li">
-
-                                            @if(($locale = App::getLocale())=="ru")
-                                                <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->nameRu)}}
-                                                    <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
-                                                </a>
-                                            @else
-                                               <a href="/jobs/category/{{$subcategory->id}}">{{ucwords($subcategory->nameEu)}}
-                                                    <span class="label label-info pull-right">{{count($subcategory->openJobs)}}</span>
-                                                </a>
-                                            @endif
-
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </li>
-                    @endforeach
-                </ul>
-
-            </div>
-
-            <div class="col-xs-12 col-sm-9" id="main">
-                @yield('content')
-            </div>
-        </div>
-    </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <button id="back2Top" class="btn btn-default btn-sm" title="Back to top"><i class="fa fa-chevron-up"></i></button>
 
@@ -238,6 +305,7 @@
     </div>
 </footer>
 <script src="/js/app.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="/plugins/listjs/listjs.min.js" type="text/javascript"></script>
 
 {{--//TODO This code  was altered--}}

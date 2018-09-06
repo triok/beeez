@@ -1,7 +1,7 @@
-<{{$tag ?? 'li'}} class="media" data-id="{{$comment->id}}">
+<{{$tag ?? 'li'}} class="media comment-box" data-id="{{$comment->id}}">
     <div class="media-left">
 
-        <img class="media-object img-rounded" src="{{$comment->author->getStorageDir() . $comment->author->avatar}}" alt="{{$comment->author->name}}">
+      <img class="media-object img-rounded" src="{{$comment->author->getStorageDir() . $comment->author->avatar}}" alt="{{$comment->author->name}}">
 
     </div>
     <div class="media-body">
@@ -27,7 +27,7 @@
         {{--</span>--}}
         @if(($job->user_id === auth()->id() || auth()->user()->hasRole('admin')) && (auth()->id() != $comment->author->id))
         <span class="comment-reply">
-            <a href="javascript:void(0);" class="reply">ответить</a>
+            <a href="javascript:void(0);" class="reply">@lang('show.reply')</a>
         </span>
         @endif
         </div>

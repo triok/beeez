@@ -24,14 +24,9 @@ return [
     'profile'           => 'Profile',
     'bookmarks'         => 'Bookmark',
     'applications'      => 'My applications',        
+    'findwork'          => 'Find new work', 
 
     // Footer
     'sign'              => '2018 Lavoro',
-    'about'             => 'About us',
-    'help'              => 'Help',
-    'security'          => 'Security',
-    'terms'             => 'Terms',
-    'contacts'          => 'Contacts',
-    'social'            => 'Social'
 
 ];

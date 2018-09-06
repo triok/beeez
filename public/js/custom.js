@@ -58,6 +58,16 @@ window.onload = function(){
     });
 };
 
+$(document).ready(function () {
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#side').toggleClass('active');
+
+        $("i", this).toggleClass("fa-arrow-left fa-arrow-right");
+    });
+
+});
+
 function removeSubTask() {
     var subTasks = $('.sub-tasks').find('.sub-item');
 
@@ -80,6 +90,11 @@ function deleteTask() {
             notice('Error! Please try again', 'error');
         }
     });
+}
+function showMenu() {
+$('#showHideContent').click(function(){
+  $("#content").css("display", "none;");
+});
 }
 function addSubTask() {
     var load = $('<div>');

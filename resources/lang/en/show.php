@@ -24,10 +24,24 @@ return [
     'enddate'        => 'End date:',
     'difficulty'     => 'Difficulty:',
     'timefor'        => 'Time for work:',
+    'skills'         => 'Skills and expertise',
+    'noskills'       => 'None specified',
+    'related'        => 'Related jobs',
+    'norelated'      => 'There is no related jobs',            
+    'question'       => 'Ask question',
+    'questions'      => 'Questions and comments',
+    'noquestions'    => 'No questions found. You may ask question or leave first comment.',
+    'attachments'    => 'Attachments',    
 
     //Buttons
     'save'           => 'Save job',
     'saved'          => 'Saved',         
     'share'          => 'Share',    
-    'complain'       => 'Complain'     
+    'complain'       => 'Complain',
+    'send'           => 'Send',
+    'reply'          => 'Reply',
+
+    //tooltips
+    'price'          => 'This is final price with all fees.',
+
 ];

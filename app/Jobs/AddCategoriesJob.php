@@ -24,6 +24,10 @@ class AddCategoriesJob implements ShouldQueue
     {
         if(!isset(request()->categories)) return;
 
-        $this->job->categories()->sync(array_values(request()->categories));
+        $ids = array_values(request()->categories);
+
+        if(!$ids) return;
+
+        $this->job->categories()->sync([$ids[0]]);
     }
 }

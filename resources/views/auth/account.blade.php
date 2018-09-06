@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<div class="container" id="main">
     <h2>@lang('account.title')</h2>
     <div class="row">
         <div class="col-md-4">
@@ -96,7 +97,6 @@
                 </div>
             </div>
         </div>
-
     </div>
-
+</div>
 @endsection

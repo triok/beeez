@@ -25,8 +25,10 @@ class JobsSeeder extends Seeder
         for ($i=0; $i < 40; $i++) { 
             create(Job::class);
         }
-        for ($i=0; $i < 40; $i++) {
-         create(JobCategories::class);
+        $jobs = \App\Models\Jobs\Job::get();
+
+        foreach ($jobs as $job) {
+            create(JobCategories::class, ['job_id' => $job->id]);
         }
     }
 }

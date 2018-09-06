@@ -12,11 +12,15 @@ return [
     |
     */
     // Header
-    'title'       => 'My applications',
-    'date'        => 'Date',
-    'enddate'     => 'End date',    
-    'job'         => 'Name',
-    'status'      => 'Status',
-    'nojobs'      => 'No current jobs yet.',
-
+    'titlefreelancer'       => 'Jobs where I am freelancer',
+    'titleclient'           => 'Jobs where I am client',
+    'titlebookmarks'        => 'Bookmarks',        
+    'date'                  => 'Date',
+    'enddate'               => 'End date',    
+    'job'                   => 'Name',
+    'status'                => 'Status',
+    'nojobs'                => 'No current jobs yet.',
+    'freelancer'            => 'I am freelancer',
+    'client'                => 'I am client',
+    'menu'                  => 'Sections',      
 ];

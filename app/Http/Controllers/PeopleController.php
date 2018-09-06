@@ -17,14 +17,14 @@ class PeopleController extends Controller
     {
         $users = UserQuery::users()->paginate(request('count', 20));
 
-        return view('admin.peoples-index', compact('users'));
+        return view('peoples.peoples-index', compact('users'));
     }
 
     public function show(User $user)
     {
         $user->socialLinks = $user->socialLinks();
 
-        return  view('admin.peoples-show', compact('user'));
+        return  view('peoples.peoples-show', compact('user'));
     }
 
     public function updateAvatar(User $user)

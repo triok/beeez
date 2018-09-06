@@ -182,6 +182,8 @@ return [
         Laratrust\LaratrustServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Cmgmyr\Messenger\MessengerServiceProvider::class,
+
     ],
 
     /*
