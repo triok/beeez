@@ -63,7 +63,10 @@ $(document).ready(function () {
     $('#sidebarCollapse').on('click', function () {
         $('#side').toggleClass('active');
 
-        $("i", this).toggleClass("fa-arrow-left fa-arrow-right");
+    });
+
+    $('#input-category-name').on('click', function () {
+        $('#modal-categories').modal({ backdrop: 'static', keyboard: false, 'show': true });
     });
 
 });
@@ -137,7 +140,11 @@ function addComment() {
         $('.form-container h4').after(mess);
     }
 
-    $('#reply-container .reply-user').text(author)
+    $('#reply-container .reply-user').text(author);
+
+    var message = "<В ответ на комментарий пользователя: " + author + ">\n";
+
+    $('#body').text(message);
 
     document.getElementById("body").focus();
 
@@ -158,3 +165,15 @@ function ratingJob() {
     container.modal({ backdrop: 'static', keyboard: false, 'show': true });
 }
 
+function showSubCategories(id) {
+    $('.subcategories').css('display', 'none');
+
+    $('#subcategories-' + id).css('display', 'block');
+}
+
+function setCategory(id, name) {
+    $('#input-category-id').val(id);
+    $('#input-category-name').val(name);
+
+    $('#modal-categories').modal('toggle');
+}

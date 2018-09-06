@@ -1,0 +1,17 @@
+#modal-categories .badge {
+    color: #555;
+    background-color: #fff;
+}
+
+#modal-categories a.list-group-item {
+    border: none;
+}
+
+#modal-categories a.list-group-item:hover {
+    background: #eaeaea;
+}
+
+#modal-categories .list-group-item.active {
+    color: #555;
+    background: #eaeaea;
+}

@@ -143,7 +143,9 @@
                     <li class="button-collapse">
 
                         <button type="button" id="sidebarCollapse" class="btn btn-default">
+
                             <i class="fa fa-arrow-left"></i>
+
                         </button>                             
 
                        
@@ -160,6 +162,22 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            {{ currency()->getUserCurrency() }}<span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                                @foreach(currency()->getActiveCurrencies() as $currency)
+                                    <li>
+                                        <a href="?currency={{ $currency['code'] }}" class="btn btn-link btn-block">
+                                            {{ $currency['code'] }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                        </ul>
+                    </li>
+
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ route('login') }}">@lang('layout.login-title')</a></li>
@@ -183,7 +201,6 @@
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>
 
-                                                                                                
                                 @permission('read-jobs-manager')
                                 <li role="separator" class="divider"></li>
                                 <li>
@@ -206,12 +223,14 @@
                                 <li role="separator" class="divider"></li>
                                 <li role="separator" class="divider"></li>
                                 @endpermission
+
                                 
                             </ul>
                         </li>
                         <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
                         <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>  
                         @endrole                      
+
                         <li><a href="{{route('messages')}}"><i class="fa fa-envelope"></i> @lang('messages.title') @include('messenger.unread-count')</a></li>
 
                         @permission('read-payouts')
@@ -233,11 +252,13 @@
                                                              document.getElementById('logout-form').submit();">
                                         <i class="fa fa-lock"></i> @Lang('layout.logout')
                                     </a>
+
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                           style="display: none;">
                                         {{ csrf_field() }}
                                     </form>
                                 </li>                                
+
                                 @role('admin')
                                 @permission('read-users')
                                 <li><a href="{{ route('users') }}"><i class="fa fa-group"></i> Users</a></li>
@@ -259,10 +280,12 @@
 
 
 
+
 <!-- ////////////////////////////////// -->
             </div>
         </nav>
     @yield('content')
+
 
     </div>
 

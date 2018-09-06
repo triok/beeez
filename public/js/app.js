@@ -41313,7 +41313,6 @@ if (typeof jQuery === 'undefined') {
     if (placement == 'top' && actualHeight != height) {
       offset.top = offset.top + height - actualHeight
     }
-
     var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
 
     if (delta.left) offset.left += delta.left
@@ -41378,6 +41377,7 @@ if (typeof jQuery === 'undefined') {
     if ($e.attr('title') || typeof $e.attr('data-original-title') != 'string') {
       $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
     }
+    return this.$tip
   }
 
   Tooltip.prototype.hasContent = function () {
@@ -41666,6 +41666,13 @@ if (typeof jQuery === 'undefined') {
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
+
+  $(window).on('load.bs.scrollspy.data-api', function () {
+    $('[data-spy="scroll"]').each(function () {
+      var $spy = $(this)
+      Plugin.call($spy, $spy.data())
+    })
+  })
 
 
 +function ($) {
@@ -42156,6 +42163,7 @@ if (typeof jQuery === 'undefined') {
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
 module.exports = __webpack_require__(20);
 
 /***/ }),
@@ -42496,8 +42504,8 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 
+"use strict";
 
 var utils = __webpack_require__(0);
 
@@ -42889,6 +42897,7 @@ module.exports = function transformData(data, headers, fns) {
 /***/ }),
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
+
 
 "use strict";
 
@@ -44853,6 +44862,7 @@ function createMatcher (
           if (!(key in location.params) && paramNames.indexOf(key) > -1) {
             location.params[key] = currentRoute.params[key];
           }
+
         }
       }
 
@@ -45315,7 +45325,14 @@ function once (fn) {
     if (called) { return }
     called = true;
     return fn.apply(this, args)
+
   }
+  // make sure there's the starting slash
+  if (base.charAt(0) !== '/') {
+    base = '/' + base;
+  }
+  // remove trailing slash
+  return base.replace(/\/$/, '')
 }
 
 /*  */
@@ -46751,6 +46768,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
@@ -46844,6 +46862,36 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-sm-9", attrs: { id: "main" } }, [
+
+    _vm.category
+      ? _c("ol", { staticClass: "breadcrumb" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _vm.category && _vm.category.parent
+            ? _c("li", [
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "/jobs/category/" + _vm.category.parent.id }
+                  },
+                  [_vm._v(_vm._s(_vm.category.parent.nameRu))]
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.category
+            ? _c("li", [
+                _c(
+                  "a",
+                  { attrs: { href: "/jobs/category/" + _vm.category.id } },
+                  [_vm._v(_vm._s(_vm.category.nameRu))]
+                )
+              ])
+            : _vm._e()
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+
     _c(
       "div",
       {
@@ -46883,6 +46931,7 @@ var render = function() {
               expression: "show_table"
             }
           ],
+<<<<<<< HEAD
           staticClass: "table",
           attrs: { id: "jobs-table" }
         },
@@ -46989,7 +47038,9 @@ var render = function() {
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        !job.ended && job.status == "open"
+
+                        job.allow_apply
+
                           ? _c(
                               "form",
                               {
@@ -47011,7 +47062,9 @@ var render = function() {
                                     attrs: { type: "submit" }
                                   },
                                   [
+
                                     _c("i", { staticClass: "fa fa-handshake-o" }),
+
                                     _vm._v(
                                       " " +
                                         _vm._s(_vm.trans("home.apply")) +
@@ -47034,7 +47087,9 @@ var render = function() {
                                 attrs: { disabled: "" }
                               },
                               [
+
                                 _c("i", { staticClass: "fa fa-handshake-o" }),
+
                                 _vm._v(
                                   " " +
                                     _vm._s(_vm.trans("home.in_progress")) +
@@ -47053,7 +47108,9 @@ var render = function() {
                                 attrs: { disabled: "" }
                               },
                               [
+
                                 _c("i", { staticClass: "fa fa-handshake-o" }),
+
                                 _vm._v(
                                   " " +
                                     _vm._s(_vm.trans("home.complete")) +
@@ -47073,7 +47130,10 @@ var render = function() {
                                 attrs: { disabled: "" }
                               },
                               [
+
                                 _c("i", { staticClass: "fa fa-handshake-o" }),
+
+
                                 _vm._v(
                                   " " +
                                     _vm._s(_vm.trans("home.enddate")) +
@@ -47091,6 +47151,7 @@ var render = function() {
                         { staticClass: "btn btn-default btn-sm apply-job-btn" },
                         [
                           _c("i", { staticClass: "fa fa-handshake-o" }),
+
                           _vm._v(
                             " " +
                               _vm._s(_vm.trans("home.apply")) +
@@ -47108,7 +47169,15 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [_c("a", { attrs: { href: "/" } }, [_vm._v("Главная")])])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

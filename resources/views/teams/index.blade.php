@@ -13,7 +13,7 @@
             </div>
 
             <div class="col-md-4">
-               <input type="text" class="form-control pull-right" id="login_search" placeholder="@lang('teams.search')">
+               <input type="text" class="form-control pull-right" id="team_search" placeholder="@lang('teams.search')">
                <ul class="result"></ul>
             </div>
          </div>

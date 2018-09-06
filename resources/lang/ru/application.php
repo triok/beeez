@@ -12,6 +12,7 @@ return [
     |
     */
     // Header
+
     'titlefreelancer'       => 'Задания в которых я исполнитель',
     'titleclient'           => 'Задания в которых я заказчик',
     'titlebookmarks'        => 'Закладки',           
@@ -23,4 +24,5 @@ return [
     'freelancer'            => 'Я исполнитель',
     'client'                => 'Я заказчик',
     'menu'                  => 'Разделы',               
+
 ];

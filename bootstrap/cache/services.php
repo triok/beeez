@@ -32,6 +32,7 @@
     28 => 'Laracasts\\Flash\\FlashServiceProvider',
     29 => 'Collective\\Html\\HtmlServiceProvider',
     30 => 'Cmgmyr\\Messenger\\MessengerServiceProvider',
+    31 => 'Torann\\Currency\\CurrencyServiceProvider',
   ),
   'eager' => 
   array (
@@ -52,6 +53,7 @@
     14 => 'Laratrust\\LaratrustServiceProvider',
     15 => 'Laracasts\\Flash\\FlashServiceProvider',
     16 => 'Cmgmyr\\Messenger\\MessengerServiceProvider',
+    17 => 'Torann\\Currency\\CurrencyServiceProvider',
   ),
   'deferred' => 
   array (

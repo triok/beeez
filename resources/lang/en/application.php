@@ -12,6 +12,7 @@ return [
     |
     */
     // Header
+
     'titlefreelancer'       => 'Jobs where I am freelancer',
     'titleclient'           => 'Jobs where I am client',
     'titlebookmarks'        => 'Bookmarks',        
@@ -23,4 +24,5 @@ return [
     'freelancer'            => 'I am freelancer',
     'client'                => 'I am client',
     'menu'                  => 'Sections',      
+
 ];

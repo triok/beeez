@@ -122,9 +122,21 @@ class Job extends Model
         return $this->belongsTo(static::class, 'parent_id');
     }
 
-    public function hasCategory(Category $categories)
+    public function hasCategory(Category $category, $checkSubcategories = false)
     {
-        return $this->categories()->get()->contains($categories);
+        $allCategories = $this->categories()->get();
+
+        $result = $allCategories->contains($category);
+
+        if(!$result && $checkSubcategories) {
+            foreach ($category->subcategories as $subcategory) {
+                if(!$result) {
+                    $result = $allCategories->contains($subcategory);
+                }
+            }
+        }
+
+        return $result;
     }
 
 
@@ -171,8 +183,13 @@ class Job extends Model
      * @return string
      */
     function getFormattedPriceAttribute(){
-        $price = $this->attributes['price'];
-        return env('CURRENCY_SYMBOL') .$price;
+        $value = $this->price;
+
+        if(currency()->getUserCurrency() != currency()->config('default')) {
+            $value = currency($value, currency()->config('default'), currency()->getUserCurrency(), false);
+        }
+
+        return currency_format($value, currency()->getUserCurrency());
     }
 
     function getDifficultyLevelId($value)

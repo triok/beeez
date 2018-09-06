@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="container-fluid">
+<<<<<<< HEAD
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a data-toggle="tab" href="#panel1">@lang('application.freelancer')</a></li>
       <li role="presentation"><a data-toggle="tab" href="#panel2">@lang('application.client')</a></li>
@@ -106,7 +107,6 @@
         </div>
 
                    
-
 
 
 </div>    

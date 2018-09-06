@@ -2,7 +2,9 @@
 
 @section('content')
 
+
         <div class="col-md-4 col-md-offset-4 auth">
+
 
             <h2>@lang('auth.login-title')</h2>
 
@@ -54,5 +56,4 @@
             </div>
         </div>
 
-   
 @endsection

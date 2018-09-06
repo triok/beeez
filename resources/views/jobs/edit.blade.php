@@ -3,6 +3,7 @@
 @push('styles')
     <link href="/plugins/dropzone/dropzone.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/plugins/bootstrap-select/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
 @endpush
 @section('content')
 <div class="container-fluid">
@@ -56,10 +57,9 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <label>@lang('edit.price')</label>
+                <label>@lang('edit.price'), руб.</label>
                 <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    {!! Form::input('input','price',isset($job) ? str_replace('$','',$job->formattedPrice): null,['class'=>'form-control']) !!}
+                    {!! Form::input('input','price',isset($job) ? $job->price: null,['class'=>'form-control']) !!}
                 </div>
             </div>
         </div>
@@ -107,23 +107,29 @@
         @endforeach
     </div> -->
 
-    <br/>
-    <div class="row">
-        <div class="col-md-4">
-            <label for="categories">@lang('edit.category')</label>
-            <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="categories[]">
-                <option selected value="">@lang('edit.nocategory')</option>
-                @foreach($_categories as $cat)
-                    <option value="{{$cat->id}}" {{isset($job) && $job->hasCategory($cat) ? 'selected' : ''}}>{{$cat->nameEu}}</option>
 
-                    @foreach($cat->subcategories as $subcat)
-                    <option value="{{$subcat->id}}" {{isset($job) && $job->hasCategory($subcat) ? 'selected' : ''}}>&nbsp;&nbsp;&nbsp;{{$subcat->nameEu}}</option>
-                    @endforeach
-                @endforeach
-            </select>
-        </div>
-    </div>
-    <br>
+            <br/>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="categories2">@lang('edit.category')</label>
+
+                    @php
+                    $category = null;
+                    $categoryParent = null;
+
+                    if(isset($job) && $job->jobCategories()) {
+                        $category_id = $job->jobCategories()->first()->category_id;
+
+                        $category = \App\Models\Jobs\Category::find($category_id);
+                    }
+                    @endphp
+
+                    {!! Form::input('hidden', 'categories[]', ($category ? $category->id : ''), ['class'=>'form-control', 'id'=>'input-category-id']) !!}
+                    {!! Form::input('input', 'category_name', ($category ? (($category->parent ? $category->parent->nameEu . ' & ' : '') . $category->nameEu) : ''), ['class'=>'form-control', 'id'=>'input-category-name']) !!}
+                </div>
+            </div>
+            <br>
+
 
     <label>@lang('edit.project')</label>
     <div class="row">
@@ -185,8 +191,63 @@
 </div>
 </div>
 @endsection
+
 @include('partials.summer',['editor'=>'.editor1'])
 @include('partials.tinymce',['editor'=>'.editor2'])
+
+@push('modals')
+    <div class="modal fade" id="modal-categories" tabindex="-1" role="dialog" aria-labelledby="modalCategoriesLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="title">
+                        Category selection
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="list-group">
+                                @foreach($_categories as $cat)
+                                    <a href="#"
+                                       onclick="setCategory('{{ $cat->id }}', '{{ $cat->nameEu }}')"
+                                       onmouseover="showSubCategories('{{ $cat->id }}')"
+                                       class="list-group-item {{isset($job) && $job->hasCategory($cat, true) ? 'active' : ''}}">
+
+                                        <span class="badge">&gt;</span>
+                                        {{$cat->nameEu}}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        @foreach($_categories as $cat)
+                            <div class="col-xs-6 subcategories"
+                                 style="{{(isset($job) && $job->hasCategory($cat, true)) ? '' : 'display: none;'}}"
+                                 id="subcategories-{{ $cat->id }}">
+
+                                <div class="list-group">
+                                    @foreach($cat->subcategories as $subcat)
+                                        <a href="#"
+                                           onclick="setCategory('{{ $subcat->id }}', '{{ $cat->nameEu . " & " . $subcat->nameEu }}')"
+                                           class="list-group-item {{(isset($job) && $job->hasCategory($subcat)) ? 'active' : ''}}">
+                                            {{$subcat->nameEu}}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
+
 @push('scripts')
     <script src="/plugins/dropzone/dropzone.js" type="text/javascript"></script>
     <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>

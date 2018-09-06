@@ -2,7 +2,9 @@
 
 @section('content')
 
+
         <div class="col-md-4 col-md-offset-4 auth">
+
             <h2>@lang('auth.register-title')</h2>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -88,7 +90,7 @@
                 </div>
             </div>
         </div>
-  
+
 @endsection
 @push('scripts')
     <script>

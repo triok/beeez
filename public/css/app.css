@@ -11956,6 +11956,7 @@ section.other-jobs a.delete {
 #side.active .left-sidebar {
   padding: 10px 0px 0px 0px;
 }
+
 #side .side-header strong {
     display: none;
 }
@@ -11976,6 +11977,7 @@ section.other-jobs a.delete {
     text-decoration: none;
 }
 #side ul li i {
+
   font-size: 19px;
   margin-right: 10px;
 }
@@ -11983,6 +11985,7 @@ section.other-jobs a.delete {
   font-size: 22px;
   margin-right: 10px;
 }
+
 
 #side.active ul li {
     padding: 10px 20px 0px 20px;
@@ -12028,6 +12031,7 @@ section.other-jobs a.delete {
 .components li:hover {
   background:#eaeaea;
 }
+
 .dropdown {
   transition: 0.3s;
 }
@@ -12060,3 +12064,4 @@ section.other-jobs a.delete {
 .auth {
   margin-top:65px;
 }
+

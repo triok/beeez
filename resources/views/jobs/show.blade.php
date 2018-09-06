@@ -33,7 +33,9 @@
                     <section class="air-card-divider-sm">
                         <ul class="job-features">
                             <li data-toggle="tooltip" data-placement="left" title="@lang('show.price')">
-                                <strong><i class="fa fa-usd" aria-hidden="true" ></i> {{$job->price}}</strong>
+
+                                <strong> {{$job->formattedPrice}}</strong>
+
                                 <small class="text-muted">@lang('show.fixedprice')</small>
                             </li>
  

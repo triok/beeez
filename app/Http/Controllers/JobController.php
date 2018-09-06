@@ -41,14 +41,13 @@ class JobController extends Controller
 
     function __construct()
     {
-        $this->usernames = User::query()->pluck('username', 'id');
-
         $this->middleware('auth');
         $this->middleware('permission:read-jobs',['only'=>['jobsAdmin']]);
         $this->middleware('permission:read-jobs-manager',['only'=>['create','store','jobsAdmin']]);
         $this->middleware('permission:update-jobs',['only'=>['edit','update','updateJobStatus']]);
         $this->middleware('permission:delete-jobs',['only'=>['destroy']]);
 
+        $this->usernames = User::query()->pluck('username', 'id');
     }
 
     public function index(JobFilters $filters)
@@ -213,6 +212,8 @@ class JobController extends Controller
     {
         Session::forget('job.files');
 
+        unset($this->usernames[Auth::id()]);
+
         return view('jobs.edit', ['usernames' => $this->usernames, 'projects' => auth()->user()->projects]);
     }
 
@@ -246,6 +247,8 @@ class JobController extends Controller
 
     function edit(Job $job)
     {
+        unset($this->usernames[Auth::id()]);
+
         return view('jobs.edit', ['job' => $job, 'usernames' => $this->usernames, 'projects' => auth()->user()->projects]);
     }
 

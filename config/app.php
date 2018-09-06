@@ -184,6 +184,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Cmgmyr\Messenger\MessengerServiceProvider::class,
 
+        Torann\Currency\CurrencyServiceProvider::class,
+
     ],
 
     /*
@@ -238,7 +240,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Flash' => Laracasts\Flash\Flash::class,
         'Trust'   => Laratrust\LaratrustFacade::class,
-
+        'Currency' => Torann\Currency\Facades\Currency::class,
     ],
 
     'stripe_client_id'=>env('STRIPE_CLIENT_ID',''),
