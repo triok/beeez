@@ -1,11 +1,10 @@
 @extends('layouts.app')
 @section('content')
 <div class="container-fluid">
-<<<<<<< HEAD
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a data-toggle="tab" href="#panel1">@lang('application.freelancer')</a></li>
       <li role="presentation"><a data-toggle="tab" href="#panel2">@lang('application.client')</a></li>
-      <li role="presentation"><a data-toggle="tab" href="#panel3">Закладки</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#panel3">@lang('application.titlebookmarks')</a></li>
     </ul>
     <div class="tab-content">
         <div id="panel1" class="tab-pane fade in active">
@@ -20,14 +19,12 @@
                         <td>@lang('application.date')</td>
                         <td>@lang('application.enddate')</td>            
                         <td>@lang('application.job')</td>
-                        {{--<td>Offer</td>--}}
                         <td>@lang('application.status')</td>
                         <td></td>
                         <td></td>
                     </tr>
                     </thead>
                     <tbody>
-                    {{--{{dd($applications)}}--}}
                     @foreach($applications as $application)
                         <tr>
                             <td>{{\Carbon\Carbon::parse($application->created_at)->format('d M, Y')}}</td>
@@ -45,34 +42,7 @@
                                 <a href="{{route('jobs.edit', $application->id)}}">Edit</a>
                             @endif
                             </td>
-                            {{--<td>--}}
-                                {{--@if($application->status =="approved")--}}
-                                    {{--<a href="/job/{{$application->job->id}}/{{$application->id}}/work" class="btn btn-success btn-xs">Get started</a>--}}
-                                {{--@else--}}
-                                    {{--@if(!empty($application->admin_remarks) ||  !empty($application->remarks))--}}
-                                        {{--<a href="#" id="{{$application->id}}" class="show-remarks">Remarks</a>--}}
-                                    {{--@endif--}}
-                                {{--@endif--}}
-                            {{--</td>--}}
                         </tr>
-                        {{--@if(!empty($application->remarks))--}}
-                            {{--<tr class="text-primary my-remarks small" id="app_r_{{$application->id}}"--}}
-                                {{--style="display: none;background:#ddf2fc">--}}
-                                {{--<td class="text-right"><strong>My Remarks:</strong></td>--}}
-                                {{--<td colspan="3">--}}
-                                    {{--{{$application->remarks}}--}}
-                                {{--</td>--}}
-                            {{--</tr>--}}
-                        {{--@endif--}}
-                        {{--@if(!empty($application->admin_remarks))--}}
-                            {{--<tr class="text-warning admin-remarks small" id="app_ar_{{$application->id}}"--}}
-                                {{--style="display: none;background: #f9f0d7;">--}}
-                                {{--<td class="text-right"><strong>Status Notes:</strong></td>--}}
-                                {{--<td colspan="3">--}}
-                                    {{--{{$application->admin_remarks}}--}}
-                                {{--</td>--}}
-                            {{--</tr>--}}
-                        {{--@endif--}}
                     @endforeach
                     </tbody>
                 </table>
@@ -89,10 +59,43 @@
             <div id="panel1" class="tab-pane fade in active">
                 <div class="col-xs-12" id="main">
                 <h2>@lang('application.titleclient')</h2>
-                @if (count($applications) > 0)
+                @if (count($clientapps) > 0)   
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <td>@lang('application.job')</td>
+                        <td>@lang('application.date')</td>
+                        <td>@lang('application.enddate')</td>            
+                        <td>@lang('application.status')</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+ 
+                    @foreach($clientapps as $clientapp)
+                    <tr>
+                        <td><a href="{{route('jobs.show', $clientapp->job)}}" id="{{$clientapp->job->id}}">{{$clientapp->job->name}}</a></td>
+                        <td>{{\Carbon\Carbon::parse($clientapp->created_at)->format('d M, Y')}}</td>
+                        <td>{{\Carbon\Carbon::parse($clientapp->job->end_date)->format('d M, Y, H:i')}}</td>
+                        <td>
+                            <button data-id="{{$clientapp->job->id}}" {!! $clientapp->job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-sm btn-review">
+                            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                            @lang('home.complete')
+                            </button>
+                        </td>
+                        <td>
+                            @if($clientapp->status == config('enums.jobs.statuses.DRAFT'))
+                                <a href="{{route('jobs.edit', $clientapp->id)}}">Edit</a>
+                            @endif
+                        </td>                                                
+                    </tr>                    
+                    @endforeach
+                    
+                    </tbody>
+                </table>
                 @else
-                @lang('application.nojobs')
+                @lang('application.nojobs')                     
                 @endif
+
                 </div>
             </div>
         </div>
@@ -100,7 +103,7 @@
             <div id="panel1" class="tab-pane fade in active">
                 <div class="col-xs-12" id="main">
                 <h2>@lang('application.titlebookmarks')</h2>
-                В закладках пусто.
+                @lang('application.noBookmarks')
                 </div>
             </div>                
         </div>

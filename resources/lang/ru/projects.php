@@ -19,6 +19,8 @@ return [
     'count'          => 'Количество заданий',            
     'noprojects'     => 'У вас еще нет проектов.',
     'create'         => 'Создать проект',
+    'current'        => 'Текущие',
+    'completed'      => 'Завершенные',    
 
     // Projects create
     'title-create'   => 'Создайте новый проект',
@@ -31,5 +33,6 @@ return [
     'published'      => 'Опубликовано',  
     'jobs-total'     => 'Всего заданий:',
     'summ-total'     => ', на сумму: ',
-    'jobs-complete'  => 'Заданий выполнено:',             
+    'jobs-complete'  => 'Заданий выполнено:',
+    'post'           => 'Добавить задание',                  
 ];

@@ -27,7 +27,7 @@
 
 <div class="wrapper" id="app">
     <!-- Sidebar  -->
-    <nav id="side" class="" style="min-height: 1200px; background: #fafafa;">
+    <nav id="side" class="" style="min-height: 1200px;">
         <div class="side-header">
             <a class="navbar-brand" href="{{url('/')}}">
                 <h3>Lavoro</h3>
@@ -137,7 +137,7 @@
     <!-- Page Content  -->
     <div id="content" class="" style="min-height: 500px; padding-top: 10px">
 
-        <nav class="navbar navbar-expand-lg" style="background: #fafafa">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <ul class="nav navbar-nav">
                     <li class="button-collapse">
@@ -307,9 +307,6 @@
 <button id="back2Top" class="btn btn-default btn-sm" title="Back to top"><i class="fa fa-chevron-up"></i></button>
 
 <footer>
-    <div class="container-fluid disclaimer">
-
-    </div>
     <div class="container">
         <hr>
         <ul class="list-inline footer-list">

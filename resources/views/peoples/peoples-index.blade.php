@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container" id="main">
+<div class="container-fluid" id="main">
    <div class="row">
       <div class="col-md-12">
          <h2>@lang('peoples.title')</h2>
@@ -10,21 +10,22 @@
                <ul class="result"></ul>
             </div>
          </div>
-         <table class="table table-striped table-responsive table-full-width">
+         <table class="table table-striped table-responsive table-full-width table-peoples">
             <thead>
             <tr>
-               <th>@lang('peoples.name')</th>
                <th>@lang('peoples.login')</th>
+               <th>@lang('peoples.name')</th>
             </tr>
             </thead>
             <tbody>
             @foreach($users as $user)
                <tr>
+                  <td><a href="{{route('peoples.show', $user)}}">{{$user->username}}</a></td>
                   <td>
                      {{$user->name}}
                      (<span class="text-success">{{$user->rating_positive}}</span>/<span class="text-danger">{{$user->rating_negative}}</span>)
                   </td>
-                  <td><a href="{{route('peoples.show', $user)}}">{{$user->username}}</a></td>
+
                </tr>
             @endforeach
             </tbody>

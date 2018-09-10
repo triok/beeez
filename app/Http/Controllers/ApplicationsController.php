@@ -219,7 +219,8 @@ class ApplicationsController extends Controller
     {
 //        $applications = JobQuery::allForUser()->paginate(request('count', 15));
         $applications = Auth::user()->applications()->where('status', '!=', 'complete')->with('job')->paginate(request('count', 15));
-        return view('applications.my-applications', compact('applications'));
+        $clientapps = Application::orderBy('created_at', 'DESC')->with('user')->get();        
+        return view('applications.my-applications', compact('applications','clientapps'));
     }
 
     /**

@@ -5271,6 +5271,7 @@ tbody.collapse.in {
   min-height: 50px;
   margin-bottom: 22px;
   border: 1px solid transparent;
+  background: rgb(132, 132, 132);
 }
 
 .navbar:before,
@@ -5428,7 +5429,7 @@ tbody.collapse.in {
 .navbar-brand h3 {
   margin-left: 15px;
   padding-top: 3px;
-  color: #5d5050;
+  color: #ffffff;
   font-weight: 700;
   transition: 0.3s;
 }
@@ -11389,11 +11390,9 @@ button.close {
 
 
 #sidebar {
-  height: 500px;
   padding: 35px;
   margin: 25px 15px 15px 0px;
-  background: #f9f9f9;
-  border-radius: 8px;
+  border-radius: 5px;
   border: 1px dashed #47afa5;
   box-shadow: 3px 3px 8px #dad5d5;
 }
@@ -11402,17 +11401,21 @@ button.close {
   width: 95%;
   margin-top: 30px;
 }
-
+#sidebar .nav i {
+  line-height: 3;
+}
+#sidebar .nav a {
+  font-weight: bold;
+  color: #47afa5;
+}
 #sidebar li {
   border: 0 #f2f2f2 solid;
   border-bottom-width: 1px;
+  line-height: 3;
 }
 #main {
   margin: 28px auto;
   padding: 15px 20px;
-  border-radius: 8px;
-  background: #f9f9f9;
-  border: 1px solid #47afa5;
 }
 /* collapsed sidebar styles */
 
@@ -11613,15 +11616,6 @@ footer {
 }
 .footer-social img {
   width: 40px;
-}
-.disclaimer {
-  /*background: url(/img/background.jpeg);*/
-  text-align: center;
-  min-height: 250px;
-  background-size: cover;
-}
-.disclaimer p{
-  font-size: 24px;
 }
 .content-form {
   position: relative;
@@ -11937,11 +11931,11 @@ section.other-jobs a.delete {
 #side {
   min-width: 250px;
   max-width: 250px;
-  background: #7386D5;
-  transition: all 0.3s;
+  background: rgb(71, 175, 165);
+  transition: all 0.5s;
 }
 #side i {
-  color: #47afa4;
+  color: #ffca00;
 }
 
 #side.active {
@@ -11975,6 +11969,10 @@ section.other-jobs a.delete {
 #side ul li a {
     text-align: left;
     text-decoration: none;
+    color: #ffffff;
+}
+#side ul li p {
+    color: #ffffff;  
 }
 #side ul li i {
 
@@ -12028,10 +12026,12 @@ section.other-jobs a.delete {
     min-height: 100vh;
     transition: all 0.3s;
 }
-.components li:hover {
+.components li:hover:not(:first-child) {
   background:#eaeaea;
 }
-
+.components li span:hover:not(:first-child)  {
+  color: #333;
+}
 .dropdown {
   transition: 0.3s;
 }
@@ -12042,7 +12042,16 @@ section.other-jobs a.delete {
 .components .dropdown-menu {
   top: 0;
   left: 100%;
-  transition: 0.5s linear;  
+  transition: 0.5s linear;
+  background: #47afa5;
+  border:1px solid #ccc;  
+  box-shadow: none;
+  -webkit-box-shadow:none;    
+}
+.components .dropdown-menu .dropdown-header {
+  text-align: center;
+  color: #ffffff;
+
 }
 .components .dropdown-menu > li {
   transition: 0.3s;  
@@ -12064,4 +12073,27 @@ section.other-jobs a.delete {
 .auth {
   margin-top:65px;
 }
-
+.projects .btn-success, .project-show .btn-success {
+  margin-bottom: 22px;
+}
+.projects .text-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+#login_search {
+  margin-bottom: 40px;
+}
+.navbar a{
+  color: #ffffff;
+  transition: 0.2s;
+}
+.navbar a:hover{
+  background-color: #47afa5!important;
+}
+.category-nav {
+  padding-left: 0px;
+}
+.table-peoples tbody a{
+  color: #47afa5;
+}

@@ -8,7 +8,7 @@
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
                                                           data-toggle="tab">@lang('account.home')</a></li>
                 <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
-                                           data-toggle="tab">@lang('Profile')</a></li>
+                                           data-toggle="tab">@lang('account.profile')</a></li>
                 <li role="presentation">
                     <a href="#bio" aria-controls="bio" role="tab" data-toggle="tab">@lang('account.bio')</a>
                 </li>
@@ -20,10 +20,9 @@
 
                     <div class="row">
                         <div class="col-sm-6">
-                            <h4>{{$user->name}}</h4>
-                            <h4>Your login: {{$user->username}}</h4>
-                            <p>{{$user->email}}</p>
-                            Member since: {{$user->registeredOn}}
+                            <span>@lang('account.name')</span><h4>{{$user->name}}</h4>
+                            <span>@lang('account.login')</span><h4>{{$user->username}}</h4>
+                            @lang('account.member') {{$user->registeredOn}}
                         </div>
                         <div class="col-sm-4">
                             <div style="padding:0;margin:0;width:40px;" class="pull-left h1 text-center">

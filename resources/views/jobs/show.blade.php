@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" id="main">
+<div class="container-fluid" id="main">
     <div class="jd-container standalone">
         <div class="jd-card air-card p-0-top-bottom m-0-top-bottom">
             <div class="row">

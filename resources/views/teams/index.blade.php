@@ -1,20 +1,21 @@
 @extends('layouts.app')
 @section('content')
-<div class="container" id="main">
+<div class="container-fluid" id="main">
    <div class="row">
       <div class="col-md-12">
          <h2>@lang('teams.title')</h2>
 
          <div class="row">
-            <div class="col-md-8">
-               <a href="{{ route('teams.create') }}" class="btn btn-default btn-xs">
-                  <i class="fa fa-plus-circle"></i> @lang('teams.create_team')
-               </a>
-            </div>
+
 
             <div class="col-md-4">
                <input type="text" class="form-control pull-right" id="team_search" placeholder="@lang('teams.search')">
                <ul class="result"></ul>
+            </div>
+            <div class="col-md-8">
+               <a href="{{ route('teams.create') }}" class="btn btn-default btn-md pull-right">
+                  <i class="fa fa-plus-circle"></i> @lang('teams.create_team')
+               </a>
             </div>
          </div>
          <table class="table table-striped table-responsive table-full-width">

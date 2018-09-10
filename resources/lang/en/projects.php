@@ -19,6 +19,8 @@ return [
     'count'          => 'Number of tasks',       
     'noprojects'     => 'No projects yet.',
     'create'         => 'New project',
+    'current'        => 'Current',
+    'completed'      => 'Completed',
 
     // Projects create
     'title-create'   => 'Create new project',
@@ -31,5 +33,7 @@ return [
     'published'      => 'Published',
     'jobs-total'     => 'Total jobs:',
     'summ-total'     => ', total summ: ',
-    'jobs-complete'  => 'Completed jobs:',                
+    'jobs-complete'  => 'Completed jobs:',
+    'post'           => 'Post new job',
+
 ];

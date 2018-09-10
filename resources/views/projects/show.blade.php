@@ -1,15 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" id="main">
+<div class="container-fluid project-show" id="main">
     <h2>{{ $project->name }}</h2>
 
-    @permission('create-jobs')
-    <a href="{{ route('jobs.create') }}" class="btn btn-success" style="margin-top: 10px;">Post new job</a>
-    @endpermission
+    <div class="col-sm-3 pull-right">
+    <a href="{{ route('jobs.create') }}" class="btn btn-block btn-success" style="margin-top: 10px;">@lang('projects.post')</a>
+    </div>
 
     <div class="col-xs-12">
+            @if(count($project->jobs) > 0)  
         <table class="table table-sm table-hover">
+
             <thead>
             <tr>
                 <td>@lang('projects.job-name')</td>
@@ -19,8 +21,9 @@
                 <td>@lang('projects.published')</td>
             </tr>
             </thead>
-
+ 
             <tbody>
+ 
             @foreach($project->jobs as $job)
             <tr>
                 <td><a href="{{ route('jobs.show', $job) }}">{{ $job->name }}</a></td>
@@ -36,8 +39,13 @@
                 <td>Опубликовано</td>
             </tr>
             @endforeach
+
             </tbody>
+          
         </table>
+            @else
+            <p>В проекте еще нет заданий.</p>
+            @endif  
     </div>
 
     <div class="pull-right">

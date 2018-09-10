@@ -62,7 +62,8 @@ $(document).ready(function () {
 
     $('#sidebarCollapse').on('click', function () {
         $('#side').toggleClass('active');
-
+        
+        $("i", this).toggleClass("fa-arrow-left fa-arrow-right");
     });
 
     $('#input-category-name').on('click', function () {

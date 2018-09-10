@@ -21,6 +21,7 @@ return [
     'job'                   => 'Name',
     'status'                => 'Status',
     'nojobs'                => 'No current jobs yet.',
+    'noBookmarks'           => 'There is no bookmarks yet.',    
     'freelancer'            => 'I am freelancer',
     'client'                => 'I am client',
     'menu'                  => 'Sections',      

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" id="main">
+<div class="container-fluid projects" id="main">
     <h2>@lang('projects.title')</h2>
 
     <div class="col-sm-3 pull-right">
@@ -9,46 +9,65 @@
             <i class="fa fa-sitemap"></i> @lang('projects.create')
         </a>
     </div>
-
-    <table class="table table-responsive">
-        <thead>
-        <tr>
-            <td>@lang('projects.name')</td>
-            <td>@lang('projects.desc')</td>
-            <td style="min-width: 200px;">@lang('projects.count')</td>
-            <td></td>
-        </tr>
-        </thead>
-
-        <tbody>
-        @if($projects->count())
-            @foreach($projects as $project)
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a data-toggle="tab" href="#panel1">@lang('projects.current')</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#panel2">@lang('projects.completed')</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="panel1" class="tab-pane fade in active">    
+            <table class="table table-responsive">
+                <thead>
                 <tr>
-                    <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
-                    <td>{{ $project->description }}</td>
-                    <td>{{ $project->jobs()->count() }}/0</td>
-                    <td class="text-right">
-                        <a href="{{ route('projects.edit', $project) }}">
-                            <i class="fa fa-pencil btn btn-xs btn-default"></i>
-                        </a>
-
-                        {!! Form::open(['url' => route('projects.destroy', $project), 'method'=>'delete', 'class' => 'form-delete']) !!}
-                        <button type="submit" onclick="" class="btn btn-xs btn-danger">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                        {!! Form::close() !!}
-                    </td>
+                    <td>@lang('projects.name')</td>
+                    <td>@lang('projects.desc')</td>
+                    <td style="min-width: 200px;">@lang('projects.count')</td>
+                    <td></td>
                 </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="3">
-                    @lang('projects.noprojects')
-                </td>
-            </tr>
-        @endif
-        </tbody>
-    </table>
+                </thead>
+
+                <tbody>
+                @if($projects->count())
+                    @foreach($projects as $project)
+                        <tr>
+                            <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
+                            <td>{{ $project->description }}</td>
+                            <td>{{ $project->jobs()->count() }}/0</td>
+                            <td class="text-right">
+                                <a href="{{ route('projects.edit', $project) }}">
+                                    <i class="fa fa-pencil btn btn-xs btn-default"></i>
+                                </a>
+
+                                {!! Form::open(['url' => route('projects.destroy', $project), 'method'=>'delete', 'class' => 'form-delete']) !!}
+                                <button type="submit" onclick="" class="btn btn-xs btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                {!! Form::close() !!}
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="3">
+                            @lang('projects.noprojects')
+                        </td>
+                    </tr>
+                @endif
+                </tbody>
+            </table>
+        </div>
+        <div id="panel2" class="tab-pane fade ">
+            <table class="table table-responsive">
+                <thead>
+                <tr>
+                    <td>@lang('projects.name')</td>
+                    <td>@lang('projects.desc')</td>
+                    <td style="min-width: 200px;">@lang('projects.count')</td>
+                    <td></td>
+                </tr>
+                </thead>
+            </table>                   
+        </div>
+    </div>
 </div>    
 @endsection
 

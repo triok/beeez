@@ -46931,7 +46931,7 @@ var render = function() {
               expression: "show_table"
             }
           ],
-<<<<<<< HEAD
+
           staticClass: "table",
           attrs: { id: "jobs-table" }
         },
