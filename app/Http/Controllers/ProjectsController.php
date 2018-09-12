@@ -161,4 +161,38 @@ class ProjectsController extends Controller
 
         return '';
     }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function done(Project $project)
+    {
+        $project->is_archived = true;
+
+        $project->save();
+
+        flash()->success('Project archived!');
+
+        return redirect(route('projects.index'));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function restore(Project $project)
+    {
+        $project->is_archived = false;
+
+        $project->save();
+
+        flash()->success('Project restored!');
+
+        return redirect(route('projects.index'));
+    }
 }
