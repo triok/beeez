@@ -129,6 +129,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::resource('teams', 'TeamsController');
 
+    Route::resource('organizations', 'OrganizationsController');
+
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
         if (in_array($locale, \Config::get('app.locales'))) {

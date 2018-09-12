@@ -107,20 +107,22 @@
                 </ul>                  
             </li>  
             <li class="left-sidebar dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-expanded="false"><i class="fa fa-briefcase" aria-hidden="true"></i><span>Организации</span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <i class="fa fa-briefcase" aria-hidden="true"></i>
+                    <span>Организации</span>
+                </a>
                 <ul class="dropdown-menu" role="menu">
                 <h6 class="dropdown-header">Организации</h6>
                 <li role="separator" class="divider"></li>
                 <li>
-                    <a href="{{route('teams.index')}}"><i class="fa fa-search"></i>Все организации</a>                    
+                    <a href="{{route('organizations.index')}}"><i class="fa fa-search"></i>Все организации</a>
                 </li>
                 <li>
-                    <a href="{{route('teams.index')}}"><i class="fa fa-briefcase"></i>Мои организации</a>                    
+                    <a href="{{route('organizations.index')}}"><i class="fa fa-briefcase"></i>Мои организации</a>
                 </li>
                 <li role="separator" class="divider"></li>                
                 <li>
-                    <a href="{{route('teams.create')}}"><i class="fa fa-plus"></i>Добавить организацию</a>                    
+                    <a href="{{route('organizations.create')}}"><i class="fa fa-plus"></i>Добавить организацию</a>
                 </li>                                                
                 </ul>  
             </li>
@@ -229,7 +231,8 @@
                         </li>
                         <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
                         <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>  
-                        @endrole                      
+                        <li><a href="{{route('organizations.index')}}"><i class="fa fa-group"></i> @lang('organizations.title')</a></li>
+                        @endrole
 
                         <li><a href="{{route('messages')}}"><i class="fa fa-envelope"></i> @lang('messages.title') @include('messenger.unread-count')</a></li>
 

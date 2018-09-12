@@ -17,6 +17,7 @@ use App\Models\Comment;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\DifficultyLevel;
 use App\Models\Modules;
+use App\Models\Organization;
 use App\Models\Project;
 use App\Models\Page;
 use App\Models\Team;
@@ -140,6 +141,19 @@ $factory->define(Team::class, function (Faker\Generator $faker) {
     return [
         'user_id' => create(User::class)->id,
         'team_type_id' => $faker->randomElement(TeamType::pluck('id')->all()),
+        'name' => $name,
+        'slug' => str_slug($name),
+        'logo' => null,
+        'description' => $faker->text,
+    ];
+});
+
+
+$factory->define(Organization::class, function (Faker\Generator $faker) {
+    $name = $faker->sentence(rand(1, 3));
+
+    return [
+        'user_id' => create(User::class)->id,
         'name' => $name,
         'slug' => str_slug($name),
         'logo' => null,
