@@ -16,6 +16,8 @@ use App\Models\Participant;
 use App\Models\RoleUser;
 use App\Models\Social;
 use App\Models\Project;
+use App\Models\Team;
+use App\Models\TeamUsers;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -128,6 +130,11 @@ class User extends Authenticatable
         return $this->hasMany(Project::class)
             ->orderBy('sort_order')
             ->orderBy('name');
+    }
+
+    public function teams()
+    {
+        return $this->hasMany(TeamUsers::class)->with('team');
     }
 
     public function addProject($attributes)

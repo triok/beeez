@@ -59,8 +59,18 @@
                             <p><b>@lang('peoples.teams')</b></p>
                             <div class="row">
                                 <div class="col-md-9">
-
-                                </div>    
+                                    <table class="table table-responsive">
+                                        <tbody>
+                                        @foreach($user->teams as $team)
+                                            <tr>
+                                                <td><a href="{{ route('teams.show', $team->team) }}">{{$team->team->name}}</a></td>
+                                                <td>{{$team->position}}</td>
+                                                <td>{{$team->created_at}}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <p><b>@lang('peoples.company')</b></p>
                             <div class="row">
