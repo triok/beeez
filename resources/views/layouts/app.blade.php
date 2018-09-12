@@ -27,7 +27,7 @@
 
 <div class="wrapper" id="app">
     <!-- Sidebar  -->
-    <nav id="side" class="" style="min-height: 1200px;">
+    <nav id="side" class="{{ (isset($_COOKIE['hide-sidebar']) ? 'active' : '') }}" style="min-height: 1200px;">
         <div class="side-header">
             <a class="navbar-brand" href="{{url('/')}}">
                 <h3>Lavoro</h3>
@@ -144,7 +144,7 @@
 
                         <button type="button" id="sidebarCollapse" class="btn btn-default">
 
-                            <i class="fa fa-arrow-left"></i>
+                            <i class="fa {{ (isset($_COOKIE['hide-sidebar']) ? 'fa-arrow-right' : 'fa-arrow-left') }}"></i>
 
                         </button>                             
 
@@ -326,6 +326,7 @@
 </footer>
 <script src="/js/app.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="/plugins/listjs/listjs.min.js" type="text/javascript"></script>
 
 {{--//TODO This code  was altered--}}

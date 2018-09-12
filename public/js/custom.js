@@ -58,12 +58,18 @@ window.onload = function(){
     });
 };
 
-$(document).ready(function () {
 
+$(document).ready(function () {
     $('#sidebarCollapse').on('click', function () {
         $('#side').toggleClass('active');
         
         $("i", this).toggleClass("fa-arrow-left fa-arrow-right");
+
+        if(Cookies.get('hide-sidebar') === undefined) {
+            Cookies.set('hide-sidebar', true);
+        } else {
+            Cookies.remove('hide-sidebar');
+        }
     });
 
     $('#input-category-name').on('click', function () {
