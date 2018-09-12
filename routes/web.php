@@ -29,6 +29,11 @@ Route::group(['middleware' => 'web'], function () {
 
     //Projects
     Route::resource('projects', 'ProjectsController');
+    Route::post('projects/{project}/done', 'ProjectsController@done')->name('projects.done');
+    Route::post('projects/{project}/restore', 'ProjectsController@restore')->name('projects.restore');
+
+    Route::post('order-projects', 'ProjectsController@order');
+    Route::post('order-project-jobs', 'ProjectsController@orderJobs');
 
     //Application
 //    Route::post('applyJob', 'ApplicationsController@applyJob')->name('apply-job');

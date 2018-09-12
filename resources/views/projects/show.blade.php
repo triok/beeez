@@ -22,10 +22,10 @@
             </tr>
             </thead>
  
-            <tbody>
+            <tbody class="sortable-rows">
  
             @foreach($project->jobs as $job)
-            <tr>
+            <tr class="sort-row" id="{{ $job->id }}">
                 <td><a href="{{ route('jobs.show', $job) }}">{{ $job->name }}</a></td>
                 <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i') }}</td>
                 <td>
@@ -57,3 +57,34 @@
     </div>
 </div>    
 @endsection
+
+@push('scripts')
+    <script src="/js/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $(".sortable-rows").sortable({
+                placeholder: "ui-state-highlight",
+                update: function (event, ui) {
+                    updateDisplayOrder();
+                }
+            });
+        });
+
+        // function to save display sort order
+        function updateDisplayOrder() {
+            var selectedLanguage = [];
+            $('.sortable-rows .sort-row').each(function () {
+                selectedLanguage.push($(this).attr("id"));
+            });
+            var dataString = 'sort_order=' + selectedLanguage;
+            $.ajax({
+                type: "POST",
+                url: "/order-project-jobs",
+                data: dataString,
+                cache: false,
+                success: function (data) {
+                }
+            });
+        }
+    </script>
+@endpush

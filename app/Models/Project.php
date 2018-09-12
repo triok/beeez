@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $fillable = ['user_id', 'name', 'description'];
+    protected $fillable = ['user_id', 'name', 'description', 'is_archived'];
 
     public function user()
     {
@@ -16,6 +16,8 @@ class Project extends Model
 
     public function jobs()
     {
-        return $this->hasMany(Job::class);
+        return $this->hasMany(Job::class)
+            ->orderBy('sort_order_for_project')
+            ->orderBy('name');
     }
 }
