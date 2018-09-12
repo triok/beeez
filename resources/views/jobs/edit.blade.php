@@ -137,7 +137,7 @@
             <select name="project_id" id="input-projects" class="form-control">
                 <option value="">@lang('edit.noproject')</option>
                 @foreach($projects as $project)
-                    @if((isset($job) && $project->id == $job->project_id) || $project->id == old('project_id'))
+                    @if((isset($job) && $project->id == $job->project_id) || $project->id == old('project_id') || $project->id == request('project_id'))
                         <option selected value="{{ $project->id }}">{{ $project->name }}</option>
                     @else
                         <option value="{{ $project->id }}">{{ $project->name }}</option>

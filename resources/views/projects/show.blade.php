@@ -5,7 +5,7 @@
     <h2>{{ $project->name }}</h2>
 
     <div class="col-sm-3 pull-right">
-    <a href="{{ route('jobs.create') }}" class="btn btn-block btn-success" style="margin-top: 10px;">@lang('projects.post')</a>
+    <a href="{{ route('jobs.create') }}?project_id={{ $project->id }}" class="btn btn-block btn-success" style="margin-top: 10px;">@lang('projects.post')</a>
     </div>
 
     <div class="col-xs-12">
