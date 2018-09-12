@@ -4,6 +4,7 @@
     <link href="/plugins/dropzone/dropzone.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/plugins/bootstrap-select/bootstrap-select.min.css" />
     <link rel="stylesheet" href="/css/custom.css" />
+    <link rel="stylesheet" href="/css/datepicker.min.css" />
 @endpush
 @section('content')
 <div class="container-fluid">
@@ -72,11 +73,8 @@
         <div class="row">    
             <div class="col-md-4">
                 <label>@lang('edit.enddate')</label>
-
-                {{--            <input type="datetime-local" name="end_date" value="{{ isset($job)?date('Y-m-d',strtotime($job->end_date)):null}}" required class="form-control">--}}
-                {!! Form::input('datetime-local','end_date',(isset($job) ? \Carbon\Carbon::parse($job->end_date)->format('Y-m-d\TH:i') : ''),['required'=>'required','class'=>'form-control']) !!}
-{{--                {!! Form::input('datetime-local','end_date', '2018-07-05T01:01',['required'=>'required','class'=>'form-control']) !!}--}}
-
+                <input name="end_date" class="form-control" type='text' id='timepicker-actions-exmpl'
+                       value="{{ (isset($job) ? $job->end_date->format('d.m.Y H:i') : '') }}" required />
             </div>
         </div>
         <div class="row">
@@ -137,7 +135,7 @@
             <select name="project_id" id="input-projects" class="form-control">
                 <option value="">@lang('edit.noproject')</option>
                 @foreach($projects as $project)
-                    @if((isset($job) && $project->id == $job->project_id) || $project->id == old('project_id'))
+                    @if((isset($job) && $project->id == $job->project_id) || $project->id == old('project_id') || $project->id == request('project_id'))
                         <option selected value="{{ $project->id }}">{{ $project->name }}</option>
                     @else
                         <option value="{{ $project->id }}">{{ $project->name }}</option>
@@ -252,6 +250,7 @@
     <script src="/plugins/dropzone/dropzone.js" type="text/javascript"></script>
     <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="/js/custom.js"></script>
+    <script src="/js/datepicker.min.js"></script>
     <script>
         var myDropzone = Dropzone.options.dropzone = {
             maxFilesize: 5,
@@ -271,5 +270,52 @@
                 });
             },
         };
+    </script>
+    <script>
+        // Зададим стартовую дату
+        var start = new Date(),
+            prevDay,
+            startHours = 9;
+
+        // 09:00
+        start.setHours(9);
+        start.setMinutes(0);
+
+        // Если сегодня суббота или воскресенье - 10:00
+        if ([6,0].indexOf(start.getDay()) != -1) {
+            start.setHours(10);
+            startHours = 10
+        }
+
+        $('#timepicker-actions-exmpl').datepicker({
+            timepicker: true,
+            startDate: start,
+            minHours: startHours,
+            maxHours: 18,
+            onSelect: function(fd, d, picker) {
+                // Ничего не делаем если выделение было снято
+                if (!d) return;
+
+                var day = d.getDay();
+
+                // Обновляем состояние календаря только если была изменена дата
+                if (prevDay != undefined && prevDay == day) return;
+                prevDay = day;
+
+                // Если выбранный день суббота или воскресенье, то устанавливаем
+                // часы для выходных, в противном случае восстанавливаем начальные значения
+                if (day == 6 || day == 0) {
+                    picker.update({
+                        minHours: 10,
+                        maxHours: 16
+                    })
+                } else {
+                    picker.update({
+                        minHours: 9,
+                        maxHours: 18
+                    })
+                }
+            }
+        })
     </script>
 @endpush

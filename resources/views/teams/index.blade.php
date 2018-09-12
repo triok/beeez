@@ -28,10 +28,19 @@
             <tbody>
             @foreach($teams as $team)
                <tr>
-                  <td><a href="{{ route('teams.show', $team) }}">{{$team->name}}</a></td>
-                  <td><a href="{{ route('peoples.show', $team->user) }}">{{$team->user->name}}</a></td>
+                  <td>
+                     <a href="{{ route('teams.show', $team) }}">{{$team->name}}</a>
+
+                     @if(auth()->id() == $team->user_id)
+                        <i class="fa fa-star"></i>
+                     @endif
+                  </td>
+                  <td>
+                     <a href="{{ route('peoples.show', $team->user) }}">{{$team->user->name}}</a>
+                  </td>
                </tr>
             @endforeach
+
             </tbody>
          </table>
          {!! $teams->links() !!}

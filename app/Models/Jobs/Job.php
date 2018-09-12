@@ -9,6 +9,7 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\Tag;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -50,7 +51,7 @@ class Job extends Model
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'end_date'];
 
     public function categories()
     {
@@ -239,5 +240,10 @@ class Job extends Model
     {
         return ['name', 'desc', 'instructions', 'access', 'end_date', 'user_id', 'price',
             'difficulty_level_id', 'time_for_work', 'status', 'parent_id'];
+    }
+
+    public function setEndDateAttribute($value)
+    {
+        $this->attributes['end_date'] = Carbon::createFromFormat('d.m.Y H:i', $value)->format('Y-m-d H:i:s');
     }
 }
