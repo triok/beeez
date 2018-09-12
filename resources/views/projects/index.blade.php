@@ -4,15 +4,21 @@
 <div class="container-fluid projects" id="main">
     <h2>@lang('projects.title')</h2>
 
+    <div class="alert alert-info">
+        Drag to order
+    </div>
+
     <div class="col-sm-3 pull-right">
         <a href="{{ route('projects.create') }}" class="btn btn-success btn-block">
             <i class="fa fa-sitemap"></i> @lang('projects.create')
         </a>
     </div>
+
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a data-toggle="tab" href="#panel1">@lang('projects.current')</a></li>
       <li role="presentation"><a data-toggle="tab" href="#panel2">@lang('projects.completed')</a></li>
     </ul>
+
     <div class="tab-content">
         <div id="panel1" class="tab-pane fade in active">    
             <table class="table table-responsive">
@@ -25,10 +31,10 @@
                 </tr>
                 </thead>
 
-                <tbody>
+                <tbody class="sortable-rows">
                 @if($projects->count())
                     @foreach($projects as $project)
-                        <tr>
+                        <tr class="sort-row" id="{{ $project->id }}">
                             <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                             <td>{{ $project->description }}</td>
                             <td>{{ $project->jobs()->count() }}/0</td>
@@ -73,4 +79,32 @@
 
 @push('scripts')
     <script src="/js/custom.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $(".sortable-rows").sortable({
+                placeholder: "ui-state-highlight",
+                update: function (event, ui) {
+                    updateDisplayOrder();
+                }
+            });
+        });
+
+        // function to save display sort order
+        function updateDisplayOrder() {
+            var selectedLanguage = [];
+            $('.sortable-rows .sort-row').each(function () {
+                selectedLanguage.push($(this).attr("id"));
+            });
+            var dataString = 'sort_order=' + selectedLanguage;
+            $.ajax({
+                type: "POST",
+                url: "/order-projects",
+                data: dataString,
+                cache: false,
+                success: function (data) {
+                }
+            });
+        }
+    </script>
 @endpush

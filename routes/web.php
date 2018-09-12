@@ -29,6 +29,7 @@ Route::group(['middleware' => 'web'], function () {
 
     //Projects
     Route::resource('projects', 'ProjectsController');
+    Route::post('order-projects', 'ProjectsController@order');
 
     //Application
 //    Route::post('applyJob', 'ApplicationsController@applyJob')->name('apply-job');

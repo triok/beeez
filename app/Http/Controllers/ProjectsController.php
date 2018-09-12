@@ -113,4 +113,25 @@ class ProjectsController extends Controller
     {
         Job::where('project_id', $project->id)->update(['project_id' => null]);
     }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    function order(Request $request)
+    {
+        if ($request->ajax()) {
+            $id_ary = explode(",", $request ->sort_order);
+
+            for ($i = 0; $i < count($id_ary); $i++) {
+                $q = Project::find($id_ary[$i]);
+                $q->sort_order = $i;
+                $q->save();
+            }
+
+            return 'success';
+        }
+
+        return '';
+    }
 }
