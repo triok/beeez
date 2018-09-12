@@ -125,8 +125,35 @@ class ProjectsController extends Controller
 
             for ($i = 0; $i < count($id_ary); $i++) {
                 $q = Project::find($id_ary[$i]);
-                $q->sort_order = $i;
-                $q->save();
+
+                if($q) {
+                    $q->sort_order = $i;
+                    $q->save();
+                }
+            }
+
+            return 'success';
+        }
+
+        return '';
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    function orderJobs(Request $request)
+    {
+        if ($request->ajax()) {
+            $id_ary = explode(",", $request ->sort_order);
+
+            for ($i = 0; $i < count($id_ary); $i++) {
+                $q = Job::find($id_ary[$i]);
+
+                if($q) {
+                    $q->sort_order_for_project = $i;
+                    $q->save();
+                }
             }
 
             return 'success';

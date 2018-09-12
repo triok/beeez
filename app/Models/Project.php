@@ -16,6 +16,8 @@ class Project extends Model
 
     public function jobs()
     {
-        return $this->hasMany(Job::class);
+        return $this->hasMany(Job::class)
+            ->orderBy('sort_order_for_project')
+            ->orderBy('name');
     }
 }
