@@ -47,8 +47,10 @@ class ApplicationsController extends Controller
      */
     function applicationsAdmin()
     {
-        $applications = Application::orderBy('created_at', 'DESC')->with('user')->get();
-        return view('applications.admin', compact('applications'));
+        //$applications = Application::orderBy('created_at', 'DESC')->with('user')->get();
+        $jobs = Auth::user()->jobs()->orderBy('created_at', 'DESC')->paginate(request('count', 15));
+
+        return view('applications.admin', compact('jobs'));
     }
 
     public function review(Job $job)
