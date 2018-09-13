@@ -241,9 +241,4 @@ class Job extends Model
         return ['name', 'desc', 'instructions', 'access', 'end_date', 'user_id', 'price',
             'difficulty_level_id', 'time_for_work', 'status', 'parent_id'];
     }
-
-    public function setEndDateAttribute($value)
-    {
-        $this->attributes['end_date'] = Carbon::createFromFormat('d.m.Y H:i', $value)->format('Y-m-d H:i:s');
-    }
 }

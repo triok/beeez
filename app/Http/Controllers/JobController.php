@@ -220,7 +220,9 @@ class JobController extends Controller
 
     function store(StoreJobRequest $request)
     {
-        /** @var Job $job */
+        $request->merge([
+            'end_date' => Carbon::createFromFormat('d.m.Y H:i', $request->get('end_date'))->format('Y-m-d H:i:s')
+        ]);
 
         $job = Job::query()->create(array_intersect_key($request->all(), array_flip(Job::getAllAttributes())));
         dispatch(new AddFilesJob($job));
@@ -255,6 +257,10 @@ class JobController extends Controller
 
     function update(StoreJobRequest $request, Job $job)
     {
+        $request->merge([
+            'end_date' => Carbon::createFromFormat('d.m.Y H:i', $request->get('end_date'))->format('Y-m-d H:i:s')
+        ]);
+
         $job->update(array_intersect_key($request->all(), array_flip(Job::getAllAttributes())));
 
         dispatch(new AddFilesJob($job));
