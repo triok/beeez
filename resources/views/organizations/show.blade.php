@@ -40,7 +40,19 @@
 
                         <div class="col-md-8">
                             <p>
-                                <b>@lang('organizations.show_name')</b>
+                                <b>Форма собственности:</b>
+                                <span>
+                                    @if($organization->ownership == 'organization')
+                                        Организация
+                                    @endif
+                                    @if($organization->ownership == 'ip')
+                                        Индивидуальный предприниматель (ИП)
+                                    @endif
+                                </span>
+                            </p>
+
+                            <p>
+                                <b>Название организации:</b>
                                 <span>{{ $organization->name }}</span>
 
                                 @if(auth()->id() == $organization->user_id)
@@ -54,6 +66,61 @@
                                         (<span class="text-danger">модерация провалена</span>)
                                     @endif
                                 @endif
+                            </p>
+
+                            <p>
+                                <b>ОГРН:</b>
+                                <span>{{ $organization->ohrn }}</span>
+                            </p>
+
+                            <p>
+                                <b>ИНН:</b>
+                                <span>{{ $organization->inn }}</span>
+                            </p>
+
+                            <p>
+                                <b>КПП:</b>
+                                <span>{{ $organization->kpp }}</span>
+                            </p>
+
+                            <p>
+                                <b>Юридиеский адрес:</b>
+                                <span>{{ $organization->address }}</span>
+                            </p>
+
+                            <p>
+                                <b>Банк:</b>
+                                <span>{{ $organization->bank }}</span>
+                            </p>
+
+                            <p>
+                                <b>БИК:</b>
+                                <span>{{ $organization->bik }}</span>
+                            </p>
+
+                            <p>
+                                <b>Расчетный счет:</b>
+                                <span>{{ $organization->bank_account }}</span>
+                            </p>
+
+                            <p>
+                                <b>Корреспондентский счет:</b>
+                                <span>{{ $organization->correspondent_account }}</span>
+                            </p>
+
+                            <p>
+                                <b>Контактное лицо:</b>
+                                <span>{{ $organization->contact_person }}</span>
+                            </p>
+
+                            <p>
+                                <b>Ваш e-mail:</b>
+                                <span>{{ $organization->email }}</span>
+                            </p>
+
+                            <p>
+                                <b>Ваш телефон:</b>
+                                <span>{{ $organization->phone }}</span>
                             </p>
 
                             <p>

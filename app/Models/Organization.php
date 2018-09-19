@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Storage;
 
 class Organization extends Model
 {
-    protected $fillable = ['user_id', 'name', 'description', 'logo', 'slug', 'status'];
+    protected $fillable = [
+        'user_id', 'name', 'description', 'logo', 'slug', 'status',
+        'ownership', 'ohrn', 'inn', 'kpp', 'address', 'bank', 'bik', 'bank_account', 'correspondent_account', 'contact_person', 'email', 'phone'
+    ];
 
     /**
      * Scope a query to only include approved organisations.

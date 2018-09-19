@@ -86,6 +86,10 @@ class OrganizationsController extends Controller
     {
         $rules = [
             'name' => 'required|max:200',
+            'ownership' => 'required|max:200',
+            'inn' => 'required|max:200',
+            'contact_person' => 'required|max:200',
+            'email' => 'required|max:200',
             'slug' => 'required|unique:organizations',
             'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ];
@@ -143,7 +147,10 @@ class OrganizationsController extends Controller
     public function update(Request $request, Organization $organization)
     {
         $rules = [
-            'name' => 'required|max:200',
+            'ownership' => 'required|max:200',
+            'inn' => 'required|max:200',
+            'contact_person' => 'required|max:200',
+            'email' => 'required|max:200',
             'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ];
 
@@ -153,13 +160,13 @@ class OrganizationsController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $organization->description = $request->get('description', '');
+        $organization->update($request->all());
 
-        if($organization->status == 'rejected') {
+        if ($organization->status == 'rejected') {
             $organization->status = 'moderation';
-        }
 
-        $organization->save();
+            $organization->save();
+        }
 
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
             $organization->addLogo($request->file('logo'));
@@ -167,7 +174,7 @@ class OrganizationsController extends Controller
 
         $this->addConnection($request, $organization);
 
-        if($organization->status == 'moderation') {
+        if ($organization->status == 'moderation') {
             Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
 
             flash()->success("Ваше заявление на регистрацию компании принято и поступило на модерацию");
