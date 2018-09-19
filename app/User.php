@@ -12,6 +12,7 @@ use App\Models\Jobs\Bookmark;
 use App\Models\Jobs\Job;
 use App\Models\Jobs\Skill;
 use App\Models\Message;
+use App\Models\OrganizationUsers;
 use App\Models\Participant;
 use App\Models\RoleUser;
 use App\Models\Social;
@@ -135,6 +136,12 @@ class User extends Authenticatable
     public function teams()
     {
         return $this->hasMany(TeamUsers::class)->with('team');
+    }
+
+    public function organizations()
+    {
+        return $this->hasMany(OrganizationUsers::class)
+            ->with('organization');
     }
 
     public function addProject($attributes)

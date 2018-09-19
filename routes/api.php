@@ -21,4 +21,5 @@ Route::group(['prefix' => 'v1', 'namespace' => '\API'], function () {
     Route::get('users', 'UserController@index')->name('users.index');
 
     Route::get('teams', 'TeamController@index');
+    Route::get('organizations', 'OrganizationController@index');
 });

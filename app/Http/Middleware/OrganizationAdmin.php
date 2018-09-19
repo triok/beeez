@@ -4,21 +4,21 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class ProjectOwner
+class OrganizationAdmin
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (isset($request->project) && $request->project->user_id != auth()->user()->id) {
+        if (auth()->user()->email != config('organization.admin')) {
             flash()->error('Access denied!');
 
-            return redirect(route('projects.index'));
+            return redirect(route('organizations.index'));
         }
 
         return $next($request);

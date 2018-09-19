@@ -46,12 +46,13 @@
                     @endforeach
                     </tbody>
                 </table>
+                    {!! $applications->links() !!}
                 @else
                 @lang('application.nojobs')
                 @endif
 
-                <div class="tab-pane fade" id="client" role="tabpanel" aria-labelledby="home-tab">@lang('application.nojobs')</div> 
-                {!! $applications->links() !!}
+                <div class="tab-pane fade" id="client" role="tabpanel" aria-labelledby="home-tab">@lang('application.nojobs')</div>
+
 
             </div>
         </div>
@@ -73,18 +74,18 @@
  
                     @foreach($clientapps as $clientapp)
                     <tr>
-                        <td><a href="{{route('jobs.show', $clientapp->job)}}" id="{{$clientapp->job->id}}">{{$clientapp->job->name}}</a></td>
+                        <td><a href="{{route('jobs.show', $clientapp)}}" id="{{$clientapp->id}}">{{$clientapp->name}}</a></td>
                         <td>{{\Carbon\Carbon::parse($clientapp->created_at)->format('d M, Y')}}</td>
-                        <td>{{\Carbon\Carbon::parse($clientapp->job->end_date)->format('d M, Y, H:i')}}</td>
+                        <td>{{\Carbon\Carbon::parse($clientapp->end_date)->format('d M, Y, H:i')}}</td>
                         <td>
-                            <button data-id="{{$clientapp->job->id}}" {!! $clientapp->job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-sm btn-review">
+                            <button data-id="{{$clientapp->id}}" {!! $clientapp->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-sm btn-review">
                             <i class="fa fa-handshake-o" aria-hidden="true"></i>
                             @lang('home.complete')
                             </button>
                         </td>
                         <td>
                             @if($clientapp->status == config('enums.jobs.statuses.DRAFT'))
-                                <a href="{{route('jobs.edit', $clientapp->id)}}">Edit</a>
+                                <a href="{{route('jobs.edit', $clientapp)}}">Edit</a>
                             @endif
                         </td>                                                
                     </tr>                    
