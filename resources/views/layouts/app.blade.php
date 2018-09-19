@@ -118,7 +118,7 @@
                     <a href="{{route('organizations.index')}}"><i class="fa fa-search"></i>Все организации</a>
                 </li>
                 <li>
-                    <a href="{{route('organizations.index')}}"><i class="fa fa-briefcase"></i>Мои организации</a>
+                    <a href="{{route('organizations.my')}}"><i class="fa fa-briefcase"></i>Мои организации</a>
                 </li>
                 <li role="separator" class="divider"></li>                
                 <li>
@@ -231,7 +231,16 @@
                         </li>
                         <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
                         <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>  
-                        <li><a href="{{route('organizations.index')}}"><i class="fa fa-group"></i> @lang('organizations.title')</a></li>
+                        <li>
+                            <a href="{{route('organizations.moderation')}}">
+                                <i class="fa fa-group"></i>
+                                @lang('organizations.title')
+                                @php($org_moderation = \App\Models\Organization::moderation()->count())
+                                @if($org_moderation)
+                                    <span class="label label-danger">{{ $org_moderation }}</span>
+                                @endif
+                            </a>
+                        </li>
                         @endrole
 
                         <li><a href="{{route('messages')}}"><i class="fa fa-envelope"></i> @lang('messages.title') @include('messenger.unread-count')</a></li>

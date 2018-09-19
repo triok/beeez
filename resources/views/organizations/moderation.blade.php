@@ -23,6 +23,7 @@
             <tr>
                <th>@lang('organizations.organization')</th>
                <th>@lang('organizations.owner')</th>
+               <th> </th>
             </tr>
             </thead>
             <tbody>
@@ -31,20 +32,25 @@
                   <td>
                      <a href="{{ route('organizations.show', $organization) }}">{{$organization->name}}</a>
 
-                     @if(auth()->id() == $organization->user_id)
-                        <i class="fa fa-star"></i>
+                     @if($organization->status == 'moderation')
+                        (<span class="text-warning">на модерации</span>)
+                     @endif
 
-                        @if($organization->status == 'moderation')
-                           (<span class="text-warning">на модерации</span>)
-                        @endif
-
-                        @if($organization->status == 'rejected')
-                           (<span class="text-danger">модерация провалена</span>)
-                        @endif
+                     @if($organization->status == 'rejected')
+                        (<span class="text-danger">модерация провалена</span>)
                      @endif
                   </td>
                   <td>
                      <a href="{{ route('peoples.show', $organization->user) }}">{{$organization->user->name}}</a>
+                  </td>
+                  <td class="text-right">
+                     {!! Form::open(['url' => route('organizations.reject', $organization), 'method'=>'patch', 'style' => 'display:inline-block']) !!}
+                     <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                     {!! Form::close() !!}
+
+                     {!! Form::open(['url' => route('organizations.approve', $organization), 'method'=>'patch', 'style' => 'display:inline-block']) !!}
+                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                     {!! Form::close() !!}
                   </td>
                </tr>
             @endforeach

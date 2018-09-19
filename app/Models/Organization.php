@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Organization extends Model
 {
-    protected $fillable = ['user_id', 'name', 'description', 'logo', 'slug'];
+    protected $fillable = ['user_id', 'name', 'description', 'logo', 'slug', 'status'];
 
     /**
      * Scope a query to only include approved organisations.
@@ -18,7 +18,7 @@ class Organization extends Model
      */
     public function scopeApproved($query)
     {
-        return $query->where('is_approved', true);
+        return $query->where('status', 'approved');
     }
 
     /**
@@ -27,9 +27,31 @@ class Organization extends Model
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUnapproved($query)
+    public function scopeRejected($query)
     {
-        return $query->where('is_approved', false);
+        return $query->where('status', 'rejected');
+    }
+
+    /**
+     * Scope a query to only include unapproved organisations.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeMy($query)
+    {
+        return $query->where('user_id', auth()->id());
+    }
+
+    /**
+     * Scope a query to only include unapproved organisations.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeModeration($query)
+    {
+        return $query->where('status', 'moderation');
     }
 
     public function getRouteKeyName()

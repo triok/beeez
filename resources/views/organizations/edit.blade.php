@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        @if($organization->is_approved)
+        @if($organization->status == 'approved')
             @include('organizations/_users')
         @endif
 

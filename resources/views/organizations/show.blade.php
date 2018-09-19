@@ -15,6 +15,16 @@
                     <i class="fa fa-pencil"></i> @lang('organizations.edit')
                 </a>
                 @endif
+
+                @if(auth()->user()->email == config('organization.admin') && $organization->status == 'moderation')
+                    {!! Form::open(['url' => route('organizations.approve', $organization), 'method'=>'patch', 'class' => 'pull-right', 'style' => 'display:inline-block;margin-right: 5px;']) !!}
+                    <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                    {!! Form::close() !!}
+
+                    {!! Form::open(['url' => route('organizations.reject', $organization), 'method'=>'patch', 'class' => 'pull-right', 'style' => 'display:inline-block;margin-right: 5px;']) !!}
+                    <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                    {!! Form::close() !!}
+                @endif
             </div>
 
             <div class="panel panel-default">
@@ -32,8 +42,17 @@
                             <p>
                                 <b>@lang('organizations.show_name')</b>
                                 <span>{{ $organization->name }}</span>
-                                @if(!$organization->is_approved)
-                                    (<span class="text-danger">на модерации</span>)
+
+                                @if(auth()->id() == $organization->user_id)
+                                    <i class="fa fa-star"></i>
+
+                                    @if($organization->status == 'moderation')
+                                        (<span class="text-warning">на модерации</span>)
+                                    @endif
+
+                                    @if($organization->status == 'rejected')
+                                        (<span class="text-danger">модерация провалена</span>)
+                                    @endif
                                 @endif
                             </p>
 

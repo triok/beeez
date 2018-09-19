@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIsApprovedToOrganizationsTable extends Migration
+class AddStatusToOrganizationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddIsApprovedToOrganizationsTable extends Migration
     public function up()
     {
         Schema::table('organizations', function (Blueprint $table) {
-            $table->boolean('is_approved')->after('description')->default(false);
+            $table->string('status')->after('description')->default('moderation');
         });
     }
 
@@ -26,7 +26,7 @@ class AddIsApprovedToOrganizationsTable extends Migration
     public function down()
     {
         Schema::table('organizations', function (Blueprint $table) {
-            $table->dropColumn('is_approved');
+            $table->dropColumn('status');
         });
     }
 }

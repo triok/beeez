@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewOrganization;
 use App\Models\Organization;
 use App\Models\OrganizationUsers;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class OrganizationsController extends Controller
@@ -13,6 +15,8 @@ class OrganizationsController extends Controller
     function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('organization.owner')->only(['edit', 'update', 'destroy']);
+        $this->middleware('organization.admin')->only(['moderation', 'approve', 'reject']);
     }
 
     /**
@@ -22,20 +26,28 @@ class OrganizationsController extends Controller
      */
     public function index()
     {
-        // ID организаций в которых состоит пользователь
-        $otherOrganizationIds = OrganizationUsers::where('user_id', '=', auth()->id())
-            ->pluck('organization_id')
-            ->toArray();
-
-        $organizations = Organization::where('user_id', auth()->id())
-            ->orWhere(function ($query) use ($otherOrganizationIds) {
-                $query
-                    ->whereIn('id', $otherOrganizationIds)
-                    ->where('is_approved', true);
-            })
-            ->paginate(request('count', 20));
+        $organizations = Organization::approved()->paginate(request('count', 20));
 
         return view('organizations.index', compact('organizations'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function my()
+    {
+        $organizations = Organization::my()->paginate(request('count', 20));
+
+        return view('organizations.index', compact('organizations'));
+    }
+
+    public function moderation()
+    {
+        $organizations = Organization::moderation()->paginate(request('count', 20));
+
+        return view('organizations.moderation', compact('organizations'));
     }
 
     /**
@@ -68,6 +80,7 @@ class OrganizationsController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function store(Request $request)
     {
@@ -97,7 +110,9 @@ class OrganizationsController extends Controller
 
         $this->addConnection($request, $organization);
 
-        flash()->success('Organization saved!');
+        Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
+
+        flash()->success("Ваше заявление на регистрацию компании принято и поступило на модерацию");
 
         return redirect(route('organizations.show', $organization));
     }
@@ -110,12 +125,6 @@ class OrganizationsController extends Controller
      */
     public function edit(Organization $organization)
     {
-        if ($organization->user_id != auth()->user()->id) {
-            flash()->error('Access denied!');
-
-            return redirect()->back();
-        }
-
         $connections = OrganizationUsers::where('organization_id', $organization->id)->get();
 
         $users = User::all();
@@ -129,16 +138,12 @@ class OrganizationsController extends Controller
      * @param Request $request
      * @param Organization $organization
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
      */
     public function update(Request $request, Organization $organization)
     {
-        if ($organization->user_id != auth()->user()->id) {
-            flash()->error('Access denied!');
-
-            return redirect()->back();
-        }
-
         $rules = [
+            'name' => 'required|max:200',
             'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ];
 
@@ -149,6 +154,11 @@ class OrganizationsController extends Controller
         }
 
         $organization->description = $request->get('description', '');
+
+        if($organization->status == 'rejected') {
+            $organization->status = 'moderation';
+        }
+
         $organization->save();
 
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
@@ -157,9 +167,49 @@ class OrganizationsController extends Controller
 
         $this->addConnection($request, $organization);
 
-        flash()->success('Organization updated!');
+        if($organization->status == 'moderation') {
+            Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
+
+            flash()->success("Ваше заявление на регистрацию компании принято и поступило на модерацию");
+        } else {
+            flash()->success('Organization updated!');
+        }
 
         return redirect(route('organizations.show', $organization));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Organization $organization
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function approve(Organization $organization)
+    {
+        $organization->status = 'approved';
+
+        $organization->save();
+
+        flash()->success('Organization updated!');
+
+        return redirect(route('organizations.moderation'));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Organization $organization
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function reject(Organization $organization)
+    {
+        $organization->status = 'rejected';
+
+        $organization->save();
+
+        flash()->success('Organization updated!');
+
+        return redirect(route('organizations.moderation'));
     }
 
     /**
