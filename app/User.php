@@ -19,6 +19,7 @@ use App\Models\Social;
 use App\Models\Project;
 use App\Models\Team;
 use App\Models\TeamUsers;
+use App\Models\Thread;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -96,7 +97,7 @@ class User extends Authenticatable
         return $this->morphOne(Image::class, 'imageable');
     }
 
-    public function getAvatarDir(): string
+    public function getAvatarDir()
     {
         return '/public/avatars/' . $this->id . '/';
     }

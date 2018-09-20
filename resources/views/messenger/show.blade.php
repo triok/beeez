@@ -1,59 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <div class="col-xs-6 col-sm-3 sidebar-offcanvas"  role="navigation">
-        <div id="sidebar">
-            <div class="Categories">@lang('messages.users')</div>
+    <div class="container-fluid">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
+            <div id="sidebar">
                 <ul class="nav">
-                @include('messenger.partials.flash')
-
-                @each('messenger.partials.thread', $threads, 'thread', 'messenger.partials.no-threads')                       
-                </ul>            
+                    @each('messenger.partials.thread', $threads, 'thread', 'messenger.partials.no-threads')
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="col-xs-6 col-sm-9" id="main">
-        @each('messenger.partials.messages', $thread->messages, 'message')
 
-        @include('messenger.partials.form-message')
-   
-    </div>
-</div>
+        <div class="col-xs-6 col-sm-9" id="main">
+            @if($thread->isGroupChat() && $thread->user_id == auth()->user()->id)
+                <a href="{{ route('threads.edit', $thread) }}" class="btn btn-default btn-xs pull-right">
+                    <i class="fa fa-pencil"></i> Изменить
+                </a>
 
-@stop
+                {!! Form::open(['url' => route('threads.destroy', $thread), 'method'=>'delete', 'class' => 'pull-right', 'style' => 'display:inline-block;margin-right: 5px;']) !!}
+                <button type="submit" class="btn btn-xs btn-danger">
+                    <i class="fa fa-trash"></i> Удалить
+                </button>
+                {!! Form::close() !!}
+            @endif
 
-@section('users')
-    <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
-        <ul class="nav" style="margin-top: 0">
-            @foreach($threads as $row)
-                <li>
-                    <div style="display: flex; justify-content: space-between;">
-                        <div class="media">
-                            <a class="pull-left"
-                               href="/messages/{{ $row->id }}">
+            @if($thread->isGroupChat())
+            <h1>{{ $thread->title() }}</h1>
 
-                                <img src="{{$row->participant()->getStorageDir() . $row->participant()->avatar}}"
-                                     class="img-thumbnail"
-                                     style="width: 40px; height: 40px;">
-                            </a>
+            <p>{!! $thread->description !!}</p>
 
-                            <div class="media-body">
-                                @if($thread->id == $row->id)
-                                    <a style="color: #000;font-weight:bold;"
-                                       href="/messages/{{ $row->id }}">{{ $row->participant()->name }}</a>
-                                @else
-                                    <a href="/messages/{{ $row->id }}">{{ $row->participant()->name }}</a>
-                                @endif
+            <hr>
+            @endif
 
-                                    <?php $count = Auth::user()->unreadMessagesCountForThread($row->id); ?>
-                                    @if($count > 0)
-                                        <span class="label label-danger">{{ $count }}</span>
-                                    @endif
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
+            @each('messenger.partials.messages', $messages, 'message')
+
+                {!! $messages->links() !!}
+
+            @include('messenger.partials.form-message')
+        </div>
     </div>
 @stop
