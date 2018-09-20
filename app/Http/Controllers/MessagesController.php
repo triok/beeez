@@ -72,7 +72,9 @@ class MessagesController extends Controller
 
         $threads = Thread::forUser(Auth::id())->latest('updated_at')->get();
 
-        return view('messenger.show', compact('threads', 'thread', 'users'));
+        $messages = $thread->messages()->paginate(request('count', 10));
+
+        return view('messenger.show', compact('threads', 'thread', 'users', 'messages'));
     }
 
     /**
