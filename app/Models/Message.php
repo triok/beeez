@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\MessageFiles;
 use Cmgmyr\Messenger\Models\Message as BaseMessage;
 
 class Message extends BaseMessage
@@ -31,5 +32,10 @@ class Message extends BaseMessage
         } else {
             return $query;
         }
+    }
+
+    function files()
+    {
+        return $this->hasMany(MessageFiles::class);
     }
 }

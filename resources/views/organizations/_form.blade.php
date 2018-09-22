@@ -150,3 +150,80 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-responsive" id="table-files">
+            <tbody>
+            @php($num = 0)
+            @if(isset($organization) && $files = $organization->files)
+                @foreach($files as $file)
+                    <tr>
+                        <td>
+                            <input type="hidden" name="files[{{ $num }}][path]" value="{{ $file->path }}">
+                            <input type="hidden" name="files[{{ $num }}][title]" value="{{ $file->title }}">
+                            {{ $file->title }}
+                        </td>
+                        <td class="text-right">
+                            <button type="button" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-sm">
+                                <i aria-hidden="true" class="fa fa-close"></i>
+                            </button>
+                        </td>
+                    </tr>
+                @php($num++)
+                @endforeach
+                </p>
+            @endif
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@push('scripts')
+    <script>
+        $('#file-upload').on('change', uploadFile);
+
+        function uploadFile(event) {
+            var data = new FormData();
+
+            data.append('file', event.target.files[0]);
+
+            $.ajax({
+                url: '{{ route('uploader') }}',
+                type: 'POST',
+                data: data,
+                cache: false,
+                dataType: 'json',
+                processData: false, // Don't process the files
+                contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+                before: function () {
+                    $('#organization-form input[type=file]').val();
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.status == 'success') {
+                        addFile(data.data.title, data.data.path);
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('ERRORS: ' + textStatus);
+                }
+            });
+        }
+
+        var num = '{{ $num }}';
+
+        function addFile(title, path) {
+            var template = '<tr><td><input type="hidden" name="files[' + num + '][path]" value="' + path + '">';
+
+            template += '<input type="hidden" name="files[' + num + '][title]" value="' + title + '">' + title + '</td>';
+
+            template += '<td class="text-right"><button type="button" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-sm"><i aria-hidden="true" class="fa fa-close"></i></button></td></tr>';
+
+            $('#table-files').find('tbody').append(template);
+
+            num++;
+        }
+    </script>
+@endpush
