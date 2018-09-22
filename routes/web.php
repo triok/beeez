@@ -183,4 +183,5 @@ Route::get('/js/lang.js', function () {
 Route::group(['prefix' => 'api', 'namespace' => '\API'], function () {
     Route::get('jobs', 'JobsController@index');
     Route::get('categories/{category}', 'CategoriesController@show');
+    Route::post('upload', 'UploaderController@index')->name('uploader');
 });

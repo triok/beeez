@@ -31,9 +31,9 @@
             <hr>
             @endif
 
-            @each('messenger.partials.messages', $messages, 'message')
-
-                {!! $messages->links() !!}
+            <div id="messages" style="height:500px;overflow-y: scroll;">
+                @each('messenger.partials.messages', $messages, 'message')
+            </div>
 
             @include('messenger.partials.form-message')
         </div>

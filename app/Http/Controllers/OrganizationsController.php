@@ -114,6 +114,15 @@ class OrganizationsController extends Controller
 
         $this->addConnection($request, $organization);
 
+        if ($files = $request->get('files')) {
+            foreach ($files as $file) {
+                $organization->files()->create([
+                    'title' => $file['title'],
+                    'path' => $file['path']
+                ]);
+            }
+        }
+
         Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
 
         flash()->success("Ваше заявление на регистрацию компании принято и поступило на модерацию");
@@ -173,6 +182,19 @@ class OrganizationsController extends Controller
         }
 
         $this->addConnection($request, $organization);
+
+        foreach ($organization->files as $file) {
+            $file->delete();
+        }
+
+        if ($files = $request->get('files')) {
+            foreach ($files as $file) {
+                $organization->files()->create([
+                    'title' => $file['title'],
+                    'path' => $file['path']
+                ]);
+            }
+        }
 
         if ($organization->status == 'moderation') {
             Mail::to(config('organization.admin'))->send(new NewOrganization($organization));

@@ -72,7 +72,7 @@ class MessagesController extends Controller
 
         $threads = Thread::forUser(Auth::id())->latest('updated_at')->get();
 
-        $messages = $thread->messages()->paginate(request('count', 10));
+        $messages = Message::where('thread_id', $id)->get();
 
         return view('messenger.show', compact('threads', 'thread', 'users', 'messages'));
     }
@@ -96,7 +96,7 @@ class MessagesController extends Controller
         $thread->activateAllParticipants();
 
         // Message
-        Message::create([
+        $message = Message::create([
             'thread_id' => $thread->id,
             'user_id' => Auth::id(),
             'body' => Input::get('message'),
@@ -107,6 +107,15 @@ class MessagesController extends Controller
             'thread_id' => $thread->id,
             'user_id' => Auth::id(),
         ]);
+
+        if ($files = Input::get('files')) {
+            foreach ($files as $file) {
+                $message->files()->create([
+                    'title' => $file['title'],
+                    'path' => $file['path']
+                ]);
+            }
+        }
 
         $participant->last_read = new Carbon;
 

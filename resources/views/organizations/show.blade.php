@@ -131,6 +131,19 @@
                             <b>@lang('organizations.show_description')</b>
                             <p>{!! $organization->description !!}</p>
 
+                            @if($files = $organization->files)
+                                <b>Файлы:</b>
+                                <p>
+                                @foreach($files as $file)
+                                    <div>
+                                         - <a target="_blank" href="{{ $file->link() }}" style="font-size: 11px;">
+                                            {{ $file->title }}
+                                        </a>
+                                    </div>
+                                @endforeach
+                                </p>
+                            @endif
+
                             <hr>
 
                             <table class="table table-responsive">

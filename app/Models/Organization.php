@@ -97,4 +97,9 @@ class Organization extends Model
 
         $this->save();
     }
+
+    function files()
+    {
+        return $this->hasMany(OrganizationFiles::class);
+    }
 }

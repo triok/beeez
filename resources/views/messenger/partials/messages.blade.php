@@ -13,5 +13,15 @@
         <b>{{ $message->user->name }}</b>
 
         <p style="padding-top: 7px;">{{ $message->body }}</p>
+
+        @if($files = $message->files)
+            @foreach($files as $file)
+                <div>
+                    <a target="_blank" href="{{ $file->link() }}" style="font-size: 11px;">
+                        {{ $file->title }}
+                    </a>
+                </div>
+            @endforeach
+        @endif
     </div>
 </div>
