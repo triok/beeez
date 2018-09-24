@@ -12021,9 +12021,10 @@ section.other-jobs a.delete {
 }
 
 #content {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     padding: 20px;
-    min-height: 100vh;
     transition: all 0.3s;
 }
 .components li:hover:not(:first-child) {
@@ -12088,12 +12089,19 @@ section.other-jobs a.delete {
   color: #ffffff;
   transition: 0.2s;
 }
-.navbar a:hover{
-  background-color: #47afa5!important;
-}
+
 .category-nav {
   padding-left: 0px;
 }
 .table-peoples tbody a{
   color: #47afa5;
+}
+.left-sidebar {
+  color: white
+}
+.left-sidebar:hover:not(:first-child) {
+  background:#eaeaea;    
+}
+.left-sidebar:hover:not(:first-child) a{
+  color: black!important;
 }

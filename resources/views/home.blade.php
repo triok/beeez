@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div>
     <div class="col-sm-3 sidebar-offcanvas category-nav" role="navigation">
         <div id="sidebar">
             <div class="Categories">@lang('layout.categories')</div>
@@ -17,7 +18,7 @@
                                 @endif
                             </router-link>
 
-                            <i class="fa fa-arrow-down" data-toggle="collapse" data-target="#navbarToggler{{$cat->id}}"
+                            <i class="fa fa-plus-square-o" data-toggle="collapse" data-target="#navbarToggler{{$cat->id}}"
                                aria-controls="navbarToggler" aria-expanded="true" aria-label="Toggle navigation"
                                style="display: block;"></i>
                         </div>
@@ -44,6 +45,7 @@
     </div>
 
     <router-view></router-view>
+</div>    
 @endsection
 
 @push('modals')
