@@ -76,6 +76,17 @@ $(document).ready(function () {
         $('#modal-categories').modal({ backdrop: 'static', keyboard: false, 'show': true });
     });
 
+    $("#modal-categories").on("show", function () {
+        $("body").addClass("modal-open");
+    }).on("hidden", function () {
+        $("body").removeClass("modal-open")
+    });
+
+    $("#modal-categories").on('hidden.bs.modal', function () {
+        $('html, body').animate({
+            scrollTop: $("#input-category-name").offset().top - 300
+        }, 0);
+    });
 });
 
 function removeSubTask() {
@@ -182,5 +193,5 @@ function setCategory(id, name) {
     $('#input-category-id').val(id);
     $('#input-category-name').val(name);
 
-    $('#modal-categories').modal('toggle');
+    $('#modal-categories').modal('hide');
 }
