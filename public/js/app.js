@@ -377,33 +377,6 @@ module.exports = {
 /* 1 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -483,7 +456,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -711,7 +684,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -817,6 +790,33 @@ module.exports = function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -28930,7 +28930,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(17)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(17)(module)))
 
 /***/ }),
 /* 17 */
@@ -39924,7 +39924,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(19).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(19).setImmediate))
 
 /***/ }),
 /* 19 */
@@ -39994,7 +39994,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
 /* 20 */
@@ -40187,7 +40187,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(6)))
 
 /***/ }),
 /* 21 */
@@ -46536,7 +46536,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(45)
 }
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(48)
 /* template */
@@ -46589,7 +46589,7 @@ var content = __webpack_require__(46);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("3f1a86d4", content, false, {});
+var update = __webpack_require__(2)("3f1a86d4", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -46608,7 +46608,7 @@ if(false) {
 /* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(false);
+exports = module.exports = __webpack_require__(1)(false);
 // imports
 
 
@@ -47184,11 +47184,11 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(51)
 }
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(53)
 /* template */
-var __vue_template__ = __webpack_require__(64)
+var __vue_template__ = __webpack_require__(74)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47237,7 +47237,7 @@ var content = __webpack_require__(52);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("373c875f", content, false, {});
+var update = __webpack_require__(2)("373c875f", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -47256,7 +47256,7 @@ if(false) {
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(false);
+exports = module.exports = __webpack_require__(1)(false);
 // imports
 
 
@@ -47274,7 +47274,7 @@ exports.push([module.i, "\n#chat h2 {\n    margin-top: 0;\n}\n", ""]);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__messages_vue__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__messages_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__messages_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__threads_vue__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__threads_vue__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__threads_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__threads_vue__);
 //
 //
@@ -47316,11 +47316,11 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(55)
 }
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(57)
 /* template */
-var __vue_template__ = __webpack_require__(63)
+var __vue_template__ = __webpack_require__(68)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47369,7 +47369,7 @@ var content = __webpack_require__(56);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("694965fa", content, false, {});
+var update = __webpack_require__(2)("694965fa", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -47388,7 +47388,7 @@ if(false) {
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(false);
+exports = module.exports = __webpack_require__(1)(false);
 // imports
 
 
@@ -47406,7 +47406,7 @@ exports.push([module.i, "\n#messages {\n    max-height: 500px;\n    overflow-y: 
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_vue__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__message_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__messageform_vue__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__messageform_vue__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__messageform_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__messageform_vue__);
 //
 //
@@ -47455,7 +47455,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             auth_user_id: 0,
             thread: null,
-            messages: null
+            messages: null,
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         };
     },
 
@@ -47509,7 +47510,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(59)
 }
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(61)
 /* template */
@@ -47562,7 +47563,7 @@ var content = __webpack_require__(60);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("32a4080f", content, false, {});
+var update = __webpack_require__(2)("32a4080f", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -47581,7 +47582,7 @@ if(false) {
 /* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(false);
+exports = module.exports = __webpack_require__(1)(false);
 // imports
 
 
@@ -47728,449 +47729,16 @@ if (false) {
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.thread
-        ? _c("div", { staticStyle: { "min-height": "50px" } }, [
-            _vm.thread.thread_type == "group" &&
-            _vm.thread.user_id == _vm.auth_user_id
-              ? _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-default btn-xs pull-right",
-                    attrs: { href: "/threads/" + _vm.thread.id + "/edit" }
-                  },
-                  [
-                    _c("i", { staticClass: "fa fa-pencil" }),
-                    _vm._v(" Изменить\n        ")
-                  ]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "form",
-              {
-                staticClass: "pull-right",
-                staticStyle: { display: "inline-block", "margin-right": "5px" },
-                attrs: {
-                  method: "POST",
-                  action: "/threads/" + _vm.thread.id,
-                  "accept-charset": "UTF-8"
-                }
-              },
-              [
-                _c("input", {
-                  attrs: { name: "_method", type: "hidden", value: "DELETE" }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    name: "_token",
-                    type: "hidden",
-                    value: "sRKAeeRqf3qhQzhQ68UWq2ruhjc8fLOnQcPatjgR"
-                  }
-                }),
-                _vm._v(" "),
-                _vm._m(0)
-              ]
-            ),
-            _vm._v(" "),
-            _vm.thread.thread_type == "group"
-              ? _c("div", [
-                  _c("h1", [_vm._v(_vm._s(_vm.thread.subject))]),
-                  _vm._v(" "),
-                  _c("p", {
-                    domProps: { innerHTML: _vm._s(_vm.thread.description) }
-                  }),
-                  _vm._v(" "),
-                  _c("hr")
-                ])
-              : _vm._e()
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "div",
-        { attrs: { id: "messages" } },
-        [
-          _vm._l(_vm.messages, function(message) {
-            return _vm.messages
-              ? _c(
-                  "div",
-                  { staticClass: "media" },
-                  [_c("message", { attrs: { message: message } })],
-                  1
-                )
-              : _vm._e()
-          }),
-          _vm._v(" "),
-          !_vm.messages || _vm.messages.length == 0
-            ? _c("div", [
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.trans("messenges.partial.nothreads")) +
-                    "\n        "
-                )
-              ])
-            : _vm._e()
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c("messageform", { attrs: { thread: _vm.thread } })
-    ],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-xs btn-danger", attrs: { type: "submit" } },
-      [
-        _c("i", { staticClass: "fa fa-trash" }),
-        _vm._v(" Удалить чат\n            ")
-      ]
-    )
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6becd490", module.exports)
-  }
-}
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid", attrs: { id: "chat" } }, [
-    _c(
-      "div",
-      {
-        staticClass: "col-xs-6 col-sm-3 sidebar-offcanvas",
-        attrs: { role: "navigation" }
-      },
-      [
-        _c(
-          "div",
-          { attrs: { id: "sidebar" } },
-          [
-            _c("h2", [_vm._v(_vm._s(_vm.trans("messages.thread_title")))]),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-xs btn-success",
-                attrs: { href: "/threads/create" }
-              },
-              [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.trans("messages.create_thread")) +
-                    "\n            "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c("threads")
-          ],
-          1
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-xs-6 col-sm-9", attrs: { id: "main" } },
-      [_c("messages")],
-      1
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-03f7db3e", module.exports)
-  }
-}
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(66)
+  __webpack_require__(64)
 }
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(68)
+var __vue_script__ = __webpack_require__(66)
 /* template */
-var __vue_template__ = __webpack_require__(69)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\messanger\\threads.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-48733d95", Component.options)
-  } else {
-    hotAPI.reload("data-v-48733d95", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(67);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("31c32ab6", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48733d95\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./threads.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48733d95\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./threads.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#chat .nav .media-heading .label-danger {\n    float: right;\n    margin-right: 12px;\n    padding: 3px 7px 1px 7px;\n}\n#chat .nav .media-heading {\n    padding-top: 10px;\n}\n#chat .nav .media {\n    margin: 3px 0;\n    padding: 3px 0 3px 3px;\n}\n#chat .nav img {\n    display: block;\n    width: 40px;\n    height: 40px;\n    margin: 0 auto;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 68 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            threads: null
-        };
-    },
-
-    mounted: function mounted() {
-        this.getThreads();
-    },
-
-
-    watch: {
-        $route: function $route(to, from) {
-            if (this.$route.params.id !== undefined) {
-                var thread_id = this.$route.params.id;
-                var self = this;
-
-                this.threads.forEach(function (element) {
-                    if (element.id == thread_id) {
-                        element.unread_count = 0;
-                    }
-                });
-            }
-        }
-    },
-
-    methods: {
-        getThreads: function getThreads() {
-            var _this = this;
-
-            this.threads = null;
-
-            axios.get('/api/threads').then(function (response) {
-                return _this.threads = response.data.data;
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "nav" },
-    [
-      _vm._l(_vm.threads, function(thread) {
-        return _vm.threads && _vm.threads.length > 0
-          ? _c(
-              "div",
-              {
-                staticClass: "media alert",
-                class: thread.unread_count ? "alert-info" : ""
-              },
-              [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "pull-left",
-                    attrs: { to: "/messages/" + thread.id }
-                  },
-                  [
-                    _c("img", {
-                      staticClass: "img-thumbnail",
-                      attrs: { src: thread.avatar }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "h4",
-                  { staticClass: "media-heading" },
-                  [
-                    _c(
-                      "router-link",
-                      { attrs: { to: "/messages/" + thread.id } },
-                      [
-                        _vm._v(
-                          "\n                " +
-                            _vm._s(thread.subject) +
-                            "\n            "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    thread.unread_count
-                      ? _c("span", { staticClass: "label label-danger" }, [
-                          _vm._v(_vm._s(thread.unread_count))
-                        ])
-                      : _vm._e()
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          : _vm._e()
-      }),
-      _vm._v(" "),
-      _vm.threads && _vm.threads.length == 0
-        ? _c("p", [_vm._v(_vm._s(_vm.trans("messages.nothreads")))])
-        : _vm._e()
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-48733d95", module.exports)
-  }
-}
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(71)
-}
-var normalizeComponent = __webpack_require__(4)
-/* script */
-var __vue_script__ = __webpack_require__(73)
-/* template */
-var __vue_template__ = __webpack_require__(74)
+var __vue_template__ = __webpack_require__(67)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48209,17 +47777,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 71 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(72);
+var content = __webpack_require__(65);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("6b71ad3a", content, false, {});
+var update = __webpack_require__(2)("6b71ad3a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -48235,10 +47803,10 @@ if(false) {
 }
 
 /***/ }),
-/* 72 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(false);
+exports = module.exports = __webpack_require__(1)(false);
 // imports
 
 
@@ -48249,7 +47817,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 73 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48303,7 +47871,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 74 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48421,6 +47989,436 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-7dde9037", module.exports)
+  }
+}
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.thread
+        ? _c("div", { staticStyle: { "min-height": "50px" } }, [
+            _vm.thread.thread_type == "group" &&
+            _vm.thread.user_id == _vm.auth_user_id
+              ? _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-default btn-xs pull-right",
+                    attrs: { href: "/threads/" + _vm.thread.id + "/edit" }
+                  },
+                  [
+                    _c("i", { staticClass: "fa fa-pencil" }),
+                    _vm._v(" Изменить\n        ")
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                staticClass: "pull-right",
+                staticStyle: { display: "inline-block", "margin-right": "5px" },
+                attrs: {
+                  method: "POST",
+                  action: "/threads/" + _vm.thread.id,
+                  "accept-charset": "UTF-8"
+                }
+              },
+              [
+                _c("input", {
+                  attrs: { name: "_method", type: "hidden", value: "DELETE" }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { name: "_token", type: "hidden" },
+                  domProps: { value: _vm.csrf }
+                }),
+                _vm._v(" "),
+                _vm._m(0)
+              ]
+            ),
+            _vm._v(" "),
+            _vm.thread.thread_type == "group"
+              ? _c("div", [
+                  _c("h1", [_vm._v(_vm._s(_vm.thread.subject))]),
+                  _vm._v(" "),
+                  _c("p", {
+                    domProps: { innerHTML: _vm._s(_vm.thread.description) }
+                  }),
+                  _vm._v(" "),
+                  _c("hr")
+                ])
+              : _vm._e()
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        { attrs: { id: "messages" } },
+        [
+          _vm._l(_vm.messages, function(message) {
+            return _vm.messages
+              ? _c(
+                  "div",
+                  { staticClass: "media" },
+                  [_c("message", { attrs: { message: message } })],
+                  1
+                )
+              : _vm._e()
+          }),
+          _vm._v(" "),
+          !_vm.messages || _vm.messages.length == 0
+            ? _c("div", [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.trans("messenges.partial.nothreads")) +
+                    "\n        "
+                )
+              ])
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("messageform", { attrs: { thread: _vm.thread } })
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-xs btn-danger", attrs: { type: "submit" } },
+      [
+        _c("i", { staticClass: "fa fa-trash" }),
+        _vm._v(" Удалить чат\n            ")
+      ]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6becd490", module.exports)
+  }
+}
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(70)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(72)
+/* template */
+var __vue_template__ = __webpack_require__(73)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\messanger\\threads.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-48733d95", Component.options)
+  } else {
+    hotAPI.reload("data-v-48733d95", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(71);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("31c32ab6", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48733d95\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./threads.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48733d95\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./threads.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n#chat .nav .media-heading .label-danger {\n    float: right;\n    margin-right: 12px;\n    padding: 3px 7px 1px 7px;\n}\n#chat .nav .media-heading {\n    padding-top: 10px;\n}\n#chat .nav .media {\n    margin: 3px 0;\n    padding: 3px 0 3px 3px;\n}\n#chat .nav img {\n    display: block;\n    width: 40px;\n    height: 40px;\n    margin: 0 auto;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            threads: null
+        };
+    },
+
+    mounted: function mounted() {
+        this.getThreads();
+    },
+
+
+    watch: {
+        $route: function $route(to, from) {
+            if (this.$route.params.id !== undefined) {
+                var thread_id = this.$route.params.id;
+                var self = this;
+
+                this.threads.forEach(function (element) {
+                    if (element.id == thread_id) {
+                        element.unread_count = 0;
+                    }
+                });
+            }
+        }
+    },
+
+    methods: {
+        getThreads: function getThreads() {
+            var _this = this;
+
+            this.threads = null;
+
+            axios.get('/api/threads').then(function (response) {
+                return _this.threads = response.data.data;
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "nav" },
+    [
+      _vm._l(_vm.threads, function(thread) {
+        return _vm.threads && _vm.threads.length > 0
+          ? _c(
+              "div",
+              {
+                staticClass: "media alert",
+                class: thread.unread_count ? "alert-info" : ""
+              },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "pull-left",
+                    attrs: { to: "/messages/" + thread.id }
+                  },
+                  [
+                    _c("img", {
+                      staticClass: "img-thumbnail",
+                      attrs: { src: thread.avatar }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h4",
+                  { staticClass: "media-heading" },
+                  [
+                    _c(
+                      "router-link",
+                      { attrs: { to: "/messages/" + thread.id } },
+                      [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(thread.subject) +
+                            "\n            "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    thread.unread_count
+                      ? _c("span", { staticClass: "label label-danger" }, [
+                          _vm._v(_vm._s(thread.unread_count))
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          : _vm._e()
+      }),
+      _vm._v(" "),
+      _vm.threads && _vm.threads.length == 0
+        ? _c("p", [_vm._v(_vm._s(_vm.trans("messages.nothreads")))])
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-48733d95", module.exports)
+  }
+}
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-fluid", attrs: { id: "chat" } }, [
+    _c(
+      "div",
+      {
+        staticClass: "col-xs-6 col-sm-3 sidebar-offcanvas",
+        attrs: { role: "navigation" }
+      },
+      [
+        _c(
+          "div",
+          { attrs: { id: "sidebar" } },
+          [
+            _c("h2", [_vm._v(_vm._s(_vm.trans("messages.thread_title")))]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-xs btn-success",
+                attrs: { href: "/threads/create" }
+              },
+              [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.trans("messages.create_thread")) +
+                    "\n            "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("threads")
+          ],
+          1
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-xs-6 col-sm-9", attrs: { id: "main" } },
+      [_c("messages")],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-03f7db3e", module.exports)
   }
 }
 

@@ -9,7 +9,7 @@
 
             <form method="POST" :action="'/threads/' + thread.id" accept-charset="UTF-8" class="pull-right" style="display: inline-block; margin-right: 5px;">
                 <input name="_method" type="hidden" value="DELETE">
-                <input name="_token" type="hidden" value="sRKAeeRqf3qhQzhQ68UWq2ruhjc8fLOnQcPatjgR">
+                <input name="_token" type="hidden" :value="csrf">
                 <button type="submit" class="btn btn-xs btn-danger">
                     <i class="fa fa-trash"></i> Удалить чат
                 </button>
@@ -45,7 +45,8 @@
             return {
                 auth_user_id: 0,
                 thread: null,
-                messages: null
+                messages: null,
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         },
 
