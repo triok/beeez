@@ -127,11 +127,6 @@
                         <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
                     </a>
                 </li>
-                <li class="left-sidebar dropdown">
-                    <a href="{{ route('threads.create') }}">
-                        <i class="fa fa-envelope"></i><span>Add group chat</span>
-                    </a>
-                </li>                                                                              
                 @endif
             </ul>
         </nav>

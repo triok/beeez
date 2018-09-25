@@ -146,13 +146,17 @@ class ThreadsController extends Controller
      */
     public function destroy(Thread $thread)
     {
-        if (auth()->id() != $thread->user_id) {
-            flash()->error('Access denied!');
+        if ($thread->isGroupChat() && auth()->id() == $thread->user_id) {
+            $thread->delete();
+
+            flash()->success('Done.');
 
             return redirect(route('messages'));
         }
 
-        $thread->delete();
+        Participant::where('thread_id', $thread->id)
+            ->where('user_id', auth()->id())
+            ->delete();
 
         flash()->success('Done.');
 

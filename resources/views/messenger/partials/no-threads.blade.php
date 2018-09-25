@@ -1,1 +1,1 @@
-<p>@lang('messages.nomessage')</p>
+<p>В контактах пусто</p>

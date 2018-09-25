@@ -1,3 +1,3 @@
-@if($count = Auth::user()->newThreadsCount())
+@if($count = Auth::user()->unreadMessagesCount())
     <span class="label label-danger">{{ $count }}</span>
 @endif

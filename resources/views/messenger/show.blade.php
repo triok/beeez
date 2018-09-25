@@ -4,9 +4,13 @@
     <div class="container-fluid">
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
             <div id="sidebar">
-                <ul class="nav">
+                <h2>Чаты</h2>
+
+                <a href="{{ route('threads.create') }}" class="btn btn-xs btn-success">Создать групповой чат</a>
+
+                <div class="nav">
                     @each('messenger.partials.thread', $threads, 'thread', 'messenger.partials.no-threads')
-                </ul>
+                </div>
             </div>
         </div>
 
@@ -15,13 +19,13 @@
                 <a href="{{ route('threads.edit', $thread) }}" class="btn btn-default btn-xs pull-right">
                     <i class="fa fa-pencil"></i> Изменить
                 </a>
-
-                {!! Form::open(['url' => route('threads.destroy', $thread), 'method'=>'delete', 'class' => 'pull-right', 'style' => 'display:inline-block;margin-right: 5px;']) !!}
-                <button type="submit" class="btn btn-xs btn-danger">
-                    <i class="fa fa-trash"></i> Удалить
-                </button>
-                {!! Form::close() !!}
             @endif
+
+            {!! Form::open(['url' => route('threads.destroy', $thread), 'method'=>'delete', 'class' => 'pull-right', 'style' => 'display:inline-block;margin-right: 5px;']) !!}
+            <button type="submit" class="btn btn-xs btn-danger">
+                <i class="fa fa-trash"></i> Удалить чат
+            </button>
+            {!! Form::close() !!}
 
             @if($thread->isGroupChat())
             <h1>{{ $thread->title() }}</h1>
@@ -31,7 +35,7 @@
             <hr>
             @endif
 
-            <div id="messages" style="height:500px;overflow-y: scroll;">
+            <div id="messages" style="max-height:500px;overflow-y: scroll;padding-right: 10px;">
                 @each('messenger.partials.messages', $messages, 'message')
             </div>
 
