@@ -206,7 +206,7 @@
                     </h4>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body" style="overflow-y: scroll;height: 500px;">
                     <div class="row">
                         <div class="col-xs-6">
                             <div class="list-group">
@@ -291,7 +291,7 @@
             timepicker: true,
             startDate: start,
             minHours: startHours,
-            maxHours: 18,
+            maxHours: 24,
             onSelect: function(fd, d, picker) {
                 // Ничего не делаем если выделение было снято
                 if (!d) return;
@@ -300,21 +300,13 @@
 
                 // Обновляем состояние календаря только если была изменена дата
                 if (prevDay != undefined && prevDay == day) return;
+
                 prevDay = day;
 
-                // Если выбранный день суббота или воскресенье, то устанавливаем
-                // часы для выходных, в противном случае восстанавливаем начальные значения
-                if (day == 6 || day == 0) {
-                    picker.update({
-                        minHours: 10,
-                        maxHours: 16
-                    })
-                } else {
-                    picker.update({
-                        minHours: 9,
-                        maxHours: 18
-                    })
-                }
+                picker.update({
+                    minHours: 0,
+                    maxHours: 24
+                })
             }
         })
     </script>

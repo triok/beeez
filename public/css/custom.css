@@ -15,3 +15,7 @@
     color: #555;
     background: #eaeaea;
 }
+
+body.modal-open {
+    overflow: hidden;
+}
