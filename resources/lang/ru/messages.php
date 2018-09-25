@@ -2,11 +2,13 @@
 
 return [
     'title' 		=> 'Сообщения',
+    'thread_title'  => 'Чаты',
     'username' 		=> 'Логин',
     'login'     	=> [
         'change'    => 'Логин изменить нельзя.'
     ],
     'nomessage'		=> 'Сообщений еще нет.',
+    'nothreads'		=> 'В контактах пусто.',
     'partial'		=> [
         'nothreads' => 'Сообщений еще нет.'
     ],
@@ -17,4 +19,6 @@ return [
     //buttons
 
     'send'			=> 'Отправить',
+
+    'create_thread' => 'Создать групповой чат',
 ];
