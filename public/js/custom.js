@@ -6,16 +6,13 @@ var mess = '<div class="alert alert-info fade in" id="reply-container">\n' +
     '</div>';
 
 window.onload = function(){
-
-    var sub = null;
-
     $(document).on('click', '#separate-link', function () {
-        sub = $('.sub-tasks');
-        if(sub.hasClass('hide')) {sub.toggleClass('hide');}
+        $('#separate-link').addClass('hide');
 
-        $('html, body').animate({
-            scrollTop: sub.offset().top - 50
-        });
+        //$('#task2').toggleClass('hide');
+        $('#task-add').toggleClass('hide');
+        $('#task-list').toggleClass('hide');
+        //$('#task-list-nav').toggleClass('hide');
     });
 
     $(document).on('click', '.sub-tasks .table h4', function () {
@@ -72,7 +69,9 @@ $(document).ready(function () {
         }
     });
 
-    $('#input-category-name').on('click', function () {
+    $('.input-category-name').on('click', function () {
+        $('#modal-task-id').val($(this).attr('name'));
+
         $('#modal-categories').modal({ backdrop: 'static', keyboard: false, 'show': true });
     });
 
@@ -84,7 +83,7 @@ $(document).ready(function () {
 
     $("#modal-categories").on('hidden.bs.modal', function () {
         $('html, body').animate({
-            scrollTop: $("#input-category-name").offset().top - 300
+            scrollTop: $(".input-category-name").offset().top - 300
         }, 0);
     });
 });
@@ -112,23 +111,25 @@ function deleteTask() {
         }
     });
 }
+
 function showMenu() {
-$('#showHideContent').click(function(){
-  $("#content").css("display", "none;");
-});
+    $('#showHideContent').click(function(){
+      $("#content").css("display", "none;");
+    });
 }
-function addSubTask() {
+
+function addSubTask(task_id) {
+    console.log(task_id);
+
     var load = $('<div>');
-    var subTasks = $('.sub-tasks');
-    var lenght = ++subTasks.find('.sub-item').length;
 
-    if(subTasks.find('.sub-item').length == 10) return false;
+    load.load('/job/subtask?task_id=' + task_id, function (result) {
+        $('.tab-content .tab-pane').after(result);
 
-    load.load('/job/subtask?sub_id=' + lenght, function (result) {
-        subTasks.find('.sub-item').last().after(result);
         $('.editor1').summernote();
+
         tinymce.init({
-            selector: '#sub-instruction-' + lenght,
+            selector: '#sub-instruction-' + task_id,
             height: 400,
             theme: 'modern',
             plugins: [
@@ -146,9 +147,9 @@ function addSubTask() {
         });
 
         $('.selectpicker').selectpicker('refresh');
-
     });
 }
+
 function addComment() {
     parent = $(this).closest('.media');
     $('#parent').val(parent.attr('data-id'));
@@ -190,8 +191,17 @@ function showSubCategories(id) {
 }
 
 function setCategory(id, name) {
-    $('#input-category-id').val(id);
-    $('#input-category-name').val(name);
+    var field_name = $('#modal-task-id').val();
+
+    if(field_name == 'category_name') {
+        $('input[name="categories[]"]').val(id);
+        $('input[name="category_name"]').val(name);
+    } else {
+        var field_id = field_name.replace('category_name', 'categories[]');
+
+        $('input[name="' + field_id + '"]').val(id);
+        $('input[name="' + field_name + '"]').val(name);
+    }
 
     $('#modal-categories').modal('hide');
 }
