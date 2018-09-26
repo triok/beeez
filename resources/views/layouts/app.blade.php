@@ -11,6 +11,9 @@
     <link href="/css/app.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
     @stack('styles')
+    <style>
+        [v-cloak] { display: none; }
+    </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -257,27 +260,29 @@
                     </ul>
                 </div>
             </nav>
-            
-            <div style="min-height: 60%">@yield('content')</div>
 
-            <footer>
-                <div class="container">
-                    <hr>
-                    <ul class="list-inline footer-list">
-                        <li>@lang('layout.sign')</li>
-                        @foreach ($pages as $page)
-                        <li><a href="/page/{{ $page->id }}">{{ $page->title }}</a></li>
-                        @endforeach
-                    </ul>
-                    <hr>
-                    <ul class="list-inline footer-social">
-                        <li><a href="#" rel="nofollow"><img src="/img/linkedin.svg"></a></li>
-                        <li><a href="#" rel="nofollow"><img src="/img/twitter.svg"></a></li>
-                        <li><a href="#" rel="nofollow"><img src="/img/whatsup.svg"></a></li>
+            <div v-cloak>
+                <div style="min-height: 60%">@yield('content')</div>
 
-                    </ul>
-                </div>
-            </footer>
+                <footer>
+                    <div class="container">
+                        <hr>
+                        <ul class="list-inline footer-list">
+                            <li>@lang('layout.sign')</li>
+                            @foreach ($pages as $page)
+                            <li><a href="/page/{{ $page->id }}">{{ $page->title }}</a></li>
+                            @endforeach
+                        </ul>
+                        <hr>
+                        <ul class="list-inline footer-social">
+                            <li><a href="#" rel="nofollow"><img src="/img/linkedin.svg"></a></li>
+                            <li><a href="#" rel="nofollow"><img src="/img/twitter.svg"></a></li>
+                            <li><a href="#" rel="nofollow"><img src="/img/whatsup.svg"></a></li>
+
+                        </ul>
+                    </div>
+                </footer>
+            </div>
         </div>
     </div>
     <button id="back2Top" class="btn btn-default btn-sm" title="Back to top"><i class="fa fa-chevron-up"></i></button>
