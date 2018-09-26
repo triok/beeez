@@ -13,6 +13,11 @@
     $(document).ready(function () {
         $('#file-upload').on('change', uploadMessageFile);
 
+        var element = document.getElementById("messages");
+
+        if (element) {
+            element.scrollTop = element.scrollHeight;
+        }
     });
 
     function uploadMessageFile(event) {

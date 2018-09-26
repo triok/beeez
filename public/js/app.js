@@ -47453,19 +47453,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            updated: false,
             auth_user_id: 0,
-            thread: null,
-            messages: null,
+            thread: [],
+            messages: [],
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         };
     },
 
     mounted: function mounted() {
         this.getMessages();
-
-        var element = document.getElementById("messages");
-
-        element.scrollTop = element.scrollHeight;
     },
 
 
@@ -47478,19 +47475,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         getMessages: function getMessages() {
             this.auth_user_id = 0;
-            this.thread = null;
-            this.messages = null;
+            this.thread = [];
+            this.messages = [];
+            this.updated = false;
 
             if (this.$route.params.id === undefined) {
+                this.updated = true;
+
                 return;
             }
 
             var self = this;
 
             axios.get('/api/threads/' + this.$route.params.id + '/messages').then(function (response) {
-                self.messages = response.data.data;
-                self.thread = response.data.thread;
-                self.auth_user_id = response.data.auth_user_id;
+                self.messages = response.data.data != undefined ? response.data.data : [];
+                self.thread = response.data.thread != undefined ? response.data.thread : [];
+                self.auth_user_id = response.data.auth_user_id != undefined ? response.data.auth_user_id : 0;
+                self.updated = true;
             });
         }
     },
@@ -48000,97 +48001,102 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.thread
-        ? _c("div", { staticStyle: { "min-height": "50px" } }, [
-            _vm.thread.thread_type == "group" &&
-            _vm.thread.user_id == _vm.auth_user_id
-              ? _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-default btn-xs pull-right",
-                    attrs: { href: "/threads/" + _vm.thread.id + "/edit" }
-                  },
-                  [
-                    _c("i", { staticClass: "fa fa-pencil" }),
-                    _vm._v(" Изменить\n        ")
-                  ]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "form",
-              {
-                staticClass: "pull-right",
-                staticStyle: { display: "inline-block", "margin-right": "5px" },
-                attrs: {
-                  method: "POST",
-                  action: "/threads/" + _vm.thread.id,
-                  "accept-charset": "UTF-8"
-                }
-              },
-              [
-                _c("input", {
-                  attrs: { name: "_method", type: "hidden", value: "DELETE" }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: { name: "_token", type: "hidden" },
-                  domProps: { value: _vm.csrf }
-                }),
-                _vm._v(" "),
-                _vm._m(0)
-              ]
-            ),
-            _vm._v(" "),
-            _vm.thread.thread_type == "group"
-              ? _c("div", [
-                  _c("h1", [_vm._v(_vm._s(_vm.thread.subject))]),
-                  _vm._v(" "),
-                  _c("p", {
-                    domProps: { innerHTML: _vm._s(_vm.thread.description) }
-                  }),
-                  _vm._v(" "),
-                  _c("hr")
-                ])
-              : _vm._e()
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "div",
-        { attrs: { id: "messages" } },
-        [
-          _vm._l(_vm.messages, function(message) {
-            return _vm.messages
-              ? _c(
-                  "div",
-                  { staticClass: "media" },
-                  [_c("message", { attrs: { message: message } })],
-                  1
-                )
-              : _vm._e()
-          }),
-          _vm._v(" "),
-          !_vm.messages || _vm.messages.length == 0
+  return _c("div", [
+    _vm.updated
+      ? _c("div", [
+          _vm.thread.id == undefined
             ? _c("div", [
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.trans("messenges.partial.nothreads")) +
+                    _vm._s(_vm.trans("messages.partial.nothreads")) +
                     "\n        "
                 )
               ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.thread.id != undefined
+            ? _c(
+                "div",
+                { staticStyle: { "min-height": "50px" } },
+                [
+                  _vm.thread.thread_type == "group" &&
+                  _vm.thread.user_id == _vm.auth_user_id
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-default btn-xs pull-right",
+                          attrs: { href: "/threads/" + _vm.thread.id + "/edit" }
+                        },
+                        [
+                          _c("i", { staticClass: "fa fa-pencil" }),
+                          _vm._v(" Изменить\n            ")
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "form",
+                    {
+                      staticClass: "pull-right",
+                      staticStyle: {
+                        display: "inline-block",
+                        "margin-right": "5px"
+                      },
+                      attrs: {
+                        method: "POST",
+                        action: "/threads/" + _vm.thread.id,
+                        "accept-charset": "UTF-8"
+                      }
+                    },
+                    [
+                      _c("input", {
+                        attrs: {
+                          name: "_method",
+                          type: "hidden",
+                          value: "DELETE"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: { name: "_token", type: "hidden" },
+                        domProps: { value: _vm.csrf }
+                      }),
+                      _vm._v(" "),
+                      _vm._m(0)
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.thread.thread_type == "group"
+                    ? _c("div", [
+                        _c("h1", [_vm._v(_vm._s(_vm.thread.subject))]),
+                        _vm._v(" "),
+                        _c("p", {
+                          domProps: {
+                            innerHTML: _vm._s(_vm.thread.description)
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("hr")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm._l(_vm.messages, function(message) {
+                    return _c(
+                      "div",
+                      { staticClass: "media" },
+                      [_c("message", { attrs: { message: message } })],
+                      1
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c("messageform", { attrs: { thread: _vm.thread } })
+                ],
+                2
+              )
             : _vm._e()
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c("messageform", { attrs: { thread: _vm.thread } })
-    ],
-    1
-  )
+        ])
+      : _vm._e()
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -48102,7 +48108,7 @@ var staticRenderFns = [
       { staticClass: "btn btn-xs btn-danger", attrs: { type: "submit" } },
       [
         _c("i", { staticClass: "fa fa-trash" }),
-        _vm._v(" Удалить чат\n            ")
+        _vm._v(" Удалить чат\n                ")
       ]
     )
   }
@@ -48272,7 +48278,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.threads = null;
 
             axios.get('/api/threads').then(function (response) {
-                return _this.threads = response.data.data;
+                return _this.threads = response.data.data != undefined ? response.data.data : [];
             });
         }
     }

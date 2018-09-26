@@ -54,7 +54,7 @@
                 this.threads = null;
 
                 axios.get('/api/threads')
-                    .then(response => (this.threads = response.data.data));
+                    .then(response => (this.threads = (response.data.data != undefined ? response.data.data : [])));
             }
         }
     }
