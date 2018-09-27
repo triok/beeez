@@ -5270,8 +5270,10 @@ tbody.collapse.in {
   position: relative;
   min-height: 50px;
   margin-bottom: 22px;
-  border: 1px solid transparent;
-  background: rgb(132, 132, 132);
+  border: 1px solid rgb(216, 216, 216);
+  border-left: none;
+  border-right: none;
+  border-top: none;
 }
 
 .navbar:before,
@@ -5284,11 +5286,6 @@ tbody.collapse.in {
   clear: both;
 }
 
-@media (min-width: 768px) {
-  .navbar {
-    border-radius: 4px;
-  }
-}
 .navbar-header a {
   color:red;
 }
@@ -5693,7 +5690,6 @@ tbody.collapse.in {
   .navbar-right {
     float: right !important;
     margin-right: -15px;
-    border-left: 1px dashed #47afa5;
   }
 
   .navbar-right ~ .navbar-right {
@@ -11390,11 +11386,9 @@ button.close {
 
 
 #sidebar {
-  padding: 35px;
-  margin: 25px 15px 15px 0px;
-  border-radius: 5px;
-  border: 1px dashed #47afa5;
-  box-shadow: 3px 3px 8px #dad5d5;
+  padding: 20px 35px;
+  margin: 0px 85px 19px 0px;
+
 }
 
 #sidebar .nav {
@@ -11412,10 +11406,6 @@ button.close {
   border: 0 #f2f2f2 solid;
   border-bottom-width: 1px;
   line-height: 3;
-}
-#main {
-  margin: 28px auto;
-  padding: 15px 20px;
 }
 /* collapsed sidebar styles */
 
@@ -11577,7 +11567,9 @@ button.close {
   border: none!important;
 }
 .current-jobs {
-  padding: 0px 20px;
+  padding: 15px 20px;
+  background: white;
+  border: 1px solid #e4e4e4;
 }
 .job-name {
   background-image: url(https://image.flaticon.com/icons/svg/195/195372.svg);
@@ -12026,12 +12018,16 @@ section.other-jobs a.delete {
     width: 100%;
     padding: 20px;
     transition: all 0.3s;
+    background:#f3f3f3;
 }
 .components li:hover:not(:first-child) {
   background:#eaeaea;
 }
 .components li span:hover:not(:first-child)  {
   color: #333;
+}
+.components li:hover i {
+  color: #48b0a5!important;
 }
 .dropdown {
   transition: 0.3s;
@@ -12086,7 +12082,7 @@ section.other-jobs a.delete {
   margin-bottom: 40px;
 }
 .navbar a{
-  color: #ffffff;
+  color: #48b0a5;
   transition: 0.2s;
 }
 
