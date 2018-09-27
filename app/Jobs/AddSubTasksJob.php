@@ -25,32 +25,34 @@ class AddSubTasksJob implements ShouldQueue
 
     public function handle()
     {
-        for($j = 1; $j <=10; $j++) {
-
+        for($j = 2;$j<=10;$j++) {
             $this->arSub = array_filter(request()->all(), function ($k) use ($j) {
                 return strpos($k, 'sub-' . $j) === 0;
+            }, ARRAY_FILTER_USE_KEY);
 
-            }, ARRAY_FILTER_USE_KEY); //ARRAY_FILTER_USE_BOTH
+            if(!empty($this->arSub)) {
+                if (!isset($this->arSub['sub-' . $j . '-name']) || $this->arSub['sub-' . $j . '-name'] == '') continue;
 
-            if(empty($this->arSub)) break;
-            if (!isset($this->arSub['sub-' . $j . '-name']) || $this->arSub['sub-' . $j . '-name'] == '') continue;
-            $this->create($this->arSub, $j);
+                $this->create($this->arSub, $j);
+            }
         }
+
         unset($this->arSub);
     }
 
 
     private function create(array $data, int $indx = 1)
     {
+        //dd($data);
         /** @var Job $subJob */
         $subJob                      = new Job();
         $subJob->name                = $data['sub-'.$indx.'-name'];
-        $subJob->desc                = $data['sub-'.$indx.'-desription'];
-        $subJob->instructions        = $data['sub-'.$indx.'-instruction'];
+        $subJob->desc                = $data['sub-'.$indx.'-desc'];
+        $subJob->instructions        = $data['sub-'.$indx.'-instructions'];
         $subJob->access              = $data['sub-'.$indx.'-access'];
-        $subJob->end_date            = $data['sub-'.$indx.'-end_date'] ?? Carbon::now()->addDay(1);
+        $subJob->end_date            = Carbon::createFromFormat('d.m.Y H:i', $data['sub-'.$indx.'-end_date'])->format('Y-m-d H:i:s');
         $subJob->price               = $data['sub-'.$indx.'-price'] ?? 0;
-        $subJob->difficulty_level_id = $data['sub-'.$indx.'-difficulty_level'];
+        $subJob->difficulty_level_id = $data['sub-'.$indx.'-difficulty_level_id'];
         $subJob->status              = request()->has('draft')? config('enums.jobs.statuses.DRAFT'): config('enums.jobs.statuses.OPEN');
         $subJob->time_for_work       = $data['sub-'.$indx.'-time_for_work'];
         $subJob->parent_id           = $this->job->id;

@@ -322,9 +322,11 @@ class JobController extends Controller
 
     public function subtask()
     {
-        $sub_id = request()->has('sub_id') ? request()->sub_id : 1;
-
-        return view('jobs.sub-job', ['usernames' => $this->usernames, 'sub_id' => $sub_id]);
+        return view('jobs.partials.form', [
+            'task_id' => request()->get('task_id', 2),
+            'usernames' => $this->usernames,
+            'projects' => auth()->user()->projects
+        ]);
     }
 
     protected function addJobToProject(Job $job) {
