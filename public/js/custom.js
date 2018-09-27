@@ -68,7 +68,11 @@ $(document).ready(function () {
             Cookies.remove('hide-sidebar');
         }
     });
+    $('.category-toggle').on('click', function () {
+       
+        $("i", this).toggleClass("fa-plus-square-o fa-minus-square-o");
 
+    });
     $('.input-category-name').on('click', function () {
         $('#modal-task-id').val($(this).attr('name'));
 

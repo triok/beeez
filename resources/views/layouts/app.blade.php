@@ -75,7 +75,7 @@
                         <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>                
                     </ul>               
                 </li>
-                <li class="left-sidebar dropdown" >
+                <li class="left-sidebar dropdown components-li" >
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i><span>@lang('peoples.title')</span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -86,7 +86,7 @@
                         </li>
                     </ul>               
                 </li>  
-                <li class="left-sidebar dropdown" >
+                <li class="left-sidebar dropdown components-li" >
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false"><i class="fa fa-group" aria-hidden="true"></i><span>@lang('teams.title')</span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -107,7 +107,7 @@
                         </li>                                                
                     </ul>                  
                 </li>  
-                <li class="left-sidebar dropdown">
+                <li class="left-sidebar dropdown components-li">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false"><i class="fa fa-briefcase" aria-hidden="true"></i><span>Организации</span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -125,7 +125,7 @@
                         </li>                                                
                     </ul>  
                 </li>
-                <li class="left-sidebar dropdown">
+                <li class="left-sidebar dropdown components-li">
                     <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark"></i><span>@lang('layout.bookmarks')</span>
                         <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
                     </a>

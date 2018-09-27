@@ -6,27 +6,29 @@
         <div id="sidebar">
             <div class="Categories">@lang('layout.categories')</div>
 
-            <ul class="nav">
+            <ul class="nav list-unstyled">
                 @foreach(\App\Queries\CategoryQuery::onlyParent()->orderBy('cat_order','ASC')->get() as $cat)
                     <li>
                         <div style="display: flex; justify-content: space-between;">
-                            <router-link to="/jobs/category/{{$cat->id}}">
+                            <router-link to="" data-toggle="collapse" data-target="#navbarToggler{{$cat->id}}"
+                               aria-controls="navbarToggler" aria-expanded="true" aria-label="Toggle navigation" class="category-toggle" style="width: 100%">
+
                                 @if(($locale = App::getLocale())=="ru")
                                     {{ucwords($cat->nameRu)}}
                                 @else
                                     {{ucwords($cat->nameEu)}}
                                 @endif
+                                @if(count($cat->subcategories) > 0)
+                                    <i class="fa fa-plus-square-o pull-right" data-toggle="collapse" data-target="#navbarToggler{{$cat->id}}" aria-controls="navbarToggler" aria-expanded="true" aria-label="Toggle navigation"></i> 
+                                @endif   
                             </router-link>
 
-                            <i class="fa fa-plus-square-o" data-toggle="collapse" data-target="#navbarToggler{{$cat->id}}"
-                               aria-controls="navbarToggler" aria-expanded="true" aria-label="Toggle navigation"
-                               style="display: block;"></i>
                         </div>
 
                         @if(count($cat->subcategories) > 0)
-                            <ul class="navbar-collapse collapse subcategory-ul" id="navbarToggler{{$cat->id}}" aria-expanded="true">
+                            <ul class="navbar-collapse collapse subcategory-ul list-unstyled" id="navbarToggler{{$cat->id}}" aria-expanded="true">
                                 @foreach($cat->subcategories as $subcategory)
-                                    <li class="subcategory-li">
+                                    <li class="subcategory-li"><i class="fa fa-level-up fa-rotate-90" aria-hidden="true"></i>
                                         <router-link to="/jobs/category/{{$subcategory->id}}">
                                             @if(($locale = App::getLocale())=="ru")
                                                 {{ucwords($subcategory->nameRu)}}

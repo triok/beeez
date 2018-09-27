@@ -5436,6 +5436,9 @@ tbody.collapse.in {
 .navbar-brand img{
   width: 35px;
 }
+.side-header strong {
+  color: #ffffff;  
+}
 .nav i{
   color: #47afa5;
 }
@@ -11386,8 +11389,8 @@ button.close {
 
 
 #sidebar {
-  padding: 20px 35px;
-  margin: 0px 85px 19px 0px;
+  padding: 20px 20px;
+  margin: 0px;
 
 }
 
@@ -11401,11 +11404,20 @@ button.close {
 #sidebar .nav a {
   font-weight: bold;
   color: #47afa5;
+  transition: 0.5s;
+}
+#sidebar .nav a:hover {
+  padding-left: 5px;
 }
 #sidebar li {
   border: 0 #f2f2f2 solid;
   border-bottom-width: 1px;
   line-height: 3;
+  padding: 0px 10px;
+  transition: 0.3s; 
+}
+#sidebar li:hover {
+  background: #e4e4e4;
 }
 /* collapsed sidebar styles */
 
@@ -11562,7 +11574,9 @@ button.close {
   font-size: 17px;
   font-weight: bold;
 }
-
+.subcategory-ul .subcategory-li i {
+  color: darkgrey;
+}
 .subcategory-li {
   border: none!important;
 }
@@ -12020,15 +12034,6 @@ section.other-jobs a.delete {
     transition: all 0.3s;
     background:#f3f3f3;
 }
-.components li:hover:not(:first-child) {
-  background:#eaeaea;
-}
-.components li span:hover:not(:first-child)  {
-  color: #333;
-}
-.components li:hover i {
-  color: #48b0a5!important;
-}
 .dropdown {
   transition: 0.3s;
 }
@@ -12095,9 +12100,12 @@ section.other-jobs a.delete {
 .left-sidebar {
   color: white
 }
-.left-sidebar:hover:not(:first-child) {
+.left-sidebar:hover:not(:first-child), .components-li ul li:hover {
   background:#eaeaea;    
 }
-.left-sidebar:hover:not(:first-child) a{
+.left-sidebar:hover:not(:first-child) > a, .components-li ul li a:hover{
   color: black!important;
+}
+.components-li ul li:hover i{
+  color: #48b0a5!important;
 }
