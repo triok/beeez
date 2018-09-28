@@ -21,6 +21,19 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <select class="form-control" style="font-family: FontAwesome;" name="icon">
+                    <option>без иконки</option>
+                    @foreach($icons as $icon_name=>$icon_code)
+                        <option value="{{ $icon_name }}">&#x{{ $icon_code }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
+
     <div class="btn-toolbar">
         <div class="btn-group">
             <button type="submit" class="btn btn-success" value="submit">Create</button>
@@ -30,3 +43,7 @@
     {!! Form::close() !!}
 </div>
 @endsection
+
+@push('scripts')
+    <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+@endpush

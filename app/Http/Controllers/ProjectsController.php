@@ -43,7 +43,9 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        $icons = config('project.icons');
+
+        return view('projects.create', compact('icons'));
     }
 
     /**
@@ -69,7 +71,9 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('projects.edit', compact('project'));
+        $icons = config('project.icons');
+
+        return view('projects.edit', compact('project', 'icons'));
     }
 
     /**
@@ -103,7 +107,11 @@ class ProjectsController extends Controller
 
         flash()->success('Project deleted!');
 
-        return redirect(route('projects.index'));
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
     }
 
     /**
@@ -176,7 +184,11 @@ class ProjectsController extends Controller
 
         flash()->success('Project archived!');
 
-        return redirect(route('projects.index'));
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
     }
 
     /**
@@ -193,6 +205,52 @@ class ProjectsController extends Controller
 
         flash()->success('Project restored!');
 
-        return redirect(route('projects.index'));
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function favorite(Project $project)
+    {
+        $project->is_favorite = true;
+
+        $project->save();
+
+        flash()->success('Project updated!');
+
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function unfavorite(Project $project)
+    {
+        $project->is_favorite = false;
+
+        $project->save();
+
+        flash()->success('Project updated!');
+
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
     }
 }

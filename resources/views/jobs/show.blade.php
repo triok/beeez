@@ -27,6 +27,15 @@
                             <span>@lang('show.viewed')</span>
                             <strong><i class="fa fa-eye"></i> {{$job->getViews()}}</strong>
                         </div>
+
+                        @if($job->project)
+                        <div class="m-md-top nowrap text-muted">
+                            <span>Проект</span>
+                            <a href="{{ route('projects.show', $job->project) }}">
+                                <span class="username">{{ $job->project->name }}</span>
+                            </a>
+                        </div>
+                        @endif
                     </section>
 
 

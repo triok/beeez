@@ -32,6 +32,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('projects/{project}/done', 'ProjectsController@done')->name('projects.done');
     Route::post('projects/{project}/restore', 'ProjectsController@restore')->name('projects.restore');
 
+    Route::post('projects/{project}/favorite', 'ProjectsController@favorite')->name('projects.favorite');
+    Route::post('projects/{project}/unfavorite', 'ProjectsController@unfavorite')->name('projects.unfavorite');
+
     Route::post('order-projects', 'ProjectsController@order');
     Route::post('order-project-jobs', 'ProjectsController@orderJobs');
 
