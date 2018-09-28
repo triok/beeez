@@ -92,7 +92,7 @@
                 </tbody>
             </table>
         </div>
-        <div id="favorite" class="tab-pane fade in active">
+        <div id="favorite" class="tab-pane fade">
             <table class="table table-responsive">
                 <thead>
                 <tr>

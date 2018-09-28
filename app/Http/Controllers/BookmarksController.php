@@ -159,7 +159,8 @@ class BookmarksController extends Controller
         }
         $jobs = self::bJobs($jobs, $request, 20);
         $title = __('layout.bookmarks');
-        return view('auth.bookmarks', compact('jobs', 'bookmarks', 'title'));
+        $projects = auth()->user()->projects;
+        return view('auth.bookmarks', compact('jobs', 'bookmarks', 'title', 'projects'));
 
     }
 

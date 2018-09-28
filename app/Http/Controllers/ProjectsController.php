@@ -107,7 +107,11 @@ class ProjectsController extends Controller
 
         flash()->success('Project deleted!');
 
-        return redirect(route('projects.index'));
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
     }
 
     /**
@@ -180,7 +184,11 @@ class ProjectsController extends Controller
 
         flash()->success('Project archived!');
 
-        return redirect(route('projects.index'));
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
     }
 
     /**
@@ -197,7 +205,11 @@ class ProjectsController extends Controller
 
         flash()->success('Project restored!');
 
-        return redirect(route('projects.index'));
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
     }
 
     /**
@@ -214,7 +226,11 @@ class ProjectsController extends Controller
 
         flash()->success('Project updated!');
 
-        return redirect(route('projects.index'));
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
     }
 
     /**
@@ -231,6 +247,10 @@ class ProjectsController extends Controller
 
         flash()->success('Project updated!');
 
-        return redirect(route('projects.index'));
+        if(request('redirect') == 'my-bookmarks#projects') {
+            return redirect(route('my-bookmarks') . '#projects');
+        } else {
+            return redirect(route('projects.index'));
+        }
     }
 }
