@@ -9,7 +9,11 @@ Vue.use(VueRouter);
 Vue.component('job-navigation', require('./components/job/navigation'));
 Vue.component('job-tabs', require('./components/job/tabs'));
 
+var filter = function(text, length){
+    return text.length > length ? text.slice(0, length) + '...' : text;
+};
 
+Vue.filter('truncate', filter);
 
 const Jobs = require('./components/Jobs.vue');
 const Messanger = require('./components/messanger');

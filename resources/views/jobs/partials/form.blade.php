@@ -19,7 +19,7 @@
             @php($value = isset($job) ? $job->name : (isset($task_id) ? "Задание " . $task_id : ""))
 
             <input name="{{ $name }}"
-                   onkeyup="$('.tab-{{ isset($task_id) ? $task_id : 1 }}-name').html($(this).val())"
+                   onkeyup="$('.tab-{{ isset($task_id) ? $task_id : 1 }}-name').html(truncate($(this).val(), 20))"
                    value="{{ $value }}"
                    class="form-control"
                    required="required"
