@@ -262,7 +262,9 @@
             </nav>
 
             <div v-cloak>
-                <div style="min-height: 60%">@yield('content')</div>
+                <div class="row">
+                    <div style="min-height: 60%">@yield('content')</div>
+                </div>
 
                 <footer>
                     <div class="container">

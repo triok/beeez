@@ -16,7 +16,7 @@
                     <div v-for="tab in tabs" class="media alert" style="margin: 0;">
                         <h4 class="media-heading" role="presentation">
                             <a :class="'tab-' + tab.id + '-name'" data-toggle="tab" :href="'#task-' + tab.id" @click="activateTab(tab.id)">
-                                @{{ tab.name }}
+                                @{{ tab.name | truncate(20) }}
                             </a>
 
                             <span v-if="tab.id != 1" @click.prevent="deleteTab(tab.id)" class="label label-danger pull-right">x</span>
