@@ -199,4 +199,38 @@ class ProjectsController extends Controller
 
         return redirect(route('projects.index'));
     }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function favorite(Project $project)
+    {
+        $project->is_favorite = true;
+
+        $project->save();
+
+        flash()->success('Project updated!');
+
+        return redirect(route('projects.index'));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function unfavorite(Project $project)
+    {
+        $project->is_favorite = false;
+
+        $project->save();
+
+        flash()->success('Project updated!');
+
+        return redirect(route('projects.index'));
+    }
 }
