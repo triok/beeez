@@ -24,6 +24,7 @@
             <table class="table table-responsive">
                 <thead>
                 <tr>
+                    <td style="width: 20px;"> </td>
                     <td>@lang('projects.name')</td>
                     <td>@lang('projects.desc')</td>
                     <td style="min-width: 200px;">@lang('projects.count')</td>
@@ -36,6 +37,11 @@
                     @foreach($projects as $project)
                         @if(!$project->is_archived)
                         <tr class="sort-row" id="{{ $project->id }}">
+                            <td>
+                                @if($project->icon)
+                                    <i class="fa {{ $project->icon }}"></i>
+                                @endif
+                            </td>
                             <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                             <td>{{ $project->description }}</td>
                             <td>{{ $project->jobs()->count() }}/0</td>

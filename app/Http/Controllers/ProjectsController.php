@@ -43,7 +43,9 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        $icons = config('project.icons');
+
+        return view('projects.create', compact('icons'));
     }
 
     /**
@@ -69,7 +71,9 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('projects.edit', compact('project'));
+        $icons = config('project.icons');
+
+        return view('projects.edit', compact('project', 'icons'));
     }
 
     /**
