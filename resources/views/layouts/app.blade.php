@@ -260,29 +260,26 @@
                     </ul>
                 </div>
             </nav>
-
             <div v-cloak>
                 <div style="min-height: 60%">@yield('content')</div>
-
-                <footer>
-                    <div class="container">
-                        <hr>
-                        <ul class="list-inline footer-list">
-                            <li>@lang('layout.sign')</li>
-                            @foreach ($pages as $page)
-                            <li><a href="/page/{{ $page->id }}">{{ $page->title }}</a></li>
-                            @endforeach
-                        </ul>
-                        <hr>
-                        <ul class="list-inline footer-social">
-                            <li><a href="#" rel="nofollow"><img src="/img/linkedin.svg"></a></li>
-                            <li><a href="#" rel="nofollow"><img src="/img/twitter.svg"></a></li>
-                            <li><a href="#" rel="nofollow"><img src="/img/whatsup.svg"></a></li>
-
-                        </ul>
-                    </div>
-                </footer>
             </div>
+            <footer>
+                <div class="container">
+                    <hr>
+                    <ul class="list-inline footer-list">
+                        <li>@lang('layout.sign')</li>
+                        @foreach ($pages as $page)
+                        <li><a href="/page/{{ $page->id }}">{{ $page->title }}</a></li>
+                        @endforeach
+                    </ul>
+                    <hr>
+                    <ul class="list-inline footer-social">
+                        <li><a href="#" rel="nofollow"><img src="/img/linkedin.svg"></a></li>
+                        <li><a href="#" rel="nofollow"><img src="/img/twitter.svg"></a></li>
+                        <li><a href="#" rel="nofollow"><img src="/img/whatsup.svg"></a></li>
+                    </ul>
+                </div>
+            </footer>
         </div>
     </div>
     <button id="back2Top" class="btn btn-default btn-sm" title="Back to top"><i class="fa fa-chevron-up"></i></button>
