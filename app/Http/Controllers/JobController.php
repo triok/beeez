@@ -214,7 +214,9 @@ class JobController extends Controller
 
         unset($this->usernames[Auth::id()]);
 
-        return view('jobs.edit', ['usernames' => $this->usernames, 'projects' => auth()->user()->projects]);
+        $projects = auth()->user()->allUserProjects()->get();
+
+        return view('jobs.edit', ['usernames' => $this->usernames, 'projects' => $projects]);
     }
 
 
@@ -251,7 +253,9 @@ class JobController extends Controller
     {
         unset($this->usernames[Auth::id()]);
 
-        return view('jobs.edit', ['job' => $job, 'usernames' => $this->usernames, 'projects' => auth()->user()->projects]);
+        $projects = auth()->user()->allUserProjects()->get();
+
+        return view('jobs.edit', ['job' => $job, 'usernames' => $this->usernames, 'projects' => $projects]);
     }
 
 
@@ -331,7 +335,7 @@ class JobController extends Controller
 
     protected function addJobToProject(Job $job) {
         if (request()->has('project_id')) {
-            $project = Project::where('user_id', auth()->user()->id)->find(request()->get('project_id'));
+            $project = Project::find(request()->get('project_id'));
 
             if($project) {
                 $job->update(['project_id' => request()->get('project_id')]);

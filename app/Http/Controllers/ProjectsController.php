@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Jobs\Job;
 use App\Models\Project;
+use App\Models\Team;
 use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
@@ -12,7 +13,7 @@ class ProjectsController extends Controller
     function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('project.owner')->only(['show', 'edit', 'update', 'destroy']);
+        $this->middleware('project.owner')->only(['edit', 'update', 'destroy']);
     }
 
     /**
@@ -22,7 +23,9 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        return view('projects.index', ['projects' => auth()->user()->projects]);
+        $projects = auth()->user()->projects()->where('team_id', null)->get();
+
+        return view('projects.index', compact('projects'));
     }
 
     /**
@@ -33,6 +36,24 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
+        if ($project->user_id != auth()->id()) {
+            if (!$project->team_id) {
+                flash()->error('Access denied!');
+
+                return $this->getRedirectRoute();
+            }
+
+            $team = auth()->user()->allUserTeams()
+                ->where('id', $project->team_id)
+                ->get();
+
+            if(!$team) {
+                flash()->error('Access denied!');
+
+                return $this->getRedirectRoute();
+            }
+        }
+
         return view('projects.show', compact('project'));
     }
 
@@ -45,7 +66,11 @@ class ProjectsController extends Controller
     {
         $icons = config('project.icons');
 
-        return view('projects.create', compact('icons'));
+        $teams = auth()->user()->allUserTeams()->get();
+
+        $team_id = request('team_id');
+
+        return view('projects.create', compact('icons', 'teams', 'team_id'));
     }
 
     /**
@@ -60,7 +85,7 @@ class ProjectsController extends Controller
 
         flash()->success('Project saved!');
 
-        return redirect(route('projects.index'));
+        return $this->getRedirectRoute();
     }
 
     /**
@@ -73,7 +98,9 @@ class ProjectsController extends Controller
     {
         $icons = config('project.icons');
 
-        return view('projects.edit', compact('project', 'icons'));
+        $teams = auth()->user()->allUserTeams()->get();
+
+        return view('projects.edit', compact('project', 'icons', 'teams'));
     }
 
     /**
@@ -89,7 +116,7 @@ class ProjectsController extends Controller
 
         flash()->success('Project updated!');
 
-        return redirect(route('projects.index'));
+        return $this->getRedirectRoute();
     }
 
     /**
@@ -107,11 +134,7 @@ class ProjectsController extends Controller
 
         flash()->success('Project deleted!');
 
-        if(request('redirect') == 'my-bookmarks#projects') {
-            return redirect(route('my-bookmarks') . '#projects');
-        } else {
-            return redirect(route('projects.index'));
-        }
+        return $this->getRedirectRoute();
     }
 
     /**
@@ -129,12 +152,12 @@ class ProjectsController extends Controller
     function order(Request $request)
     {
         if ($request->ajax()) {
-            $id_ary = explode(",", $request ->sort_order);
+            $id_ary = explode(",", $request->sort_order);
 
             for ($i = 0; $i < count($id_ary); $i++) {
                 $q = Project::find($id_ary[$i]);
 
-                if($q) {
+                if ($q) {
                     $q->sort_order = $i;
                     $q->save();
                 }
@@ -153,12 +176,12 @@ class ProjectsController extends Controller
     function orderJobs(Request $request)
     {
         if ($request->ajax()) {
-            $id_ary = explode(",", $request ->sort_order);
+            $id_ary = explode(",", $request->sort_order);
 
             for ($i = 0; $i < count($id_ary); $i++) {
                 $q = Job::find($id_ary[$i]);
 
-                if($q) {
+                if ($q) {
                     $q->sort_order_for_project = $i;
                     $q->save();
                 }
@@ -184,11 +207,7 @@ class ProjectsController extends Controller
 
         flash()->success('Project archived!');
 
-        if(request('redirect') == 'my-bookmarks#projects') {
-            return redirect(route('my-bookmarks') . '#projects');
-        } else {
-            return redirect(route('projects.index'));
-        }
+        return $this->getRedirectRoute();
     }
 
     /**
@@ -205,11 +224,7 @@ class ProjectsController extends Controller
 
         flash()->success('Project restored!');
 
-        if(request('redirect') == 'my-bookmarks#projects') {
-            return redirect(route('my-bookmarks') . '#projects');
-        } else {
-            return redirect(route('projects.index'));
-        }
+        return $this->getRedirectRoute();
     }
 
     /**
@@ -226,11 +241,7 @@ class ProjectsController extends Controller
 
         flash()->success('Project updated!');
 
-        if(request('redirect') == 'my-bookmarks#projects') {
-            return redirect(route('my-bookmarks') . '#projects');
-        } else {
-            return redirect(route('projects.index'));
-        }
+        return $this->getRedirectRoute();
     }
 
     /**
@@ -247,8 +258,15 @@ class ProjectsController extends Controller
 
         flash()->success('Project updated!');
 
-        if(request('redirect') == 'my-bookmarks#projects') {
+        return $this->getRedirectRoute();
+    }
+
+    protected function getRedirectRoute()
+    {
+        if (request('redirect') == 'my-bookmarks#projects') {
             return redirect(route('my-bookmarks') . '#projects');
+        } elseif (request('team_id')) {
+            return redirect(route('teams.projects') . '#team-' . (int)request('team_id'));
         } else {
             return redirect(route('projects.index'));
         }

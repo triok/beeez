@@ -98,9 +98,11 @@
                         <li>
                             <a href="{{route('teams.index')}}"><i class="fa fa-group"></i>Мои команды</a>                    
                         </li>
+                        @if(Auth::user()->allUserTeams()->count())
                         <li>
-                            <a href="{{route('teams.index')}}"><i class="fa fa-sitemap"></i>Проекты</a>                    
-                        </li>                        
+                            <a href="{{route('teams.projects')}}"><i class="fa fa-sitemap"></i>Проекты</a>
+                        </li>
+                        @endif
                         <li role="separator" class="divider"></li>                
                         <li>
                             <a href="{{route('teams.create')}}"><i class="fa fa-plus"></i>Создать команду</a>                    
@@ -262,9 +264,10 @@
             </nav>
             <div v-cloak>
                 <div class="row">
-                <div style="min-height: 60%">@yield('content')</div>
+                <div style="min-height: 600px;">@yield('content')</div>
                 </div>                
             </div>
+
             <footer>
                 <div class="container">
                     <hr>

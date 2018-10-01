@@ -1,50 +1,59 @@
 @extends('layouts.app')
+
 @section('content')
-<div class="container-fluid" id="main">
-   <div class="row">
-      <div class="col-md-12">
-         <h2>@lang('teams.title')</h2>
+    <div class="container-fluid" id="teams-projects">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Проекты в командах</h2>
 
-         <div class="row">
+                <ul class="nav nav-pills">
+                    @foreach($teams as $team)
+                        <li role="presentation" class="{{ ($team->id == $teamSelected ? 'active' : '') }}">
+                            <a data-toggle="tab" href="#team-{{ $team->id }}">
+                                {{ $team->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
 
+                <div class="tab-content">
+                    @foreach($teams as $team)
+                        <div id="team-{{ $team->id }}"
+                             class="tab-pane fade {{ ($team->id == $teams->first()->id ? 'in active' : '') }}">
 
-            <div class="col-md-4">
-               <input type="text" class="form-control pull-right" id="team_search" placeholder="@lang('teams.search')">
-               <ul class="result"></ul>
+                            <div class="pull-right">
+                                <a href="{{ route('projects.create') }}?team_id={{ $team->id }}"
+                                   class="btn btn-success btn-block">
+
+                                    <i class="fa fa-sitemap"></i> @lang('projects.create')
+                                </a>
+                            </div>
+
+                            @include('teams.partials.projects')
+                        </div>
+                    @endforeach
+                </div>
             </div>
-            <div class="col-md-8">
-               <a href="{{ route('teams.create') }}" class="btn btn-default btn-md pull-right">
-                  <i class="fa fa-plus-circle"></i> @lang('teams.create_team')
-               </a>
-            </div>
-         </div>
-         <table class="table table-striped table-responsive table-full-width">
-            <thead>
-            <tr>
-               <th>@lang('teams.team')</th>
-               <th>@lang('teams.owner')</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($teams as $team)
-               <tr>
-                  <td>
-                     <a href="{{ route('teams.show', $team) }}">{{$team->name}}</a>
-
-                     @if(auth()->id() == $team->user_id)
-                        <i class="fa fa-star"></i>
-                     @endif
-                  </td>
-                  <td>
-                     <a href="{{ route('peoples.show', $team->user) }}">{{$team->user->name}}</a>
-                  </td>
-               </tr>
-            @endforeach
-
-            </tbody>
-         </table>
-         {!! $teams->links() !!}
-      </div>
-   </div>
-</div>
+        </div>
+    </div>
 @endsection
+
+@push('styles')
+    <style>
+        .tab-content {
+            margin-top: 20px;
+        }
+
+        .table-responsive tr td:first-child {
+            width: 20px;
+        }
+
+        .table-responsive tr td:last-child {
+            min-width: 200px;
+        }
+
+        .table-responsive form {
+            display: inline-block;
+        }
+    </style>
+@endpush

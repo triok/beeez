@@ -1,51 +1,112 @@
-<tr class="sort-row" id="{{ $project->id }}">
-    <td>
-        @if($project->icon)
-            <i class="fa {{ $project->icon }}"></i>
-        @endif
-    </td>
-    <td>
-        <a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a>
-    </td>
-    <td>{{ $project->description }}</td>
-    <td>{{ $project->jobs()->count() }}/0</td>
-    <td class="text-right">
-        <a href="{{ route('projects.edit', $project) }}">
-            <i class="fa fa-pencil btn btn-xs btn-default"></i>
-        </a>
+@if(isset($teamProjects[$team->id]) && $teamProjects[$team->id]->count())
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active">
+            <a data-toggle="tab" href="#team-{{ $team->id }}-current">
+                @lang('projects.current')
+            </a>
+        </li>
+        <li role="presentation">
+            <a data-toggle="tab" href="#team-{{ $team->id }}-favorite">
+                @lang('projects.favorite')
+            </a>
+        </li>
+        <li role="presentation">
+            <a data-toggle="tab" href="#team-{{ $team->id }}-completed">
+                @lang('projects.completed')
+            </a>
+        </li>
+    </ul>
 
-        @if(!$project->is_favorite)
-            {!! Form::open(['url' => route('projects.favorite', $project), 'method'=>'post']) !!}
-            <button type="submit" onclick=""
-                    class="btn btn-xs btn-default"
-                    title="Избранный">
-                <i class="fa fa-star-o"></i>
-            </button>
-            {!! Form::close() !!}
-        @endif
+    <div class="tab-content">
+        <div id="team-{{ $team->id }}-current" class="tab-pane fade in active">
+            @php
+                $projectsNotArchived = $teamProjects[$team->id]->filter(function ($item) {
+                    return !$item->is_archived;
+                });
+            @endphp
 
-        @if($project->is_favorite)
-            {!! Form::open(['url' => route('projects.unfavorite', $project), 'method'=>'post']) !!}
-            <button type="submit" onclick=""
-                    class="btn btn-xs btn-default"
-                    title="Удалить с избранных">
-                <i class="fa fa-star" style="color: orange;"></i>
-            </button>
-            {!! Form::close() !!}
-        @endif
+            @if($projectsNotArchived->count())
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <td></td>
+                        <td>@lang('projects.name')</td>
+                        <td>@lang('projects.desc')</td>
+                        <td>@lang('projects.count')</td>
+                        <td></td>
+                    </tr>
+                    </thead>
 
-        {!! Form::open(['url' => route('projects.done', $project), 'method'=>'post', 'class' => 'form-delete']) !!}
-        <button type="submit" onclick=""
-                class="btn btn-xs btn-success" title="Выполнено">
-            <i class="fa fa-check"></i>
-        </button>
-        {!! Form::close() !!}
+                    <tbody class="sortable-rows">
+                    @foreach($projectsNotArchived as $project)
+                        @include('teams.partials.project')
+                    @endforeach
+                    </tbody>
+                </table>
+            @else
+                @lang('projects.teamnoprojects')
+            @endif
+        </div>
 
-        {!! Form::open(['url' => route('projects.destroy', $project), 'method'=>'delete', 'class' => 'form-delete']) !!}
-        <button type="submit" onclick=""
-                class="btn btn-xs btn-danger">
-            <i class="fa fa-trash"></i>
-        </button>
-        {!! Form::close() !!}
-    </td>
-</tr>
+        <div id="team-{{ $team->id }}-favorite" class="tab-pane fade">
+            @php
+                $projectsFavorite = $teamProjects[$team->id]->filter(function ($item) {
+                    return (!$item->is_archived && $item->is_favorite);
+                });
+            @endphp
+
+            @if($projectsFavorite->count())
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <td></td>
+                        <td>@lang('projects.name')</td>
+                        <td>@lang('projects.desc')</td>
+                        <td>@lang('projects.count')</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+
+                    <tbody class="sortable-rows">
+                    @foreach($projectsFavorite as $project)
+                        @include('teams.partials.project')
+                    @endforeach
+                    </tbody>
+                </table>
+            @else
+                @lang('projects.teamnoprojects')
+            @endif
+        </div>
+
+        <div id="team-{{ $team->id }}-completed" class="tab-pane fade">
+            @php
+                $projectsArchived = $teamProjects[$team->id]->filter(function ($item) {
+                    return $item->is_archived;
+                });
+            @endphp
+
+            @if($projectsArchived->count())
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <td></td>
+                        <td>@lang('projects.name')</td>
+                        <td>@lang('projects.desc')</td>
+                        <td>@lang('projects.count')</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+                    <tbody class="sortable-rows">
+                    @foreach($projectsArchived as $project)
+                        @include('teams.partials.project')
+                    @endforeach
+                    </tbody>
+                </table>
+            @else
+                @lang('projects.teamnoprojects')
+            @endif
+        </div>
+    </div>
+@else
+    @lang('projects.teamnoprojects')
+@endif
