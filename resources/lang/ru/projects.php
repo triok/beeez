@@ -18,9 +18,11 @@ return [
     'desc'           => 'Описание',
     'count'          => 'Количество заданий',            
     'noprojects'     => 'У вас еще нет проектов.',
+    'teamnoprojects' => 'Еще нет проектов.',
     'create'         => 'Создать проект',
     'current'        => 'Текущие',
-    'completed'      => 'Завершенные',    
+    'favorite'       => 'Избранные',
+    'completed'      => 'Завершенные',
 
     // Projects create
     'title-create'   => 'Создайте новый проект',

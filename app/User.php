@@ -139,6 +139,27 @@ class User extends Authenticatable
         return $this->hasMany(TeamUsers::class)->with('team');
     }
 
+    public function ownTeams()
+    {
+        return $this->hasMany(Team::class);
+    }
+
+    public function allUserTeams() {
+        $teamIds = $this->teams()->pluck('team_id')->toArray();
+
+        return Team::where('user_id', $this->id)
+            ->orWhereIn('id', $teamIds);
+    }
+
+    public function allUserProjects() {
+        $teamIds = $this->allUserTeams()->pluck('id')->toArray();
+
+        $projectIds = Project::whereIn('team_id', $teamIds)->pluck('id')->toArray();
+
+        return Project::where('user_id', $this->id)
+            ->orWhereIn('id', $projectIds);
+    }
+
     public function organizations()
     {
         return $this->hasMany(OrganizationUsers::class)

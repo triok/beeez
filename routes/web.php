@@ -130,6 +130,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('/{user}','PeopleController@updateAvatar')->name('peoples.updateAvatar');
     });
 
+    Route::get('/teams/projects','TeamsController@projects')->name('teams.projects');
     Route::resource('teams', 'TeamsController');
 
     Route::get('/organizations/my','OrganizationsController@my')->name('organizations.my');
