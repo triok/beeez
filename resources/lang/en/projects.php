@@ -18,8 +18,10 @@ return [
     'desc'           => 'Description',
     'count'          => 'Number of tasks',       
     'noprojects'     => 'No projects yet.',
+    'teamnoprojects' => 'Еще нет проектов.',
     'create'         => 'New project',
     'current'        => 'Current',
+    'favorite'       => 'Favorite',
     'completed'      => 'Completed',
 
     // Projects create

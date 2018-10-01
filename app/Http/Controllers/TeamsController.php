@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Project;
 use App\Models\Team;
 use App\Models\TeamType;
 use App\Models\TeamUsers;
@@ -161,6 +162,32 @@ class TeamsController extends Controller
         flash()->success('Team updated!');
 
         return redirect(route('teams.show', $team));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function projects()
+    {
+        $teamIds = auth()->user()->teams()->pluck('team_id')->toArray();
+
+        $teams = Team::where('user_id', auth()->id())
+            ->orWhereIn('id', $teamIds)
+            ->get();
+
+        $teamProjects = [];
+
+        foreach ($teams as $team) {
+            $projects = Project::where('team_id', $team->id)->get();
+
+            $teamProjects[$team->id] = $projects;
+        }
+
+        $teamSelected = request('team_id', ($teams->first() ? $teams->first()->id : 0));
+
+        return view('teams.projects', compact('projects', 'teams', 'teamProjects', 'teamSelected'));
     }
 
     /**
