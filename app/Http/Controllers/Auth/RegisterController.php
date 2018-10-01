@@ -55,7 +55,7 @@ class RegisterController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'username' => 'required|string|unique:users|min:3',
+            'username' => 'required|string|unique:users|regex:/^[a-z]+$/i|min:3',
         ]);
     }
 
@@ -83,7 +83,7 @@ class RegisterController extends Controller
     {
         if ($request->ajax()) {
             if (User::query()->where('username', $request['username'])->exists()) {
-                return response()->json(['username' => 'Please choose another login.'], 422);
+                return response()->json(['username' => 'Этот логин уже занят.'], 422);
             }
 
             return;

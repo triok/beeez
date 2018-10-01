@@ -2,34 +2,34 @@
 
 return [
     'title' => 'Команды',
-    'new_team' => 'Новая комманда',
+    'new_team' => 'Новая команда',
 
-    'team' => 'Команда',
-    'owner' => 'Владелец',
+    'team' => 'Команда:',
+    'owner' => 'Создатель:',
 
     'search' => 'Введите название...',
 
     // Form
-    'name' => 'Enter your team name',
-    'logo' => 'Select logo',
-    'team_type' => 'Choose team type',
-    'description' => 'Type some info about your team',
-    'users' => 'Choose users',
+    'name' => '1. Введите название команды:',
+    'logo' => '2. Загрузите логотип:',
+    'team_type' => '3. Выберите тип команды:',
+    'description' => '4. Напишите полезную информацию о Вашей команде:',
+    'users' => '5. Пригласите участников:',
 
     // Show
     'show_name' => 'Комманда:',
     'show_date' => 'Дата создания:',
     'show_description' => 'Описание:',
-    'show_team_type' => 'Тип комманды:',
+    'show_team_type' => 'Тип команды:',
 
     'show_user_name' => 'Пользователь',
     'show_user_position' => 'Должность',
     'show_user_date' => 'Дата приема в команду',
 
     // Buttons
-    'create_team' => 'Создать комманду',
-    'back_to_list' => 'back to list',
-    'submit' => 'Submit',
+    'create_team' => 'Создать команду',
+    'back_to_list' => 'Назад к списку',
+    'submit' => 'Создать',
     'edit' => 'Изменить',
     'delete' => 'Удалить',
 ];

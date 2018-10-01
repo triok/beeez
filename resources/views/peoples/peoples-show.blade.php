@@ -2,9 +2,9 @@
 @section('content')
 <div class="container" id="main">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 peoples-show">
             <a href="{{route('peoples.index')}}"><span><i class="fa fa-arrow-left"></i> @lang('peoples.back')</span></a>
-
+            <hr>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
@@ -12,77 +12,88 @@
                             <img src="{{$user->getStorageDir() . $user->avatar}}" class="img-thumbnail" alt="{{$user->name}}" title="{{$user->name}}" style="width: 100px; height: 100px;">
                         </div>
                         <div class="col-md-8">
-                            <p>
-                                <b>@lang('peoples.login')</b> <span>{{$user->username}}</span>
-                                (<span class="text-success">{{$user->rating_positive}}</span>/<span class="text-danger">{{$user->rating_negative}}</span>)
-                            </p>
-                            <p><b>@lang('peoples.name')</b> <span>{{$user->name}}</span></p>
-                            <p><b>@lang('peoples.member')</b> <span>{{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}</span></p>
-                            <p><b>@lang('peoples.social')</b></p>
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <ul class="list-group">
-                                    @if(!isset($user->socialLinks))
-                                        @foreach($user->socialLinks as $social)
-                                            @if(isset($social['obj']) && $social['obj']->pivot->status == config('tags.statuses.confirmed.value'))
-                                                {{$social['title']}}<li class="list-group-item list-group-item-success">{{$social['obj']->pivot->link}}<span class="badge">confirmed</span></li>
+                            <table class="table table-responsive table-search">
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 30%"><b>@lang('peoples.login')</b></td>
+                                        <td><span class="people-info">{{$user->username}}</span> (<span class="text-success">{{$user->rating_positive}}</span>/<span class="text-danger">{{$user->rating_negative}}</span>)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>@lang('peoples.name')</b></td>
+                                        <td><span class="people-info">{{$user->name}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>@lang('peoples.member')</b></td>
+                                        <td><span class="people-info">{{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>@lang('peoples.social')</b></td>
+                                        <td><ul class="list-group">
+                                            @if(!isset($user->socialLinks))
+                                                @foreach($user->socialLinks as $social)
+                                                    @if(isset($social['obj']) && $social['obj']->pivot->status == config('tags.statuses.confirmed.value'))
+                                                        {{$social['title']}}<li class="list-group-item list-group-item-success">{{$social['obj']->pivot->link}}<span class="badge">confirmed</span></li>
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                <span class="people-info">@lang('peoples.nosocial')</span> 
+                                            @endif   
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>@lang('peoples.bio')</b></td>
+                                        <td>
+                                            @if(isset($user->bio))
+                                            <p>{{$user->bio}}</p>
+                                            @else
+                                            <span class="people-info">@lang('peoples.nobio')</span>
                                             @endif
-                                        @endforeach
-                                    @else
-                                        @lang('peoples.nosocial') 
-                                    @endif   
-                                    </ul>
-                                </div>
-                            </div>
-                            <p><b>@lang('peoples.bio')</b></p>
-                            <div class="row">
-                                <div class="col-md-9">                            
-                                    @if(isset($user->bio))
-                                    <p>{{$user->bio}}</p>
-                                    @else
-                                    <p>@lang('peoples.nobio')</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>@lang('peoples.skills')</b></td>
+                                        <td>
+                                            <ul class="list-inline">
+                                            @forelse($user->skills as $skill)
+                                            <li>{{$skill->name}}</li>
+                                            @empty 
+                                            <li class="people-info">@lang('peoples.noskills')</li> 
+                                            @endforelse
+                                            </ul>                                            
+                                        </td>
+                                    </tr>
+                                    @if(count($user->teams))
+                                    <tr>
+                                        <td><b>@lang('peoples.teams')</b></td>
+                                        <td>
+                                            <table class="table table-responsive">
+                                                <tbody>
+                                                @foreach($user->teams as $team)
+                                                    <tr>
+                                                        <td><a href="{{ route('teams.show', $team->team) }}">{{$team->team->name}}</a></td>
+                                                        <td>{{$team->position}}</td>
+                                                        <td>{{\Carbon\Carbon::parse($team->created_at)->format('d M. Y')}}</td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>                                            
+                                        </td>
+                                    </tr>
                                     @endif
-                                </div>
-                            </div>
-                            <p><b>@lang('peoples.skills')</b></p>
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <ul class="list-inline">
-                                    @forelse($user->skills as $skill)
-                                    <li>{{$skill->name}}</li>
-                                    @empty 
-                                    <li>No skills selected</li> 
-                                    @endforelse
-                                    </ul>
-                                </div>    
-                            </div>
-                            <p><b>@lang('peoples.teams')</b></p>
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <table class="table table-responsive">
-                                        <tbody>
-                                        @foreach($user->teams as $team)
-                                            <tr>
-                                                <td><a href="{{ route('teams.show', $team->team) }}">{{$team->team->name}}</a></td>
-                                                <td>{{$team->position}}</td>
-                                                <td>{{$team->created_at}}</td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <p><b>@lang('peoples.company')</b></p>
-                            <div class="row">
-                                <div class="col-md-9">
-
-                                </div>    
-                            </div>                                                          
+                                    <tr>
+                                        <td><b>@lang('peoples.company')</b></td>
+                                        <td></td>
+                                    </tr>    
+                                </tbody>
+                            </table>
+                                                        
                             @if(auth()->user()->id != $user->id)
                                 <form action="{{route('threads.store')}}" method="post">
                                     {{csrf_field()}}
                                     <input type="hidden" name="user_id" value="{{$user->id}}">
-                                    <button class="btn btn-primary btn-xs">
+                                    <button class="btn btn-primary btn-sm">
                                         <i class="fa fa-envelope" aria-hidden="true"></i> @lang('peoples.message')
                                     </button>
                                 </form>

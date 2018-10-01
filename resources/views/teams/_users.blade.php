@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row team-create">
     <div class="col-md-3">
         <div class="form-group">
             <label>@lang('teams.users')</label>
@@ -14,7 +14,7 @@
 
     <div class="col-md-3" style="padding-left: 0">
         <div class="form-group" style="padding-top: 30px;">
-            <button type="button" class="btn btn-success btn-sm" onclick="addUser();">
+            <button type="button" class="btn btn-primary btn-sm" onclick="addUser();">
                 <i aria-hidden="true" class="fa fa-plus"></i>
             </button>
         </div>
@@ -22,7 +22,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <table class="table table-responsive" id="table-users">
             <thead>
             <tr>

@@ -2,7 +2,7 @@
     <div class="col-sm-9" id="main">
 
         <ol class="breadcrumb" v-if="category">
-            <li><a href="/">Главная</a></li>
+
             <li v-if="category && category.parent">
                 <a :href="'/jobs/category/'+ category.parent.id">{{ category.parent.nameRu }}</a>
             </li>
@@ -13,10 +13,7 @@
 
 
         <div v-show="show_title">
-            <h3 v-if="category">Job under category</h3>
             <h3 v-if="!category">{{ trans('home.title') }}</h3>
-
-            <div class="alert bg-info small" v-if="category">{{ category.nameRu }}</div>
         </div>
 
         <div class="row current-jobs">

@@ -134,7 +134,7 @@
             </ul>
         </nav>
         <!-- Page Content  -->
-        <div id="content" class="" style="min-height: 500px; padding-top: 10px">
+        <div id="content" class="" style="min-height: 500px; padding-top: 0px">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
                     <ul class="nav navbar-nav">
@@ -262,7 +262,7 @@
             </nav>
             <div v-cloak>
                 <div class="row">
-                <div style="min-height: 60%">@yield('content')</div>
+                <div style="min-height: 30vw">@yield('content')</div>
                 </div>                
             </div>
             <footer>

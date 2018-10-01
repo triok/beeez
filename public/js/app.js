@@ -47001,9 +47001,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47100,8 +47097,6 @@ var render = function() {
   return _c("div", { staticClass: "col-sm-9", attrs: { id: "main" } }, [
     _vm.category
       ? _c("ol", { staticClass: "breadcrumb" }, [
-          _vm._m(0),
-          _vm._v(" "),
           _vm.category && _vm.category.parent
             ? _c("li", [
                 _c(
@@ -47139,16 +47134,8 @@ var render = function() {
         ]
       },
       [
-        _vm.category ? _c("h3", [_vm._v("Job under category")]) : _vm._e(),
-        _vm._v(" "),
         !_vm.category
           ? _c("h3", [_vm._v(_vm._s(_vm.trans("home.title")))])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.category
-          ? _c("div", { staticClass: "alert bg-info small" }, [
-              _vm._v(_vm._s(_vm.category.nameRu))
-            ])
           : _vm._e()
       ]
     ),
@@ -47390,14 +47377,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [_c("a", { attrs: { href: "/" } }, [_vm._v("Главная")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

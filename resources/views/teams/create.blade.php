@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('content')
 <div class="container" id="main">
-    <div class="content-form">
+    <div class="content-form create-team">
         <h2><i class="fa fa-plus"></i> @lang('teams.new_team')</h2>
-
+        <hr>
         {!! Form::open(['url' => route('teams.store'), 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'team-form']) !!}
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="input-name">@lang('teams.name')</label>
                     {!! Form::text('name', old('name'), ['required'=>'required', 'class'=>'form-control', 'id' => 'input-name']) !!}
@@ -16,7 +16,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="input-logo">@lang('teams.logo')</label><br>
 
@@ -32,7 +32,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="input-team-type">@lang('teams.team_type')</label>
                     <select name="team_type_id" id="input-team-type" required="required" class="form-control">
@@ -50,7 +50,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="input-description">@lang('teams.description')</label>
                     {!! Form::textarea('description', old('description'), ['class' => 'editor1', 'id' => 'input-description']) !!}
@@ -63,7 +63,7 @@
         <hr>
 
         <div class="btn-toolbar" id="savesubmit">
-            <div class="btn-group btn-group-lg">
+            <div class="btn-group btn-group-md">
                 <button type="submit" class="btn btn-primary" id="submit" name="submit"
                         value="submit">@lang('teams.submit')</button>
             </div>

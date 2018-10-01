@@ -4,17 +4,17 @@ return [
     'title' => 'Teams',
     'new_team' => 'New Team',
 
-    'team' => 'Team',
-    'owner' => 'Owner',
+    'team' => 'Team:',
+    'owner' => 'Creator:',
 
     'search' => 'Enter name...',
 
     // Form
-    'name' => 'Enter your team name',
-    'logo' => 'Select logo',
-    'team_type' => 'Choose team type',
-    'description' => 'Type some info about your team',
-    'users' => 'Choose users',
+    'name' => '1. Enter your team name:',
+    'logo' => '2. Select logo:',
+    'team_type' => '3. Choose team type:',
+    'description' => '4. Type some info about your team:',
+    'users' => '5. Choose users:',
 
     // Show
     'show_name' => 'Team:',

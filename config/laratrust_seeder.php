@@ -25,7 +25,7 @@ return [
             'profile' => 'r,u'
         ],
         'user' => [
-            // 'users' => 'r',
+            'users' => 'r',
             'jobs' => 'c,r',
             'profile' => 'r,u',
             'application-message' => 'c,r,u,d',

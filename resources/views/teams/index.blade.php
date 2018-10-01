@@ -2,27 +2,26 @@
 @section('content')
 <div class="container-fluid" id="main">
    <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 teams">
          <h2>@lang('teams.title')</h2>
-
          <div class="row">
-
-
-            <div class="col-md-4">
-               <input type="text" class="form-control pull-right" id="team_search" placeholder="@lang('teams.search')">
+            <div class="col-md-4 search">
+               <input type="text" class="form-control" id="team_search" placeholder="@lang('teams.search')"><i class="fa fa-search" aria-hidden="true"></i>
                <ul class="result"></ul>
             </div>
-            <div class="col-md-8">
-               <a href="{{ route('teams.create') }}" class="btn btn-default btn-md pull-right">
+            <div class="col-md-8 search-button">
+               <a href="{{ route('teams.create') }}" class="btn btn-primary btn-md pull-right">
                   <i class="fa fa-plus-circle"></i> @lang('teams.create_team')
                </a>
             </div>
          </div>
-         <table class="table table-striped table-responsive table-full-width">
+         <table class="table table-striped table-responsive table-full-width table-search">
             <thead>
             <tr>
                <th>@lang('teams.team')</th>
                <th>@lang('teams.owner')</th>
+               <th>@lang('teams.show_team_type')</th>
+               <th>@lang('teams.show_date')</th>
             </tr>
             </thead>
             <tbody>
@@ -38,6 +37,8 @@
                   <td>
                      <a href="{{ route('peoples.show', $team->user) }}">{{$team->user->name}}</a>
                   </td>
+                  <td>{{ $team->type->name }}</td>
+                  <td>{{ \Carbon\Carbon::parse($team->created_at)->format('d M, Y') }}</td>
                </tr>
             @endforeach
 
