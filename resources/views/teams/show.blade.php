@@ -66,6 +66,22 @@
                                 @endforeach
                                 </tbody>
                             </table>
+
+                            {!! Form::open(['url' => route('threads.store') . '?team_id=' . $team->id, 'method'=>'post']) !!}
+                            @if($team->user_id != auth()->id())
+                                <input type="hidden" name="connections[{{ $team->user_id }}]" value="user">
+                            @endif
+
+                            @foreach($connections as $connection)
+                                @if($connection->user->id != auth()->id())
+                                    <input type="hidden" name="connections[{{ $connection->user->id }}]" value="user">
+                                @endif
+                            @endforeach
+
+                            <button type="submit" onclick="" class="btn btn-xs btn-success">
+                                Чат с командой
+                            </button>
+                            {!! Form::close() !!}
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Thread extends BaseThread
 {
-    protected $fillable = ['user_id', 'subject', 'description', 'thread_type', 'avatar'];
+    protected $fillable = ['user_id', 'team_id', 'subject', 'description', 'thread_type', 'avatar'];
 
     public function owner()
     {
