@@ -10,13 +10,13 @@
     <td>{{ $project->description }}</td>
     <td>{{ $project->jobs()->count() }}/0</td>
     <td class="text-right">
-        @if($project->user_id == auth()->id())
+        @if($project->isOwn())
             <a href="{{ route('projects.edit', $project) }}">
                 <i class="fa fa-pencil btn btn-xs btn-default"></i>
             </a>
         @endif
 
-        @if(!$project->is_archived && !$project->is_favorite)
+        @if(!$project->isArchived() && !$project->isFavorited())
             {!! Form::open(['url' => route('projects.favorite', $project) . '?team_id=' . $project->team_id, 'method'=>'post']) !!}
             <button type="submit" onclick=""
                     class="btn btn-xs btn-default"
@@ -26,7 +26,7 @@
             {!! Form::close() !!}
         @endif
 
-        @if(!$project->is_archived && $project->is_favorite)
+        @if(!$project->isArchived() && $project->isFavorited())
             {!! Form::open(['url' => route('projects.unfavorite', $project) . '?team_id=' . $project->team_id, 'method'=>'post']) !!}
             <button type="submit" onclick=""
                     class="btn btn-xs btn-default"
@@ -36,7 +36,7 @@
             {!! Form::close() !!}
         @endif
 
-        @if(!$project->is_archived)
+        @if(!$project->isArchived())
             {!! Form::open(['url' => route('projects.done', $project) . '?team_id=' . $project->team_id, 'method'=>'post', 'class' => 'form-delete']) !!}
             <button type="submit" onclick=""
                     class="btn btn-xs btn-success" title="Выполнено">
@@ -45,7 +45,7 @@
             {!! Form::close() !!}
         @endif
 
-        @if($project->is_archived)
+        @if($project->isArchived())
             {!! Form::open(['url' => route('projects.restore', $project) . '?team_id=' . $project->team_id, 'method'=>'post', 'class' => 'form-delete']) !!}
             <button type="submit" onclick="" class="btn btn-xs btn-warning" title="Возобновить">
                 <i class="fa fa-refresh"></i>
@@ -53,7 +53,7 @@
             {!! Form::close() !!}
         @endif
 
-        @if($project->user_id == auth()->id())
+        @if($project->isOwn())
             {!! Form::open(['url' => route('projects.destroy', $project) . '?team_id=' . $project->team_id, 'method'=>'delete', 'class' => 'form-delete']) !!}
             <button type="submit" onclick=""
                     class="btn btn-xs btn-danger">

@@ -18,7 +18,8 @@
                             <div class="list-group">
                                 @foreach($_categories as $cat)
                                     <a href="#"
-                                       onclick="setCategory('{{ $cat->id }}', '{{ $cat->nameEu }}')"
+                                       style="cursor: default;"
+                                       onclick="alert('Выберите подкатегорию!')"
                                        onmouseover="showSubCategories('{{ $cat->id }}')"
                                        class="list-group-item {{isset($job) && $job->hasCategory($cat, true) ? 'active' : ''}}">
 

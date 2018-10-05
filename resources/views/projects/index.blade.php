@@ -36,7 +36,7 @@
                 <tbody class="sortable-rows">
                 @if($projects->count())
                     @foreach($projects as $project)
-                        @if(!$project->is_archived)
+                        @if(!$project->isArchived())
                         <tr class="sort-row" id="{{ $project->id }}">
                             <td>
                                 @if($project->icon)
@@ -51,7 +51,7 @@
                                     <i class="fa fa-pencil btn btn-xs btn-default"></i>
                                 </a>
 
-                                @if(!$project->is_favorite)
+                                @if(!$project->isFavorited())
                                 {!! Form::open(['url' => route('projects.favorite', $project), 'method'=>'post']) !!}
                                 <button type="submit" onclick="" class="btn btn-xs btn-default" title="Избранный">
                                     <i class="fa fa-star-o"></i>
@@ -59,7 +59,7 @@
                                 {!! Form::close() !!}
                                 @endif
 
-                                @if($project->is_favorite)
+                                @if($project->isFavorited())
                                     {!! Form::open(['url' => route('projects.unfavorite', $project), 'method'=>'post']) !!}
                                     <button type="submit" onclick="" class="btn btn-xs btn-default" title="Удалить с избранных">
                                         <i class="fa fa-star" style="color: orange;"></i>
@@ -107,7 +107,7 @@
                 <tbody class="sortable-rows">
                 @if($projects->count())
                     @foreach($projects as $project)
-                        @if($project->is_favorite)
+                        @if(!$project->isArchived() && $project->isFavorited())
                             <tr class="sort-row" id="{{ $project->id }}">
                                 <td>
                                     @if($project->icon)
@@ -122,21 +122,11 @@
                                         <i class="fa fa-pencil btn btn-xs btn-default"></i>
                                     </a>
 
-                                    @if(!$project->is_favorite)
-                                        {!! Form::open(['url' => route('projects.favorite', $project), 'method'=>'post']) !!}
-                                        <button type="submit" onclick="" class="btn btn-xs btn-default" title="Избранный">
-                                            <i class="fa fa-star-o"></i>
-                                        </button>
-                                        {!! Form::close() !!}
-                                    @endif
-
-                                    @if($project->is_favorite)
-                                        {!! Form::open(['url' => route('projects.unfavorite', $project), 'method'=>'post']) !!}
-                                        <button type="submit" onclick="" class="btn btn-xs btn-default" title="Удалить с избранных">
-                                            <i class="fa fa-star" style="color: orange;"></i>
-                                        </button>
-                                        {!! Form::close() !!}
-                                    @endif
+                                    {!! Form::open(['url' => route('projects.unfavorite', $project), 'method'=>'post']) !!}
+                                    <button type="submit" onclick="" class="btn btn-xs btn-default" title="Удалить с избранных">
+                                        <i class="fa fa-star" style="color: orange;"></i>
+                                    </button>
+                                    {!! Form::close() !!}
 
                                     {!! Form::open(['url' => route('projects.done', $project), 'method'=>'post', 'class' => 'form-delete']) !!}
                                     <button type="submit" onclick="" class="btn btn-xs btn-success" title="Выполнено">
@@ -176,7 +166,7 @@
                 <tbody class="sortable-rows">
                 @if($projects->count())
                     @foreach($projects as $project)
-                        @if($project->is_archived)
+                        @if($project->isArchived())
                             <tr class="sort-row" id="{{ $project->id }}">
                                 <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                                 <td>{{ $project->description }}</td>

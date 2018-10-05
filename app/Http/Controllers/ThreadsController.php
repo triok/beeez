@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jobs\Job;
 use App\Models\Participant;
+use App\Models\Team;
 use App\Models\Thread;
 use App\User;
 use Carbon\Carbon;
@@ -26,7 +27,7 @@ class ThreadsController extends Controller
     {
         $users = User::where('id', '!=', auth()->id())->get();
 
-        return view('threads.create', compact('users'));
+        return view('threads.create', compact('users', 'team_id'));
     }
 
     /**
@@ -38,22 +39,36 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = $this->getUserId($request);
+        $team_id = $request->get('team_id', null);
 
-        $thread_type = $request->get('thread_type', 'single');
+        if($team_id && $team = Team::find($team_id)) {
+            if($thread = Thread::where('user_id', auth()->id())->where('team_id', $team->id)->first()) {
+                return redirect(route('messages.show', $thread->id));
+            }
 
-        $subject = $request->get('subject', auth()->user()->name);
+            $user_id = null;
+
+            $thread_type = 'group';
+
+            $subject = $team->name;
+        } else {
+            $user_id = $this->getUserId($request);
+
+            $thread_type = $request->get('thread_type', 'single');
+
+            $subject = $request->get('subject', auth()->user()->name);
+        }
 
         // Если чат не групповой и уже есть созданный чат с этими пользователями то открываем его
         if ($user_id && $thread_type != 'group') {
             if ($thread_id = $this->getExistingThreadId($user_id)) {
-                dd($thread_id);
                 return redirect(route('messages.show', $thread_id));
             }
         }
 
         $thread = Thread::create([
             'user_id' => auth()->id(),
+            'team_id' => $team_id,
             'thread_type' => $thread_type,
             'subject' => $subject,
             'description' => $request->get('description'),
@@ -65,7 +80,7 @@ class ThreadsController extends Controller
 
         $this->addUserToThread(Auth::user(), $thread);
 
-        if ($user = User::find($user_id)) {
+        if ($user_id && $user = User::find($user_id)) {
             $this->addUserToThread($user, $thread);
         }
 

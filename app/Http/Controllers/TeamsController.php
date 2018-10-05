@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Favorite;
 use App\Models\Project;
 use App\Models\Team;
 use App\Models\TeamType;
@@ -180,7 +181,7 @@ class TeamsController extends Controller
         $teamProjects = [];
 
         foreach ($teams as $team) {
-            $projects = Project::where('team_id', $team->id)->get();
+            $projects = Project::where('team_id', $team->id)->orderBy('sort_order')->orderBy('name')->get();
 
             $teamProjects[$team->id] = $projects;
         }

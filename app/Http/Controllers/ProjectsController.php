@@ -235,9 +235,7 @@ class ProjectsController extends Controller
      */
     public function favorite(Project $project)
     {
-        $project->is_favorite = true;
-
-        $project->save();
+        $project->setFavorited();
 
         flash()->success('Project updated!');
 
@@ -252,9 +250,7 @@ class ProjectsController extends Controller
      */
     public function unfavorite(Project $project)
     {
-        $project->is_favorite = false;
-
-        $project->save();
+        $project->setUnfavorited();
 
         flash()->success('Project updated!');
 
