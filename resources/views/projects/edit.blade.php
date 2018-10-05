@@ -25,7 +25,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <select class="form-control" name="team_id">
-                        <option>персональный</option>
+                        <option value="">персональный</option>
                         @foreach($teams as $team)
                             @if($team->id == $project->team_id)
                                 <option selected value="{{ $team->id }}">{{ $team->name }}</option>
