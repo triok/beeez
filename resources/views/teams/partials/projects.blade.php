@@ -110,3 +110,35 @@
 @else
     @lang('projects.teamnoprojects')
 @endif
+
+@push('scripts')
+    <script src="/js/custom.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $(".sortable-rows").sortable({
+                placeholder: "ui-state-highlight",
+                update: function (event, ui) {
+                    updateDisplayOrder();
+                }
+            });
+        });
+
+        // function to save display sort order
+        function updateDisplayOrder() {
+            var selectedLanguage = [];
+            $('.sortable-rows .sort-row').each(function () {
+                selectedLanguage.push($(this).attr("id"));
+            });
+            var dataString = 'sort_order=' + selectedLanguage;
+            $.ajax({
+                type: "POST",
+                url: "/order-projects",
+                data: dataString,
+                cache: false,
+                success: function (data) {
+                }
+            });
+        }
+    </script>
+@endpush

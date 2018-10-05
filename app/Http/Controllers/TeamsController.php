@@ -180,7 +180,7 @@ class TeamsController extends Controller
         $teamProjects = [];
 
         foreach ($teams as $team) {
-            $projects = Project::where('team_id', $team->id)->get();
+            $projects = Project::where('team_id', $team->id)->orderBy('sort_order')->orderBy('name')->get();
 
             $teamProjects[$team->id] = $projects;
         }
