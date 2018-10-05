@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Models\Jobs\Job;
+use App\Models\Traits\Favoritable;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    use Favoritable;
+
     protected $fillable = ['user_id', 'team_id', 'name', 'description', 'icon', 'is_archived'];
 
     public function user()
@@ -24,5 +27,13 @@ class Project extends Model
         return $this->hasMany(Job::class)
             ->orderBy('sort_order_for_project')
             ->orderBy('name');
+    }
+
+    public function isArchived() {
+        return $this->is_archived == true;
+    }
+
+    public function isOwn() {
+        return $this->user_id == auth()->id();
     }
 }

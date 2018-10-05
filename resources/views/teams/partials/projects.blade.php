@@ -21,7 +21,7 @@
         <div id="team-{{ $team->id }}-current" class="tab-pane fade in active">
             @php
                 $projectsNotArchived = $teamProjects[$team->id]->filter(function ($item) {
-                    return !$item->is_archived;
+                    return !$item->isArchived();
                 });
             @endphp
 
@@ -51,7 +51,7 @@
         <div id="team-{{ $team->id }}-favorite" class="tab-pane fade">
             @php
                 $projectsFavorite = $teamProjects[$team->id]->filter(function ($item) {
-                    return (!$item->is_archived && $item->is_favorite);
+                    return (!$item->isArchived() && $item->isFavorited());
                 });
             @endphp
 
@@ -81,7 +81,7 @@
         <div id="team-{{ $team->id }}-completed" class="tab-pane fade">
             @php
                 $projectsArchived = $teamProjects[$team->id]->filter(function ($item) {
-                    return $item->is_archived;
+                    return $item->isArchived();
                 });
             @endphp
 

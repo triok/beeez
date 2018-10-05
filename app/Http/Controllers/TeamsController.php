@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Favorite;
 use App\Models\Project;
 use App\Models\Team;
 use App\Models\TeamType;
