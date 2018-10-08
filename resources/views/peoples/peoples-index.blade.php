@@ -41,6 +41,13 @@
                 bInfo: false,
                 "lengthChange": false,
 
+                "pageLength": 20,
+                "fnDrawCallback": function(oSettings) {
+                    if ($('#users-table tr').length < 21) {
+                        $('.dataTables_paginate').hide();
+                    }
+                },
+
                 "ajax": {
                     "url": "api/v1/users",
                     "dataSrc": ""
