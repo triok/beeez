@@ -56,7 +56,7 @@
                 @else
                 <li id="welcome" class="left-sidebar active" style="text-align: center; padding: 20px 0px;">
                    <p>Добро пожаловать,</p>
-                   <p>name!</p> 
+                   <p>{{ Auth::user()->name }}!</p>
                 </li>
                 <li class="left-sidebar dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -294,7 +294,24 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="/plugins/listjs/listjs.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
     <script src="/plugins/moment.min.js" type="text/javascript"></script>
+    <script>
+        moment.locale('{{ config('app.locale') }}');
+
+        $(".date-short").html(function(index, value) {
+            return moment(value, "YYYY-MM-DD mm:ss").format("ll");
+        });
+
+        $(".date-full").html(function(index, value) {
+            return moment(value, "YYYY-MM-DD mm:ss").format("lll");
+        });
+
+        $(".date-ago").html(function(index, value) {
+            return moment(value, "YYYY-MM-DD mm:ss").startOf('hour').fromNow();
+        });
+    </script>
+
     @if(Auth::check())
         <script src="/js/main.js" type="text/javascript"></script>
     @else
