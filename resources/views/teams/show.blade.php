@@ -73,25 +73,6 @@
                                 </tbody>
                             </table>
 
-                            <table class="table table-responsive">
-                                <thead>
-                                <tr>
-                                    <td>@lang('teams.show_user_name')</td>
-                                    <td>@lang('teams.show_user_position')</td>
-                                    <td class="text-right">@lang('teams.show_user_date')</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($connections as $connection)
-                                <tr>
-                                    <td><a href="{{ route('peoples.show', $connection->user) }}">{{ $connection->user->name }}</a></td>
-                                    <td>{{ $connection->position }}</td>
-                                    <td class="text-right">{{ \Carbon\Carbon::parse($connection->created_at)->format('d M, Y') }}</td>
-                                </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-
                             {!! Form::open(['url' => route('threads.store') . '?team_id=' . $team->id, 'method'=>'post']) !!}
                             @if($team->user_id != auth()->id())
                                 <input type="hidden" name="connections[{{ $team->user_id }}]" value="user">
