@@ -38,7 +38,7 @@
                      <a href="{{ route('peoples.show', $team->user) }}">{{$team->user->name}}</a>
                   </td>
                   <td>{{ $team->type->name }}</td>
-                  <td>{{ \Carbon\Carbon::parse($team->created_at)->format('d M, Y') }}</td>
+                  <td class="date-short">{{ $team->created_at }}</td>
                </tr>
             @endforeach
 

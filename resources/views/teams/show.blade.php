@@ -37,7 +37,7 @@
                                     </tr>
                                     <tr>
                                         <td><b>@lang('teams.show_date')</b></td>
-                                        <td><span class="team-info">{{ \Carbon\Carbon::parse($team->created_at)->format('d M, Y') }}</span></td>
+                                        <td><span class="team-info date-short">{{ $team->created_at }}</span></td>
                                     </tr>
                                     <tr>
                                         <td><b>@lang('teams.show_team_type')</b></td>
@@ -63,11 +63,11 @@
                                             <tr>
                                                 <td><a href="{{ route('peoples.show', $connection->user) }}">{{ $connection->user->name }}</a></td>
                                                 <td>{{ $connection->position }}</td>
-                                                <td class="text-right">{{ \Carbon\Carbon::parse($connection->created_at)->format('d M, Y') }}</td>
+                                                <td class="text-right date-short">{{ $connection->created_at }}</td>
                                             </tr>
                                             @endforeach
                                             </tbody>
-                                        </table>                                           
+                                        </table>
                                         </td>
                                     </tr>
                                 </tbody>

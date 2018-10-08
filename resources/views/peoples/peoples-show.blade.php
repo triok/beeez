@@ -25,7 +25,7 @@
                                     </tr>
                                     <tr>
                                         <td><b>@lang('peoples.member')</b></td>
-                                        <td><span class="people-info">{{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}</span></td>
+                                        <td><span class="people-info date-short">{{ $user->created_at }}</span></td>
                                     </tr>
                                     <tr>
                                         <td><b>@lang('peoples.social')</b></td>
