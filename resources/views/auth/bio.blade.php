@@ -35,7 +35,7 @@
                     <button type="button" class="btn btn-warning social-btn-conf" disabled>Verified</button>
                 @else
                     <button type="button" class="btn btn-info social-btn-save">Save</button>
-                    <button type="button" class="btn btn-success social-btn-conf" {{isset($socLink['obj']) ?: 'disabled'}}>Confirm</button>
+                    <button type="button" class="btn btn-success social-btn-conf" {{ (isset($socLink['obj']) ? '' : 'disabled') }}>Confirm</button>
                 @endif
             </div>
 

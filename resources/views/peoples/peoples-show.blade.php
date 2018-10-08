@@ -30,13 +30,17 @@
                                     <tr>
                                         <td><b>@lang('peoples.social')</b></td>
                                         <td><ul class="list-group">
-                                            @if(!isset($user->socialLinks))
+                                            @php($socialCount = 0)
+                                            @if(isset($user->socialLinks))
                                                 @foreach($user->socialLinks as $social)
                                                     @if(isset($social['obj']) && $social['obj']->pivot->status == config('tags.statuses.confirmed.value'))
                                                         {{$social['title']}}<li class="list-group-item list-group-item-success">{{$social['obj']->pivot->link}}<span class="badge">confirmed</span></li>
+                                                        @php($socialCount++)
                                                     @endif
                                                 @endforeach
-                                            @else
+                                            @endif
+
+                                            @if(!$socialCount)
                                                 <span class="people-info">@lang('peoples.nosocial')</span> 
                                             @endif   
                                             </ul>

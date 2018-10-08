@@ -25,7 +25,7 @@
                   <td><a href="{{route('peoples.show', $user)}}">{{$user->username}}</a></td>
                   <td>{{$user->name}}</td>
                   <td><span class="text-success">{{$user->rating_positive}}</span>/<span class="text-danger">{{$user->rating_negative}}</span></td>
-                  <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}</td>
+                  <td class="date-short">{{ $user->created_at }}</td>
                </tr>
             @endforeach
             </tbody>

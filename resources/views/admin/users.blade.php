@@ -20,7 +20,7 @@
 
                         <td>{{$user->name}}</td>
                         <td>{{$user->email}}</td>
-                        <td>{{date('d M y',strtotime($user->created_at))}}</td>
+                        <td class="date-short">{{ $user->created_at }}</td>
                         <td>
                             <a data-toggle="tooltip" title="edit" href="/users/{{$user->id}}/view"
                                class="table-action-btn"><i
