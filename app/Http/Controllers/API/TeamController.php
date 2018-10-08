@@ -13,7 +13,7 @@ class TeamController extends Controller
         if ($request->get('q')) {
             $teams = Team::where('name', 'LIKE', '%' . $request->q . '%')->take(10)->get();
         } else {
-            $teams = Team::query()->take(10)->get();
+            $teams = Team::query()->with('user')->with('type')->get();
         }
 
         return response()->json($teams);

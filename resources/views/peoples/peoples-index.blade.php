@@ -12,8 +12,7 @@
                         <ul class="result"></ul>
                     </div>
                 </div>
-                <table class="table table-responsive table-full-width table-peoples table-hover table-search"
-                       id="users-table">
+                <table class="table table-responsive table-full-width table-peoples table-hover table-search" id="users-table">
                     <thead>
                     <tr>
                         <th>@lang('peoples.login')</th>
@@ -78,7 +77,7 @@
                         "data": "created_at",
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
-                                return '<span class="date-short">' + data + '</span>';
+                                return '<span class="date-short">' + moment(data, "YYYY-MM-DD mm:ss").format("ll") + '</span>';
                             }
 
                             return data;
