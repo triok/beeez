@@ -56,7 +56,7 @@
                 @else
                 <li id="welcome" class="left-sidebar active" style="text-align: center; padding: 20px 0px;">
                    <p>Добро пожаловать,</p>
-                   <p>name!</p> 
+                   <p>{{ Auth::user()->name }}!</p>
                 </li>
                 <li class="left-sidebar dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
