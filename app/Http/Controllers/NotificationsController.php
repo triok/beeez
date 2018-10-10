@@ -106,7 +106,7 @@ class NotificationsController extends Controller
 
         TeamUsers::where('team_id', $team_id)
             ->where('user_id', auth()->id())
-            ->delete(['is_approved' => true]);
+            ->delete();
 
         $notification->delete();
 
@@ -132,6 +132,14 @@ class NotificationsController extends Controller
             flash()->error('Access denied!');
 
             return redirect(route('notifications.index'));
+        }
+
+        $team_id = isset($notification->data['team_id']) ? $notification->data['team_id'] : 0;
+
+        if ($team_id && $team = Team::find($team_id)) {
+            TeamUsers::where('team_id', $team_id)
+                ->where('user_id', auth()->id())
+                ->delete();
         }
 
         $notification->delete();
