@@ -57,13 +57,13 @@ class NotificationTransformer extends Transformer
                 'title' => 'Отклонить',
                 'class' => 'btn-danger',
             ];
+        } else {
+            $actions[] = [
+                'route' => route('notifications.destroy'),
+                'title' => 'Удалить',
+                'class' => 'btn-default'
+            ];
         }
-
-        $actions[] = [
-            'route' => route('notifications.destroy'),
-            'title' => 'Удалить',
-            'class' => 'btn-default'
-        ];
 
         return $actions;
     }

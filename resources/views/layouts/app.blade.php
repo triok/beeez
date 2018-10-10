@@ -286,6 +286,8 @@
                 </div>                
             </div>
 
+            @include('notifications.modal')
+
             <footer>
                 <div class="container">
                     <hr>

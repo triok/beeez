@@ -51,7 +51,7 @@ class NotificationsController extends Controller
         if (!$notification) {
             flash()->error('Access denied!');
 
-            return redirect(route('notifications.index'));
+            return redirect($request->get('redirect', $request->get('redirect', route('notifications.index'))));
         }
 
         $team_id = isset($notification->data['team_id']) ? $notification->data['team_id'] : 0;
@@ -61,7 +61,7 @@ class NotificationsController extends Controller
         if (!$team) {
             flash()->error('Team not found!');
 
-            return redirect(route('notifications.index'));
+            return redirect($request->get('redirect', route('notifications.index')));
         }
 
         TeamUsers::where('team_id', $team_id)
@@ -72,7 +72,7 @@ class NotificationsController extends Controller
 
         flash()->success('Вы приняты в команду.');
 
-        return redirect(route('notifications.index'));
+        return redirect($request->get('redirect', route('notifications.index')));
     }
 
     /**
@@ -91,7 +91,7 @@ class NotificationsController extends Controller
         if (!$notification) {
             flash()->error('Access denied!');
 
-            return redirect(route('notifications.index'));
+            return redirect($request->get('redirect', route('notifications.index')));
         }
 
         $team_id = isset($notification->data['team_id']) ? $notification->data['team_id'] : 0;
@@ -101,7 +101,7 @@ class NotificationsController extends Controller
         if (!$team) {
             flash()->error('Team not found!');
 
-            return redirect(route('notifications.index'));
+            return redirect($request->get('redirect', route('notifications.index')));
         }
 
         TeamUsers::where('team_id', $team_id)
@@ -112,7 +112,7 @@ class NotificationsController extends Controller
 
         flash()->success('Вы удалены из команды.');
 
-        return redirect(route('notifications.index'));
+        return redirect($request->get('redirect', route('notifications.index')));
     }
 
     /**
@@ -131,7 +131,7 @@ class NotificationsController extends Controller
         if (!$notification) {
             flash()->error('Access denied!');
 
-            return redirect(route('notifications.index'));
+            return redirect($request->get('redirect', route('notifications.index')));
         }
 
         $team_id = isset($notification->data['team_id']) ? $notification->data['team_id'] : 0;
@@ -146,6 +146,6 @@ class NotificationsController extends Controller
 
         flash()->success('Уведомление удалено.');
 
-        return redirect(route('notifications.index'));
+        return redirect($request->get('redirect', route('notifications.index')));
     }
 }
