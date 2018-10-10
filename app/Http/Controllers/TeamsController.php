@@ -32,7 +32,7 @@ class TeamsController extends Controller
         $teams = Team::where('user_id', auth()->id())
             ->orWhereIn('id', $teamIds)
             ->paginate(request('count', 20));
-
+            
         return view('teams.index', compact('teams'));
     }
 
