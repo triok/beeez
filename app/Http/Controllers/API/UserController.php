@@ -17,6 +17,10 @@ class UserController extends Controller
             $users = User::login($request->q)->take(10)->get();
         }
 
+        if($request->get('source') == 'dataTable') {
+            return response()->json(['data' => $users]);
+        }
+
         return response()->json($users);
     }
 }
