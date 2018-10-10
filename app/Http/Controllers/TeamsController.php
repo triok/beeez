@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Team;
 use App\Models\TeamType;
 use App\Models\TeamUsers;
+use App\Notifications\TeamUserNotification;
 use App\Queries\UserQuery;
 use App\User;
 use Illuminate\Http\Request;
@@ -213,11 +214,15 @@ class TeamsController extends Controller
 
                     unset($connectionIds[$user_id]);
                 } else {
-                    TeamUsers::create([
+                    $teamUser = TeamUsers::create([
                         'team_id' => $team->id,
                         'user_id' => $user_id,
                         'position' => $connection['position']
                     ]);
+
+                    if($recipient = User::find($user_id)) {
+                        $recipient->notify(new TeamUserNotification($teamUser));
+                    }
                 }
             }
 

@@ -2,23 +2,26 @@
 
 namespace App\Notifications;
 
+use App\Models\TeamUsers;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TeamUser extends Notification
+class TeamUserNotification extends Notification
 {
     use Queueable;
+
+    protected $teamUser;
 
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param TeamUsers $teamUser
      */
-    public function __construct()
+    public function __construct(TeamUsers $teamUser)
     {
-        //
+        $this->teamUser = $teamUser;
     }
 
     /**
@@ -55,7 +58,8 @@ class TeamUser extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'team_id' => $this->teamUser->team_id,
+            'position' => $this->teamUser->position,
         ];
     }
 }
