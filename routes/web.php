@@ -140,6 +140,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::resource('organizations', 'OrganizationsController');
 
+    Route::resource('notifications', 'NotificationsController');
+
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
         if (in_array($locale, \Config::get('app.locales'))) {
