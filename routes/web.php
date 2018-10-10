@@ -140,9 +140,10 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::resource('organizations', 'OrganizationsController');
 
-    Route::resource('notifications', 'NotificationsController');
-    Route::patch('notifications/approve/{id}', 'NotificationsController@approve')->name('notifications.approve');
-    Route::patch('notifications/reject/{id}', 'NotificationsController@reject')->name('notifications.reject');
+    Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
+    Route::post('notifications/approve', 'NotificationsController@approve')->name('notifications.approve');
+    Route::post('notifications/reject', 'NotificationsController@reject')->name('notifications.reject');
+    Route::post('notifications/destroy', 'NotificationsController@destroy')->name('notifications.destroy');
 
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {

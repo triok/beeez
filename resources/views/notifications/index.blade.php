@@ -28,11 +28,13 @@
 
                         <div class="panel-footer">
                             @foreach($notification['actions'] as $action)
-                                <form class="form-inline" style="display: inline-block">
-                                    <button type="submit" class="btn btn-sm {{ $action['class'] }}">
-                                        {{ $action['title'] }}
-                                    </button>
-                                </form>
+                                {!! Form::open(['url' => $action['route'], 'method'=>'post', 'style' => 'display: inline-block']) !!}
+                                <input type="hidden" name="id" value="{{ $notification['id'] }}">
+                            
+                                <button type="submit" class="btn btn-sm {{ $action['class'] }}">
+                                    {{ $action['title'] }}
+                                </button>
+                                {!! Form::close() !!}
                             @endforeach
                         </div>
                     </div>

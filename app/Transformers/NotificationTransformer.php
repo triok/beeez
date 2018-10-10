@@ -15,6 +15,7 @@ class NotificationTransformer extends Transformer
         $team = Team::find($notification['data']['team_id']);
 
         return [
+            "id" => $notification['id'],
             "title" => $this->getTitle($notification),
             "date" => $notification['created_at'],
             "message" => $this->getMessage($notification, $team),
@@ -46,20 +47,20 @@ class NotificationTransformer extends Transformer
 
         if ($notification['type'] == 'App\Notifications\TeamUserNotification' && $team) {
             $actions[] = [
-                'route' => route('notifications.approve', $notification['id']),
+                'route' => route('notifications.approve'),
                 'title' => 'Принять',
                 'class' => 'btn-success',
             ];
 
             $actions[] = [
-                'route' => route('notifications.reject', $notification['id']),
+                'route' => route('notifications.reject'),
                 'title' => 'Отклонить',
                 'class' => 'btn-danger',
             ];
         }
 
         $actions[] = [
-            'route' => route('notifications.destroy', $notification['id']),
+            'route' => route('notifications.destroy'),
             'title' => 'Удалить',
             'class' => 'btn-default'
         ];
