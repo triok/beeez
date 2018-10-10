@@ -12,29 +12,28 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title" style="display: inline-block;">
-                                {{ $notification->type }}
+                                {{ $notification['title'] }}
                             </h3>
+
                             <div class="pull-right">
                                 <span class="date-short">
-                                    {{ $notification->created_at }}
+                                    {{ $notification['date'] }}
                                 </span>
                             </div>
                         </div>
+
                         <div class="panel-body">
-                            Вас приняли в команду "название" на должность "название должности".
+                            {{ $notification['message'] }}
                         </div>
+
                         <div class="panel-footer">
-                            <form class="form-inline" style="display: inline-block">
-                                <button type="submit" class="btn btn-success btn-sm">Принять</button>
-                            </form>
-
-                            <form class="form-inline" style="display: inline-block">
-                                <button type="submit" class="btn btn-danger btn-sm">Отклонить</button>
-                            </form>
-
-                            <form class="form-inline" style="display: inline-block">
-                                <button type="submit" class="btn btn-default btn-sm">Удалить</button>
-                            </form>
+                            @foreach($notification['actions'] as $action)
+                                <form class="form-inline" style="display: inline-block">
+                                    <button type="submit" class="btn btn-sm {{ $action['class'] }}">
+                                        {{ $action['title'] }}
+                                    </button>
+                                </form>
+                            @endforeach
                         </div>
                     </div>
                 </div>
