@@ -55,7 +55,8 @@
                                             <tr>
                                                 <td>@lang('teams.show_user_name')</td>
                                                 <td>@lang('teams.show_user_position')</td>
-                                                <td class="text-right">@lang('teams.show_user_date')</td>
+                                                <td>@lang('teams.show_user_date')</td>
+                                                <td class="text-right">Статус</td>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -63,7 +64,8 @@
                                             <tr>
                                                 <td><a href="{{ route('peoples.show', $connection->user) }}">{{ $connection->user->name }}</a></td>
                                                 <td>{{ $connection->position }}</td>
-                                                <td class="text-right date-short">{{ $connection->created_at }}</td>
+                                                <td class="date-short">{{ $connection->created_at }}</td>
+                                                <td class="text-right">{{ ($connection->is_approved ? 'Подтвержден' : 'В ожидании') }}</td>
                                             </tr>
                                             @endforeach
                                             </tbody>
