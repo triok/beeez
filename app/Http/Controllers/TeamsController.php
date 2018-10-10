@@ -82,7 +82,7 @@ class TeamsController extends Controller
 
         $attributes['slug'] = str_slug($request->get('name', ''));
 
-        $validator = Validator::make($attributes, $rules, ['unique' => 'The name has already been taken.']);
+        $validator = Validator::make($attributes, $rules, ['unique' => 'Название не уникально.']);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
