@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Team;
 use App\Models\TeamType;
 use App\Models\TeamUsers;
+use App\Notifications\TeamUserNotification;
 use App\Queries\UserQuery;
 use App\User;
 use Illuminate\Http\Request;
@@ -44,9 +45,11 @@ class TeamsController extends Controller
      */
     public function show(Team $team)
     {
+        $userIsAdmin = $this->userIsTeamAdmin($team);
+
         $connections = TeamUsers::where('team_id', $team->id)->get();
 
-        return view('teams.show', compact('team', 'connections'));
+        return view('teams.show', compact('team', 'connections', 'userIsAdmin'));
     }
 
     /**
@@ -82,7 +85,7 @@ class TeamsController extends Controller
 
         $attributes['slug'] = str_slug($request->get('name', ''));
 
-        $validator = Validator::make($attributes, $rules, ['unique' => 'The name has already been taken.']);
+        $validator = Validator::make($attributes, $rules, ['unique' => 'Название не уникально.']);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -111,7 +114,7 @@ class TeamsController extends Controller
      */
     public function edit(Team $team)
     {
-        if ($team->user_id != auth()->user()->id) {
+        if (!$this->userIsTeamAdmin($team)) {
             flash()->error('Access denied!');
 
             return redirect()->back();
@@ -135,7 +138,7 @@ class TeamsController extends Controller
      */
     public function update(Request $request, Team $team)
     {
-        if ($team->user_id != auth()->user()->id) {
+        if (!$this->userIsTeamAdmin($team)) {
             flash()->error('Access denied!');
 
             return redirect()->back();
@@ -192,6 +195,97 @@ class TeamsController extends Controller
     }
 
     /**
+     * Update a resource in storage.
+     *
+     * @param Team $team
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function addAdmin(Team $team)
+    {
+        if (auth()->id() != $team->user_id) {
+            flash()->error('Access denied!');
+
+            return redirect()->back();
+        }
+
+        $connection = TeamUsers::where('team_id', $team->id)
+            ->where('user_id', request('user_id'))
+            ->first();
+
+        if (!$connection) {
+            flash()->error('Access denied!');
+
+            return redirect(route('teams.show', $team));
+        }
+
+        TeamUsers::where('team_id', $team->id)
+            ->where('user_id', request('user_id'))
+            ->update(['is_admin' => true]);
+
+        flash()->success('Доступ открыт.');
+
+        return redirect(route('teams.show', $team));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Team $team
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function deleteAdmin(Team $team)
+    {
+        if (auth()->id() != $team->user_id) {
+            flash()->error('Access denied!');
+
+            return redirect()->back();
+        }
+
+        $connection = TeamUsers::where('team_id', $team->id)
+            ->where('user_id', request('user_id'))
+            ->first();
+
+        if (!$connection) {
+            flash()->error('Access denied!');
+
+            return redirect(route('teams.show', $team));
+        }
+
+        TeamUsers::where('team_id', $team->id)
+            ->where('user_id', request('user_id'))
+            ->update(['is_admin' => false]);
+
+        flash()->success('Доступ закрыт.');
+
+        return redirect(route('teams.show', $team));
+    }
+
+    /**
+     * Destroy a resource in storage.
+     *
+     * @param Team $team
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function destroy(Team $team)
+    {
+        if (!$this->userIsTeamAdmin($team)) {
+            flash()->error('Access denied!');
+
+            return redirect()->back();
+        }
+
+        TeamUsers::where('team_id', $team->id)
+            ->delete();
+
+        $team->delete();
+
+        flash()->success('Команда удалена.');
+
+        return redirect(route('teams.index'));
+    }
+
+    /**
      * Add connections.
      *
      * @param Request $request
@@ -213,11 +307,15 @@ class TeamsController extends Controller
 
                     unset($connectionIds[$user_id]);
                 } else {
-                    TeamUsers::create([
+                    $teamUser = TeamUsers::create([
                         'team_id' => $team->id,
                         'user_id' => $user_id,
                         'position' => $connection['position']
                     ]);
+
+                    if ($recipient = User::find($user_id)) {
+                        $recipient->notify(new TeamUserNotification($teamUser));
+                    }
                 }
             }
 
@@ -230,5 +328,22 @@ class TeamsController extends Controller
             TeamUsers::where('team_id', $team->id)
                 ->delete();
         }
+    }
+
+    private function userIsTeamAdmin($team)
+    {
+        if (auth()->id() == $team->user_id) {
+            return true;
+        }
+
+        if ($connection = TeamUsers::where('team_id', $team->id)
+            ->where('user_id', auth()->id())
+            ->where('is_admin', true)
+            ->first()) {
+
+            return true;
+        }
+
+        return false;
     }
 }

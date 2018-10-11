@@ -131,6 +131,8 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::get('/teams/projects','TeamsController@projects')->name('teams.projects');
+    Route::post('/teams/{team}/addAdmin','TeamsController@addAdmin')->name('teams.addAdmin');
+    Route::post('/teams/{team}/deleteAdmin','TeamsController@deleteAdmin')->name('teams.deleteAdmin');
     Route::resource('teams', 'TeamsController');
 
     Route::get('/organizations/my','OrganizationsController@my')->name('organizations.my');
@@ -139,6 +141,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::patch('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
 
     Route::resource('organizations', 'OrganizationsController');
+
+    Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
+    Route::post('notifications/approve', 'NotificationsController@approve')->name('notifications.approve');
+    Route::post('notifications/reject', 'NotificationsController@reject')->name('notifications.reject');
+    Route::post('notifications/destroy', 'NotificationsController@destroy')->name('notifications.destroy');
 
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
