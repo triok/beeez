@@ -7,10 +7,18 @@
                 <a href="{{ route('teams.index') }}">
                     <span><i class="fa fa-arrow-left"></i> @lang('teams.back_to_list')</span>
                 </a>
-                @if($team->user_id == auth()->user()->id)
-                <a href="{{ route('teams.edit', $team) }}" class="btn btn-default btn-xs pull-right">
-                    <i class="fa fa-pencil"></i> @lang('teams.edit')
-                </a>
+                @if($userIsAdmin)
+                    <div class="pull-right">
+                        <a href="{{ route('teams.edit', $team) }}" class="btn btn-default btn-xs">
+                            <i class="fa fa-pencil"></i> @lang('teams.edit')
+                        </a>
+
+                        {!! Form::open(['url' => route('teams.destroy', $team), 'method'=>'delete', 'style' => 'display:inline-block;']) !!}
+                        <button type="submit" onclick="" class="btn btn-xs btn-danger" title="Удалить команду">
+                            <i class="fa fa-trash"></i> Удалить
+                        </button>
+                        {!! Form::close() !!}
+                    </div>
                 @endif                
                 <hr>
 
@@ -55,7 +63,11 @@
                                             <tr>
                                                 <td>@lang('teams.show_user_name')</td>
                                                 <td>@lang('teams.show_user_position')</td>
-                                                <td class="text-right">@lang('teams.show_user_date')</td>
+                                                <td>@lang('teams.show_user_date')</td>
+                                                @if($team->user_id == auth()->id())
+                                                <td>Статус</td>
+                                                <td class="text-right">Доступ</td>
+                                                @endif
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -63,7 +75,27 @@
                                             <tr>
                                                 <td><a href="{{ route('peoples.show', $connection->user) }}">{{ $connection->user->name }}</a></td>
                                                 <td>{{ $connection->position }}</td>
-                                                <td class="text-right date-short">{{ $connection->created_at }}</td>
+                                                <td class="date-short">{{ $connection->created_at }}</td>
+                                                @if($team->user_id == auth()->id())
+                                                <td>{{ ($connection->is_approved ? 'Подтвержден' : 'В ожидании') }}</td>
+                                                <td class="text-right">
+                                                    @if($connection->is_admin)
+                                                        {!! Form::open(['url' => route('teams.deleteAdmin', $team), 'method'=>'post']) !!}
+                                                        <input type="hidden" name="user_id" value="{{ $connection->user_id }}">
+                                                        <button type="submit" onclick="" class="btn btn-xs btn-default" title="Удалить доступ администратора">
+                                                            <i class="fa fa-key" style="color: red;"></i>
+                                                        </button>
+                                                        {!! Form::close() !!}
+                                                    @else
+                                                        {!! Form::open(['url' => route('teams.addAdmin', $team), 'method'=>'post']) !!}
+                                                        <input type="hidden" name="user_id" value="{{ $connection->user_id }}">
+                                                        <button type="submit" onclick="" class="btn btn-xs btn-default" title="Открыть доступ администратора">
+                                                            <i class="fa fa-key" aria-hidden="true"></i>
+                                                        </button>
+                                                        {!! Form::close() !!}
+                                                    @endif
+                                                </td>
+                                                @endif
                                             </tr>
                                             @endforeach
                                             </tbody>

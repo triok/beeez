@@ -216,14 +216,30 @@
                             </li>
                             <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
                             <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>  
-                            @endrole                      
-                            <li><a href="{{route('messages')}}"><i class="fa fa-envelope"></i> @lang('messages.title') @include('messenger.unread-count')</a></li>
+                            @endrole
+
                             @permission('read-payouts')
                             <li><a href="/payouts"><i class="fa fa-money"></i> Payouts</a></li>
                             @endpermission
+
                             @permission('read-pages')
                             <li><a href="admin/pages"><i class="fa fa-file-powerpoint-o"></i> Pages</a></li>
                             @endpermission
+
+                            <li>
+                                <a href="{{route('messages')}}" title="@lang('messages.title')">
+                                    <i class="fa fa-envelope"></i>
+                                    @include('messenger.unread-count')
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{route('notifications.index')}}" title="Уведомления">
+                                    <i class="fa fa-bell"></i>
+                                    @include('notifications.unread-count')
+                                </a>
+                            </li>
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false">
@@ -269,6 +285,8 @@
 
                 </div>                
             </div>
+
+            @include('notifications.modal')
 
             <footer>
                 <div class="container">

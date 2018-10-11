@@ -38,7 +38,7 @@
         <div class="btn-toolbar" id="savesubmit">
             <div class="btn-group btn-group-lg">
                 <button type="submit" class="btn btn-primary" id="submit" name="submit"
-                        value="submit">@lang('teams.submit')</button>
+                        value="submit">Сохранить</button>
             </div>
         </div>
 
