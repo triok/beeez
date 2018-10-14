@@ -36,7 +36,16 @@ class TeamsController extends Controller
             
         return view('teams.index', compact('teams'));
     }
+    public function myteams() 
+    {
+        $teamIds = auth()->user()->teams()->pluck('team_id')->toArray();
 
+        $teams = Team::where('user_id', auth()->id())
+            ->orWhereIn('id', $teamIds)
+            ->paginate(request('count', 20));
+            
+        return view('teams.myteams', compact('teams'));
+    }
     /**
      * Display the specified resource.
      *

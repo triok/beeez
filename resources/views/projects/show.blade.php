@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid project-show" id="main">
+<div class="container-fluid show-project" id="main">
     <h2>{{ $project->name }}</h2>
 
-    <div class="col-sm-3 pull-right">
-    <a href="{{ route('jobs.create') }}?project_id={{ $project->id }}" class="btn btn-block btn-success" style="margin-top: 10px;">@lang('projects.post')</a>
+    <div class="col-sm-2 pull-right">
+    <a href="{{ route('jobs.create') }}?project_id={{ $project->id }}" class="btn btn-block btn-primary" style="margin-top: 10px;">@lang('projects.post')</a>
     </div>
 
     <div class="col-xs-12">
@@ -18,7 +18,7 @@
                 <td>@lang('projects.deadline')</td>
                 <td>@lang('projects.executor')</td>
                 <td>@lang('projects.price')</td>
-                <td>@lang('projects.published')</td>
+                <td>@lang('projects.publish')</td>
             </tr>
             </thead>
  
@@ -27,16 +27,16 @@
             @foreach($project->jobs as $job)
             <tr class="sort-row" id="{{ $job->id }}">
                 <td><a href="{{ route('jobs.show', $job) }}">{{ $job->name }}</a></td>
-                <td>{{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i') }}</td>
+                <td class="date-short">{{ \Carbon\Carbon::parse($job->end_date) }}</td>
                 <td>
                     @if(count($job->applications) > 0)
                         {{ $job->applications()->first()->user->name }}
                     @else
-                        нет
+                        @lang('projects.nousers')
                     @endif
                 </td>
-                <td>${{ $job->price }}</td>
-                <td>Опубликовано</td>
+                <td>{{ $job->formattedPrice }}</td>
+                <td>@lang('projects.published')</td>
             </tr>
             @endforeach
 
@@ -44,7 +44,7 @@
           
         </table>
             @else
-            <p>В проекте еще нет заданий.</p>
+            <p>@lang('projects.published')</p>
             @endif  
     </div>
 
@@ -55,7 +55,8 @@
         </p>
         <p><span>@lang('projects.jobs-complete')</span> 0</p>
     </div>
-</div>    
+</div>
+   
 @endsection
 
 @push('scripts')

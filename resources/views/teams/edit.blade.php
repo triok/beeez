@@ -1,15 +1,26 @@
 @extends('layouts.app')
 @section('content')
 <div class="container" id="main">
-    <div class="content-form">
+    <div class="content-form team-edit">
         <h2><i class="fa fa-pencil"></i> {{ $team->name }}</h2>
 
+        <div class="row">
+            <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="input-team-type">@lang('teams.team_type_edit')</label>
+                        <span class="team-info">{{ $team->type->name }}</span>
+                    </div>
+            </div>
+        </div>
+
         {!! Form::open(['url' => route('teams.update', $team), 'files' => true, 'enctype' => 'multipart/form-data', 'method'=>'patch']) !!}
+
+
 
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label for="input-logo">@lang('teams.logo')</label><br>
+                    <label for="input-logo">@lang('teams.logo_edit')</label><br>
 
                     <img src="{{ $team->logo() }}"
                          class="img-thumbnail"
@@ -22,10 +33,12 @@
             </div>
         </div>
 
+
+
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label for="input-description">@lang('teams.description')</label>
+                    <label for="input-description">@lang('teams.description_edit')</label>
                     {!! Form::textarea('description', old('description', isset($team) ? $team->description : ''), ['class' => 'editor1', 'id' => 'input-description']) !!}
                 </div>
             </div>
@@ -36,9 +49,9 @@
         <hr>
 
         <div class="btn-toolbar" id="savesubmit">
-            <div class="btn-group btn-group-lg">
+            <div class="btn-group btn-group-md">
                 <button type="submit" class="btn btn-primary" id="submit" name="submit"
-                        value="submit">Сохранить</button>
+                        value="submit">@lang('teams.save')</button>
             </div>
         </div>
 

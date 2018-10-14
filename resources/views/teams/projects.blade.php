@@ -15,7 +15,7 @@
                         </li>
                     @endforeach
                 </ul>
-
+                <hr>
                 <div class="tab-content">
                     @foreach($teams as $team)
                         <div id="team-{{ $team->id }}"
@@ -23,7 +23,7 @@
 
                             <div class="pull-right">
                                 <a href="{{ route('projects.create') }}?team_id={{ $team->id }}"
-                                   class="btn btn-success btn-block">
+                                   class="btn btn-primary btn-block">
 
                                     <i class="fa fa-sitemap"></i> @lang('projects.create')
                                 </a>

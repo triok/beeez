@@ -31,6 +31,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('projects', 'ProjectsController');
     Route::post('projects/{project}/done', 'ProjectsController@done')->name('projects.done');
     Route::post('projects/{project}/restore', 'ProjectsController@restore')->name('projects.restore');
+    Route::post('projects/{project}/edit', 'ProjectsController@edit')->name('projects.edit');    
 
     Route::post('projects/{project}/favorite', 'ProjectsController@favorite')->name('projects.favorite');
     Route::post('projects/{project}/unfavorite', 'ProjectsController@unfavorite')->name('projects.unfavorite');
@@ -130,6 +131,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('/{user}','PeopleController@updateAvatar')->name('peoples.updateAvatar');
     });
 
+    // Teams
+    Route::get('/teams/myteams','TeamsController@myteams')->name('teams.myteams');    
     Route::get('/teams/projects','TeamsController@projects')->name('teams.projects');
     Route::post('/teams/{team}/addAdmin','TeamsController@addAdmin')->name('teams.addAdmin');
     Route::post('/teams/{team}/deleteAdmin','TeamsController@deleteAdmin')->name('teams.deleteAdmin');

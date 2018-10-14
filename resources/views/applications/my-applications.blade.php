@@ -2,12 +2,12 @@
 @section('content')
 <div class="container-fluid">
     <ul class="nav nav-tabs">
-      <li role="presentation" class="active"><a data-toggle="tab" href="#panel1">@lang('application.freelancer')</a></li>
-      <li role="presentation"><a data-toggle="tab" href="#panel2">@lang('application.client')</a></li>
+      <li role="presentation" class="active"><a data-toggle="tab" href="#freelancer">@lang('application.freelancer')</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#client">@lang('application.client')</a></li>
       <li role="presentation"><a data-toggle="tab" href="#panel3">@lang('application.titlebookmarks')</a></li>
     </ul>
     <div class="tab-content">
-        <div id="panel1" class="tab-pane fade in active">
+        <div id="freelancer" class="tab-pane fade in active">
             <div class="col-xs-12" id="main">
                 <h2>@lang('application.titlefreelancer')</h2>
 
@@ -27,8 +27,8 @@
                     <tbody>
                     @foreach($applications as $application)
                         <tr>
-                            <td>{{\Carbon\Carbon::parse($application->created_at)->format('d M, Y')}}</td>
-                            <td>{{\Carbon\Carbon::parse($application->job->end_date)->format('d M, Y, H:i')}}</td>                
+                            <td class="date-short">{{\Carbon\Carbon::parse($application->created_at)}}</td>
+                            <td class="date-full">{{\Carbon\Carbon::parse($application->job->end_date)}}</td>                
                             <td><a href="{{route('jobs.show', $application->job)}}" id="{{$application->job->id}}">{{$application->job->name}}</a></td>
                             <td>{!! $application->status == config('enums.jobs.statuses.IN_REVIEW') ? '<p class="label label-danger">Your task is under review</p>' : $application->prettyStatus !!}</td>
                             <td>
@@ -51,13 +51,13 @@
                 @lang('application.nojobs')
                 @endif
 
-                <div class="tab-pane fade" id="client" role="tabpanel" aria-labelledby="home-tab">@lang('application.nojobs')</div>
+                <div class="tab-pane fade" id="freelancer" role="tabpanel" aria-labelledby="home-tab">@lang('application.nojobs')</div>
 
 
             </div>
         </div>
-        <div id="panel2" class="tab-pane fade ">
-            <div id="panel1" class="tab-pane fade in active">
+        <div id="client" class="tab-pane fade ">
+            <div id="client" class="tab-pane fade in active">
                 <div class="col-xs-12" id="main">
                 <h2>@lang('application.titleclient')</h2>
                 @if (count($clientapps) > 0)   
@@ -75,8 +75,8 @@
                     @foreach($clientapps as $clientapp)
                     <tr>
                         <td><a href="{{route('jobs.show', $clientapp)}}" id="{{$clientapp->id}}">{{$clientapp->name}}</a></td>
-                        <td>{{\Carbon\Carbon::parse($clientapp->created_at)->format('d M, Y')}}</td>
-                        <td>{{\Carbon\Carbon::parse($clientapp->end_date)->format('d M, Y, H:i')}}</td>
+                        <td class="date-short">{{\Carbon\Carbon::parse($clientapp->created_at)}}</td>
+                        <td class="date-full">{{\Carbon\Carbon::parse($clientapp->end_date)}}</td>
                         <td>
                             <button data-id="{{$clientapp->id}}" {!! $clientapp->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-sm btn-review">
                             <i class="fa fa-handshake-o" aria-hidden="true"></i>
@@ -100,8 +100,8 @@
                 </div>
             </div>
         </div>
-        <div id="panel3" class="tab-pane fade ">
-            <div id="panel1" class="tab-pane fade in active">
+        <div id="favorite" class="tab-pane fade ">
+            <div id="favorite" class="tab-pane fade in active">
                 <div class="col-xs-12" id="main">
                 <h2>@lang('application.titlebookmarks')</h2>
                 @lang('application.noBookmarks')

@@ -12098,7 +12098,7 @@ section.other-jobs a.delete {
 .auth {
   margin-top:65px;
 }
-.projects .btn-success, .project-show .btn-success {
+.projects .btn-success, .show-project .btn-primary {
   margin-bottom: 22px;
 }
 .projects .text-right {
@@ -12162,7 +12162,7 @@ section.other-jobs a.delete {
 .auth h2 {
   text-align: center;
 }
-.auth input, .create-team input {
+.auth input, .create-team input, .team-edit input, .create-project input, .edit-project input{
   border: 0px;
   border-bottom:1px solid #ccd0d2;
   background-color: transparent;
@@ -12170,11 +12170,11 @@ section.other-jobs a.delete {
   border-radius: 0px;
   color: #48b0a5;
 }
-.auth input:focus, .create-team input:focus {
+.auth input:focus, .create-team input:focus, .team-edit input:focus, .create-project input:focus, .edit-project input:focus {
   color: unset;
   box-shadow: none;
 }
-.auth .btn-primary, .peoples-show .btn-primary, .teams .btn-primary, .create-team .btn-primary {
+.auth .btn-primary, .peoples-show .btn-primary, .teams .btn-primary, .create-team .btn-primary, .team-edit .btn-primary, #teams-projects .btn-primary, .projects .btn-primary, .create-project .btn-primary, .edit-project .btn-primary, .show-project .btn-primary {
   background-color:#48b0a5;
   border-color: #3b8c83; 
 }
@@ -12190,12 +12190,31 @@ section.other-jobs a.delete {
 .peoples-show .list-group {
   margin: 0px;
 }
-.peoples-show .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus, .auth .btn:focus, .create-team .btn:focus{
+.peoples-show .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus, .auth .btn:focus, .create-team .btn:focus, .edit-team .btn:focus, .create-project .btn:focus, .edit-project .btn:focus, .show-project .btn-primary:focus{
   outline: none;
 }
-.peoples-show .table-search td, .teams-show .table-search td, .create-team #table-users td {
+.peoples-show .table-search td, .teams-show .table-search td, .create-team #table-users td, .team-edit #table-users td{
   border: none;
 }
 #input-logo {
   padding: 15px 0px;
+}
+.team-edit .fa-pencil{
+  color: #48b0a5;
+}
+#teams-projects .nav-pills li {
+  margin-right: 20px;
+  background-color: #e8e8e8;
+  border-radius: 4px;
+  transition: 0.5s;
+}
+#teams-projects .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+  background-color: #47afa5;
+}
+.create-project .icons option, .edit-project .icons option {
+  font-family: FontAwesome;
+  font-size: 20px;
+}
+.create-project .icons option:first-child, .edit-project .icons option:first-child {
+  font-size: 14px;
 }

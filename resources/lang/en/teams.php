@@ -9,12 +9,20 @@ return [
 
     'search' => 'Enter name...',
 
+    // My teams
+    'title_myteams' => 'My teams',
+
     // Form
     'name' => '1. Enter your team name:',
     'logo' => '2. Select logo:',
     'team_type' => '3. Choose team type:',
     'description' => '4. Type some info about your team:',
     'users' => '5. Choose users:',
+
+    // Edit
+    'logo_edit' => 'Logo:',
+    'team_type_edit' => 'Team type:',
+    'description_edit' => 'Type some info about your team:',
 
     // Show
     'show_name' => 'Team:',
@@ -32,4 +40,5 @@ return [
     'submit' => 'Submit',
     'edit' => 'Edit',
     'delete' => 'Delete',
+    'save' => 'Save',    
 ];

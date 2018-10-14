@@ -29,8 +29,6 @@ class JobTransformer extends Transformer
             "created_at" => $job->created_at,
         ];
     }
-
-
     protected function checkAllowApply($job) {
         if(Carbon::now() > $job->end_date) {
             return false;

@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container" id="main">
-        <h2>Edit project</h2>
+    <div class="container edit-project" id="main">
+        <h2>@lang('projects.edit-title')</h2>
 
         {!! Form::open(['url' => route('projects.update', $project), 'method'=>'patch']) !!}
 
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    {!! Form::text('name', $project->name, ['required'=>'required', 'class'=>'form-control', 'placeholder' => 'Project title']) !!}
+                    {!! Form::text('name', $project->name, ['required'=>'required', 'class'=>'form-control', 'placeholder' => __('projects.create-name')]) !!}
                 </div>
             </div>
         </div>
@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    {!! Form::textarea('description', $project->description, ['required'=>'required', 'class'=>'form-control', 'placeholder' => 'Project description']) !!}
+                    {!! Form::textarea('description', $project->description, ['required'=>'required', 'class'=>'form-control', 'placeholder' => __('projects.create-desc')]) !!}
                 </div>
             </div>
         </div>
@@ -24,8 +24,9 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label for="team_id">@lang('projects.create-type')</label>
                     <select class="form-control" name="team_id">
-                        <option value="">персональный</option>
+                        <option value="">@lang('projects.create-personal')</option>
                         @foreach($teams as $team)
                             @if($team->id == $project->team_id)
                                 <option selected value="{{ $team->id }}">{{ $team->name }}</option>
@@ -41,8 +42,9 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label for="icon">@lang('projects.create-icon')</label> 
                     <select class="form-control" style="font-family: FontAwesome;" name="icon">
-                        <option>без иконки</option>
+                        <option>@lang('projects.create-noicon')</option>
                         @foreach($icons as $icon_name=>$icon_code)
                             @if($icon_name == $project->icon)
                                 <option selected value="{{ $icon_name }}">&#x{{ $icon_code }}</option>
@@ -57,7 +59,7 @@
 
         <div class="btn-toolbar">
             <div class="btn-group">
-                <button type="submit" class="btn btn-success" value="submit">Save</button>
+                <button type="submit" class="btn btn-primary" value="submit">@lang('projects.edit-btn')</button>
             </div>
         </div>
 

@@ -96,7 +96,7 @@
                             <a href="{{route('teams.index')}}"><i class="fa fa-search"></i>Найти команду</a>                    
                         </li>
                         <li>
-                            <a href="{{route('teams.index')}}"><i class="fa fa-group"></i>Мои команды</a>                    
+                            <a href="{{route('teams.myteams')}}"><i class="fa fa-group"></i>Мои команды</a>                    
                         </li>
                         @if(Auth::user()->allUserTeams()->count())
                         <li>
@@ -322,7 +322,7 @@
         });
 
         $(".date-full").html(function(index, value) {
-            return moment(value, "YYYY-MM-DD mm:ss").format("lll");
+            return moment(value, "YYYY-MM-DD hh:mm").format("lll");
         });
 
         $(".date-ago").html(function(index, value) {
