@@ -33,8 +33,10 @@ class TeamsController extends Controller
         $teams = Team::where('user_id', auth()->id())
             ->orWhereIn('id', $teamIds)
             ->paginate(request('count', 20));
+
+        $teamTypes = TeamType::orderBy('name')->pluck('name', 'id');
             
-        return view('teams.index', compact('teams'));
+        return view('teams.index', compact('teams', 'teamTypes'));
     }
     public function myteams() 
     {

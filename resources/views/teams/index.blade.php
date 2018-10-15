@@ -12,6 +12,10 @@
              <div class="col-md-2 search">
                  <select id="team-type-filter" class="form-control" style="border: none; border-bottom: 1px solid #ccd0d2;">
                      <option value="">тип команды ...</option>
+
+                     @foreach($teamTypes as $key => $value)
+                        <option value="{{ $key }}">{{ $value }}</option>
+                     @endforeach
                  </select>
              </div>
             <div class="col-md-8 search-button">
@@ -44,6 +48,8 @@
 
 @push('scripts')
    <script>
+       var auth_id = "{{ auth()->id() }}";
+
        $(document).ready(function () {
            var table = $('#teams-table').DataTable({
                bFilter: false,
@@ -58,21 +64,9 @@
                    }
                },
 
-               "initComplete": function () {
-                   this.api().columns().every(function () {
-                       var column = this;
-
-                       if(column[0][0] != 2) return;
-
-                       column.data().unique().sort().each( function ( d, j ) {
-                           $('#team-type-filter').append( '<option value="'+d+'">'+d+'</option>' )
-                       });
-                   });
-               },
-
                "ajax": {
                    "url": "api/v1/teams",
-                   "dataSrc": ""
+                   "dataSrc": "data"
                },
 
                "columns": [
@@ -80,23 +74,29 @@
                        "data": "name",
                        "render": function (data, type, row, meta) {
                            if (type === 'display') {
-                               return '<a href="teams/' + row.slug + '">' + data + '</a> <i class="fa fa-star"></i>';
+                               var res = '<a href="' + row.route + '">' + row.name + '</a>';
+
+                               if (parseInt(auth_id) == parseInt(row.owner.id)) {
+                                   res += ' <i class="fa fa-star"></i>'
+                               }
+
+                               return res;
                            }
 
                            return data;
                        }
                    },
                    {
-                       "data": "user.name",
+                       "data": "owner.name",
                        "render": function (data, type, row, meta) {
                            if (type === 'display') {
-                               return '<a href="users/' + row.user.id + '">' + data + '</a>';
+                               return '<a href="' + row.owner.route + '">' + row.owner.name + '</a>';
                            }
 
                            return data;
                        }
                    },
-                   {"data": "type.name"},
+                   {"data": "type"},
                    {
                        "data": "created_at",
                        "render": function (data, type, row, meta) {
@@ -111,7 +111,7 @@
            });
 
            $('#team-type-filter').on( 'change', function () {
-               table.columns(2).search( this.value ).draw();
+               table.ajax.url("api/v1/teams?type=" + $(this).val()).load();
            });
        });
    </script>
