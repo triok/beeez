@@ -3,7 +3,7 @@
         <div class="form-group">
             <label>@lang('teams.users')</label>
 
-            <select id="input-users" class="form-control">
+            <select id="input-users" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
                 <option selected></option>
                 @foreach($users as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -57,6 +57,14 @@
         </table>
     </div>
 </div>
+
+@push('styles')
+    <link rel="stylesheet" href="/plugins/bootstrap-select/bootstrap-select.min.css"/>
+@endpush
+
+@push('scripts')
+    <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+@endpush
 
 <script type="application/javascript">
     function addUser() {
