@@ -7,21 +7,30 @@
                 <a href="{{ route('teams.index') }}">
                     <span><i class="fa fa-arrow-left"></i> @lang('teams.back_to_list')</span>
                 </a>
-                @if($userIsAdmin)
-                    <div class="pull-right">
-                        <a href="{{ route('teams.edit', $team) }}" class="btn btn-default btn-xs">
-                            <i class="fa fa-pencil"></i> @lang('teams.edit')
-                        </a>
 
-                        {!! Form::open(['url' => route('teams.destroy', $team), 'method'=>'delete', 'style' => 'display:inline-block;']) !!}
-                        <button type="submit" onclick="" class="btn btn-xs btn-danger" title="Удалить команду">
-                            <i class="fa fa-trash"></i> Удалить
-                        </button>
-                        {!! Form::close() !!}
-                    </div>
-                @endif                
+                <div class="pull-right">
+                        @if($userIsConnected)
+                            {!! Form::open(['url' => route('teams.disconnect', $team), 'method'=>'post', 'style' => 'display:inline-block;']) !!}
+                            <button type="submit" onclick="" class="btn btn-xs btn-warning" title="Покинуть команду">
+                                <i class="fa fa-arrow-up"></i> Покинуть команду
+                            </button>
+                            {!! Form::close() !!}
+                        @endif
+
+                        @if($userIsAdmin)
+                            <a href="{{ route('teams.edit', $team) }}" class="btn btn-default btn-xs">
+                                <i class="fa fa-pencil"></i> @lang('teams.edit')
+                            </a>
+
+                            {!! Form::open(['url' => route('teams.destroy', $team), 'method'=>'delete', 'style' => 'display:inline-block;']) !!}
+                            <button type="submit" onclick="" class="btn btn-xs btn-danger" title="Удалить команду">
+                                <i class="fa fa-trash"></i> Удалить
+                            </button>
+                            {!! Form::close() !!}
+                        @endif
+                </div>
+
                 <hr>
-
             </div>
 
             <div class="panel panel-default">

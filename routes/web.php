@@ -136,6 +136,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/teams/projects','TeamsController@projects')->name('teams.projects');
     Route::post('/teams/{team}/addAdmin','TeamsController@addAdmin')->name('teams.addAdmin');
     Route::post('/teams/{team}/deleteAdmin','TeamsController@deleteAdmin')->name('teams.deleteAdmin');
+    Route::post('/teams/{team}/disconnect','TeamsController@disconnect')->name('teams.disconnect');
     Route::resource('teams', 'TeamsController');
 
     Route::get('/organizations/my','OrganizationsController@my')->name('organizations.my');

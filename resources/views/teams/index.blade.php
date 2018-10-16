@@ -64,7 +64,7 @@
                },
 
                "ajax": {
-                   "url": "/api/v1/teams/search',
+                   "url": "/api/v1/teams/search",
                    "dataSrc": "data"
                },
 

@@ -52,9 +52,11 @@ class TeamsController extends Controller
     {
         $userIsAdmin = $this->userIsTeamAdmin($team);
 
+        $userIsConnected = $this->userIsConnected($team);
+
         $connections = TeamUsers::where('team_id', $team->id)->get();
 
-        return view('teams.show', compact('team', 'connections', 'userIsAdmin'));
+        return view('teams.show', compact('team', 'connections', 'userIsAdmin', 'userIsConnected'));
     }
 
     /**
@@ -293,6 +295,30 @@ class TeamsController extends Controller
     }
 
     /**
+     * Update a resource in storage.
+     *
+     * @param Team $team
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function disconnect(Team $team)
+    {
+        if (auth()->id() == $team->user_id || !$this->userIsConnected($team)) {
+            flash()->error('Access denied!');
+
+            return redirect()->back();
+        }
+
+        TeamUsers::where('team_id', $team->id)
+            ->where('user_id', auth()->id())
+            ->delete();
+
+        flash()->success('Вы успешно покинули команду.');
+
+        return redirect(route('teams.myteams'));
+    }
+
+    /**
      * Add connections.
      *
      * @param Request $request
@@ -346,6 +372,22 @@ class TeamsController extends Controller
         if ($connection = TeamUsers::where('team_id', $team->id)
             ->where('user_id', auth()->id())
             ->where('is_admin', true)
+            ->first()) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function userIsConnected($team)
+    {
+        if (auth()->id() == $team->user_id) {
+            return false;
+        }
+
+        if ($connection = TeamUsers::where('team_id', $team->id)
+            ->where('user_id', auth()->id())
             ->first()) {
 
             return true;
