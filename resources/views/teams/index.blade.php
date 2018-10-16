@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
 <div class="container-fluid" id="main">
    <div class="row">
@@ -40,8 +41,6 @@
 </div>
 @endsection
 
-
-
 @push('styles')
    <link href="/css/custom.css" rel="stylesheet">
 @endpush
@@ -65,7 +64,7 @@
                },
 
                "ajax": {
-                   "url": "api/v1/teams",
+                   "url": "/api/v1/teams/search',
                    "dataSrc": "data"
                },
 
@@ -111,7 +110,7 @@
            });
 
            $('#team-type-filter').on( 'change', function () {
-               table.ajax.url("api/v1/teams?type=" + $(this).val()).load();
+               table.ajax.url("api/v1/teams/search?type=" + $(this).val()).load();
            });
        });
    </script>
