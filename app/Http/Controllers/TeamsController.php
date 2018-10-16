@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateUserRequest;
-use App\Models\Favorite;
 use App\Models\Project;
 use App\Models\Team;
 use App\Models\TeamType;
 use App\Models\TeamUsers;
 use App\Notifications\TeamUserNotification;
-use App\Queries\UserQuery;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -28,26 +25,23 @@ class TeamsController extends Controller
      */
     public function index()
     {
-        $teamIds = auth()->user()->teams()->pluck('team_id')->toArray();
-
-        $teams = Team::where('user_id', auth()->id())
-            ->orWhereIn('id', $teamIds)
-            ->paginate(request('count', 20));
-
         $teamTypes = TeamType::orderBy('name')->pluck('name', 'id');
             
-        return view('teams.index', compact('teams', 'teamTypes'));
+        return view('teams.index', compact('teamTypes'));
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function myteams() 
     {
-        $teamIds = auth()->user()->teams()->pluck('team_id')->toArray();
+        $teamTypes = TeamType::orderBy('name')->pluck('name', 'id');
 
-        $teams = Team::where('user_id', auth()->id())
-            ->orWhereIn('id', $teamIds)
-            ->paginate(request('count', 20));
-            
-        return view('teams.myteams', compact('teams'));
+        return view('teams.myteams', compact('teamTypes'));
     }
+
     /**
      * Display the specified resource.
      *
@@ -58,9 +52,11 @@ class TeamsController extends Controller
     {
         $userIsAdmin = $this->userIsTeamAdmin($team);
 
+        $userIsConnected = $this->userIsConnected($team);
+
         $connections = TeamUsers::where('team_id', $team->id)->get();
 
-        return view('teams.show', compact('team', 'connections', 'userIsAdmin'));
+        return view('teams.show', compact('team', 'connections', 'userIsAdmin', 'userIsConnected'));
     }
 
     /**
@@ -82,6 +78,7 @@ class TeamsController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function store(Request $request)
     {
@@ -146,6 +143,7 @@ class TeamsController extends Controller
      * @param Request $request
      * @param Team $team
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
      */
     public function update(Request $request, Team $team)
     {
@@ -297,6 +295,30 @@ class TeamsController extends Controller
     }
 
     /**
+     * Update a resource in storage.
+     *
+     * @param Team $team
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function disconnect(Team $team)
+    {
+        if (auth()->id() == $team->user_id || !$this->userIsConnected($team)) {
+            flash()->error('Access denied!');
+
+            return redirect()->back();
+        }
+
+        TeamUsers::where('team_id', $team->id)
+            ->where('user_id', auth()->id())
+            ->delete();
+
+        flash()->success('Вы успешно покинули команду.');
+
+        return redirect(route('teams.myteams'));
+    }
+
+    /**
      * Add connections.
      *
      * @param Request $request
@@ -350,6 +372,22 @@ class TeamsController extends Controller
         if ($connection = TeamUsers::where('team_id', $team->id)
             ->where('user_id', auth()->id())
             ->where('is_admin', true)
+            ->first()) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function userIsConnected($team)
+    {
+        if (auth()->id() == $team->user_id) {
+            return false;
+        }
+
+        if ($connection = TeamUsers::where('team_id', $team->id)
+            ->where('user_id', auth()->id())
             ->first()) {
 
             return true;
