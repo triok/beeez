@@ -55,7 +55,9 @@ class ProjectsController extends Controller
             }
         }
 
-        return view('projects.show', compact('project'));
+        $totalPrice = $this->getTotalPrice($project);
+
+        return view('projects.show', compact('project', 'totalPrice'));
     }
 
     /**
@@ -267,5 +269,15 @@ class ProjectsController extends Controller
         } else {
             return redirect(route('projects.index'));
         }
+    }
+
+    protected function getTotalPrice(Project $project) {
+        $totalPrice = $project->jobs()->sum('price');
+
+        if(currency()->getUserCurrency() != currency()->config('default')) {
+            $totalPrice = currency($totalPrice, currency()->config('default'), currency()->getUserCurrency(), false);
+        }
+
+        return currency_format($totalPrice, currency()->getUserCurrency());
     }
 }
