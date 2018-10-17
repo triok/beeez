@@ -34,6 +34,7 @@
             <tbody>
             @if(isset($connections))
                 @foreach($connections as $connection)
+                    @if($connection->user_id != $team->user_id)
                     <tr id="user-{{ $connection->user_id }}">
                         <td>
                             <input type="hidden" name="connections[{{ $connection->user_id }}][name]"
@@ -51,6 +52,7 @@
                             </button>
                         </td>
                     </tr>
+                    @endif
                 @endforeach
             @endif
             </tbody>
