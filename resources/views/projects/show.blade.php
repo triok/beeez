@@ -50,8 +50,9 @@
 
     <div class="pull-right">
         <p>
-            <span>@lang('projects.jobs-total')</span> {{ $project->jobs()->count() }}
-            <span>@lang('projects.summ-total')</span> ${{ $project->jobs()->sum('price') }}
+            <span>@lang('projects.jobs-total')</span>
+            {{ $project->jobs()->count() }}<span>@lang('projects.summ-total')</span>
+            {{ $totalPrice }}
         </p>
         <p><span>@lang('projects.jobs-complete')</span> 0</p>
     </div>
