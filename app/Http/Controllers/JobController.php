@@ -246,7 +246,11 @@ class JobController extends Controller
 
         flash()->success('Job has been posted!');
 
-        return redirect()->route('jobs.edit', $job);
+        if ($request->get('project_id') && $project = Project::find($request->get('project_id'))) {
+            return redirect(route('projects.show', $project));
+        } else {
+            return redirect(route('my-applications') . '#client');
+        }
     }
 
     function edit(Job $job)

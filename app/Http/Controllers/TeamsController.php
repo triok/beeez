@@ -68,7 +68,7 @@ class TeamsController extends Controller
     {
         $teamTypes = TeamType::all();
 
-        $users = User::all();
+        $users = User::where('id', '!=', auth()->id())->get();
 
         return view('teams.create', compact('teamTypes', 'users'));
     }
@@ -107,6 +107,13 @@ class TeamsController extends Controller
             $team->addLogo($request->file('logo'));
         }
 
+        TeamUsers::create([
+            'team_id' => $team->id,
+            'user_id' => auth()->id(),
+            'position' => 'Создатель',
+            'is_approved' => true
+        ]);
+
         $this->addConnection($request, $team);
 
         flash()->success('Team saved!');
@@ -132,7 +139,7 @@ class TeamsController extends Controller
 
         $connections = TeamUsers::where('team_id', $team->id)->get();
 
-        $users = User::all();
+        $users = User::where('id', '!=', auth()->id())->get();
 
         return view('teams.edit', compact('team', 'teamTypes', 'connections', 'users'));
     }
@@ -328,7 +335,10 @@ class TeamsController extends Controller
     protected function addConnection(Request $request, Team $team)
     {
         if ($request->has('connections')) {
-            $connectionIds = TeamUsers::where('team_id', $team->id)->pluck('position', 'user_id')->toArray();
+            $connectionIds = TeamUsers::where('team_id', $team->id)
+                ->where('user_id', '!=', auth()->id())
+                ->pluck('position', 'user_id')
+                ->toArray();
 
             foreach ($request->get('connections') as $user_id => $connection) {
                 if (isset($connectionIds[$user_id])) {
@@ -340,14 +350,16 @@ class TeamsController extends Controller
 
                     unset($connectionIds[$user_id]);
                 } else {
-                    $teamUser = TeamUsers::create([
-                        'team_id' => $team->id,
-                        'user_id' => $user_id,
-                        'position' => $connection['position']
-                    ]);
+                    if($user_id != auth()->id()) {
+                        $teamUser = TeamUsers::create([
+                            'team_id' => $team->id,
+                            'user_id' => $user_id,
+                            'position' => $connection['position']
+                        ]);
 
-                    if ($recipient = User::find($user_id)) {
-                        $recipient->notify(new TeamUserNotification($teamUser));
+                        if ($recipient = User::find($user_id)) {
+                            $recipient->notify(new TeamUserNotification($teamUser));
+                        }
                     }
                 }
             }
@@ -359,6 +371,7 @@ class TeamsController extends Controller
             }
         } else {
             TeamUsers::where('team_id', $team->id)
+                ->where('user_id', '!=', auth()->id())
                 ->delete();
         }
     }

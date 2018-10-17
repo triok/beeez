@@ -219,7 +219,11 @@ class ApplicationsController extends Controller
      */
     function myApplications()
     {
-        $applications = Auth::user()->applications()->where('status', '!=', 'complete')->with('job')->paginate(request('count', 15));
+        $applications = Auth::user()
+            ->applications()
+            ->where('status', '!=', 'complete')
+            ->with('job')
+            ->paginate(request('count', 15));
 
         $clientapps = auth()->user()->jobs;
 
