@@ -26,7 +26,7 @@ class JobTransformer extends Transformer
             "allow_apply" => $this->checkAllowApply($job),
             "ended" => (Carbon::now() > $job->end_date),
             "end_date" => $this->formatDate($job->end_date),
-            "created_at" => $job->created_at,
+            "created_at" => $job->created_at->format('Y-m-d H:i:s')
         ];
     }
     protected function checkAllowApply($job) {
