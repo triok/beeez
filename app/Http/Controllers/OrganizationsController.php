@@ -85,13 +85,15 @@ class OrganizationsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|max:200',
-            'ownership' => 'required|max:200',
-            'inn' => 'required|max:200',
+            'name'           => 'required|max:200',
+            'ownership'      => 'required|max:200',
+            'ohrn'           => 'required|digits_between:13,15|integer|unique:organizations',
+            'inn'            => 'required|digits_between:10,12|integer|unique:organizations',
+            'kpp'            => 'nullable|digits:9|integer|unique',
             'contact_person' => 'required|max:200',
-            'email' => 'required|max:200',
-            'slug' => 'required|unique:organizations',
-            'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif',
+            'email'          => 'required|email|max:200',
+            'slug'           => 'required|unique:organizations',
+            'logo'           => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ];
 
         $attributes = $request->all();
