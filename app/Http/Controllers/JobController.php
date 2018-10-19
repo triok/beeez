@@ -96,8 +96,15 @@ class JobController extends Controller
 //            return json_encode($job->toArray());
 ////            return view('jobs.show', compact('job'));
 //        }
+
+        $application = $job->applications()->first();
+
+        if($application) {
+            $application = $application->user;
+        }
+
         $users = UserQuery::users();
-        return view('jobs.show', compact('job', 'users'));
+        return view('jobs.show', compact('job', 'users', 'application'));
     }
 
     /**
