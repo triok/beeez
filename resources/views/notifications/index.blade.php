@@ -23,20 +23,22 @@
                         </div>
 
                         <div class="panel-body">
-                            {{ $notification['message'] }}
+                            {!! $notification['message']  !!}
                         </div>
 
-                        <div class="panel-footer">
-                            @foreach($notification['actions'] as $action)
-                                {!! Form::open(['url' => $action['route'], 'method'=>'post', 'style' => 'display: inline-block']) !!}
-                                <input type="hidden" name="id" value="{{ $notification['id'] }}">
-                            
-                                <button type="submit" class="btn btn-sm {{ $action['class'] }}">
-                                    {{ $action['title'] }}
-                                </button>
-                                {!! Form::close() !!}
-                            @endforeach
-                        </div>
+                        @if(!$notification['is_archived'])
+                            <div class="panel-footer">
+                                @foreach($notification['actions'] as $action)
+                                    {!! Form::open(['url' => $action['route'], 'method'=>'post', 'style' => 'display: inline-block']) !!}
+                                    <input type="hidden" name="id" value="{{ $notification['id'] }}">
+
+                                    <button type="submit" class="btn btn-sm {{ $action['class'] }}">
+                                        {{ $action['title'] }}
+                                    </button>
+                                    {!! Form::close() !!}
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endforeach

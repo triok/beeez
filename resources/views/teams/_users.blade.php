@@ -34,7 +34,6 @@
             <tbody>
             @if(isset($connections))
                 @foreach($connections as $connection)
-                    @if($connection->user_id != $team->user_id)
                     <tr id="user-{{ $connection->user_id }}">
                         <td>
                             <input type="hidden" name="connections[{{ $connection->user_id }}][name]"
@@ -45,14 +44,15 @@
                             <input name="connections[{{ $connection->user_id }}][position]" type="text"
                                    value="{{ $connection->position }}" class="form-control">
                         </td>
+                        @if($connection->user_id != $team->user_id)
                         <td class="text-right">
                             <button type="button" onclick="deleteUser({{ $connection->user_id }})"
                                     class="btn btn-danger btn-sm">
                                 <i aria-hidden="true" class="fa fa-close"></i>
                             </button>
                         </td>
+                        @endif
                     </tr>
-                    @endif
                 @endforeach
             @endif
             </tbody>

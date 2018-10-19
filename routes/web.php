@@ -28,7 +28,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('upload/{file}', 'UploadController@download')->name('file.upload');
 
     //Projects
-    Route::resource('projects', 'ProjectsController');
+    Route::get('projects', 'ProjectsController@index')->name('projects.index');
+    Route::get('projects/project{project}', 'ProjectsController@show')->name('projects.show');
+    Route::get('projects/create', 'ProjectsController@create')->name('projects.create');
+    Route::get('projects/{project}/edit', 'ProjectsController@edit')->name('projects.edit');
+    Route::post('projects', 'ProjectsController@store')->name('projects.store');
+    Route::put('projects/{project}', 'ProjectsController@update')->name('projects.update');
+    Route::delete('projects/{project}', 'ProjectsController@destroy')->name('projects.destroy');
+
     Route::post('projects/{project}/done', 'ProjectsController@done')->name('projects.done');
     Route::post('projects/{project}/restore', 'ProjectsController@restore')->name('projects.restore');
     Route::post('projects/{project}/edit', 'ProjectsController@edit')->name('projects.edit');    
@@ -141,8 +148,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/organizations/my','OrganizationsController@my')->name('organizations.my');
     Route::get('/organizations/moderation','OrganizationsController@moderation')->name('organizations.moderation');
-    Route::patch('/organizations/approve/{organization}','OrganizationsController@approve')->name('organizations.approve');
-    Route::patch('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
+    Route::post('/organizations/approve/{organization}','OrganizationsController@approve')->name('organizations.approve');
+    Route::post('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
 
     Route::resource('organizations', 'OrganizationsController');
 

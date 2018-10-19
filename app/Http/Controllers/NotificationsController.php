@@ -68,7 +68,7 @@ class NotificationsController extends Controller
             ->where('user_id', auth()->id())
             ->update(['is_approved' => true]);
 
-        $notification->delete();
+        $notification->update(['is_archived' => true]);
 
         flash()->success('Вы приняты в команду.');
 
@@ -108,7 +108,7 @@ class NotificationsController extends Controller
             ->where('user_id', auth()->id())
             ->delete();
 
-        $notification->delete();
+        $notification->update(['is_archived' => true]);
 
         flash()->success('Вы удалены из команды.');
 
