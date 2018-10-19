@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="modal-body">
-                    {{ $notification['message'] }}
+                    {!! $notification['message']  !!}
                 </div>
 
                 <div class="modal-footer">

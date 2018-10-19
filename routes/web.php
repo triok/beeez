@@ -148,8 +148,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/organizations/my','OrganizationsController@my')->name('organizations.my');
     Route::get('/organizations/moderation','OrganizationsController@moderation')->name('organizations.moderation');
-    Route::patch('/organizations/approve/{organization}','OrganizationsController@approve')->name('organizations.approve');
-    Route::patch('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
+    Route::post('/organizations/approve/{organization}','OrganizationsController@approve')->name('organizations.approve');
+    Route::post('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
 
     Route::resource('organizations', 'OrganizationsController');
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\NewOrganization;
 use App\Models\Organization;
 use App\Models\OrganizationUsers;
+use App\Notifications\OrganizationNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -89,7 +90,7 @@ class OrganizationsController extends Controller
             'ownership'      => 'required|max:200',
             'ohrn'           => 'required|digits_between:13,15|integer|unique:organizations',
             'inn'            => 'required|digits_between:10,12|integer|unique:organizations',
-            'kpp'            => 'nullable|digits:9|integer|unique',
+            'kpp'            => 'nullable|digits:9|integer|unique:organizations',
             'contact_person' => 'required|max:200',
             'email'          => 'required|email|max:200',
             'slug'           => 'required|unique:organizations',
@@ -123,6 +124,12 @@ class OrganizationsController extends Controller
                     'path' => $file['path']
                 ]);
             }
+        }
+
+        $admin = User::where('email', config('organization.admin'))->first();
+
+        if($admin) {
+            $admin->notify(new OrganizationNotification($organization));
         }
 
         Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
@@ -221,9 +228,11 @@ class OrganizationsController extends Controller
 
         $organization->save();
 
-        flash()->success('Organization updated!');
+        $this->updateNotification($organization);
 
-        return redirect(route('organizations.moderation'));
+        flash()->success('Organization approved!');
+
+        return redirect()->back();
     }
 
     /**
@@ -238,9 +247,34 @@ class OrganizationsController extends Controller
 
         $organization->save();
 
-        flash()->success('Organization updated!');
+        $this->updateNotification($organization);
 
-        return redirect(route('organizations.moderation'));
+        flash()->success('Organization rejected!');
+
+        return redirect()->back();
+    }
+
+    /**
+     * @param $organization
+     */
+    private function updateNotification($organization) {
+        $notifications = auth()->user()
+            ->notifications()
+            ->where('type', 'App\Notifications\OrganizationNotification')
+            ->get();
+
+
+        foreach ($notifications as $notification) {
+            if($notification['data']['id'] == $organization->id) {
+                $notification = auth()->user()
+                    ->notifications()
+                    ->find($notification['id']);
+
+                if($notification) {
+                    $notification->update(['is_archived' => true]);
+                }
+            }
+        }
     }
 
     /**

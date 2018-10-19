@@ -23,7 +23,7 @@
                         </div>
 
                         <div class="panel-body">
-                            {{ $notification['message'] }}
+                            {!! $notification['message']  !!}
                         </div>
 
                         @if(!$notification['is_archived'])
