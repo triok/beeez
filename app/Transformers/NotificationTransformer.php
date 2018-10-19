@@ -18,6 +18,7 @@ class NotificationTransformer extends Transformer
             "id" => $notification['id'],
             "title" => $this->getTitle($notification),
             "date" => $notification['created_at'],
+            "is_archived" => $notification['is_archived'],
             "message" => $this->getMessage($notification, $team),
             "actions" => $this->getActions($notification, $team)
         ];
