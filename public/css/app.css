@@ -12247,8 +12247,10 @@ section.other-jobs a.delete {
   margin-right: 15px; 
 }
 .message-box {
-  min-height: 500px;
-}
+    min-height: 500px;
+    max-height: 590px;
+    overflow-y: scroll;
+}    
 .chat-delete {
   width: 100%;
   margin: 0px 0px 20px;

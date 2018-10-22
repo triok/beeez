@@ -146,11 +146,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/teams/{team}/disconnect','TeamsController@disconnect')->name('teams.disconnect');
     Route::resource('teams', 'TeamsController');
 
-    Route::get('/organizations/my','OrganizationsController@my')->name('organizations.my');
+    Route::get('/organizations/my-organizations','OrganizationsController@my')->name('organizations.my');
     Route::get('/organizations/moderation','OrganizationsController@moderation')->name('organizations.moderation');
     Route::post('/organizations/approve/{organization}','OrganizationsController@approve')->name('organizations.approve');
     Route::post('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
-
+    Route::get('/organizations/structure/','OrganizationsController@structure')->name('organizations.structure');
     Route::resource('organizations', 'OrganizationsController');
 
     Route::get('notifications', 'NotificationsController@index')->name('notifications.index');

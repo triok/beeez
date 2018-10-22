@@ -28,7 +28,11 @@ return [
     'email'                  => 'Contact E-mail',
     'phone'                  => 'Phone number',         
 
-
+    // My organizations
+    'title-my'               => 'My organizations',
+    
+    // Structure
+    'title-structure'        => 'Organization structure.',
 
     // Show
     'show_name'              => 'Organization:',

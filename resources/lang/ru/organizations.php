@@ -28,6 +28,12 @@ return [
     'email'                     => 'E-mail:',
     'phone'                     => 'Номер телефона:',                
 
+    // My organizations
+    'title-my'                  => 'Мои организации',
+
+    // Structure
+    'title-structure'           => 'Структура организации.',  
+
     // Show
     'show_name'                 => 'Организация:',
     'show_date'                 => 'Дата создания:',
