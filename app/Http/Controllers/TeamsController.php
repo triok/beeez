@@ -336,7 +336,6 @@ class TeamsController extends Controller
     {
         if ($request->has('connections')) {
             $connectionIds = TeamUsers::where('team_id', $team->id)
-                ->where('user_id', '!=', auth()->id())
                 ->pluck('position', 'user_id')
                 ->toArray();
 
@@ -367,6 +366,7 @@ class TeamsController extends Controller
             foreach ($connectionIds as $user_id => $position) {
                 TeamUsers::where('team_id', $team->id)
                     ->where('user_id', $user_id)
+                    ->where('user_id', '!=', auth()->id())
                     ->delete();
             }
         } else {

@@ -17,11 +17,11 @@
                 @endif
 
                 @if(auth()->user()->email == config('organization.admin') && $organization->status == 'moderation')
-                    {!! Form::open(['url' => route('organizations.approve', $organization), 'method'=>'patch', 'class' => 'pull-right', 'style' => 'display:inline-block;margin-right: 5px;']) !!}
+                    {!! Form::open(['url' => route('organizations.approve', $organization), 'method'=>'post', 'class' => 'pull-right', 'style' => 'display:inline-block;margin-right: 5px;']) !!}
                     <button type="submit" class="btn btn-xs btn-success">Approve</button>
                     {!! Form::close() !!}
 
-                    {!! Form::open(['url' => route('organizations.reject', $organization), 'method'=>'patch', 'class' => 'pull-right', 'style' => 'display:inline-block;margin-right: 5px;']) !!}
+                    {!! Form::open(['url' => route('organizations.reject', $organization), 'method'=>'post', 'class' => 'pull-right', 'style' => 'display:inline-block;margin-right: 5px;']) !!}
                     <button type="submit" class="btn btn-xs btn-danger">Reject</button>
                     {!! Form::close() !!}
                 @endif

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\NewOrganization;
 use App\Models\Organization;
 use App\Models\OrganizationUsers;
+use App\Notifications\OrganizationNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -128,6 +129,12 @@ class OrganizationsController extends Controller
             }
         }
 
+        $admin = User::where('email', config('organization.admin'))->first();
+
+        if($admin) {
+            $admin->notify(new OrganizationNotification($organization));
+        }
+
         Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
 
         flash()->success("Ваше заявление на регистрацию компании принято и поступило на модерацию");
@@ -224,9 +231,11 @@ class OrganizationsController extends Controller
 
         $organization->save();
 
-        flash()->success('Organization updated!');
+        $this->updateNotification($organization);
 
-        return redirect(route('organizations.moderation'));
+        flash()->success('Organization approved!');
+
+        return redirect()->back();
     }
 
     /**
@@ -241,9 +250,34 @@ class OrganizationsController extends Controller
 
         $organization->save();
 
-        flash()->success('Organization updated!');
+        $this->updateNotification($organization);
 
-        return redirect(route('organizations.moderation'));
+        flash()->success('Organization rejected!');
+
+        return redirect()->back();
+    }
+
+    /**
+     * @param $organization
+     */
+    private function updateNotification($organization) {
+        $notifications = auth()->user()
+            ->notifications()
+            ->where('type', 'App\Notifications\OrganizationNotification')
+            ->get();
+
+
+        foreach ($notifications as $notification) {
+            if($notification['data']['id'] == $organization->id) {
+                $notification = auth()->user()
+                    ->notifications()
+                    ->find($notification['id']);
+
+                if($notification) {
+                    $notification->update(['is_archived' => true]);
+                }
+            }
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Organization;
 use App\Models\Team;
 
 class NotificationTransformer extends Transformer
@@ -12,14 +13,13 @@ class NotificationTransformer extends Transformer
      */
     public function transform($notification)
     {
-        $team = Team::find($notification['data']['team_id']);
-
         return [
             "id" => $notification['id'],
             "title" => $this->getTitle($notification),
             "date" => $notification['created_at'],
-            "message" => $this->getMessage($notification, $team),
-            "actions" => $this->getActions($notification, $team)
+            "is_archived" => $notification['is_archived'],
+            "message" => $this->getMessage($notification),
+            "actions" => $this->getActions($notification)
         ];
     }
 
@@ -29,23 +29,37 @@ class NotificationTransformer extends Transformer
             return 'Вас приняли в команду';
         }
 
-        return '';
-    }
-
-    protected function getMessage($notification, $team)
-    {
-        if ($notification['type'] == 'App\Notifications\TeamUserNotification' && $team) {
-            return 'Вас приняли в команду "' . $team->name . '" на должность "' . $notification['data']['position'] . '".';
+        if ($notification['type'] == 'App\Notifications\OrganizationNotification') {
+            return 'Новая организация';
         }
 
         return '';
     }
 
-    protected function getActions($notification, $team)
+    protected function getMessage($notification)
+    {
+        if ($notification['type'] == 'App\Notifications\TeamUserNotification') {
+            $team = Team::find($notification['data']['team_id']);
+
+            return 'Вас приняли в команду "' . $team->name . '" на должность "' . $notification['data']['position'] . '".';
+        }
+
+        if ($notification['type'] == 'App\Notifications\OrganizationNotification') {
+            $organization = Organization::find($notification['data']['id']);
+
+            if($organization) {
+                return 'Создана новая организация <a href="' . route('organizations.show', $organization) . '">' . $notification['data']['name'] . '</a>';
+            }
+        }
+
+        return '';
+    }
+
+    protected function getActions($notification)
     {
         $actions = [];
 
-        if ($notification['type'] == 'App\Notifications\TeamUserNotification' && $team) {
+        if ($notification['type'] == 'App\Notifications\TeamUserNotification') {
             $actions[] = [
                 'route' => route('notifications.approve'),
                 'title' => 'Принять',
@@ -57,13 +71,35 @@ class NotificationTransformer extends Transformer
                 'title' => 'Отклонить',
                 'class' => 'btn-danger',
             ];
-        } else {
-            $actions[] = [
-                'route' => route('notifications.destroy'),
-                'title' => 'Удалить',
-                'class' => 'btn-default'
-            ];
+
+            return $actions;
         }
+
+        if ($notification['type'] == 'App\Notifications\OrganizationNotification') {
+            $organization = Organization::find($notification['data']['id']);
+
+            if($organization) {
+                $actions[] = [
+                    'route' => route('organizations.approve', $organization),
+                    'title' => 'Approve',
+                    'class' => 'btn-success',
+                ];
+
+                $actions[] = [
+                    'route' => route('organizations.reject', $organization),
+                    'title' => 'Reject',
+                    'class' => 'btn-danger',
+                ];
+            }
+
+            return $actions;
+        }
+
+        $actions[] = [
+            'route' => route('notifications.destroy'),
+            'title' => 'Удалить',
+            'class' => 'btn-default'
+        ];
 
         return $actions;
     }

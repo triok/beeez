@@ -36,6 +36,15 @@
                             </a>
                         </div>
                         @endif
+
+                        @if($application)
+                            <div class="m-md-top nowrap text-muted">
+                                <span>Исполнитель </span>
+                                <a href="{{ route('peoples.show', $application) }}">
+                                    <span class="username">{{ $application->name }}</span>
+                                </a>
+                            </div>
+                        @endif
                     </section>
 
 
