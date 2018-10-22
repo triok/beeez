@@ -19,6 +19,7 @@
                         <th>@lang('peoples.name')</th>
                         <th>@lang('peoples.feedbacks')</th>
                         <th>@lang('peoples.member')</th>
+                        <th>@lang('peoples.message')</th>
                     </tr>
                     </thead>
                     <tbody></tbody>
@@ -83,6 +84,16 @@
                             return data;
                         }
                     },
+                    {
+                        "data": "username",
+                        "render": function (data, type, row, meta) {
+                            if (type === 'display') {
+                                return '<form action="{{route('threads.store')}}" method="post">{{csrf_field()}}<input type="hidden" name="user_id" value="' + row.id +'"><button class="btn btn-primary btn-sm"><i class="fa fa-envelope" aria-hidden="true"></i></button></form>';
+                            }
+
+                            return data;
+                        }
+                    },                    
                 ]
             });
         });

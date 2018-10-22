@@ -81,7 +81,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="3">
+                        <td colspan="5">
                             @lang('projects.noprojects')
                         </td>
                     </tr>
@@ -138,8 +138,8 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="3">
-                            @lang('projects.noprojects')
+                        <td colspan="5">
+                            @lang('projects.nocompprojects')
                         </td>
                     </tr>
                 @endif
@@ -201,8 +201,8 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="3">
-                            @lang('projects.noprojects')
+                        <td colspan="5">
+                            @lang('projects.nofavprojects')
                         </td>
                     </tr>
                 @endif

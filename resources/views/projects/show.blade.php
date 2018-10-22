@@ -44,7 +44,7 @@
           
         </table>
             @else
-            <p>@lang('projects.published')</p>
+            <p>@lang('projects.notask')</p>
             @endif  
     </div>
 

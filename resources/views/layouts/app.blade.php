@@ -61,7 +61,7 @@
                 <li class="left-sidebar dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false"><i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>@lang('layout.jobs-manager')</span></a>
-                    <ul class="dropdown-menu" role="menu">
+                    <ul class="dropdown-menu sub-menu" role="menu">
                         <h6 class="dropdown-header">@lang('layout.jobs-manager')</h6>
                         <li role="separator" class="divider"></li>                
                         <li><a href="{{ url('/') }}"><i class="fa fa-search"></i> @lang('layout.findwork')</a></li>
@@ -78,41 +78,41 @@
                 <li class="left-sidebar dropdown components-li" >
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i><span>@lang('peoples.title')</span></a>
-                    <ul class="dropdown-menu" role="menu">
+                    <ul class="dropdown-menu sub-menu" role="menu">
                         <h6 class="dropdown-header">@lang('peoples.title')</h6>
                         <li role="separator" class="divider"></li>
                         <li>
-                            <a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i>Найти пользователя</a>                    
+                            <a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i>@lang('peoples.find')</a>                    
                         </li>
                     </ul>               
                 </li>  
                 <li class="left-sidebar dropdown components-li" >
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false"><i class="fa fa-group" aria-hidden="true"></i><span>@lang('teams.title')</span></a>
-                    <ul class="dropdown-menu" role="menu">
+                    <ul class="dropdown-menu sub-menu" role="menu">
                         <h6 class="dropdown-header">@lang('teams.title')</h6>
                         <li role="separator" class="divider"></li>
                         <li>
-                            <a href="{{route('teams.index')}}"><i class="fa fa-search"></i>Найти команду</a>                    
+                            <a href="{{route('teams.index')}}"><i class="fa fa-search"></i>@lang('teams.find')</a>                    
                         </li>
                         <li>
-                            <a href="{{route('teams.myteams')}}"><i class="fa fa-group"></i>Мои команды</a>                    
+                            <a href="{{route('teams.myteams')}}"><i class="fa fa-group"></i>@lang('teams.title_myteams')</a>                    
                         </li>
                         @if(Auth::user()->allUserTeams()->count())
                         <li>
-                            <a href="{{route('teams.projects')}}"><i class="fa fa-sitemap"></i>Проекты</a>
+                            <a href="{{route('teams.projects')}}"><i class="fa fa-sitemap"></i>@lang('teams.projects')</a>
                         </li>
                         @endif
                         <li role="separator" class="divider"></li>                
                         <li>
-                            <a href="{{route('teams.create')}}"><i class="fa fa-plus"></i>Создать команду</a>                    
+                            <a href="{{route('teams.create')}}"><i class="fa fa-plus"></i>@lang('teams.create')</a>                    
                         </li>                                                
                     </ul>                  
                 </li>  
                 <li class="left-sidebar dropdown components-li">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false"><i class="fa fa-briefcase" aria-hidden="true"></i><span>Организации</span></a>
-                    <ul class="dropdown-menu" role="menu">
+                    <ul class="dropdown-menu sub-menu" role="menu">
                         <h6 class="dropdown-header">Организации</h6>
                         <li role="separator" class="divider"></li>
                         <li>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container" id="main">
+    <div class="container organizations-create" id="main">
         <div class="content-form">
             <h2><i class="fa fa-plus"></i> @lang('organizations.new_organization')</h2>
 

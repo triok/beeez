@@ -6,13 +6,13 @@
             </a>
         </li>
         <li role="presentation">
-            <a data-toggle="tab" href="#team-{{ $team->id }}-favorite">
-                @lang('projects.favorite')
+            <a data-toggle="tab" href="#team-{{ $team->id }}-completed">
+                @lang('projects.completed')
             </a>
         </li>
         <li role="presentation">
-            <a data-toggle="tab" href="#team-{{ $team->id }}-completed">
-                @lang('projects.completed')
+            <a data-toggle="tab" href="#team-{{ $team->id }}-favorite">
+                @lang('projects.favorite')
             </a>
         </li>
     </ul>

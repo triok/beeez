@@ -21,11 +21,7 @@
                     <div class="form-group">
                         <label for="input-logo">@lang('teams.logo')</label><br>
 
-                        <img src="/storage/images/teams/default.png"
-                             class="img-thumbnail"
-                             alt="Select logo"
-                             title="Select logo"
-                             style="width: 100px; height: 100px;margin-bottom: 5px;">
+
 
                         <input type="file" name="logo" id="input-logo">
                     </div>
@@ -54,7 +50,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="input-description">@lang('teams.description')</label>
-                        {!! Form::textarea('description', old('description'), ['class' => 'editor1', 'id' => 'input-description']) !!}
+                        {!! Form::textarea('description', old('description'), ['id' => 'input-description']) !!}
                     </div>
                 </div>
             </div>
@@ -75,4 +71,3 @@
     </div>
 @endsection
 
-@include('partials.summer',['editor'=>'.editor1'])

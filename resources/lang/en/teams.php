@@ -6,7 +6,9 @@ return [
 
     'team' => 'Team:',
     'owner' => 'Creator:',
-
+    'find'  => 'Find team',
+    'projects'  => 'Projects',
+    'create' => 'Create team',        
     'search' => 'Enter name...',
 
     // My teams

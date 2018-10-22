@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="updated">
-            <div v-if="thread.id == undefined">
+            <div class="nothreads" v-if="thread.id == undefined">
                 {{ trans('messages.partial.nothreads') }}
             </div>
 
@@ -11,25 +11,25 @@
                    class="btn btn-default btn-xs pull-right">
                     <i class="fa fa-pencil"></i> Изменить
                 </a>
-
-                <form method="POST" :action="'/threads/' + thread.id" accept-charset="UTF-8" class="pull-right" style="display: inline-block; margin-right: 5px;">
+                <div class="chat-delete">
+                <form method="POST" :action="'/threads/' + thread.id" accept-charset="UTF-8" class="" >
                     <input name="_method" type="hidden" value="DELETE">
                     <input name="_token" type="hidden" :value="csrf">
                     <button type="submit" class="btn btn-xs btn-danger">
                         <i class="fa fa-trash"></i> Удалить чат
                     </button>
                 </form>
-
+                </div>
                 <div v-if="thread.thread_type == 'group'">
                     <h1>{{ thread.subject }}</h1>
                     <p v-html="thread.description"> </p>
                     <hr>
                 </div>
-
+                <div class="message-box">
                 <div v-for="message in messages" class="media">
                     <message :message="message"></message>
                 </div>
-
+                </div>
                 <messageform :thread="thread"></messageform>
             </div>
         </div>

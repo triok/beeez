@@ -39,7 +39,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="input-description">@lang('teams.description_edit')</label>
-                    {!! Form::textarea('description', old('description', isset($team) ? $team->description : ''), ['class' => 'editor1', 'id' => 'input-description']) !!}
+                    {!! Form::textarea('description', old('description', isset($team) ? $team->description : ''), ['id' => 'input-description']) !!}
                 </div>
             </div>
         </div>
@@ -59,5 +59,3 @@
     </div>
 </div>    
 @endsection
-
-@include('partials.summer',['editor'=>'.editor1'])

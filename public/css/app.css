@@ -12151,8 +12151,20 @@ section.other-jobs a.delete {
 .left-sidebar:hover:not(:first-child) > a, .components-li ul li a:hover{
   color: black!important;
 }
-.components-li ul li:hover i{
-  color: #48b0a5!important;
+.components-li ul li:hover a{
+  color: black!important; 
+}
+.left-sidebar:hover:not(:first-child) > a i {
+  color: rgb(71, 175, 165)!important;
+}
+.sub-menu li:hover{
+  background:#eaeaea;
+}
+.sub-menu li:hover a{
+  color: black!important;
+}
+.sub-menu li:hover a i {
+  color: rgb(71, 175, 165)!important; 
 }
 /*Register*/
 .auth .panel {
@@ -12162,7 +12174,7 @@ section.other-jobs a.delete {
 .auth h2 {
   text-align: center;
 }
-.auth input, .create-team input, .team-edit input, .create-project input, .edit-project input{
+.auth input, .create-team input, .team-edit input, .create-project input, .edit-project input, .organizations-create input{
   border: 0px;
   border-bottom:1px solid #ccd0d2;
   background-color: transparent;
@@ -12170,11 +12182,11 @@ section.other-jobs a.delete {
   border-radius: 0px;
   color: #48b0a5;
 }
-.auth input:focus, .create-team input:focus, .team-edit input:focus, .create-project input:focus, .edit-project input:focus {
+.auth input:focus, .create-team input:focus, .team-edit input:focus, .create-project input:focus, .edit-project input:focus, .organizations-create input:focus {
   color: unset;
   box-shadow: none;
 }
-.auth .btn-primary, .peoples-show .btn-primary, .teams .btn-primary, .create-team .btn-primary, .team-edit .btn-primary, #teams-projects .btn-primary, .projects .btn-primary, .create-project .btn-primary, .edit-project .btn-primary, .show-project .btn-primary {
+.auth .btn-primary, .peoples-show .btn-primary, .teams .btn-primary, .create-team .btn-primary, .team-edit .btn-primary, #teams-projects .btn-primary, .projects .btn-primary, .create-project .btn-primary, .edit-project .btn-primary, .show-project .btn-primary, .organizations-create .btn-primary, #users-table .btn-primary {
   background-color:#48b0a5;
   border-color: #3b8c83; 
 }
@@ -12190,7 +12202,7 @@ section.other-jobs a.delete {
 .peoples-show .list-group {
   margin: 0px;
 }
-.peoples-show .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus, .auth .btn:focus, .create-team .btn:focus, .edit-team .btn:focus, .create-project .btn:focus, .edit-project .btn:focus, .show-project .btn-primary:focus{
+.peoples-show .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus, .auth .btn:focus, .create-team .btn:focus, .edit-team .btn:focus, .create-project .btn:focus, .edit-project .btn:focus, .show-project .btn-primary:focus, .organizations-create .btn:focus{
   outline: none;
 }
 .peoples-show .table-search td, .teams-show .table-search td, .create-team #table-users td, .team-edit #table-users td{
@@ -12217,4 +12229,28 @@ section.other-jobs a.delete {
 }
 .create-project .icons option:first-child, .edit-project .icons option:first-child {
   font-size: 14px;
+}
+#chat .sidebar-offcanvas {
+  border-right: 1px solid #d8d8d8;
+  min-height: 30vw;
+}
+.nothreads {
+  width: 100%;
+  text-align: center;
+  padding: 15%;
+}
+#chat .chat-header {
+  border-bottom: 1px solid #d8d8d8;
+  padding-bottom: 20px; 
+}
+#chat .chat-header a:first-child{
+  margin-right: 15px; 
+}
+.message-box {
+  min-height: 500px;
+}
+.chat-delete {
+  width: 100%;
+  margin: 0px 0px 20px;
+  text-align: right;
 }

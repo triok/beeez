@@ -13,6 +13,7 @@ return [
     */
     
     'title'       => 'Peoples',
+    'find'        => 'Find user',
     'name'        => 'Name',
     'login'       => 'Login',
     'search'      => 'Enter login...',

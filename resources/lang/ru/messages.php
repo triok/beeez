@@ -2,7 +2,7 @@
 
 return [
     'title' 		=> 'Сообщения',
-    'thread_title'  => 'Чаты',
+    'thread_title'  => 'Ваши контакты',
     'username' 		=> 'Логин',
     'login'     	=> [
         'change'    => 'Логин изменить нельзя.'
@@ -20,5 +20,6 @@ return [
 
     'send'			=> 'Отправить',
 
-    'create_thread' => 'Создать групповой чат',
+    'create_chat'   => 'Создать чат',
+    'create_thread' => 'Групповой чат',
 ];

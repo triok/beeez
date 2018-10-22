@@ -47508,6 +47508,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -48217,7 +48221,7 @@ var render = function() {
     _vm.updated
       ? _c("div", [
           _vm.thread.id == undefined
-            ? _c("div", [
+            ? _c("div", { staticClass: "nothreads" }, [
                 _vm._v(
                   "\n            " +
                     _vm._s(_vm.trans("messages.partial.nothreads")) +
@@ -48246,37 +48250,34 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _c(
-                    "form",
-                    {
-                      staticClass: "pull-right",
-                      staticStyle: {
-                        display: "inline-block",
-                        "margin-right": "5px"
-                      },
-                      attrs: {
-                        method: "POST",
-                        action: "/threads/" + _vm.thread.id,
-                        "accept-charset": "UTF-8"
-                      }
-                    },
-                    [
-                      _c("input", {
+                  _c("div", { staticClass: "chat-delete" }, [
+                    _c(
+                      "form",
+                      {
                         attrs: {
-                          name: "_method",
-                          type: "hidden",
-                          value: "DELETE"
+                          method: "POST",
+                          action: "/threads/" + _vm.thread.id,
+                          "accept-charset": "UTF-8"
                         }
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        attrs: { name: "_token", type: "hidden" },
-                        domProps: { value: _vm.csrf }
-                      }),
-                      _vm._v(" "),
-                      _vm._m(0)
-                    ]
-                  ),
+                      },
+                      [
+                        _c("input", {
+                          attrs: {
+                            name: "_method",
+                            type: "hidden",
+                            value: "DELETE"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("input", {
+                          attrs: { name: "_token", type: "hidden" },
+                          domProps: { value: _vm.csrf }
+                        }),
+                        _vm._v(" "),
+                        _vm._m(0)
+                      ]
+                    )
+                  ]),
                   _vm._v(" "),
                   _vm.thread.thread_type == "group"
                     ? _c("div", [
@@ -48292,18 +48293,22 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm._l(_vm.messages, function(message) {
-                    return _c(
-                      "div",
-                      { staticClass: "media" },
-                      [_c("message", { attrs: { message: message } })],
-                      1
-                    )
-                  }),
+                  _c(
+                    "div",
+                    { staticClass: "message-box" },
+                    _vm._l(_vm.messages, function(message) {
+                      return _c(
+                        "div",
+                        { staticClass: "media" },
+                        [_c("message", { attrs: { message: message } })],
+                        1
+                      )
+                    })
+                  ),
                   _vm._v(" "),
                   _c("messageform", { attrs: { thread: _vm.thread } })
                 ],
-                2
+                1
               )
             : _vm._e()
         ])
@@ -48598,22 +48603,41 @@ var render = function() {
           "div",
           { attrs: { id: "sidebar" } },
           [
-            _c("h2", [_vm._v(_vm._s(_vm.trans("messages.thread_title")))]),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-xs btn-success",
-                attrs: { href: "/threads/create" }
-              },
-              [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.trans("messages.create_thread")) +
-                    "\n            "
-                )
-              ]
-            ),
+            _c("div", { staticClass: "chat-header" }, [
+              _c("h2", [_vm._v(_vm._s(_vm.trans("messages.thread_title")))]),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-xs btn-success",
+                  attrs: { href: "/peoples" }
+                },
+                [
+                  _c("i", { staticClass: "fa fa-user" }),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.trans("messages.create_chat")) +
+                      "\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-xs btn-success",
+                  attrs: { href: "/threads/create" }
+                },
+                [
+                  _c("i", { staticClass: "fa fa-group" }),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.trans("messages.create_thread")) +
+                      "\n                "
+                  )
+                ]
+              )
+            ]),
             _vm._v(" "),
             _c("threads")
           ],

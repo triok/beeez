@@ -2,12 +2,16 @@
     <div class="container-fluid" id="chat">
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
             <div id="sidebar">
-                <h2>{{ trans('messages.thread_title') }}</h2>
+                <div class="chat-header">
+                    <h2>{{ trans('messages.thread_title') }}</h2>
 
-                <a href="/threads/create" class="btn btn-xs btn-success">
-                    {{ trans('messages.create_thread') }}
-                </a>
-
+                    <a href="/peoples" class="btn btn-xs btn-success"><i class="fa fa-user"></i>
+                        {{ trans('messages.create_chat') }}
+                    </a>
+                    <a href="/threads/create" class="btn btn-xs btn-success"><i class="fa fa-group"></i>
+                        {{ trans('messages.create_thread') }}
+                    </a>
+                </div>
                 <threads></threads>
             </div>
         </div>
