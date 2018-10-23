@@ -187,4 +187,8 @@ class User extends Authenticatable
             ->where('updated_at', '>', $participant->last_read)
             ->count();
     }
+
+    public function isAdmin() {
+        return $this->email == config('app.admin_email');
+    }
 }
