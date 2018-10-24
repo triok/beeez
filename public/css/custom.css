@@ -27,3 +27,15 @@ table.dataTable thead th {
 table.dataTable.no-footer {
     border-bottom: 1px solid #ddd;
 }
+
+.fa-orange {
+    color: orange;
+}
+
+.inline {
+    display: inline-block !important;
+}
+
+.w100 {
+    width: 100%;
+}

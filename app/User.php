@@ -20,6 +20,7 @@ use App\Models\Project;
 use App\Models\Team;
 use App\Models\TeamUsers;
 use App\Models\Thread;
+use App\Models\Traits\Favoritable;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,7 +30,7 @@ use Cmgmyr\Messenger\Models\Models;
 
 class User extends Authenticatable
 {
-    use LaratrustUserTrait, Notifiable, Avatarable, Commentable, Messagable;
+    use LaratrustUserTrait, Notifiable, Avatarable, Commentable, Messagable, Favoritable;
 
     protected $guarded = ['id'];
     protected $links;
@@ -186,5 +187,9 @@ class User extends Authenticatable
         return Message::where('thread_id', '=', $thread_id)
             ->where('updated_at', '>', $participant->last_read)
             ->count();
+    }
+
+    public function isAdmin() {
+        return $this->email == config('app.admin_email');
     }
 }

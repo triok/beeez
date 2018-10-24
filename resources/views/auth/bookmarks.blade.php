@@ -15,8 +15,10 @@
         <div class="tab-content">
             @include('applications.partials.favorite', ['class' => 'in active'])
             <div id="peoples" class="tab-pane fade">
+                @include('peoples.partials.table', ['action' => '/api/users/search?favorite=true'])
             </div>
             <div id="teams" class="tab-pane fade">
+                @include('teams.partials.table', ['action' => '/api/teams/search?favorite=true'])
             </div>
             <div id="companies" class="tab-pane fade">
             </div>

@@ -136,6 +136,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/','PeopleController@index')->name('peoples.index');
         Route::get('/{user}','PeopleController@show')->name('peoples.show');
         Route::post('/{user}','PeopleController@updateAvatar')->name('peoples.updateAvatar');
+
+        Route::post('/{user}/favorite', 'PeopleController@favorite')->name('peoples.favorite');
+        Route::post('/{user}/unfavorite', 'PeopleController@unfavorite')->name('peoples.unfavorite');
     });
 
     // Teams
@@ -144,6 +147,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/teams/{team}/addAdmin','TeamsController@addAdmin')->name('teams.addAdmin');
     Route::post('/teams/{team}/deleteAdmin','TeamsController@deleteAdmin')->name('teams.deleteAdmin');
     Route::post('/teams/{team}/disconnect','TeamsController@disconnect')->name('teams.disconnect');
+    Route::post('/teams/{team}/favorite', 'TeamsController@favorite')->name('teams.favorite');
+    Route::post('/teams/{team}/unfavorite', 'TeamsController@unfavorite')->name('teams.unfavorite');
     Route::resource('teams', 'TeamsController');
 
     Route::get('/organizations/my-organizations','OrganizationsController@my')->name('organizations.my');
@@ -209,4 +214,7 @@ Route::group(['prefix' => 'api', 'namespace' => '\API'], function () {
 
     Route::get('threads', 'ThreadsController@index');
     Route::get('threads/{thread}/messages', 'MessagesController@index');
+
+    Route::get('users/search', 'UserController@search');
+    Route::get('teams/search', 'TeamController@search');
 });

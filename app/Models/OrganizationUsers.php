@@ -14,7 +14,7 @@ class OrganizationUsers extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function team()
+    public function organization()
     {
         return $this->belongsTo(Organization::class);
     }

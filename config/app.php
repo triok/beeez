@@ -80,6 +80,8 @@ return [
     'locale' => 'ru',
     'locales' => ['ru', 'en'],
 
+    'admin_email' => 'admin@app.com',
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale

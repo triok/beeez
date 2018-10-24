@@ -76,9 +76,15 @@
                                                 <tbody>
                                                 @foreach($user->teams as $team)
                                                     <tr>
-                                                        <td><a href="{{ route('teams.show', $team->team) }}">{{$team->team->name}}</a></td>
-                                                        <td>{{$team->position}}</td>
-                                                        <td>{{\Carbon\Carbon::parse($team->created_at)->format('d M. Y')}}</td>
+                                                        <td style="width: 50%">
+                                                            <a href="{{ route('teams.show', $team->team) }}">{{$team->team->name}}</a>
+                                                        </td>
+                                                        <td style="width: 25%">
+                                                            {{$team->position}}
+                                                        </td>
+                                                        <td>
+                                                            {{\Carbon\Carbon::parse($team->created_at)->format('d M. Y')}}
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -86,6 +92,32 @@
                                         </td>
                                     </tr>
                                     @endif
+
+                                    @if(count($user->organizations))
+                                        <tr>
+                                            <td><b>Организации</b></td>
+                                            <td>
+                                                <table class="table table-responsive">
+                                                    <tbody>
+                                                    @foreach($user->organizations as $organization)
+                                                        <tr>
+                                                            <td style="width: 50%">
+                                                                <a href="{{ route('organizations.show', $organization->organization) }}">{{$organization->organization->name}}</a>
+                                                            </td>
+                                                            <td style="width: 25%">
+                                                                {{$organization->position}}
+                                                            </td>
+                                                            <td>
+                                                                {{\Carbon\Carbon::parse($organization->created_at)->format('d M. Y')}}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    @endif
+
                                     <tr>
                                         <td><b>@lang('peoples.company')</b></td>
                                         <td></td>

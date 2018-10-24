@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Transformers\UserTransformer;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    protected $transformer;
+
+    public function __construct(UserTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
     public function index(Request $request)
     {
         /** @var User $users */
@@ -22,5 +30,20 @@ class UserController extends Controller
         }
 
         return response()->json($users);
+    }
+
+    public function search(Request $request)
+    {
+        $users = User::all();
+
+        if ($request->has('favorite')) {
+            $users = $users->filter(function ($user) {
+                return $user->isFavorited();
+            });
+        }
+
+        return response()->json(
+            $this->transformer->transformCollection($users)
+        );
     }
 }
