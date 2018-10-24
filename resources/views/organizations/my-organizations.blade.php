@@ -49,7 +49,7 @@
                   </td>
                   <td>
                      @if($organization->status == 'approved')
-                     <a href="{{ route('organizations.structure', $organization) }}">Войти</a>
+                     <a href="{{ route('structure.index', $organization) }}">Войти</a>
                      @endif
                   </td>              
                </tr>

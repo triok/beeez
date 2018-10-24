@@ -39,3 +39,18 @@ table.dataTable.no-footer {
 .w100 {
     width: 100%;
 }
+
+.organization-structure .fa-align-justify{
+    padding-top: 15px;
+}
+.organization-structure #sidebar {
+    padding-top: 0px;
+}
+.organization-structure button {
+    margin-bottom: 15px;
+}
+.organization-structure .employee {
+    min-height: 400px!important;
+    border-right: 1px solid #dadada;
+    border-left: 1px solid #dadada;
+}

@@ -64,12 +64,6 @@ class OrganizationsController extends Controller
         return view('organizations.show', compact('organization', 'connections'));
     }
 
-    public function structure(Organization $organization)
-    {
-        $connections = OrganizationUsers::where('organization_id', $organization->id)->get();
-
-        return view('organizations.structure', compact('organization', 'connections'));
-    }
     /**
      * Show the form for creating a new resource.
      *
