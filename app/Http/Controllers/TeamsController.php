@@ -216,6 +216,36 @@ class TeamsController extends Controller
      * @param Team $team
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
+    public function favorite(Team $team)
+    {
+        $team->setFavorited();
+
+        flash()->success('Команда добавлена в избранные!');
+
+        return redirect()->back();
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Team $team
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function unfavorite(Team $team)
+    {
+        $team->setUnfavorited();
+
+        flash()->success('Команда удалена с избранных!');
+
+        return redirect()->back();
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Team $team
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
     public function addAdmin(Team $team)
     {
         if (auth()->id() != $team->user_id) {

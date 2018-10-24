@@ -1,13 +1,13 @@
-@include('peoples.partials.actions-template')
+@include('teams.partials.actions-template')
 
-<table class="table table-responsive table-full-width table-peoples table-hover table-search" id="users-table" style="width: 100%;">
+<table class="table table-responsive table-full-width table-peoples table-hover table-search" id="teams-table" style="width: 100%;">
     <thead>
     <tr>
-        <th>@lang('peoples.login')</th>
-        <th>@lang('peoples.name')</th>
-        <th>@lang('peoples.feedbacks')</th>
-        <th>@lang('peoples.member')</th>
-        <th>@lang('peoples.message')</th>
+        <th>@lang('teams.team')</th>
+        <th>@lang('teams.owner')</th>
+        <th>@lang('teams.show_team_type')</th>
+        <th>@lang('teams.show_date')</th>
+        <th>@lang('teams.actions')</th>
     </tr>
     </thead>
     <tbody></tbody>
@@ -16,7 +16,7 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
-            $('#users-table').DataTable({
+            var table = $('#teams-table').DataTable({
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
@@ -27,32 +27,39 @@
                     "url": "{{ $action }}",
                     "dataSrc": "data"
                 },
-                "columns": [
-                    {
-                        "data": "username",
-                        "render": function (data, type, row, meta) {
-                            if (type === 'display') {
-                                return '<a href="' + row.route + '">' + row.username + '</a>';
-                            }
 
-                            return data;
-                        }
-                    },
+                "columns": [
                     {
                         "data": "name",
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
-                                return row.name;
+                                var res = '<a href="' + row.route + '">' + row.name + '</a>';
+
+                                if (row.is_owner) {
+                                    res += ' <i class="fa fa-star"></i>'
+                                }
+
+                                return res;
                             }
 
                             return data;
                         }
                     },
                     {
-                        "data": "rating_positive",
+                        "data": "owner.name",
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
-                                return '<span class="text-success">' + row.rating_positive + '</span>/<span class="text-danger">' + row.rating_negative + '</span>';
+                                return '<a href="' + row.owner.route + '">' + row.owner.name + '</a>';
+                            }
+
+                            return data;
+                        }
+                    },
+                    {
+                        "data": "type",
+                        "render": function (data, type, row, meta) {
+                            if (type === 'display') {
+                                return data;
                             }
 
                             return data;
@@ -62,7 +69,7 @@
                         "data": "created_at",
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
-                                return '<span class="date-short">' + moment(row.created_at, "YYYY-MM-DD mm:ss").format("ll") + '</span>';
+                                return '<span class="date-short">' + moment(data, "YYYY-MM-DD mm:ss").format("ll") + '</span>';
                             }
 
                             return data;
@@ -72,14 +79,16 @@
                         "data": "id",
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
-                                var template = $('#actions-template').html();
+                                var template = $('#team-actions-template').html();
 
                                 template = template.replace(/#id/g, row.id);
 
+                                template = template.replace(/#slug/g, row.slug);
+
                                 if (row.is_favorited) {
-                                    $('#form-unfavorite-' + row.id).attr('class', 'inline');
+                                    $('#team-form-unfavorite-' + row.id).attr('class', 'inline');
                                 } else {
-                                    $('#form-favorite-' + row.id).attr('class', 'inline');
+                                    $('#team-form-favorite-' + row.id).attr('class', 'inline');
                                 }
 
                                 return template;
@@ -89,6 +98,10 @@
                         }
                     },
                 ]
+            });
+
+            $('#team-type-filter').on('change', function () {
+                table.ajax.url("{{ $action }}&type=" + $(this).val()).load();
             });
         });
     </script>

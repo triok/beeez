@@ -35,3 +35,7 @@ table.dataTable.no-footer {
 .inline {
     display: inline-block !important;
 }
+
+.w100 {
+    width: 100%;
+}

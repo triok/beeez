@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Favoritable;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class Team extends Model
 {
+    use Favoritable;
+
     protected $fillable = ['user_id', 'name', 'description', 'team_type_id', 'logo', 'slug'];
 
     public function getRouteKeyName()

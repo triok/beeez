@@ -43,10 +43,16 @@ class TeamController extends Controller
                 ->orWhereIn('id', $teamIds);
         }
 
+        $teams = $teams->with('user')->with('type')->get();
+
+        if ($request->has('favorite')) {
+            $teams = $teams->filter(function ($team) {
+                return $team->isFavorited();
+            });
+        }
+
         return response()->json(
-            $this->transformer->transformCollection(
-                $teams->with('user')->with('type')->get()
-            )
+            $this->transformer->transformCollection($teams)
         );
     }
 }

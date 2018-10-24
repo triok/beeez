@@ -8,6 +8,7 @@ return [
     'owner' => 'Creator:',
     'find'  => 'Find team',
     'projects'  => 'Projects',
+    'actions'  => 'Actions',
     'create' => 'Create team',        
     'search' => 'Enter name...',
 
