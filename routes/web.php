@@ -136,6 +136,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/','PeopleController@index')->name('peoples.index');
         Route::get('/{user}','PeopleController@show')->name('peoples.show');
         Route::post('/{user}','PeopleController@updateAvatar')->name('peoples.updateAvatar');
+
+        Route::post('/{user}/favorite', 'PeopleController@favorite')->name('peoples.favorite');
+        Route::post('/{user}/unfavorite', 'PeopleController@unfavorite')->name('peoples.unfavorite');
     });
 
     // Teams
@@ -209,4 +212,6 @@ Route::group(['prefix' => 'api', 'namespace' => '\API'], function () {
 
     Route::get('threads', 'ThreadsController@index');
     Route::get('threads/{thread}/messages', 'MessagesController@index');
+
+    Route::get('users/search', 'UserController@search');
 });

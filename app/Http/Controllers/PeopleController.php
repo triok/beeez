@@ -27,6 +27,36 @@ class PeopleController extends Controller
         return  view('peoples.peoples-show', compact('user'));
     }
 
+    /**
+     * Update a resource in storage.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function favorite(User $user)
+    {
+        $user->setFavorited();
+
+        flash()->success('Пользователь добавлен в избранные!');
+
+        return redirect()->back();
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function unfavorite(User $user)
+    {
+        $user->setUnfavorited();
+
+        flash()->success('Пользователь удален с избранных!');
+
+        return redirect()->back();
+    }
+
     public function updateAvatar(User $user)
     {
         $this->validate(request(), ['avatar' => 'required|image|mimes:jpeg,jpg,png,gif']);
