@@ -39,18 +39,15 @@ class StructuresController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param Organization $organization
      * @param Structure $structure
      * @return \Illuminate\Http\Response
      */
-    public function show(Structure $structure)
+    public function show(Organization $organization, Structure $structure)
     {
-//        $userIsAdmin = $this->userIsStructureAdmin($structure);
-//
-//        $userIsConnected = $this->userIsConnected($structure);
-//
-//        $connections = StructureUsers::where('structure_id', $structure->id)->get();
-//
-//        return view('structures.show', compact('structure', 'connections', 'userIsAdmin', 'userIsConnected'));
+        $connections = StructureUsers::where('structure_id', $structure->id)->get();
+
+        return view('structures.show', compact('organization', 'structure', 'connections'));
     }
 
     /**

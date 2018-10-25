@@ -18,7 +18,9 @@
                             @foreach($structures as $structure)
                                 <li class="{{ ($structure->id == $structures->first()->id ? 'active' : '') }}">
                                     <a data-toggle="tab" href="#panel{{ $structure->id }}">{{ $structure->name }}</a>
-                                    <i class="fa fa-align-justify pull-right"></i>
+                                    <a href="{{ route('structure.show', [$organization, $structure]) }}">
+                                        <i class="fa fa-align-justify pull-right"></i>
+                                    </a>
                                 </li>
                             @endforeach
                         </ul>

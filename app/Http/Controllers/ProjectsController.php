@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectRequest;
 use App\Models\Jobs\Job;
+use App\Models\Organization;
 use App\Models\Project;
+use App\Models\Structure;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use App\Transformers;
@@ -71,9 +73,13 @@ class ProjectsController extends Controller
 
         $teams = auth()->user()->allUserTeams()->get();
 
+        $organizations = Organization::where('user_id', auth()->id())->get();
+
         $team_id = request('team_id');
 
-        return view('projects.create', compact('icons', 'teams', 'team_id'));
+        $structure_id = request('structure_id');
+
+        return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structure_id'));
     }
 
     /**
@@ -103,7 +109,9 @@ class ProjectsController extends Controller
 
         $teams = auth()->user()->allUserTeams()->get();
 
-        return view('projects.edit', compact('project', 'icons', 'teams'));
+        $organizations = Organization::where('user_id', auth()->id())->get();
+
+        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations'));
     }
 
     /**
@@ -266,6 +274,8 @@ class ProjectsController extends Controller
             return redirect(route('my-bookmarks') . '#projects');
         } elseif (request('team_id')) {
             return redirect(route('teams.projects') . '#team-' . (int)request('team_id'));
+        } elseif (request('structure_id') && $structure = Structure::find(request('structure_id'))) {
+            return redirect(route('structure.show', [$structure->organization, $structure]));
         } else {
             return redirect(route('projects.index'));
         }

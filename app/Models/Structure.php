@@ -18,4 +18,9 @@ class Structure extends Model
     {
         return $this->belongsToMany(User::class, 'structure_users');
     }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }

@@ -29,12 +29,12 @@ Route::group(['middleware' => 'web'], function () {
 
     //Projects
     Route::get('projects', 'ProjectsController@index')->name('projects.index');
-    Route::get('projects/project{project}', 'ProjectsController@show')->name('projects.show');
     Route::get('projects/create', 'ProjectsController@create')->name('projects.create');
     Route::get('projects/{project}/edit', 'ProjectsController@edit')->name('projects.edit');
     Route::post('projects', 'ProjectsController@store')->name('projects.store');
-    Route::put('projects/{project}', 'ProjectsController@update')->name('projects.update');
+    Route::patch('projects/{project}', 'ProjectsController@update')->name('projects.update');
     Route::delete('projects/{project}', 'ProjectsController@destroy')->name('projects.destroy');
+    Route::get('projects/project{project}', 'ProjectsController@show')->name('projects.show');
 
     Route::post('projects/{project}/done', 'ProjectsController@done')->name('projects.done');
     Route::post('projects/{project}/restore', 'ProjectsController@restore')->name('projects.restore');

@@ -16,6 +16,12 @@
     </div>
 
     <div class="col-sm-9">
-        @include('structures.partials.projects')
+        <h2>@lang('structure.projects')</h2>
+
+        <ul class="list-unstyled">
+            @foreach($structure->projects as $project)
+                <li>{{ $project->name }}</li>
+            @endforeach
+        </ul>
     </div>
 </div>

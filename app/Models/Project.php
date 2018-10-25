@@ -10,7 +10,7 @@ class Project extends Model
 {
     use Favoritable;
 
-    protected $fillable = ['user_id', 'team_id', 'name', 'description', 'icon', 'is_archived'];
+    protected $fillable = ['user_id', 'team_id', 'structure_id', 'name', 'description', 'icon', 'is_archived'];
 
     public function user()
     {
@@ -20,6 +20,11 @@ class Project extends Model
     public function team()
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function structure()
+    {
+        return $this->belongsTo(Structure::class);
     }
 
     public function jobs()
