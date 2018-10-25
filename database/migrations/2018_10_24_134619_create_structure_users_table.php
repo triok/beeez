@@ -14,7 +14,7 @@ class CreateStructureUsersTable extends Migration
     public function up()
     {
         Schema::create('structure_users', function (Blueprint $table) {
-            $table->integer('department_id')->unsigned();
+            $table->integer('structure_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->string('position')->default('');
             $table->timestamps();

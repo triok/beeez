@@ -1,61 +1,55 @@
 @extends('layouts.app')
+
 @section('content')
-<div class="container" id="main">
-    <div class="content-form team-edit">
-        <h2><i class="fa fa-pencil"></i> {{ $team->name }}</h2>
+    <div class="container" id="main">
+        <div class="content-form structure-edit">
+            <h2>
+                <i class="fa fa-pencil"></i>
+                {{ $structure->name }}
+                в <a href="{{ route('structure.index', $organization) }}"> {{ $organization->name }}</a>
+            </h2>
 
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-2 pull-right">
+                {!! Form::open(['url' => route('structure.destroy', [$organization, $structure]), 'method'=>'delete', 'class' => 'form-delete']) !!}
+                <button type="submit" class="btn btn-danger btn-xs" title="@lang('structure.delete')">
+                    <i class="fa fa-trash"></i> @lang('structure.delete')
+                </button>
+                {!! Form::close() !!}
+            </div>
+
+            {!! Form::open(['url' => route('structure.update', [$organization, $structure]), 'method'=>'patch']) !!}
+
+            <div class="row">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label for="input-team-type">@lang('teams.team_type_edit')</label>
-                        <span class="team-info">{{ $team->type->name }}</span>
+                        <label for="input-name">@lang('structure.name')</label>
+                        {!! Form::text('name', $structure->name, ['required'=>'required', 'class'=>'form-control', 'id' => 'input-name']) !!}
                     </div>
-            </div>
-        </div>
-
-        {!! Form::open(['url' => route('teams.update', $team), 'files' => true, 'enctype' => 'multipart/form-data', 'method'=>'patch']) !!}
-
-
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="input-logo">@lang('teams.logo_edit')</label><br>
-
-                    <img src="{{ $team->logo() }}"
-                         class="img-thumbnail"
-                         alt="{{ $team->name }}"
-                         title="{{ $team->name }}"
-                         style="width: 100px; height: 100px;margin-bottom: 5px;">
-
-                    <input type="file" name="logo" id="input-logo">
                 </div>
             </div>
-        </div>
 
-
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="input-description">@lang('teams.description_edit')</label>
-                    {!! Form::textarea('description', old('description', isset($team) ? $team->description : ''), ['id' => 'input-description']) !!}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="input-description">@lang('structure.description')</label>
+                        {!! Form::textarea('description', $structure->description, ['id' => 'input-description', 'class'=>'form-control', 'rows' => '5']) !!}
+                    </div>
                 </div>
             </div>
-        </div>
 
-        @include('teams/_users')
+            @include('structures.partials.form_users')
 
-        <hr>
+            <hr>
 
-        <div class="btn-toolbar" id="savesubmit">
-            <div class="btn-group btn-group-md">
-                <button type="submit" class="btn btn-primary" id="submit" name="submit"
-                        value="submit">@lang('teams.save')</button>
+            <div class="btn-toolbar" id="savesubmit">
+                <div class="btn-group btn-group-md">
+                    <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">
+                        @lang('structure.save')
+                    </button>
+                </div>
             </div>
-        </div>
 
-        {!! Form::close() !!}
+            {!! Form::close() !!}
+        </div>
     </div>
-</div>    
 @endsection

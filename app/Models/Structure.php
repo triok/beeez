@@ -14,7 +14,7 @@ class Structure extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function users()
+    public function employees()
     {
         return $this->belongsToMany(User::class, 'structure_users');
     }

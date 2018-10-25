@@ -2,15 +2,21 @@
 
 @section('content')
     <div class="container" id="main">
-        <div class="content-form create-team">
-            <h2><i class="fa fa-plus"></i> @lang('teams.new_team')</h2>
+        <div class="content-form create-structure">
+            <h2>
+                <i class="fa fa-plus"></i>
+                @lang('structure.new_structure')
+                в <a href="{{ route('structure.index', $organization) }}"> {{ $organization->name }}</a>
+            </h2>
+
             <hr>
-            {!! Form::open(['url' => route('structure.store', $organization), 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'team-form']) !!}
+
+            {!! Form::open(['url' => route('structure.store', $organization), 'id' => 'structure-form']) !!}
 
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="input-name">@lang('teams.name')</label>
+                        <label for="input-name">@lang('structure.name')</label>
                         {!! Form::text('name', old('name'), ['required'=>'required', 'class'=>'form-control', 'id' => 'input-name']) !!}
                     </div>
                 </div>
@@ -19,50 +25,21 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="input-logo">@lang('teams.logo')</label><br>
-
-
-
-                        <input type="file" name="logo" id="input-logo">
+                        <label for="input-description">@lang('structure.description')</label>
+                        {!! Form::textarea('description', old('description'), ['id' => 'input-description', 'class'=>'form-control', 'rows' => '5']) !!}
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="input-team-type">@lang('teams.team_type')</label>
-                        <select name="team_type_id" id="input-team-type" required="required" class="form-control">
-                            <option selected></option>
-                            @foreach($teamTypes as $type)
-                                @if($type->id == old('team_type_id'))
-                                    <option selected value="{{ $type->id }}">{{ $type->name }}</option>
-                                @else
-                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="input-description">@lang('teams.description')</label>
-                        {!! Form::textarea('description', old('description'), ['id' => 'input-description']) !!}
-                    </div>
-                </div>
-            </div>
-
-            @include('teams/_users')
+            @include('structures.partials.form_users')
 
             <hr>
 
             <div class="btn-toolbar" id="savesubmit">
                 <div class="btn-group btn-group-md">
-                    <button type="submit" class="btn btn-primary" id="submit" name="submit"
-                            value="submit">@lang('teams.submit')</button>
+                    <button type="submit" class="btn btn-primary" id="submit" name="submit" value="submit">
+                        @lang('structure.submit')
+                    </button>
                 </div>
             </div>
 
