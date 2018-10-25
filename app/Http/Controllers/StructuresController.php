@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Organization;
 use App\Models\Project;
-use App\Models\Department;
-use App\Models\DepartmentType;
-use App\Models\DepartmentUsers;
-use App\Notifications\DepartmentUserNotification;
+use App\Models\Structure;
+use App\Models\StructureType;
+use App\Models\StructureUsers;
+use App\Notifications\StructureUserNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class DepartmentsController extends Controller
+class StructuresController extends Controller
 {
     function __construct()
     {
@@ -29,38 +29,37 @@ class DepartmentsController extends Controller
     {
         $connections = [];
 
-        return view('departments.index', compact('organization', 'connections'));
+        return view('structures.index', compact('organization', 'connections'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Department $department
+     * @param Structure $structure
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department)
+    public function show(Structure $structure)
     {
-        $userIsAdmin = $this->userIsDepartmentAdmin($department);
+        $userIsAdmin = $this->userIsStructureAdmin($structure);
 
-        $userIsConnected = $this->userIsConnected($department);
+        $userIsConnected = $this->userIsConnected($structure);
 
-        $connections = DepartmentUsers::where('department_id', $department->id)->get();
+        $connections = StructureUsers::where('structure_id', $structure->id)->get();
 
-        return view('departments.show', compact('department', 'connections', 'userIsAdmin', 'userIsConnected'));
+        return view('structures.show', compact('structure', 'connections', 'userIsAdmin', 'userIsConnected'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @param Organization $organization
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Organization $organization)
     {
-        $departmentTypes = DepartmentType::all();
-
         $users = User::where('id', '!=', auth()->id())->get();
 
-        return view('departments.create', compact('departmentTypes', 'users'));
+        return view('structures.create', compact('organization', 'users'));
     }
 
     /**
@@ -74,8 +73,8 @@ class DepartmentsController extends Controller
     {
         $rules = [
             'name' => 'required|max:200',
-            'department_type_id' => 'required',
-            'slug' => 'required|unique:departments',
+            'structure_type_id' => 'required',
+            'slug' => 'required|unique:structures',
             'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ];
 
@@ -91,60 +90,60 @@ class DepartmentsController extends Controller
 
         $attributes['user_id'] = auth()->user()->id;
 
-        $department = Department::create($attributes);
+        $structure = Structure::create($attributes);
 
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
-            $department->addLogo($request->file('logo'));
+            $structure->addLogo($request->file('logo'));
         }
 
-        DepartmentUsers::create([
-            'department_id' => $department->id,
+        StructureUsers::create([
+            'structure_id' => $structure->id,
             'user_id' => auth()->id(),
             'position' => 'Создатель',
             'is_approved' => true
         ]);
 
-        $this->addConnection($request, $department);
+        $this->addConnection($request, $structure);
 
-        flash()->success('Department saved!');
+        flash()->success('Structure saved!');
 
-        return redirect(route('departments.show', $department));
+        return redirect(route('structures.show', $structure));
     }
 
     /**
      * Show the form for editing a resource.
      *
-     * @param Department $department
+     * @param Structure $structure
      * @return \Illuminate\Http\Response
      */
-    public function edit(Department $department)
+    public function edit(Structure $structure)
     {
-        if (!$this->userIsDepartmentAdmin($department)) {
+        if (!$this->userIsStructureAdmin($structure)) {
             flash()->error('Access denied!');
 
             return redirect()->back();
         }
 
-        $departmentTypes = DepartmentType::all();
+        $structureTypes = StructureType::all();
 
-        $connections = DepartmentUsers::where('department_id', $department->id)->get();
+        $connections = StructureUsers::where('structure_id', $structure->id)->get();
 
         $users = User::where('id', '!=', auth()->id())->get();
 
-        return view('departments.edit', compact('department', 'departmentTypes', 'connections', 'users'));
+        return view('structures.edit', compact('structure', 'structureTypes', 'connections', 'users'));
     }
 
     /**
      * Update a resource in storage.
      *
      * @param Request $request
-     * @param Department $department
+     * @param Structure $structure
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      * @throws \Exception
      */
-    public function update(Request $request, Department $department)
+    public function update(Request $request, Structure $structure)
     {
-        if (!$this->userIsDepartmentAdmin($department)) {
+        if (!$this->userIsStructureAdmin($structure)) {
             flash()->error('Access denied!');
 
             return redirect()->back();
@@ -160,18 +159,18 @@ class DepartmentsController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $department->description = $request->get('description', '');
-        $department->save();
+        $structure->description = $request->get('description', '');
+        $structure->save();
 
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
-            $department->addLogo($request->file('logo'));
+            $structure->addLogo($request->file('logo'));
         }
 
-        $this->addConnection($request, $department);
+        $this->addConnection($request, $structure);
 
-        flash()->success('Department updated!');
+        flash()->success('Structure updated!');
 
-        return redirect(route('departments.show', $department));
+        return redirect(route('structures.show', $structure));
     }
 
     /**
@@ -181,92 +180,92 @@ class DepartmentsController extends Controller
      */
     public function projects()
     {
-        $departmentIds = auth()->user()->departments()->pluck('department_id')->toArray();
+        $structureIds = auth()->user()->structures()->pluck('structure_id')->toArray();
 
-        $departments = Department::where('user_id', auth()->id())
-            ->orWhereIn('id', $departmentIds)
+        $structures = Structure::where('user_id', auth()->id())
+            ->orWhereIn('id', $structureIds)
             ->get();
 
-        $departmentProjects = [];
+        $structureProjects = [];
 
-        foreach ($departments as $department) {
-            $projects = Project::where('department_id', $department->id)->orderBy('sort_order')->orderBy('name')->get();
+        foreach ($structures as $structure) {
+            $projects = Project::where('structure_id', $structure->id)->orderBy('sort_order')->orderBy('name')->get();
 
-            $departmentProjects[$department->id] = $projects;
+            $structureProjects[$structure->id] = $projects;
         }
 
-        $departmentSelected = request('department_id', ($departments->first() ? $departments->first()->id : 0));
+        $structureSelected = request('structure_id', ($structures->first() ? $structures->first()->id : 0));
 
-        return view('departments.projects', compact('projects', 'departments', 'departmentProjects', 'departmentSelected'));
+        return view('structures.projects', compact('projects', 'structures', 'structureProjects', 'structureSelected'));
     }
 
     /**
      * Destroy a resource in storage.
      *
-     * @param Department $department
+     * @param Structure $structure
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      * @throws \Exception
      */
-    public function destroy(Department $department)
+    public function destroy(Structure $structure)
     {
-        if (!$this->userIsDepartmentAdmin($department)) {
+        if (!$this->userIsStructureAdmin($structure)) {
             flash()->error('Access denied!');
 
             return redirect()->back();
         }
 
-        DepartmentUsers::where('department_id', $department->id)
+        StructureUsers::where('structure_id', $structure->id)
             ->delete();
 
-        $department->delete();
+        $structure->delete();
 
         flash()->success('Команда удалена.');
 
-        return redirect(route('departments.index'));
+        return redirect(route('structures.index'));
     }
 
     /**
      * Update a resource in storage.
      *
-     * @param Department $department
+     * @param Structure $structure
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      * @throws \Exception
      */
-    public function disconnect(Department $department)
+    public function disconnect(Structure $structure)
     {
-        if (auth()->id() == $department->user_id || !$this->userIsConnected($department)) {
+        if (auth()->id() == $structure->user_id || !$this->userIsConnected($structure)) {
             flash()->error('Access denied!');
 
             return redirect()->back();
         }
 
-        DepartmentUsers::where('department_id', $department->id)
+        StructureUsers::where('structure_id', $structure->id)
             ->where('user_id', auth()->id())
             ->delete();
 
         flash()->success('Вы успешно покинули команду.');
 
-        return redirect(route('departments.mydepartments'));
+        return redirect(route('structures.mystructures'));
     }
 
     /**
      * Add connections.
      *
      * @param Request $request
-     * @param Department $department
+     * @param Structure $structure
      * @throws \Exception
      */
-    protected function addConnection(Request $request, Department $department)
+    protected function addConnection(Request $request, Structure $structure)
     {
         if ($request->has('connections')) {
-            $connectionIds = DepartmentUsers::where('department_id', $department->id)
+            $connectionIds = StructureUsers::where('structure_id', $structure->id)
                 ->pluck('position', 'user_id')
                 ->toArray();
 
             foreach ($request->get('connections') as $user_id => $connection) {
                 if (isset($connectionIds[$user_id])) {
                     if ($connectionIds[$user_id] != $connection['position']) {
-                        DepartmentUsers::where('department_id', $department->id)
+                        StructureUsers::where('structure_id', $structure->id)
                             ->where('user_id', $user_id)
                             ->update(['position' => $connection['position']]);
                     }
@@ -274,39 +273,39 @@ class DepartmentsController extends Controller
                     unset($connectionIds[$user_id]);
                 } else {
                     if($user_id != auth()->id()) {
-                        $departmentUser = DepartmentUsers::create([
-                            'department_id' => $department->id,
+                        $structureUser = StructureUsers::create([
+                            'structure_id' => $structure->id,
                             'user_id' => $user_id,
                             'position' => $connection['position']
                         ]);
 
                         if ($recipient = User::find($user_id)) {
-                            $recipient->notify(new DepartmentUserNotification($departmentUser));
+                            $recipient->notify(new StructureUserNotification($structureUser));
                         }
                     }
                 }
             }
 
             foreach ($connectionIds as $user_id => $position) {
-                DepartmentUsers::where('department_id', $department->id)
+                StructureUsers::where('structure_id', $structure->id)
                     ->where('user_id', $user_id)
                     ->where('user_id', '!=', auth()->id())
                     ->delete();
             }
         } else {
-            DepartmentUsers::where('department_id', $department->id)
+            StructureUsers::where('structure_id', $structure->id)
                 ->where('user_id', '!=', auth()->id())
                 ->delete();
         }
     }
 
-    private function userIsDepartmentAdmin($department)
+    private function userIsStructureAdmin($structure)
     {
-        if (auth()->id() == $department->user_id) {
+        if (auth()->id() == $structure->user_id) {
             return true;
         }
 
-        if ($connection = DepartmentUsers::where('department_id', $department->id)
+        if ($connection = StructureUsers::where('structure_id', $structure->id)
             ->where('user_id', auth()->id())
             ->where('is_admin', true)
             ->first()) {
@@ -317,13 +316,13 @@ class DepartmentsController extends Controller
         return false;
     }
 
-    private function userIsConnected($department)
+    private function userIsConnected($structure)
     {
-        if (auth()->id() == $department->user_id) {
+        if (auth()->id() == $structure->user_id) {
             return false;
         }
 
-        if ($connection = DepartmentUsers::where('department_id', $department->id)
+        if ($connection = StructureUsers::where('structure_id', $structure->id)
             ->where('user_id', auth()->id())
             ->first()) {
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDepartmentUsersTable extends Migration
+class CreateStructuresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateDepartmentUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('department_users', function (Blueprint $table) {
-            $table->integer('department_id')->unsigned();
-            $table->integer('user_id')->unsigned();
-            $table->string('position')->default('');
+        Schema::create('structures', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('organization_id');
+            $table->string('name');
+            $table->text('description');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateDepartmentUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('department_users');
+        Schema::dropIfExists('structures');
     }
 }

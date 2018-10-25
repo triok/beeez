@@ -5,7 +5,7 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Structure extends Model
 {
     protected $fillable = ['organization_id', 'name', 'description'];
 
@@ -16,6 +16,6 @@ class Department extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'department_users');
+        return $this->belongsToMany(User::class, 'structure_users');
     }
 }

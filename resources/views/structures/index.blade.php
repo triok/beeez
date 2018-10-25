@@ -9,24 +9,39 @@
                 <div class="col-sm-2 sidebar-offcanvas category-nav" role="navigation">
                     <div id="sidebar">
                         <h2>Отделы</h2>
-                        <button class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> Добавить отдел</button>
+
+                        <a href="{{ route('structure.create', $organization) }}" class="btn btn-primary btn-xs">
+                            <i class="fa fa-plus"></i> Добавить отдел
+                        </a>
+
                         <ul class="list-unstyled">
-                            <li class="active"><a data-toggle="tab" href="#panel1">Название отдела 1</a><i class="fa fa-align-justify pull-right" ></i></li>
-                            <li><a data-toggle="tab" href="#panel2">Название отдела 2</a><i class="fa fa-align-justify pull-right" ></i></li>
+                            <li class="active">
+                                <a data-toggle="tab" href="#panel1">Название отдела 1</a>
+                                <i class="fa fa-align-justify pull-right"></i>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#panel2">Название отдела 2</a>
+                                <i class="fa fa-align-justify pull-right"></i>
+                            </li>
                         </ul>
                     </div>
-
                 </div>
+
                 <div class="tab-content">
                     <div id="panel1" class="tab-pane fade in active col-sm-10">
                         <div class="col-sm-3 employee">
                             <h2>Сотрудники</h2>
-                            <button class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> Добавить сотрудников</button>
+
+                            <a href="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> Добавить сотрудников
+                            </a>
+
                             <ul class="list-unstyled">
                                 <li>user</li>
                                 <li>manager</li>
                             </ul>
                         </div>
+
                         <div class="col-sm-9">
                             <h2>Проекты</h2>
                             <ul class="list-unstyled">
@@ -40,7 +55,8 @@
                     <div id="panel2" class="tab-pane fade col-sm-10">
                         <div class="col-sm-3 employee">
                             <h2>Сотрудники</h2>
-                            <button class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> Добавить сотрудников</button>
+                            <button class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> Добавить сотрудников
+                            </button>
                         </div>
                         <div class="col-sm-9">
                             <h2>Проекты</h2>

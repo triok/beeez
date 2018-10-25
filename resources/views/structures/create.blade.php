@@ -5,7 +5,7 @@
         <div class="content-form create-team">
             <h2><i class="fa fa-plus"></i> @lang('teams.new_team')</h2>
             <hr>
-            {!! Form::open(['url' => route('teams.store'), 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'team-form']) !!}
+            {!! Form::open(['url' => route('structure.store', $organization), 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'team-form']) !!}
 
             <div class="row">
                 <div class="col-md-6">

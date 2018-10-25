@@ -157,7 +157,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
     Route::resource('organizations', 'OrganizationsController');
 
-    Route::resource('/organizations/{organization}/structure', 'DepartmentsController');
+    Route::resource('/organizations/{organization}/structure', 'StructuresController');
 
     Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
     Route::post('notifications/approve', 'NotificationsController@approve')->name('notifications.approve');
