@@ -13,7 +13,7 @@
 
     {!! Form::open(['url' => '/threads', 'method' => 'post', 'id' => 'form-threads-#id', 'class' => 'inline']) !!}
     <input type="hidden" name="user_id" value="#id">
-    <button class="btn btn-primary btn-sm" title="">
+    <button class="btn btn-primary btn-sm" title="@lang('peoples.message')">
         <i class="fa fa-envelope" aria-hidden="true"></i>
     </button>
     {!! Form::close() !!}

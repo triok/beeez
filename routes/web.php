@@ -163,6 +163,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('notifications/reject', 'NotificationsController@reject')->name('notifications.reject');
     Route::post('notifications/destroy', 'NotificationsController@destroy')->name('notifications.destroy');
 
+    // Vacancies
+    Route::get('/vacancies')->name('vacancies');
+
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
         if (in_array($locale, \Config::get('app.locales'))) {

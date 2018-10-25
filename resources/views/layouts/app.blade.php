@@ -43,13 +43,13 @@
                 </li>
                 <li class="left-sidebar">
                     <a href="{{url('/page/2')}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fa fa-hashtag"></i>
+                        <i class="fa fa-hashtag fa-fw"></i>
                         <span>О площадке</span>
                     </a>
                 </li>
                 <li class="left-sidebar">
                     <a href="{{url('/page/5')}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fa fa-thumbs-o-up"></i>
+                        <i class="fa fa-thumbs-o-up fa-fw"></i>
                         <span>Контакты</span>
                     </a>
                 </li>                                
@@ -60,7 +60,7 @@
                 </li>
                 <li class="left-sidebar dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-expanded="false"><i class="fa fa-dot-circle-o" aria-hidden="true"></i><span>@lang('layout.jobs-manager')</span></a>
+                                   aria-expanded="false"><i class="fa fa-dot-circle-o fa-fw" aria-hidden="true"></i><span>@lang('layout.jobs-manager')</span></a>
                     <ul class="dropdown-menu sub-menu" role="menu">
                         <h6 class="dropdown-header">@lang('layout.jobs-manager')</h6>
                         <li role="separator" class="divider"></li>                
@@ -75,9 +75,10 @@
                         <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>                
                     </ul>               
                 </li>
+                <li class="left-sidebar dropdown components-li"><a href="{{ route('vacancies') }}"><i class="fa fa-briefcase fa-fw" aria-hidden="true"></i>Вакансии</a></li>
                 <li class="left-sidebar dropdown components-li" >
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i><span>@lang('peoples.title')</span></a>
+                                   aria-expanded="false"><i class="fa fa-user-circle fa-fw" aria-hidden="true"></i><span>@lang('peoples.title')</span></a>
                     <ul class="dropdown-menu sub-menu" role="menu">
                         <h6 class="dropdown-header">@lang('peoples.title')</h6>
                         <li role="separator" class="divider"></li>
@@ -88,7 +89,7 @@
                 </li>  
                 <li class="left-sidebar dropdown components-li" >
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-expanded="false"><i class="fa fa-group" aria-hidden="true"></i><span>@lang('teams.title')</span></a>
+                                   aria-expanded="false"><i class="fa fa-group fa-fw" aria-hidden="true"></i><span>@lang('teams.title')</span></a>
                     <ul class="dropdown-menu sub-menu" role="menu">
                         <h6 class="dropdown-header">@lang('teams.title')</h6>
                         <li role="separator" class="divider"></li>
@@ -111,24 +112,27 @@
                 </li>  
                 <li class="left-sidebar dropdown components-li">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-expanded="false"><i class="fa fa-briefcase" aria-hidden="true"></i><span>Организации</span></a>
+                                   aria-expanded="false"><i class="fa fa-university fa-fw" aria-hidden="true"></i><span>@lang('organizations.title')</span></a>
                     <ul class="dropdown-menu sub-menu" role="menu">
-                        <h6 class="dropdown-header">Организации</h6>
+                        <h6 class="dropdown-header">@lang('organizations.title')</h6>
                         <li role="separator" class="divider"></li>
                         <li>
-                            <a href="{{route('organizations.index')}}"><i class="fa fa-search"></i>Все организации</a>                    
+                            <a href="{{route('organizations.index')}}"><i class="fa fa-search"></i>@lang('organizations.all')</a>                    
                         </li>
                         <li>
-                            <a href="{{route('organizations.my')}}"><i class="fa fa-briefcase"></i>Мои организации</a>                    
+                            <a href="{{route('organizations.my')}}"><i class="fa fa-briefcase"></i>@lang('organizations.title-my')</a>                    
                         </li>
+                        <li>
+                            <a href="#"><i class="fa fa-briefcase"></i>Вакансии</a>                    
+                        </li>                        
                         <li role="separator" class="divider"></li>                
                         <li>
-                            <a href="{{route('organizations.create')}}"><i class="fa fa-plus"></i>Добавить организацию</a>                    
+                            <a href="{{route('organizations.create')}}"><i class="fa fa-plus"></i>@lang('organizations.add')</a>                    
                         </li>                                                
                     </ul>  
                 </li>
                 <li class="left-sidebar dropdown components-li">
-                    <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark"></i><span>@lang('layout.bookmarks')</span>
+                    <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark fa-fw"></i><span>@lang('layout.bookmarks')</span>
                         <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
                     </a>
                 </li>

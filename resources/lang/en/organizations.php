@@ -2,7 +2,9 @@
 
 return [
     'title'                  => 'Organizations',
-    'new_organization'       => 'New Organization',
+    'new_organization'       => 'New organization',
+    'all'                    => 'All organizations',
+    'add'                    => 'Add new organization',    
 
     'organization'           => 'Organization',
     'owner'                  => 'Owner',
