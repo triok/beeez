@@ -29,12 +29,12 @@ Route::group(['middleware' => 'web'], function () {
 
     //Projects
     Route::get('projects', 'ProjectsController@index')->name('projects.index');
-    Route::get('projects/project{project}', 'ProjectsController@show')->name('projects.show');
     Route::get('projects/create', 'ProjectsController@create')->name('projects.create');
     Route::get('projects/{project}/edit', 'ProjectsController@edit')->name('projects.edit');
     Route::post('projects', 'ProjectsController@store')->name('projects.store');
-    Route::put('projects/{project}', 'ProjectsController@update')->name('projects.update');
+    Route::patch('projects/{project}', 'ProjectsController@update')->name('projects.update');
     Route::delete('projects/{project}', 'ProjectsController@destroy')->name('projects.destroy');
+    Route::get('projects/project{project}', 'ProjectsController@show')->name('projects.show');
 
     Route::post('projects/{project}/done', 'ProjectsController@done')->name('projects.done');
     Route::post('projects/{project}/restore', 'ProjectsController@restore')->name('projects.restore');
@@ -155,8 +155,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/organizations/moderation','OrganizationsController@moderation')->name('organizations.moderation');
     Route::post('/organizations/approve/{organization}','OrganizationsController@approve')->name('organizations.approve');
     Route::post('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
-    Route::get('/organizations/structure/','OrganizationsController@structure')->name('organizations.structure');
     Route::resource('organizations', 'OrganizationsController');
+
+    Route::resource('/organizations/{organization}/structure', 'StructuresController');
 
     Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
     Route::post('notifications/approve', 'NotificationsController@approve')->name('notifications.approve');

@@ -41,6 +41,26 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
+                <label for="team_id">Отдел</label>
+                <select class="form-control" name="structure_id">
+                    <option value="">Нет</option>
+                    @foreach($organizations as $organization)
+                        @foreach($organization->structures as $structure)
+                            @if($structure->id == $structure_id)
+                                <option selected value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
+                            @else
+                                <option value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
+                            @endif
+                        @endforeach
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
                 <label for="icon">@lang('projects.create-icon')</label>                
                 <select class="form-control icons" style="font-family: FontAwesome;" name="icon">
                     <option>@lang('projects.create-noicon')</option>

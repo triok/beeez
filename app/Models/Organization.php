@@ -72,6 +72,11 @@ class Organization extends Model
         return $this->belongsToMany(User::class, 'organization_users');
     }
 
+    function structures()
+    {
+        return $this->hasMany(Structure::class);
+    }
+
     public function logo()
     {
         $logoDir = '/storage/images/organization/';
