@@ -75,6 +75,12 @@
                         <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>                
                     </ul>               
                 </li>
+                    <li class="left-sidebar dropdown components-li">
+                        <a href="{{ route('vacancies.index') }}">
+                            <i class="fa fa-suitcase"></i>
+                            <span>@lang('layout.vacancies')</span>
+                        </a>
+                    </li>
                 <li class="left-sidebar dropdown components-li" >
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i><span>@lang('peoples.title')</span></a>

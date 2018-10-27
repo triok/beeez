@@ -104,19 +104,23 @@
                 <p>{!! $organization->description !!}</p>
 
                 @if($files = $organization->files)
-                    <b>Файлы:</b>
-                    <p>
-                    @foreach($files as $file)
-                        <div>
-                            - <a target="_blank" href="{{ $file->link() }}" style="font-size: 11px;">
-                                {{ $file->title }}
-                            </a>
-                        </div>
-                    @endforeach
-                    </p>
+                    @if($files->count())
+                        <b>Файлы:</b>
+                        <p>
+                        @foreach($files as $file)
+                            <div>
+                                - <a target="_blank" href="{{ $file->link() }}" style="font-size: 11px;">
+                                    {{ $file->title }}
+                                </a>
+                            </div>
+                        @endforeach
+                        </p>
+                    @endif
                 @endif
 
-                        <hr>
+                        <p>
+                            <b>@lang('peoples.title')</b>
+                        </p>
 
                         <table class="table table-responsive">
                             <thead>
@@ -134,6 +138,35 @@
                                     </td>
                                     <td>{{ $connection->position }}</td>
                                     <td class="text-right">{{ \Carbon\Carbon::parse($connection->created_at)->format('d M, Y') }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+
+                        <p>
+                            <b>@lang('vacancies.title')</b>
+                        </p>
+
+                        <table class="table table-responsive">
+                            <thead>
+                            <tr>
+                                <td>@lang('vacancies.col_name')</td>
+                                <td>@lang('vacancies.col_specialization')</td>
+                                <td class="text-right">@lang('vacancies.col_published')</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($organization->vacancies()->published()->get() as $vacancy)
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('vacancies.show', $vacancy) }}">{{ $vacancy->name }}</a>
+                                    </td>
+                                    <td>
+                                        @lang('vacancies.specialization_' . $vacancy->specialization)
+                                    </td>
+                                    <td class="text-right date-short">
+                                        {{ $vacancy->published_at }}
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
