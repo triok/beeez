@@ -18,7 +18,10 @@ return [
     'teams'          => 'Teams',
     'companies'      => 'Organizations',
     'projects'       => 'Projects',
-    'messages'       => 'Messages',              
+    'messages'       => 'Messages',
+    'heading-peoples'=> 'Peoples in bookmarks',
+    'heading-teams'  => 'Teams in bookmarks',                  
+    'heading-org'    => 'Companies in bookmarks',  
 
     //Buttons
 

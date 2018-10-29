@@ -37,6 +37,9 @@ return [
     'show_user_position' => 'Position',
     'show_user_date' => 'Date',
 
+    // Team Projects
+    'project-title' => 'Projects in team:',
+
     // Buttons
     'create_team' => 'Create team',
     'back_to_list' => 'back to list',

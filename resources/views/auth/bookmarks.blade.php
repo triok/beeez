@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid" id="main">
     <h2>@lang('bookmarks.title')</h2>
-    <div class="row">
+
         <ul class="nav nav-tabs">
           <li role="presentation" class="active"><a data-toggle="tab" href="#favorite">@lang('bookmarks.jobs')</a></li>
           <li role="presentation"><a data-toggle="tab" href="#peoples">@lang('bookmarks.peoples')</a></li>
@@ -12,15 +12,24 @@
           <li role="presentation"><a data-toggle="tab" href="#messages">@lang('bookmarks.messages')</a></li>                      
         </ul>
 
-        <div class="tab-content">
-            @include('applications.partials.favorite', ['class' => 'in active'])
+        <div class="tab-content bookmarks"> 
+                @include('applications.partials.favorite', ['class' => 'in active'])
             <div id="peoples" class="tab-pane fade">
+                <div class="col-xs-12">
+                <h2>@lang('bookmarks.heading-peoples')</h2>
                 @include('peoples.partials.table', ['action' => '/api/users/search?favorite=true'])
+                </div>
             </div>
             <div id="teams" class="tab-pane fade">
+                <div class="col-xs-12">
+                <h2>@lang('bookmarks.heading-teams')</h2>
                 @include('teams.partials.table', ['action' => '/api/teams/search?favorite=true'])
+                </div>
             </div>
             <div id="companies" class="tab-pane fade">
+                <div class="col-xs-12">
+                <h2>@lang('bookmarks.heading-org')</h2>
+                </div>               
             </div>
             <div id="projects" class="tab-pane fade">
                 <div class="row" style="margin: 10px">
@@ -29,13 +38,13 @@
                         <div id="favorite" class="tab-pane fade in active">
                         <table class="table table-responsive">
                             <thead>
-                            <tr>
-                                <td style="width: 20px;"> </td>
-                                <td>@lang('projects.name')</td>
-                                <td>@lang('projects.desc')</td>
-                                <td style="min-width: 200px;">@lang('projects.count')</td>
-                                <td></td>
-                            </tr>
+
+                                <th> </th>
+                                <th>@lang('projects.name')</th>
+                                <th>@lang('projects.desc')</th>
+                                <th>@lang('projects.count')</th>
+                                <th></th>
+
                             </thead>
                             <tbody class="sortable-rows">
                             @if($projects->count())
@@ -107,7 +116,7 @@
             <div id="messages" class="tab-pane fade">
             </div>                                                                
         </div>
-    </div>
+
 </div>
 @endsection
 

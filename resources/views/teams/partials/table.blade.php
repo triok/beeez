@@ -4,10 +4,10 @@
     <thead>
     <tr>
         <th>@lang('teams.team')</th>
-        <th>@lang('teams.owner')</th>
         <th>@lang('teams.show_team_type')</th>
+        <th>@lang('teams.owner')</th>        
         <th>@lang('teams.show_date')</th>
-        <th>@lang('teams.actions')</th>
+        <th></th>
     </tr>
     </thead>
     <tbody></tbody>
@@ -20,7 +20,7 @@
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
-
+                "pagingType": "numbers",
                 "pageLength": 20,
 
                 "ajax": {
@@ -46,16 +46,6 @@
                         }
                     },
                     {
-                        "data": "owner.name",
-                        "render": function (data, type, row, meta) {
-                            if (type === 'display') {
-                                return '<a href="' + row.owner.route + '">' + row.owner.name + '</a>';
-                            }
-
-                            return data;
-                        }
-                    },
-                    {
                         "data": "type",
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
@@ -65,6 +55,16 @@
                             return data;
                         }
                     },
+                    {
+                        "data": "owner.name",
+                        "render": function (data, type, row, meta) {
+                            if (type === 'display') {
+                                return '<a href="' + row.owner.route + '">' + row.owner.name + '</a>';
+                            }
+
+                            return data;
+                        }
+                    },                    
                     {
                         "data": "created_at",
                         "render": function (data, type, row, meta) {
@@ -77,6 +77,7 @@
                     },
                     {
                         "data": "id",
+                        "bSortable": false,                         
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
                                 var template = $('#team-actions-template').html();

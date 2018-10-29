@@ -1,6 +1,6 @@
 <div id="favorite" class="tab-pane fade {{ isset($class) ? $class : '' }}">
     <div class="col-xs-12">
-        <h2>@lang('application.titlebookmarks')</h2>
+        <h2>@lang('application.headingbookmarks')</h2>
 
         <table class="table table-striped table-responsive table-full-width table-search" id="favorite-table" style="width: 100%;">
             <thead>
@@ -25,7 +25,7 @@
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
-
+                "pagingType": "numbers",
                 order: [[1, 'desc']],
                 "pageLength": 20,
 

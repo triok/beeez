@@ -24,7 +24,7 @@
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
-
+                "pagingType": "numbers",
                 order: [[1, 'desc']],
                 "pageLength": 20,
 

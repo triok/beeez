@@ -50,7 +50,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="input-description">@lang('teams.description')</label>
-                        {!! Form::textarea('description', old('description'), ['id' => 'input-description']) !!}
+                        {!! Form::textarea('description', old('description'), ['id' => 'input-description', 'cols' => '68', 'rows' => '6']) !!}
                     </div>
                 </div>
             </div>

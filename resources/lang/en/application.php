@@ -15,7 +15,8 @@ return [
 
     'titlefreelancer'       => 'Jobs where I am freelancer',
     'titleclient'           => 'Jobs where I am client',
-    'titlebookmarks'        => 'Bookmarks',        
+    'titlebookmarks'        => 'Bookmarks',
+    'headingbookmarks'      => 'Jobs in bookmarks',            
     'date'                  => 'Date',
     'enddate'               => 'End date',    
     'job'                   => 'Name',

@@ -15,7 +15,8 @@ return [
 
     'titlefreelancer'       => 'Задания в которых я исполнитель',
     'titleclient'           => 'Задания в которых я заказчик',
-    'titlebookmarks'        => 'Закладки',           
+    'titlebookmarks'        => 'Закладки',
+    'headingbookmarks'      => 'Задания добавленные в закладки',            
     'date'                  => 'Дата создания',
     'enddate'               => 'Завершить до',     
     'job'                   => 'Наименование',

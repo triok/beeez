@@ -4,17 +4,20 @@
     <div class="container-fluid" id="teams-projects">
         <div class="row">
             <div class="col-md-12">
-                <h2>Проекты в командах</h2>
-
-                <ul class="nav nav-pills">
-                    @foreach($teams as $team)
-                        <li role="presentation" class="{{ ($team->id == $teamSelected ? 'active' : '') }}">
-                            <a data-toggle="tab" href="#team-{{ $team->id }}">
-                                {{ $team->name }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
+                <h2>@lang('teams.project-title')</h2>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ul class="nav nav-pills">
+                            @foreach($teams as $team)
+                                <li role="presentation" class="{{ ($team->id == $teamSelected ? 'active' : '') }}">
+                                    <a data-toggle="tab" href="#team-{{ $team->id }}">
+                                        {{ $team->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
                 <hr>
                 <div class="tab-content">
                     @foreach($teams as $team)
@@ -37,23 +40,3 @@
         </div>
     </div>
 @endsection
-
-@push('styles')
-    <style>
-        .tab-content {
-            margin-top: 20px;
-        }
-
-        .table-responsive tr td:first-child {
-            width: 20px;
-        }
-
-        .table-responsive tr td:last-child {
-            min-width: 200px;
-        }
-
-        .table-responsive form {
-            display: inline-block;
-        }
-    </style>
-@endpush

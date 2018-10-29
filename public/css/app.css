@@ -4090,8 +4090,10 @@ fieldset[disabled] .btn-default.focus {
 
 .btn-primary {
   color: #fff;
-  background-color: #3097D1;
-  border-color: #2a88bd;
+/*  background-color: #3097D1;
+  border-color: #2a88bd;*/
+  background-color:#48b0a5;
+  border-color: #3b8c83; 
 }
 
 .btn-primary:focus,
@@ -11667,11 +11669,31 @@ footer {
   padding-left: 10px;
   text-decoration: none;
 }
-.table-search > tbody > tr{
+.table-search > tbody > tr, .table-projects > tbody > tr{
   transition: 0.3s;
+  background: transparent!important;
 }
-.table-search > tbody > tr:hover{
-  background: #e4e4e4;
+.table-search > tbody > tr:hover, .table-projects > tbody > tr:hover{
+  background: #47afa51f!important;
+}
+.table-search thead, .table-projects thead {
+  background: #805db973;
+  color: #fff;
+}
+.table-search thead tr th:not(:first-child) {
+  width: 1%!important;
+  white-space: nowrap!important;
+}
+.table-search td, .table-projects td {
+  white-space: nowrap;
+  vertical-align: middle!important;
+}
+.table-projects thead th:nth-last-child(-n+2), .table-projects thead th:first-child{
+  width: 1%;
+  white-space: nowrap;
+}
+.table-projects tbody td:nth-child(4) {
+  text-align: center;
 }
 .sub-tasks { padding-bottom: 20px;}
 .sub-tasks table { margin-bottom: 0; }
@@ -12142,6 +12164,10 @@ section.other-jobs a.delete {
 .table-peoples tbody a{
   color: #47afa5;
 }
+.table-peoples tbody td:nth-last-child(-n+3){
+  text-align: center;
+
+}
 .left-sidebar {
   color: white
 }
@@ -12186,10 +12212,6 @@ section.other-jobs a.delete {
   color: unset;
   box-shadow: none;
 }
-.auth .btn-primary, .peoples-show .btn-primary, .teams .btn-primary, .create-team .btn-primary, .team-edit .btn-primary, #teams-projects .btn-primary, .projects .btn-primary, .create-project .btn-primary, .edit-project .btn-primary, .show-project .btn-primary, .organizations-create .btn-primary, #users-table .btn-primary {
-  background-color:#48b0a5;
-  border-color: #3b8c83; 
-}
 .peoples-show .panel-default, .teams-show .panel-default{
   border: none;
 }
@@ -12230,6 +12252,15 @@ section.other-jobs a.delete {
 .create-project .icons option:first-child, .edit-project .icons option:first-child {
   font-size: 14px;
 }
+.create-project .form-control {
+  background: #f3f3f3;
+}
+.create-project select{
+  border:none;
+  border-radius: 0px;
+  border-bottom: 1px solid #ccd0d2;
+  box-shadow: none;
+}
 #chat .sidebar-offcanvas {
   border-right: 1px solid #d8d8d8;
   min-height: 30vw;
@@ -12255,4 +12286,45 @@ section.other-jobs a.delete {
   width: 100%;
   margin: 0px 0px 20px;
   text-align: right;
+}
+.applications h2, .bookmarks h2{
+  margin: 30px 0px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  border: none!important;
+  background: #47afa51f!important;
+  color: #fff!important;
+  padding: 10px 18px;
+}
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+  color: #fff!important; 
+}
+.dataTables_wrapper .dataTables_paginate {
+  margin-top: 20px;
+}
+.btn-round {
+  border-radius: 50%;
+  padding: 6px 8px;
+  margin-right: 2px;
+}
+#team-type-filter {
+  background: #f3f3f3;
+  box-shadow: none;
+  border-radius: 0px;
+}
+#teams-projects .tab-content {
+  margin-top: 20px;
+}
+#teams-projects .table-responsive tr td:first-child {
+  width: 20px;
+}
+#teams-projects .table-responsive tr td:last-child {
+  min-width: 200px;
+}
+
+#teams-projects .table-responsive form {
+  display: inline-block;
+}
+#teams-projects hr {
+  border-top: 1px solid #d8d8d8;
 }

@@ -2,8 +2,8 @@
     <div class="col-xs-12">
         <h2>@lang('application.titleclient')</h2>
 
-        <table class="table table-striped table-responsive table-full-width table-search" id="client-table" style="width: 100%;">
-            <thead>
+        <table class="table table-responsive table-full-width table-search" id="client-table" style="width: 100%;">
+            <thead class="thead-purple">
             <tr>
                 <th>@lang('application.job')</th>
                 <th>@lang('application.date')</th>
@@ -26,7 +26,7 @@
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
-
+                "pagingType": "numbers",
                 order: [[1, 'desc']],
                 "pageLength": 20,
 
@@ -80,7 +80,7 @@
                                     isDisabled = 'disabled';
                                 }
 
-                                return '<button data-id="' + row.id + '" ' + isDisabled + ' class="btn btn-success btn-sm btn-review">' +
+                                return '<button data-id="' + row.id + '" ' + isDisabled + ' class="btn btn-success btn-sm btn-review button-round" >' +
                                     '<i class="fa fa-handshake-o" aria-hidden="true"></i> Завершить</button>';
                             }
 
@@ -89,9 +89,10 @@
                     },
                     {
                         "data": "id",
+                        "bSortable": false,
                         "render": function (data, type, row, meta) {
                             if (type === 'display' && row.status == 'draft') {
-                                return '<a href="/jobs/' + row.id + '/edit">Edit</a>';
+                                return '<form action="/jobs/' + row.id + '/edit"><button class="btn btn-primary btn-xs button-round" type="submit"><i class="fa fa-pencil"></i></button></form>';
                             }
 
                             return '';

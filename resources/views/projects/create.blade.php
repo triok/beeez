@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                {!! Form::textarea('description', old('description'), ['required'=>'required', 'class'=>'form-control', 'rows' => '5', 'placeholder' => __('projects.create-desc')]) !!}
+                {!! Form::textarea('description', old('description'), ['required'=>'required', 'class'=>'form-control', 'rows' => '3', 'placeholder' => __('projects.create-desc')]) !!}
             </div>
         </div>
     </div>
@@ -28,9 +28,9 @@
                     <option value="">@lang('projects.create-personal')</option>
                     @foreach($teams as $team)
                         @if($team->id == $team_id)
-                            <option selected value="{{ $team->id }}">{{ $team->name }}</option>
+                            <option selected value="{{ $team->id }}">@lang('projects.inteam') {{ $team->name }}</option>
                         @else
-                            <option value="{{ $team->id }}">{{ $team->name }}</option>
+                            <option value="{{ $team->id }}">@lang('projects.create-inteam') {{ $team->name }}</option>
                         @endif
                     @endforeach
                 </select>

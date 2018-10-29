@@ -7,7 +7,7 @@
         <th>@lang('peoples.name')</th>
         <th>@lang('peoples.feedbacks')</th>
         <th>@lang('peoples.member')</th>
-        <th>@lang('peoples.message')</th>
+        <th></th>
     </tr>
     </thead>
     <tbody></tbody>
@@ -20,7 +20,7 @@
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
-
+                "pagingType": "numbers",
                 "pageLength": 20,
 
                 "ajax": {
@@ -70,6 +70,7 @@
                     },
                     {
                         "data": "id",
+                        "bSortable": false,                        
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
                                 var template = $('#actions-template').html();

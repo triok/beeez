@@ -17,7 +17,7 @@
                         <select id="team-type-filter" class="form-control"
                                 style="border: none; border-bottom: 1px solid #ccd0d2;">
 
-                            <option value="">тип команды ...</option>
+                            <option value="">Тип команды ...</option>
 
                             @foreach($teamTypes as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>

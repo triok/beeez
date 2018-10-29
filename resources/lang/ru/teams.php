@@ -37,6 +37,9 @@ return [
     'show_user_position' => 'Должность',
     'show_user_date' => 'Дата приема в команду',
 
+    // Team Projects
+    'project-title' => 'Проекты в команде:',    
+
     // Buttons
     'create_team' => 'Создать команду',
     'back_to_list' => 'Назад к списку',

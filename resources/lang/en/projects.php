@@ -38,6 +38,7 @@ return [
     'create-desc'    => 'Short description',
     'create-type'    => 'Project type',
     'create-personal'=> 'Personal',
+    'create-inteam'  => 'In team: ',     
     'create-icon'    => 'Select icon',
     'create-noicon'  => 'No',
     'create-btn'     => 'Create',

@@ -17,15 +17,13 @@
 
     <div class="tab-content">
         <div id="current" class="tab-pane fade in active">    
-            <table class="table table-responsive">
+            <table class="table table-responsive table-projects">
                 <thead>
-                <tr>
-                    <td style="width: 20px;"> </td>
-                    <td style="width: 25%;">@lang('projects.name')</td>
-                    <td style="width: 45%;">@lang('projects.desc')</td>
-                    <td style="width: 20%;">@lang('projects.count')</td>
-                    <td></td>
-                </tr>
+                    <th> </th>
+                    <th>@lang('projects.name')</th>
+                    <th>@lang('projects.desc')</th>
+                    <th>@lang('projects.count')</th>
+                    <th></th>
                 </thead>
 
                 <tbody class="sortable-rows">
@@ -43,36 +41,36 @@
                             <td>{{ $project->jobs()->count() }}/0</td>
                             <td class="text-right">
                                 {!! Form::open(['url' => route('projects.edit', $project), 'method'=>'post']) !!}
-                                <button type="submit" onclick="" class="btn btn-xs btn-primary" title="@lang('projects.edit')">
-                                    <i class="fa fa-pencil"></i>
+                                <button type="submit" onclick="" class="btn btn-xs btn-primary btn-round" title="@lang('projects.edit')">
+                                    <i class="fa fa-pencil fa-fw"></i>
                                 </button>
                                 {!! Form::close() !!}           
 
                                 @if(!$project->isFavorited())
                                 {!! Form::open(['url' => route('projects.favorite', $project), 'method'=>'post']) !!}
-                                <button type="submit" onclick="" class="btn btn-xs btn-default" title="@lang('projects.favorite_add')">
-                                    <i class="fa fa-star-o"></i>
+                                <button type="submit" onclick="" class="btn btn-xs btn-default btn-round" title="@lang('projects.favorite_add')">
+                                    <i class="fa fa-star-o fa-fw"></i>
                                 </button>
                                 {!! Form::close() !!}
                                 @endif
 
                                 @if($project->isFavorited())
                                     {!! Form::open(['url' => route('projects.unfavorite', $project), 'method'=>'post']) !!}
-                                    <button type="submit" onclick="" class="btn btn-xs btn-default" title="@lang('projects.favorite_del')">
-                                        <i class="fa fa-star" style="color: orange;"></i>
+                                    <button type="submit" onclick="" class="btn btn-xs btn-default btn-round" title="@lang('projects.favorite_del')">
+                                        <i class="fa fa-star fa-fw" style="color: orange;"></i>
                                     </button>
                                     {!! Form::close() !!}
                                 @endif
 
                                 {!! Form::open(['url' => route('projects.done', $project), 'method'=>'post', 'class' => 'form-delete']) !!}
-                                <button type="submit" onclick="" class="btn btn-xs btn-success" title="@lang('projects.complete')">
-                                    <i class="fa fa-check"></i>
+                                <button type="submit" onclick="" class="btn btn-xs btn-success btn-round" title="@lang('projects.complete')">
+                                    <i class="fa fa-check fa-fw"></i>
                                 </button>
                                 {!! Form::close() !!}
 
                                 {!! Form::open(['url' => route('projects.destroy', $project), 'method'=>'delete', 'class' => 'form-delete']) !!}
-                                <button type="submit" onclick="" class="btn btn-xs btn-danger" title="@lang('projects.delete')">
-                                    <i class="fa fa-trash"></i>
+                                <button type="submit" onclick="" class="btn btn-xs btn-danger btn-round" title="@lang('projects.delete')">
+                                    <i class="fa fa-trash fa-fw"></i>
                                 </button>
                                 {!! Form::close() !!}
                             </td>
@@ -91,15 +89,13 @@
         </div>
 
         <div id="completed" class="tab-pane fade ">
-            <table class="table table-responsive">
+            <table class="table table-responsive table-projects">
                 <thead>
-                <tr>
-                    <td style="width: 20px;"> </td>                    
-                    <td style="width: 25%;">@lang('projects.name')</td>
-                    <td style="width: 45%;">@lang('projects.desc')</td>
-                    <td style="width: 20%;">@lang('projects.count')</td>
-                    <td></td>
-                </tr>
+                    <th> </td>                    
+                    <th>@lang('projects.name')</th>
+                    <th>@lang('projects.desc')</th>
+                    <th>@lang('projects.count')</th>
+                    <th></th>
                 </thead>
                 <tbody class="sortable-rows">
                 @if($projects->count())
@@ -116,20 +112,20 @@
                                 <td>{{ $project->jobs()->count() }}/0</td>
                                 <td class="text-right">
                                     {!! Form::open(['url' => route('projects.edit', $project), 'method'=>'post']) !!}
-                                    <button type="submit" onclick="" class="btn btn-xs btn-primary" title="@lang('projects.edit')">
-                                        <i class="fa fa-pencil"></i>
+                                    <button type="submit" onclick="" class="btn btn-xs btn-primary btn-round" title="@lang('projects.edit')">
+                                        <i class="fa fa-pencil fa-fw"></i>
                                     </button>
                                     {!! Form::close() !!} 
 
                                     {!! Form::open(['url' => route('projects.restore', $project), 'method'=>'post', 'class' => 'form-delete']) !!}
-                                    <button type="submit" onclick="" class="btn btn-xs btn-warning" title="@lang('projects.restore')">
-                                        <i class="fa fa-refresh"></i>
+                                    <button type="submit" onclick="" class="btn btn-xs btn-warning btn-round" title="@lang('projects.restore')">
+                                        <i class="fa fa-refresh fa-fw"></i>
                                     </button>
                                     {!! Form::close() !!}
 
                                     {!! Form::open(['url' => route('projects.destroy', $project), 'method'=>'delete', 'class' => 'form-delete']) !!}
-                                    <button type="submit" onclick="" class="btn btn-xs btn-danger" title="@lang('projects.delete')">
-                                        <i class="fa fa-trash"></i>
+                                    <button type="submit" onclick="" class="btn btn-xs btn-danger btn-round" title="@lang('projects.delete')">
+                                        <i class="fa fa-trash fa-fw"></i>
                                     </button>
                                     {!! Form::close() !!}
                                 </td>
@@ -147,14 +143,14 @@
             </table>                   
         </div>
         <div id="favorite" class="tab-pane fade">
-            <table class="table table-responsive">
+            <table class="table table-responsive table-projects">
                 <thead>
                 <tr>
-                    <td style="width: 20px;"> </td>
-                    <td style="width: 25%;">@lang('projects.name')</td>
-                    <td style="width: 45%;">@lang('projects.desc')</td>
-                    <td style="width: 20%%;">@lang('projects.count')</td>
-                    <td></td>
+                    <th> </th>
+                    <th>@lang('projects.name')</th>
+                    <th>@lang('projects.desc')</th>
+                    <th>@lang('projects.count')</th>
+                    <th></th>
                 </tr>
                 </thead>
 
@@ -173,26 +169,26 @@
                                 <td>{{ $project->jobs()->count() }}/0</td>
                                 <td class="text-right">
                                     {!! Form::open(['url' => route('projects.edit', $project), 'method'=>'post']) !!}
-                                    <button type="submit" onclick="" class="btn btn-xs btn-primary" title="@lang('projects.edit')">
-                                        <i class="fa fa-pencil"></i>
+                                    <button type="submit" onclick="" class="btn btn-xs btn-primary btn-round" title="@lang('projects.edit')">
+                                        <i class="fa fa-pencil fa-fw"></i>
                                     </button>
                                     {!! Form::close() !!}  
 
                                     {!! Form::open(['url' => route('projects.unfavorite', $project), 'method'=>'post']) !!}
-                                    <button type="submit" onclick="" class="btn btn-xs btn-default" title="@lang('projects.favorite_del')">
-                                        <i class="fa fa-star" style="color: orange;"></i>
+                                    <button type="submit" onclick="" class="btn btn-xs btn-default btn-round" title="@lang('projects.favorite_del')">
+                                        <i class="fa fa-star fa-fw" style="color: orange;"></i>
                                     </button>
                                     {!! Form::close() !!}
 
                                     {!! Form::open(['url' => route('projects.done', $project), 'method'=>'post', 'class' => 'form-delete']) !!}
-                                    <button type="submit" onclick="" class="btn btn-xs btn-success" title="@lang('projects.complete')">
-                                        <i class="fa fa-check"></i>
+                                    <button type="submit" onclick="" class="btn btn-xs btn-success btn-round" title="@lang('projects.complete')">
+                                        <i class="fa fa-check fa-fw"></i>
                                     </button>
                                     {!! Form::close() !!}
 
                                     {!! Form::open(['url' => route('projects.destroy', $project), 'method'=>'delete', 'class' => 'form-delete']) !!}
-                                    <button type="submit" onclick="" class="btn btn-xs btn-danger" title="@lang('projects.delete')">
-                                        <i class="fa fa-trash"></i>
+                                    <button type="submit" onclick="" class="btn btn-xs btn-danger btn-round" title="@lang('projects.delete')">
+                                        <i class="fa fa-trash fa-fw"></i>
                                     </button>
                                     {!! Form::close() !!}
                                 </td>

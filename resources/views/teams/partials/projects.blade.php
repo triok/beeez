@@ -26,7 +26,7 @@
             @endphp
 
             @if($projectsNotArchived->count())
-                <table class="table table-responsive">
+                <table class="table table-responsive table-projects">
                     <thead>
                     <tr>
                         <td></td>
@@ -56,7 +56,7 @@
             @endphp
 
             @if($projectsFavorite->count())
-                <table class="table table-responsive">
+                <table class="table table-responsive table-projects">
                     <thead>
                     <tr>
                         <td></td>
@@ -86,7 +86,7 @@
             @endphp
 
             @if($projectsArchived->count())
-                <table class="table table-responsive">
+                <table class="table table-responsive table-projects">
                     <thead>
                     <tr>
                         <td></td>
