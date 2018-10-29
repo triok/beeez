@@ -75,7 +75,6 @@
                         <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>                
                     </ul>               
                 </li>
-                <li class="left-sidebar dropdown components-li"><a href="{{ route('vacancies') }}"><i class="fa fa-briefcase fa-fw" aria-hidden="true"></i>Вакансии</a></li>
                     <li class="left-sidebar dropdown components-li">
                         <a href="{{ route('vacancies.index') }}">
                             <i class="fa fa-suitcase"></i>
