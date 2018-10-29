@@ -24,6 +24,7 @@
                <th>@lang('organizations.organization')</th>
                <th>@lang('organizations.owner')</th>
                <th>Структура</th>
+               <th>Вакансии</th>
             </tr>
             </thead>
             <tbody>
@@ -51,7 +52,12 @@
                      @if($organization->status == 'approved')
                      <a href="{{ route('structure.index', $organization) }}">Войти</a>
                      @endif
-                  </td>              
+                  </td>
+                  <td>
+                     @if($organization->status == 'approved')
+                        <a href="{{ route('organizations.vacancies.index', $organization) }}">Открыть</a>
+                     @endif
+                  </td>
                </tr>
             @endforeach
 

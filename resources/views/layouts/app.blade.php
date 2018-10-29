@@ -76,6 +76,14 @@
                     </ul>               
                 </li>
                 <li class="left-sidebar dropdown components-li"><a href="{{ route('vacancies') }}"><i class="fa fa-briefcase fa-fw" aria-hidden="true"></i>Вакансии</a></li>
+=======
+                    <li class="left-sidebar dropdown components-li">
+                        <a href="{{ route('vacancies.index') }}">
+                            <i class="fa fa-suitcase"></i>
+                            <span>@lang('layout.vacancies')</span>
+                        </a>
+                    </li>
+>>>>>>> block13
                 <li class="left-sidebar dropdown components-li" >
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false"><i class="fa fa-user-circle fa-fw" aria-hidden="true"></i><span>@lang('peoples.title')</span></a>
