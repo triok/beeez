@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Organization;
 use App\Models\Vacancy;
 use App\Http\Controllers\Controller;
 use App\Transformers\VacancyTransformer;
@@ -19,17 +20,29 @@ class VacanciesController extends Controller
     public function index(Request $request)
     {
         if ($request->get('q')) {
-            $teams = Vacancy::where('name', 'LIKE', '%' . $request->q . '%')->take(10)->get();
+            $teams = Vacancy::where('name', 'LIKE', '%' . $request->q . '%');
         } else {
-            $teams = Vacancy::query()->take(10)->get();
+            $teams = Vacancy::query();
         }
 
-        return response()->json($teams);
+        if ($request->has('organization_id')) {
+            $teams->where('organization_id', $request->get('organization_id'));
+        }
+
+        return response()->json($teams->take(10)->get());
     }
 
     public function search(Request $request)
     {
-        $vacancies = Vacancy::published();
+        $organization = $this->getOrganization($request);
+
+        if ($organization && $request->get('all') && $organization->user_id == auth()->id()) {
+            $vacancies = Vacancy::where('organization_id', $organization->id);
+        } else if ($organization) {
+            $vacancies = Vacancy::published()->where('organization_id', $organization->id);
+        } else {
+            $vacancies = Vacancy::published();
+        }
 
         if ($request->get('specialization')) {
             $vacancies->where('specialization', $request->get('specialization'));
@@ -56,5 +69,14 @@ class VacanciesController extends Controller
         return response()->json(
             $this->transformer->transformCollection($vacancies)
         );
+    }
+
+    protected function getOrganization(Request $request)
+    {
+        if ($request->has('organization_id')) {
+            return Organization::find($request->get('organization_id'));
+        }
+
+        return null;
     }
 }

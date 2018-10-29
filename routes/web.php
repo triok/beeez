@@ -160,6 +160,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('/organizations/{organization}/structure', 'StructuresController');
 
     Route::resource('/organizations/{organization}/vacancies', 'OrganizationVacanciesController', ['as' => 'organizations']);
+    Route::patch('/organizations/{organization}/vacancies/{vacancy}/publish', 'OrganizationVacanciesController@publish')->name('organizations.vacancies.publish');
 
     Route::resource('/vacancies', 'VacanciesController', ['only' => ['index', 'show']]);
     Route::post('/vacancies/{vacancy}/favorite', 'VacanciesController@favorite')->name('vacancies.favorite');

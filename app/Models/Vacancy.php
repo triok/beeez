@@ -9,7 +9,7 @@ class Vacancy extends Model
 {
     use Favoritable;
 
-    protected $fillable = ['organization_id', 'name', 'specialization', 'responsibilities', 'conditions', 'requirements'];
+    protected $fillable = ['name', 'specialization', 'responsibilities', 'conditions', 'requirements'];
 
     protected $dates = ['published_at'];
 

@@ -59,3 +59,7 @@ table.dataTable.no-footer {
     border: none;
     border-bottom: 1px solid #ccd0d2;
 }
+
+#vacancies-table tbody tr td:last-child {
+    text-align: right;
+}

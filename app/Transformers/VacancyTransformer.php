@@ -30,7 +30,7 @@ class VacancyTransformer extends Transformer
             "total_views" => $vacancy->total_views,
             "total_responses" => $vacancy->total_responses,
 
-            "published_at" => $vacancy->published_at->format('Y-m-d'),
+            "published_at" => ($vacancy->published_at ? $vacancy->published_at->format('Y-m-d') : null),
 
             "is_favorited" => $vacancy->isFavorited(),
         ];
