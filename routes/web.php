@@ -159,13 +159,17 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::resource('/organizations/{organization}/structure', 'StructuresController');
 
+    Route::resource('/organizations/{organization}/vacancies', 'OrganizationVacanciesController', ['as' => 'organizations']);
+    Route::patch('/organizations/{organization}/vacancies/{vacancy}/publish', 'OrganizationVacanciesController@publish')->name('organizations.vacancies.publish');
+
+    Route::resource('/vacancies', 'VacanciesController', ['only' => ['index', 'show']]);
+    Route::post('/vacancies/{vacancy}/favorite', 'VacanciesController@favorite')->name('vacancies.favorite');
+    Route::post('/vacancies/{vacancy}/unfavorite', 'VacanciesController@unfavorite')->name('vacancies.unfavorite');
+
     Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
     Route::post('notifications/approve', 'NotificationsController@approve')->name('notifications.approve');
     Route::post('notifications/reject', 'NotificationsController@reject')->name('notifications.reject');
     Route::post('notifications/destroy', 'NotificationsController@destroy')->name('notifications.destroy');
-
-    // Vacancies
-    Route::get('/vacancies')->name('vacancies');
 
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
@@ -221,4 +225,7 @@ Route::group(['prefix' => 'api', 'namespace' => '\API'], function () {
 
     Route::get('users/search', 'UserController@search');
     Route::get('teams/search', 'TeamController@search');
+
+    Route::get('vacancies', 'VacanciesController@index');
+    Route::get('vacancies/search', 'VacanciesController@search');
 });

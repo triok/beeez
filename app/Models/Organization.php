@@ -77,6 +77,11 @@ class Organization extends Model
         return $this->hasMany(Structure::class);
     }
 
+    function vacancies()
+    {
+        return $this->hasMany(Vacancy::class);
+    }
+
     public function logo()
     {
         $logoDir = '/storage/images/organization/';

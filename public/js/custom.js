@@ -55,6 +55,13 @@ window.onload = function(){
     });
 };
 
+function confirmDelete(form) {
+    if (confirm('Are you sure?')) {
+        form.submit();
+    }
+
+    return false;
+}
 
 $(document).ready(function () {
     $('#sidebarCollapse').on('click', function () {

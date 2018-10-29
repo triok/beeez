@@ -64,7 +64,7 @@
                 },
 
                 "ajax": {
-                    "url": "/api/v1/teams/search?user_id=" + auth_id,
+                    "url": "/api/teams/search?user_id=" + auth_id,
                     "dataSrc": "data"
                 },
 

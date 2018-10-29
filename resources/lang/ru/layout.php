@@ -24,7 +24,8 @@ return [
     'profile'           => 'Профиль',
     'bookmarks'         => 'Закладки',
     'applications'      => 'Мои задания',    
-    'findwork'          => 'Найти работу', 
+    'vacancies'         => 'Вакансии',
+    'findwork'          => 'Найти работу',
 
     // Footer
     'sign'              => '2018 Lavoro',

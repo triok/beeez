@@ -23,7 +23,8 @@ return [
     'post-new'          => 'Post new job',
     'profile'           => 'Profile',
     'bookmarks'         => 'Bookmark',
-    'applications'      => 'My applications',        
+    'applications'      => 'My applications',
+    'vacancies'         => 'Vacancies',
     'findwork'          => 'Find new work', 
 
     // Footer

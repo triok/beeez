@@ -22,6 +22,7 @@ use App\Models\Project;
 use App\Models\Page;
 use App\Models\Team;
 use App\Models\TeamType;
+use App\Models\Vacancy;
 use Carbon\Carbon;
 use App\User;
 use App\Models\Jobs\Job;
@@ -166,5 +167,28 @@ $factory->define(Project::class, function (Faker\Generator $faker) {
         'user_id' => create(User::class)->id,
         'name' => $faker->sentence(rand(1, 3)),
         'description' => $faker->text,
+    ];
+});
+
+$factory->define(Organization::class, function (Faker\Generator $faker) {
+    $name = $faker->word;
+
+    return [
+        'user_id' => create(User::class)->id,
+        'name' => $name,
+        'slug' => str_slug($name),
+        'status' => $faker->randomElement(['approved', 'moderation']),
+        'description' => $faker->text,
+    ];
+});
+
+$factory->define(Vacancy::class, function (Faker\Generator $faker) {
+    return [
+        'organization_id' => create(Organization::class)->id,
+        'name' => $faker->word,
+        'specialization' => $faker->randomElement(config('vacancy.specializations')),
+        'published_at' => $faker->randomElement([null, Carbon::now()]),
+        'total_views' => rand(0, 100),
+        'total_responses' => rand(0, 10),
     ];
 });
