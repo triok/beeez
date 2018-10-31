@@ -9,7 +9,8 @@
           <li role="presentation"><a data-toggle="tab" href="#teams">@lang('bookmarks.teams')</a></li>
           <li role="presentation"><a data-toggle="tab" href="#companies">@lang('bookmarks.companies')</a></li>
           <li role="presentation"><a data-toggle="tab" href="#projects">@lang('bookmarks.projects')</a></li>
-          <li role="presentation"><a data-toggle="tab" href="#messages">@lang('bookmarks.messages')</a></li>                      
+          <li role="presentation"><a data-toggle="tab" href="#vacancies">@lang('bookmarks.vacancies')</a></li>
+          <li role="presentation"><a data-toggle="tab" href="#messages">@lang('bookmarks.messages')</a></li>
         </ul>
 
         <div class="tab-content">
@@ -103,6 +104,9 @@
 
                     </div>
                 </div>
+            </div>
+            <div id="vacancies" class="tab-pane fade">
+                @include('vacancies.partials.table', ['id' => 'favorite', 'action' => '/api/vacancies/search?favorite=true'])
             </div>
             <div id="messages" class="tab-pane fade">
             </div>                                                                

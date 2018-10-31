@@ -18,7 +18,8 @@ return [
     'teams'          => 'Teams',
     'companies'      => 'Organizations',
     'projects'       => 'Projects',
-    'messages'       => 'Messages',              
+    'messages'       => 'Messages',
+    'vacancies'      => 'Vacancies',
 
     //Buttons
 
