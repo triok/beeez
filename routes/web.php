@@ -166,6 +166,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/vacancies/{vacancy}/favorite', 'VacanciesController@favorite')->name('vacancies.favorite');
     Route::post('/vacancies/{vacancy}/unfavorite', 'VacanciesController@unfavorite')->name('vacancies.unfavorite');
 
+    Route::resource('/vacancies/{vacancy}/cvs', 'VacancyCvsController', ['as' => 'vacancies']);
+
     Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
     Route::post('notifications/approve', 'NotificationsController@approve')->name('notifications.approve');
     Route::post('notifications/reject', 'NotificationsController@reject')->name('notifications.reject');

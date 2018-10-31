@@ -33,6 +33,7 @@ return [
     'show_requirements' => 'Requirements',
 
     'button_create_vacancy' => 'Создать вакасию',
+    'button_add_cv' => 'Add CV',
     'button_create' => 'Создать',
     'button_submit' => 'Отправить',
     'button_edit' => 'Изменить',
