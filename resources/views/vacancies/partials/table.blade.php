@@ -85,6 +85,8 @@
                                     $('#vacancy-form-favorite-{{ $id }}-' + row.id).attr('class', 'inline');
                                 }
 
+                                $('#cv-link-{{ $id }}-' + row.id).removeClass('hide');
+
                                 return template;
                             }
 
