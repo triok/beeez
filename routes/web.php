@@ -166,9 +166,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/vacancies/{vacancy}/favorite', 'VacanciesController@favorite')->name('vacancies.favorite');
     Route::post('/vacancies/{vacancy}/unfavorite', 'VacanciesController@unfavorite')->name('vacancies.unfavorite');
 
-    Route::post('/vacancies/{vacancy}/cvs/{cv}/approve','VacancyCvsController@approve')->name('vacancies.approve');
-    Route::post('/vacancies/{vacancy}/cvs/{cv}/reject','VacancyCvsController@approve')->name('vacancies.reject');
-    Route::resource('/vacancies/{vacancy}/cvs', 'VacancyCvsController', ['as' => 'vacancies']);
+    Route::get('/vacancies/{vacancy}/cvs/create','VacancyCvsController@create')->name('vacancies.cvs.create');
+    Route::post('/vacancies/{vacancy}/cvs/store','VacancyCvsController@store')->name('vacancies.cvs.store');
+    Route::post('/vacancies/{vacancy}/cvs/{cv}/approve','VacancyCvsController@approve')->name('vacancies.cvs.approve');
+    Route::post('/vacancies/{vacancy}/cvs/{cv}/reject','VacancyCvsController@reject')->name('vacancies.cvs.reject');
+    Route::get('/vacancies/{vacancy}/cvs/{cv}/success','VacancyCvsController@success')->name('vacancies.cvs.success');
+    Route::post('/vacancies/{vacancy}/cvs/{cv}/success','VacancyCvsController@successStore')->name('vacancies.cvs.success-store');
 
     Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
     Route::post('notifications/approve', 'NotificationsController@approve')->name('notifications.approve');
