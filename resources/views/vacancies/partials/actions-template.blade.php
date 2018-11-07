@@ -10,4 +10,8 @@
         <i class="fa fa-star fa-orange"></i>
     </button>
     {!! Form::close() !!}
+
+    <button onclick="location.href='/vacancies/#slug/cvs/create'" id="cv-link-#id" disabled class="btn btn-primary btn-sm" style="color: #fff">
+        @lang('vacancies.button_add_cv')
+    </button>
 </div>

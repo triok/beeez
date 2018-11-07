@@ -33,6 +33,7 @@ class VacancyTransformer extends Transformer
             "published_at" => ($vacancy->published_at ? $vacancy->published_at->format('Y-m-d') : null),
 
             "is_favorited" => $vacancy->isFavorited(),
+            "is_added_cv" => (bool)$vacancy->cvs()->where('user_id', auth()->id())->count(),
         ];
     }
 }

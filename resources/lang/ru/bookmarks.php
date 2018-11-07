@@ -19,6 +19,7 @@ return [
     'companies'      => 'Организации',
     'projects'       => 'Проекты',
     'messages'       => 'Сообщения',              
+    'vacancies'      => 'Вакансии',
 
     //Buttons
 
