@@ -21,6 +21,7 @@ class CreateCvsTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->text('about');
+            $table->enum('status', ['pending', 'approved', 'declined'])->default('pending');
             $table->timestamps();
         });
     }

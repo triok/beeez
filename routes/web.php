@@ -230,4 +230,7 @@ Route::group(['prefix' => 'api', 'namespace' => '\API'], function () {
 
     Route::get('vacancies', 'VacanciesController@index');
     Route::get('vacancies/search', 'VacanciesController@search');
+
+    Route::get('cvs', 'CvsController@index');
+    Route::get('cvs/search', 'CvsController@search');
 });

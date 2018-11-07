@@ -43,7 +43,7 @@
                     </div>
 
                     <div id="responses" class="tab-pane fade">
-                        @include('vacancies.partials.table', ['id' => 'bookmarks', 'action' => '/api/vacancies/search?response=true'])
+                        @include('vacancies.cvs.table')
                     </div>
 
                     <div id="favorite" class="tab-pane fade">
