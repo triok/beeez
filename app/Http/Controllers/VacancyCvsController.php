@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CvRequest;
+use App\Models\Cv;
 use App\Models\Vacancy;
 use App\Notifications\CvAdminNotification;
+use App\Notifications\CvApprovedNotification;
+use App\Notifications\CvDeclinedNotification;
 use App\Notifications\CvUserNotification;
 use App\User;
 use Carbon\Carbon;
@@ -12,14 +15,9 @@ use Illuminate\Http\Request;
 
 class VacancyCvsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware('admin')->except(['create', 'store']);
     }
 
     /**
@@ -67,70 +65,65 @@ class VacancyCvsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Update a resource in storage.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Vacancy $vacancy
+     * @param Cv $cv
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
-    public function show($id)
+    public function approve(Vacancy $vacancy, Cv $cv)
     {
-        //
+        $cv->update(['status' => 'approved']);
+
+        return redirect(route('vacancies.cvs.success', [$vacancy, $cv]));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update a resource in storage.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Vacancy $vacancy
+     * @param Cv $cv
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
-    public function edit($id)
+    public function reject(Vacancy $vacancy, Cv $cv)
     {
-        //
+        $cv->update(['status' => 'declined']);
+
+        return redirect(route('vacancies.cvs.success', [$vacancy, $cv]));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Vacancy $vacancy
+     * @param Cv $cv
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
-    public function update(Request $request, $id)
+    public function success(Vacancy $vacancy, Cv $cv)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('vacancies.cvs.success', compact('vacancy', 'cv'));
     }
 
     /**
      * Update a resource in storage.
      *
      * @param Request $request
+     * @param Vacancy $vacancy
+     * @param Cv $cv
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
-    public function approve(Request $request)
+    public function successStore(Request $request, Vacancy $vacancy, Cv $cv)
     {
+        if ($recipient = User::find($cv->user_id)) {
+            if($cv->status == 'declined') {
+                $recipient->notify(new CvDeclinedNotification($request, $cv));
+            }
 
-    }
+            if($cv->status == 'approved') {
+                $recipient->notify(new CvApprovedNotification($request, $cv));
+            }
+        }
 
-    /**
-     * Update a resource in storage.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     * @throws \Exception
-     */
-    public function reject(Request $request)
-    {
-
+        return redirect(route('vacancies.index'));
     }
 }

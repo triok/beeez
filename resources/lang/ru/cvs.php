@@ -8,7 +8,7 @@ return [
     'col_status' => 'Статус',
 
     'pending' => 'В ожидании',
-    'approved' => 'Подтверджено',
+    'approved' => 'Принято',
     'declined' => 'Отклонено',
 
     'button_submit' => 'Отправить',

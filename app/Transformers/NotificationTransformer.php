@@ -26,23 +26,16 @@ class NotificationTransformer extends Transformer
 
     protected function getTitle($notification)
     {
-        if ($notification['type'] == 'App\Notifications\TeamUserNotification') {
-            return 'Вас приняли в команду';
-        }
+        $titles = [
+            'App\Notifications\TeamUserNotification' => 'Вас приняли в команду',
+            'App\Notifications\OrganizationNotification' => 'Новая организация',
+            'App\Notifications\CvUserNotification' => 'Вы отклинулись на вакансию',
+            'App\Notifications\CvAdminNotification' => 'Пользователь откликнулся на вакансию',
+            'App\Notifications\CvApprovedNotification' => 'Работодатель принял Ваш отклик',
+            'App\Notifications\CvDeclinedNotification' => 'Соискатель отклонил Ваше предложение',
+        ];
 
-        if ($notification['type'] == 'App\Notifications\OrganizationNotification') {
-            return 'Новая организация';
-        }
-
-        if ($notification['type'] == 'App\Notifications\CvUserNotification') {
-            return 'Вы отклинулись на вакансию';
-        }
-
-        if ($notification['type'] == 'App\Notifications\CvAdminNotification') {
-            return 'Пользователь откликнулся на вакансию';
-        }
-
-        return '';
+        return isset($titles[$notification['type']]) ? $titles[$notification['type']] : '';
     }
 
     protected function getMessage($notification)
@@ -82,8 +75,37 @@ class NotificationTransformer extends Transformer
                     <b>Телефон:</b> ' . $cv->phone . '<br>
                     <b>Расскажите о себе:</b> ' . $cv->about . '<br>';
 
-                if($file = $cv->files()->first()) {
+                if ($file = $cv->files()->first()) {
                     $str .= '<b>Файл для скачивания:</b> <a href="' . $file->link() . '">' . $file->title . '</a>';
+                }
+
+                return $str;
+            }
+        }
+
+        if ($notification['type'] == 'App\Notifications\CvApprovedNotification') {
+            $cv = Cv::find($notification['data']['cv_id']);
+
+            if ($cv) {
+                $str = 'Работодатель принял Ваш отклик и отправил Вам контактные данные:
+                    <br><br>
+                    <b>ФИО:</b> ' . $notification['data']['request']['name'] . '<br>
+                    <b>Email:</b> ' . $notification['data']['request']['email'] . '<br>
+                    <b>Телефон:</b> ' . $notification['data']['request']['phone'] . '<br>
+                    <b>Комментарий:</b> ' . $notification['data']['request']['comment'] . '<br>';
+
+                return $str;
+            }
+        }
+
+        if ($notification['type'] == 'App\Notifications\CvDeclinedNotification') {
+            $cv = Cv::find($notification['data']['cv_id']);
+
+            if ($cv) {
+                $str = 'Соискатель отклонил Ваше предложение по вакансии "<a href="' . route('vacancies.show', $cv->vacancy) . '">' . $cv->vacancy->name . '</a>"';
+
+                if ($notification['data']['request']['comment']) {
+                    $str .= '<br><b>Причина: </b> ' . $notification['data']['request']['comment'];
                 }
 
                 return $str;
@@ -136,15 +158,15 @@ class NotificationTransformer extends Transformer
         if ($notification['type'] == 'App\Notifications\CvAdminNotification') {
             $cv = Cv::find($notification['data']['cv_id']);
 
-            if ($cv) {
+            if ($cv && $cv->status == 'pending') {
                 $actions[] = [
-                    'route' => route('vacancies.approve', [$cv->vacancy, $cv]),
+                    'route' => route('vacancies.cvs.approve', [$cv->vacancy, $cv]),
                     'title' => 'Принять',
                     'class' => 'btn-success',
                 ];
 
                 $actions[] = [
-                    'route' => route('vacancies.reject', [$cv->vacancy, $cv]),
+                    'route' => route('vacancies.cvs.reject', [$cv->vacancy, $cv]),
                     'title' => 'Отклонить',
                     'class' => 'btn-danger',
                 ];
@@ -153,15 +175,11 @@ class NotificationTransformer extends Transformer
             return $actions;
         }
 
-        if ($notification['type'] != 'App\Notifications\CvUserNotification' &&
-            $notification['type'] != 'App\Notifications\CvAdminNotification') {
-
-            $actions[] = [
-                'route' => route('notifications.destroy'),
-                'title' => 'Удалить',
-                'class' => 'btn-default'
-            ];
-        }
+//        $actions[] = [
+//            'route' => route('notifications.destroy'),
+//            'title' => 'Удалить',
+//            'class' => 'btn-default'
+//        ];
 
         return $actions;
     }
