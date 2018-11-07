@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CvRequest;
 use App\Models\Vacancy;
+use App\Notifications\CvAdminNotification;
+use App\Notifications\CvUserNotification;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class VacancyCvsController extends Controller
@@ -44,7 +48,20 @@ class VacancyCvsController extends Controller
             $cv->addFile($request->file('cv'));
         }
 
-        flash()->success('Ваш отклик создан.');
+        if ($recipient = User::find(auth()->id())) {
+            $recipient->notify(new CvUserNotification($cv));
+
+            $recipient->notifications()
+                ->whereNull('read_at')
+                ->where('type', 'App\Notifications\CvUserNotification')
+                ->update(['read_at' => Carbon::now()]);
+        }
+
+        if ($admin = User::where('email', config('vacancy.admin'))->first()) {
+            $admin->notify(new CvAdminNotification($cv));
+        }
+
+        flash()->success('Вы отклинулись на вакансию "' . $vacancy->name . '", ожидайте решение работодателя.');
 
         return redirect(route('vacancies.index'));
     }
@@ -92,5 +109,28 @@ class VacancyCvsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function approve(Request $request)
+    {
+
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function reject(Request $request)
+    {
+
     }
 }
