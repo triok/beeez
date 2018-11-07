@@ -11,7 +11,7 @@
     </button>
     {!! Form::close() !!}
 
-    <a href="/vacancies/#slug/cvs/create" id="cv-link-#id" class="btn btn-primary btn-sm hide" style="color: #fff">
+    <button onclick="location.href='/vacancies/#slug/cvs/create'" id="cv-link-#id" disabled class="btn btn-primary btn-sm" style="color: #fff">
         @lang('vacancies.button_add_cv')
-    </a>
+    </button>
 </div>
