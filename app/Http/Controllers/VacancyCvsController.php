@@ -65,6 +65,23 @@ class VacancyCvsController extends Controller
     }
 
     /**
+     * Destroy a resource in storage.
+     *
+     * @param Vacancy $vacancy
+     * @param Cv $cv
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function destroy(Vacancy $vacancy, Cv $cv)
+    {
+        $cv->delete();
+
+        flash()->success('Отклик удвлен.');
+
+        return redirect()->back();
+    }
+
+    /**
      * Update a resource in storage.
      *
      * @param Vacancy $vacancy

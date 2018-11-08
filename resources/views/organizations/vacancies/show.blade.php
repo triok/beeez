@@ -63,3 +63,7 @@
 @push('styles')
     <link rel="stylesheet" href="/css/custom.css"/>
 @endpush
+
+@push('scripts')
+    <script src="/js/custom.js"></script>
+@endpush
