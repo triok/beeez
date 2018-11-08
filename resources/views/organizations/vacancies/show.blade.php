@@ -15,7 +15,9 @@
                     <div class="panel-body">
                         <table class="table table-responsive table-search">
                             <tr>
-                                <td><b>@lang('vacancies.show_published')</b></td>
+                                <td style="width: 20%">
+                                    <b>@lang('vacancies.show_published')</b>
+                                </td>
                                 <td>
                                     @if($vacancy->published_at)
                                         <span class="date-short">{{ $vacancy->published_at }}</span>
@@ -51,7 +53,17 @@
                         </table>
                     </div>
                 </div>
+
+                @include('organizations.vacancies.partials.cvs')
             </div>
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="/css/custom.css"/>
+@endpush
+
+@push('scripts')
+    <script src="/js/custom.js"></script>
+@endpush

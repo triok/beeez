@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Traits\Viewable;
 use App\Models\Traits\Favoritable;
 use Illuminate\Database\Eloquent\Model;
 
 class Vacancy extends Model
 {
-    use Favoritable;
+    use Favoritable, Viewable;
 
     protected $fillable = ['name', 'specialization', 'responsibilities', 'conditions', 'requirements'];
 

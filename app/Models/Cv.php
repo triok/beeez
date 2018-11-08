@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Cv extends Model
 {
-    protected $fillable = ['user_id', 'name', 'email', 'phone', 'about', 'status'];
+    protected $fillable = ['user_id', 'name', 'email', 'phone', 'about', 'answered_at', 'status'];
 
     public function vacancy()
     {

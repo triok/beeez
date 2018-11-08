@@ -65,6 +65,23 @@ class VacancyCvsController extends Controller
     }
 
     /**
+     * Destroy a resource in storage.
+     *
+     * @param Vacancy $vacancy
+     * @param Cv $cv
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function destroy(Vacancy $vacancy, Cv $cv)
+    {
+        $cv->delete();
+
+        flash()->success('Отклик удвлен.');
+
+        return redirect()->back();
+    }
+
+    /**
      * Update a resource in storage.
      *
      * @param Vacancy $vacancy
@@ -73,7 +90,10 @@ class VacancyCvsController extends Controller
      */
     public function approve(Vacancy $vacancy, Cv $cv)
     {
-        $cv->update(['status' => 'approved']);
+        $cv->update([
+            'status' => 'approved',
+            'answered_at' => Carbon::now(),
+        ]);
 
         return redirect(route('vacancies.cvs.success', [$vacancy, $cv]));
     }
@@ -87,7 +107,10 @@ class VacancyCvsController extends Controller
      */
     public function reject(Vacancy $vacancy, Cv $cv)
     {
-        $cv->update(['status' => 'declined']);
+        $cv->update([
+            'status' => 'declined',
+            'answered_at' => Carbon::now(),
+        ]);
 
         return redirect(route('vacancies.cvs.success', [$vacancy, $cv]));
     }
