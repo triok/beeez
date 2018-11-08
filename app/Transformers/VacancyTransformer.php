@@ -28,7 +28,7 @@ class VacancyTransformer extends Transformer
             "requirements" => $vacancy->requirements,
 
             "total_views" => $vacancy->total_views,
-            "total_responses" => $vacancy->total_responses,
+            "total_responses" => $vacancy->cvs->count(),
 
             "published_at" => ($vacancy->published_at ? $vacancy->published_at->format('Y-m-d') : null),
 
