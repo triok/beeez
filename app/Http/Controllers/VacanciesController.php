@@ -29,6 +29,10 @@ class VacanciesController extends Controller
      */
     public function show(Vacancy $vacancy)
     {
+        if ($vacancy->organization->user_id != auth()->id()) {
+            $vacancy->addView();
+        }
+
         return view('vacancies.show', compact('vacancy'));
     }
 

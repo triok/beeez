@@ -59,6 +59,7 @@ class ViewableService implements ViewableServiceContract
     public function addViewTo($viewable)
     {
         $view = $viewable->views()->create([
+            'user_id' => auth()->id(),
             'viewable_id' => $viewable->getKey(),
             'viewable_type' => $viewable->getMorphClass(),
             'created_at' => Carbon::now(),
