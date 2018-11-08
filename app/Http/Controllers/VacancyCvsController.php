@@ -73,7 +73,10 @@ class VacancyCvsController extends Controller
      */
     public function approve(Vacancy $vacancy, Cv $cv)
     {
-        $cv->update(['status' => 'approved']);
+        $cv->update([
+            'status' => 'approved',
+            'answered_at' => Carbon::now(),
+        ]);
 
         return redirect(route('vacancies.cvs.success', [$vacancy, $cv]));
     }
@@ -87,7 +90,10 @@ class VacancyCvsController extends Controller
      */
     public function reject(Vacancy $vacancy, Cv $cv)
     {
-        $cv->update(['status' => 'declined']);
+        $cv->update([
+            'status' => 'declined',
+            'answered_at' => Carbon::now(),
+        ]);
 
         return redirect(route('vacancies.cvs.success', [$vacancy, $cv]));
     }
