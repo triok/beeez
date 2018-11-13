@@ -59,9 +59,11 @@ class OrganizationsController extends Controller
      */
     public function show(Organization $organization)
     {
+        $userIsAdmin = $this->userIsOrganizationAdmin($organization);
+
         $connections = OrganizationUsers::where('organization_id', $organization->id)->get();
 
-        return view('organizations.show', compact('organization', 'connections'));
+        return view('organizations.show', compact('organization', 'connections', 'userIsAdmin'));
     }
 
     /**
@@ -104,7 +106,7 @@ class OrganizationsController extends Controller
 
         $attributes['slug'] = str_slug($request->get('name', ''));
 
-        $validator = Validator::make($attributes, $rules, ['unique' => 'The name has already been taken.']);
+        $validator = Validator::make($attributes, $rules);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -258,6 +260,72 @@ class OrganizationsController extends Controller
     }
 
     /**
+     * Update a resource in storage.
+     *
+     * @param Organization $organization
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function addAdmin(Organization $organization)
+    {
+        if (auth()->id() != $organization->user_id) {
+            flash()->error('Access denied!');
+
+            return redirect()->back();
+        }
+
+        $connection = OrganizationUsers::where('organization_id', $organization->id)
+            ->where('user_id', request('user_id'))
+            ->first();
+
+        if (!$connection) {
+            flash()->error('Access denied!');
+
+            return redirect(route('organizations.show', $organization));
+        }
+
+        OrganizationUsers::where('organization_id', $organization->id)
+            ->where('user_id', request('user_id'))
+            ->update(['is_admin' => true]);
+
+        flash()->success('Доступ открыт.');
+
+        return redirect(route('organizations.show', $organization));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Organization $organization
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function deleteAdmin(Organization $organization)
+    {
+        if (auth()->id() != $organization->user_id) {
+            flash()->error('Access denied!');
+
+            return redirect()->back();
+        }
+
+        $connection = OrganizationUsers::where('organization_id', $organization->id)
+            ->where('user_id', request('user_id'))
+            ->first();
+
+        if (!$connection) {
+            flash()->error('Access denied!');
+
+            return redirect(route('organizations.show', $organization));
+        }
+
+        OrganizationUsers::where('organization_id', $organization->id)
+            ->where('user_id', request('user_id'))
+            ->update(['is_admin' => false]);
+
+        flash()->success('Доступ закрыт.');
+
+        return redirect(route('organizations.show', $organization));
+    }
+
+    /**
      * @param $organization
      */
     private function updateNotification($organization) {
@@ -278,6 +346,23 @@ class OrganizationsController extends Controller
                 }
             }
         }
+    }
+
+    private function userIsOrganizationAdmin($organization)
+    {
+        if (auth()->id() == $organization->user_id) {
+            return true;
+        }
+
+        if ($connection = OrganizationUsers::where('organization_id', $organization->id)
+            ->where('user_id', auth()->id())
+            ->where('is_admin', true)
+            ->first()) {
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
