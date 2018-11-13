@@ -22,6 +22,7 @@ return [
     'heading-peoples'=> 'Peoples in bookmarks',
     'heading-teams'  => 'Teams in bookmarks',                  
     'heading-org'    => 'Companies in bookmarks',  
+    'vacancies'      => 'Vacancies',
 
     //Buttons
 

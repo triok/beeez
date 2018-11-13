@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Traits\Viewable;
 use App\Models\Traits\Favoritable;
 use Illuminate\Database\Eloquent\Model;
 
 class Vacancy extends Model
 {
-    use Favoritable;
+    use Favoritable, Viewable;
 
     protected $fillable = ['name', 'specialization', 'responsibilities', 'conditions', 'requirements'];
 
@@ -16,6 +17,22 @@ class Vacancy extends Model
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    function cvs()
+    {
+        return $this->hasMany(Cv::class);
+    }
+
+    /**
+     * @param $attributes
+     * @return Cv
+     */
+    function addCv($attributes)
+    {
+        $attributes['user_id'] = auth()->id();
+
+        return $this->cvs()->create($attributes);
     }
 
     /**

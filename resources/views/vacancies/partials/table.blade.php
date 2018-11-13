@@ -85,6 +85,10 @@
                                     $('#vacancy-form-favorite-{{ $id }}-' + row.id).attr('class', 'inline');
                                 }
 
+                                if(!row.is_added_cv) {
+                                    $('#cv-link-{{ $id }}-' + row.id).prop("disabled", false);
+                                }
+
                                 return template;
                             }
 

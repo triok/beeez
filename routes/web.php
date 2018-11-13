@@ -166,6 +166,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/vacancies/{vacancy}/favorite', 'VacanciesController@favorite')->name('vacancies.favorite');
     Route::post('/vacancies/{vacancy}/unfavorite', 'VacanciesController@unfavorite')->name('vacancies.unfavorite');
 
+    Route::get('/vacancies/{vacancy}/cvs/create','VacancyCvsController@create')->name('vacancies.cvs.create');
+    Route::post('/vacancies/{vacancy}/cvs/store','VacancyCvsController@store')->name('vacancies.cvs.store');
+    Route::delete('/vacancies/{vacancy}/cvs/{cv}','VacancyCvsController@destroy')->name('vacancies.cvs.destroy');
+    Route::post('/vacancies/{vacancy}/cvs/{cv}/approve','VacancyCvsController@approve')->name('vacancies.cvs.approve');
+    Route::post('/vacancies/{vacancy}/cvs/{cv}/reject','VacancyCvsController@reject')->name('vacancies.cvs.reject');
+    Route::get('/vacancies/{vacancy}/cvs/{cv}/success','VacancyCvsController@success')->name('vacancies.cvs.success');
+    Route::post('/vacancies/{vacancy}/cvs/{cv}/success','VacancyCvsController@successStore')->name('vacancies.cvs.success-store');
+
     Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
     Route::post('notifications/approve', 'NotificationsController@approve')->name('notifications.approve');
     Route::post('notifications/reject', 'NotificationsController@reject')->name('notifications.reject');
@@ -228,4 +236,7 @@ Route::group(['prefix' => 'api', 'namespace' => '\API'], function () {
 
     Route::get('vacancies', 'VacanciesController@index');
     Route::get('vacancies/search', 'VacanciesController@search');
+
+    Route::get('cvs', 'CvsController@index');
+    Route::get('cvs/search', 'CvsController@search');
 });

@@ -27,12 +27,13 @@ class VacancyTransformer extends Transformer
             "conditions" => $vacancy->conditions,
             "requirements" => $vacancy->requirements,
 
-            "total_views" => $vacancy->total_views,
-            "total_responses" => $vacancy->total_responses,
+            "total_views" => $vacancy->views()->distinct()->count('user_id'),
+            "total_responses" => $vacancy->cvs->count(),
 
             "published_at" => ($vacancy->published_at ? $vacancy->published_at->format('Y-m-d') : null),
 
             "is_favorited" => $vacancy->isFavorited(),
+            "is_added_cv" => (bool)$vacancy->cvs()->where('user_id', auth()->id())->count(),
         ];
     }
 }

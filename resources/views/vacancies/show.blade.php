@@ -43,6 +43,31 @@
                                 <td>{{ $vacancy->requirements }}</td>
                             </tr>
                         </table>
+
+                        <hr>
+
+                        <div class="btn-toolbar">
+                            <a href="{{ route('vacancies.cvs.create', $vacancy) }}" class="btn btn-primary" style="margin-right: 5px;">
+                                @lang('vacancies.button_add_cv')
+                            </a>
+
+                            @if(!$vacancy->isFavorited())
+                                {!! Form::open(['url' => route('vacancies.favorite', $vacancy), 'method'=>'post']) !!}
+                                <button type="submit" class="btn btn-default" title="@lang('projects.favorite_add')">
+                                    <i class="fa fa-star-o"></i>
+                                </button>
+                                {!! Form::close() !!}
+                            @endif
+
+                            @if($vacancy->isFavorited())
+                                {!! Form::open(['url' => route('vacancies.unfavorite', $vacancy), 'method'=>'post']) !!}
+                                <button type="submit" class="btn btn-default" title="@lang('projects.favorite_del')">
+                                    <i style="color: orange;" class="fa fa-star"></i>
+                                </button>
+                                {!! Form::close() !!}
+                            @endif
+                        </div>
+
                     </div>
                 </div>
             </div>
