@@ -90,6 +90,10 @@ class ProjectsController extends Controller
      */
     public function store(ProjectRequest $request)
     {
+        if(!$request->get('description')) {
+            $request->request->set('description', '');
+        }
+
         auth()->user()->addProject($request->all());
 
         flash()->success('Project saved!');
@@ -123,6 +127,10 @@ class ProjectsController extends Controller
      */
     public function update(ProjectRequest $request, Project $project)
     {
+        if(!$request->get('description')) {
+            $request->request->set('description', '');
+        }
+
         $project->update($request->all());
 
         flash()->success('Project updated!');

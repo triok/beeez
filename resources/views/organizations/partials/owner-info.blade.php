@@ -127,7 +127,8 @@
                             <tr>
                                 <td>@lang('organizations.show_user_name')</td>
                                 <td>@lang('organizations.show_user_position')</td>
-                                <td class="text-right">@lang('organizations.show_user_date')</td>
+                                <td>@lang('organizations.show_user_date')</td>
+                                <td class="text-right">Доступ</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -137,7 +138,28 @@
                                         <a href="{{ route('peoples.show', $connection->user) }}">{{ $connection->user->name }}</a>
                                     </td>
                                     <td>{{ $connection->position }}</td>
-                                    <td class="text-right">{{ \Carbon\Carbon::parse($connection->created_at)->format('d M, Y') }}</td>
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($connection->created_at)->format('d M, Y') }}
+                                    </td>
+                                    <td class="text-right">
+                                        @if($connection->user_id != $organization->user_id)
+                                            @if($connection->is_admin)
+                                                {!! Form::open(['url' => route('organizations.deleteAdmin', $organization), 'method'=>'post']) !!}
+                                                <input type="hidden" name="user_id" value="{{ $connection->user_id }}">
+                                                <button type="submit" onclick="" class="btn btn-xs btn-default" title="Удалить доступ администратора">
+                                                    <i class="fa fa-key" style="color: red;"></i>
+                                                </button>
+                                                {!! Form::close() !!}
+                                            @else
+                                                {!! Form::open(['url' => route('organizations.addAdmin', $organization), 'method'=>'post']) !!}
+                                                <input type="hidden" name="user_id" value="{{ $connection->user_id }}">
+                                                <button type="submit" onclick="" class="btn btn-xs btn-default" title="Открыть доступ администратора">
+                                                    <i class="fa fa-key" aria-hidden="true"></i>
+                                                </button>
+                                                {!! Form::close() !!}
+                                            @endif
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
