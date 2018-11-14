@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    {!! Form::textarea('description', $project->description, ['required'=>'required', 'class'=>'form-control', 'placeholder' => __('projects.create-desc')]) !!}
+                    {!! Form::textarea('description', $project->description, ['class'=>'form-control', 'placeholder' => __('projects.create-desc')]) !!}
                 </div>
             </div>
         </div>
