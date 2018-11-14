@@ -18,6 +18,7 @@ class UserTransformer extends Transformer
             "id" => $user->id,
             "name" => $user->name,
             "username" => $user->username,
+            "speciality" => ($user->speciality ? \Lang::get('account.speciality.' . $user->speciality) : ''),
             "route" => route('peoples.show', $user),
             "rating_positive" => $user->rating_positive,
             "rating_negative" => $user->rating_negative,

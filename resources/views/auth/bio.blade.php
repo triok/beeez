@@ -6,10 +6,32 @@
 
 <input type="file" name="avatar" id="avatar">
 
-<label>Tell us about yourself</label>
-{!! Form::textarea('bio',$user->bio,['class'=>'form-control','rows'=>3,'required'=>'required']) !!}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Tell us about yourself</label>
+                {!! Form::textarea('bio',$user->bio,['class'=>'form-control','rows'=>3,'required'=>'required']) !!}
+            </div>
+        </div>
+    </div>
 
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="input-speciality">Специализация</label>
+                <select class="form-control" name="speciality" id="input-speciality">
+                    <option value="">Нет</option>
+                    @foreach(config('enums.account.specialities') as $speciality)
+                        @if($speciality == $user->speciality)
+                            <option selected value="{{ $speciality }}">@lang('account.speciality.' . $speciality)</option>
+                        @else
+                            <option value="{{ $speciality }}">@lang('account.speciality.' . $speciality)</option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 
 <label>Skills</label>
 {!! Form::text('skills',null,['id'=>'skills','class'=>'form-control']) !!}

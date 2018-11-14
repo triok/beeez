@@ -7,5 +7,11 @@ return [
     'bio' 	 	=> 'Био',
     'name'		=> 'Имя: ',    
     'login'		=> 'Логин: ',
-    'member'	=> 'На сайте с: ',     
+    'member'	=> 'На сайте с: ',
+
+    'speciality' => [
+        'designer' => 'Дизайнер',
+        'programmer' => 'Программист',
+        'courier' => 'Курьер',
+    ]
 ];
