@@ -72,7 +72,7 @@
                         </li>
                         <li><a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>                
+                        <li><a href="/jobs/create"><i class="fa fa-plus"></i> @lang('layout.post-new')</a></li>                
                     </ul>               
                 </li>
                     <li class="left-sidebar dropdown components-li">
@@ -122,17 +122,14 @@
                         <h6 class="dropdown-header">@lang('organizations.title')</h6>
                         <li role="separator" class="divider"></li>
                         <li>
-                            <a href="{{route('organizations.index')}}"><i class="fa fa-search"></i>@lang('organizations.all')</a>                    
+                            <a href="{{route('organizations.index')}}"><i class="fa fa-search fa-fw"></i>@lang('organizations.all')</a>                    
                         </li>
                         <li>
-                            <a href="{{route('organizations.my')}}"><i class="fa fa-briefcase"></i>@lang('organizations.title-my')</a>                    
+                            <a href="{{route('organizations.my')}}"><i class="fa fa-university fa-fw"></i>@lang('organizations.title-my')</a>                    
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-briefcase"></i>Вакансии</a>                    
-                        </li>                        
                         <li role="separator" class="divider"></li>                
                         <li>
-                            <a href="{{route('organizations.create')}}"><i class="fa fa-plus"></i>@lang('organizations.add')</a>                    
+                            <a href="{{route('organizations.create')}}"><i class="fa fa-plus fa-fw"></i>@lang('organizations.add')</a>                    
                         </li>                                                
                     </ul>  
                 </li>
@@ -141,6 +138,25 @@
                         <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
                     </a>
                 </li>
+                <li class="left-sidebar dropdown components-li">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-expanded="false"><i class="fa fa-money fa-fw"></i><span>@lang('layout.balance')</span>
+                    </a>
+                    <ul class="dropdown-menu sub-menu" role="menu">
+                        <h6 class="dropdown-header">@lang('balance.title')</h6>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-search fa-fw"></i>@lang('balance.review')</a>                    
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-university fa-fw"></i>@lang('balance.topup')</a>                    
+                        </li>
+                        <li role="separator" class="divider"></li>                
+                        <li>
+                            <a href="#"><i class="fa fa-plus fa-fw"></i>@lang('balance.history')</a>                    
+                        </li>                                                
+                    </ul>                     
+                </li>                
                 @endif
             </ul>
         </nav>

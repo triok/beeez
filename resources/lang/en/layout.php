@@ -25,6 +25,7 @@ return [
     'bookmarks'         => 'Bookmark',
     'applications'      => 'My applications',
     'vacancies'         => 'Vacancies',
+    'balance'           => 'Account',    
     'findwork'          => 'Find new work', 
 
     // Footer

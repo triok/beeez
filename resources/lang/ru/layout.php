@@ -25,6 +25,7 @@ return [
     'bookmarks'         => 'Закладки',
     'applications'      => 'Мои задания',    
     'vacancies'         => 'Вакансии',
+    'balance'           => 'Счет',
     'findwork'          => 'Найти работу',
 
     // Footer
