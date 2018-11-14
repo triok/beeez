@@ -23,4 +23,11 @@ return [
             'IN_PROGRESS' => 'in progress',
         ]
     ],
+    'account' => [
+        'specialities' => [
+            'designer',
+            'programmer',
+            'courier',
+        ]
+    ]
 ];

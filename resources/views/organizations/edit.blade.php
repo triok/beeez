@@ -16,7 +16,7 @@
 
         <div class="form-group" id="savesubmit">
             <button type="submit" class="btn btn-primary" id="submit" name="submit"
-                    value="submit">@lang('organizations.submit')
+                    value="submit">@lang('organizations.save')
             </button>
 
             <div style="display: inline-block;padding-left: 10px;">

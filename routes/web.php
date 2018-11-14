@@ -155,6 +155,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/organizations/moderation','OrganizationsController@moderation')->name('organizations.moderation');
     Route::post('/organizations/approve/{organization}','OrganizationsController@approve')->name('organizations.approve');
     Route::post('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
+    Route::post('/organizations/{organization}/addAdmin','OrganizationsController@addAdmin')->name('organizations.addAdmin');
+    Route::post('/organizations/{organization}/deleteAdmin','OrganizationsController@deleteAdmin')->name('organizations.deleteAdmin');
     Route::resource('organizations', 'OrganizationsController');
 
     Route::resource('/organizations/{organization}/structure', 'StructuresController');

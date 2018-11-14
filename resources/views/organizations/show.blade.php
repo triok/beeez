@@ -10,7 +10,7 @@
                     <span><i class="fa fa-arrow-left"></i> @lang('organizations.back_to_list')</span>
                 </a>
 
-                @if($organization->user_id == auth()->user()->id)
+                @if($userIsAdmin)
                 <a href="{{ route('organizations.edit', $organization) }}" class="btn btn-default btn-xs pull-right">
                     <i class="fa fa-pencil"></i> @lang('organizations.edit')
                 </a>

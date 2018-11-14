@@ -50,6 +50,7 @@ return [
     'create_organization'       => 'Создать организацию',
     'back_to_list'              => 'Назад к списку',
     'submit'                    => 'Создать',
+    'save'                      => 'Сохранить',
     'edit'                      => 'Изменить',
     'delete'                    => 'Удалить',
 ];

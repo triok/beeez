@@ -5,6 +5,7 @@
     <tr>
         <th>@lang('peoples.login')</th>
         <th>@lang('peoples.name')</th>
+        <th>@lang('peoples.speciality')</th>
         <th>@lang('peoples.feedbacks')</th>
         <th>@lang('peoples.member')</th>
         <th>@lang('peoples.message')</th>
@@ -43,6 +44,16 @@
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
                                 return row.name;
+                            }
+
+                            return data;
+                        }
+                    },
+                    {
+                        "data": "speciality",
+                        "render": function (data, type, row, meta) {
+                            if (type === 'display') {
+                                return row.speciality;
                             }
 
                             return data;

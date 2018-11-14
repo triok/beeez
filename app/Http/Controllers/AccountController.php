@@ -105,6 +105,7 @@ class AccountController extends Controller
         /** @var User $user */
         $user = auth()->user();
         $user->bio = $request->bio;
+        $user->speciality = $request->get('speciality');
         $user->save();
 
         //update skills
