@@ -15,11 +15,6 @@ use Illuminate\Http\Request;
 
 class VacancyCvsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin')->except(['create', 'store']);
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -71,7 +66,7 @@ class VacancyCvsController extends Controller
                 ->update(['read_at' => Carbon::now()]);
         }
 
-        if ($admin = User::where('email', config('vacancy.admin'))->first()) {
+        if ($admin = $vacancy->organization->user) {
             $admin->notify(new CvAdminNotification($cv));
         }
 
@@ -92,7 +87,7 @@ class VacancyCvsController extends Controller
     {
         $cv->delete();
 
-        flash()->success('Отклик удвлен.');
+        flash()->success('Отклик удален.');
 
         return redirect()->back();
     }

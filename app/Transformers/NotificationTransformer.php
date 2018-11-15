@@ -43,7 +43,11 @@ class NotificationTransformer extends Transformer
         if ($notification['type'] == 'App\Notifications\TeamUserNotification') {
             $team = Team::find($notification['data']['team_id']);
 
-            return 'Вас приняли в команду "' . $team->name . '" на должность "' . $notification['data']['position'] . '".';
+            if($team) {
+                return 'Вас приняли в команду "' . $team->name . '" на должность "' . $notification['data']['position'] . '".';
+            } else {
+                return 'Вас приняли в команду.';
+            }
         }
 
         if ($notification['type'] == 'App\Notifications\OrganizationNotification') {
