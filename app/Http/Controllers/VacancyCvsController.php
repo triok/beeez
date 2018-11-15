@@ -28,6 +28,14 @@ class VacancyCvsController extends Controller
      */
     public function create(Vacancy $vacancy)
     {
+        if($vacancy->organization->user_id == auth()->id() ||
+            $vacancy->cvs()->where('user_id', auth()->id())->count()) {
+
+            flash()->warning('Вы же отклинулись на эту вакансию!');
+
+            return redirect(route('vacancies.index'));
+        }
+
         return view('vacancies.cvs.create', compact('vacancy'));
     }
 
@@ -40,6 +48,14 @@ class VacancyCvsController extends Controller
      */
     public function store(CvRequest $request, Vacancy $vacancy)
     {
+        if($vacancy->organization->user_id == auth()->id() ||
+            $vacancy->cvs()->where('user_id', auth()->id())->count()) {
+
+            flash()->warning('Вы же отклинулись на эту вакансию!');
+
+            return redirect(route('vacancies.index'));
+        }
+
         $cv = $vacancy->addCv($request->all());
 
         if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
