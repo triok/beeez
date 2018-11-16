@@ -48028,7 +48028,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48076,14 +48076,65 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['thread'],
 
     data: function data() {
         return {
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            message: '',
+            emojis: ['\uD83C\uDF82', '\uD83C\uDFC3', '\uD83C\uDFE0', '\uD83C\uDFE2', '\uD83D\uDCA9', '\uD83D\uDCBB', '\uD83D\uDCB0', '\uD83D\uDCF7', '\uD83D\uDC4D', '\uD83D\uDC4E', '\uD83D\uDC6A', '\uD83D\uDC8B', '\uD83D\uDD2B', '\uD83D\uDE00', '\uD83D\uDE01', '\uD83D\uDE02', '\uD83D\uDE03', '\uD83D\uDE04', '\uD83D\uDE05', '\uD83D\uDE06', '\uD83D\uDE09', '\uD83D\uDE0A', '\uD83D\uDE0B', '\uD83D\uDE0C', '\uD83D\uDE0E', '\uD83D\uDE0D', '\uD83D\uDE18', '\uD83D\uDE17', '\uD83D\uDE19', '\uD83D\uDE1A', '\uD83D\uDE1C', '\uD83D\uDE1D', '\uD83D\uDE1E', '\uD83D\uDE20', '\uD83D\uDE21', '\uD83D\uDE22', '\uD83D\uDE23', '\uD83D\uDE24', '\uD83D\uDE25', '\uD83D\uDE28', '\uD83D\uDE29', '\uD83D\uDE2A', '\uD83D\uDE2B', '\uD83D\uDE2D', '\uD83D\uDE30', '\uD83D\uDE31', '\uD83D\uDE32', '\uD83D\uDE33', '\uD83D\uDE35', '\uD83D\uDE37', '\uD83D\uDE38', '\uD83D\uDE39', '\uD83D\uDE3A', '\uD83D\uDE45', '\uD83D\uDE46', '\uD83D\uDE47', '\uD83D\uDE48', '\uD83D\uDE49', '\uD83D\uDE4A', '\uD83D\uDE4B', '\uD83D\uDE4C', '\uD83D\uDE4D', '\uD83D\uDE4F', '\uD83D\uDE1F', '\uD83D\uDE22', '\uD83D\uDE31', '\uD83D\uDE4C', '\uD83D\uDE4F', '\u263A', '\u2705', '\u2753']
         };
+    },
+
+    mounted: function mounted() {
+        $('#smile').popover({
+            trigger: 'click',
+            placement: 'left',
+            template: this.$refs.template
+        });
+    },
+
+
+    methods: {
+        addSmile: function addSmile(smile) {
+            this.message = this.message + ' ' + smile + ' ';
+        },
+        closeEmojiWindow: function closeEmojiWindow() {
+            $('#smile').popover('hide');
+        }
     }
 });
 
@@ -48120,7 +48171,46 @@ var render = function() {
             _vm._v(" "),
             _c("h2", [_vm._v(_vm._s(_vm.trans("messages.add")))]),
             _vm._v(" "),
-            _vm._m(0),
+            _c(
+              "div",
+              {
+                staticClass: "form-group",
+                staticStyle: { position: "relative" }
+              },
+              [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.message,
+                      expression: "message"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    name: "message",
+                    id: "message",
+                    required: "",
+                    rows: "3"
+                  },
+                  domProps: { value: _vm.message },
+                  on: {
+                    focus: function($event) {
+                      _vm.closeEmojiWindow()
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.message = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm._m(0)
+              ]
+            ),
             _vm._v(" "),
             _vm._m(1),
             _vm._v(" "),
@@ -48134,7 +48224,74 @@ var render = function() {
               _vm._m(2)
             ])
           ]
-        )
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "hide", attrs: { id: "smile-template" } }, [
+          _c(
+            "div",
+            {
+              ref: "template",
+              staticClass: "popover",
+              staticStyle: {
+                width: "460px",
+                "max-width": "460px",
+                padding: "10px"
+              },
+              attrs: { role: "tooltip" }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "text-right",
+                  staticStyle: { "border-bottom": "1px solid #ccc" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-link btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.closeEmojiWindow()
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-close" })]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.emojis, function(emoji) {
+                return _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-link",
+                    staticStyle: {
+                      width: "50px",
+                      height: "50px",
+                      "text-decoration": "none",
+                      outline: "none"
+                    },
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.addSmile(emoji)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " + _vm._s(emoji) + "\n            "
+                    )
+                  ]
+                )
+              })
+            ],
+            2
+          )
+        ])
       ])
     : _vm._e()
 }
@@ -48143,12 +48300,29 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("textarea", {
-        staticClass: "form-control",
-        attrs: { name: "message", id: "message", required: "", rows: "3" }
-      })
-    ])
+    return _c(
+      "div",
+      { staticStyle: { position: "absolute", right: "0", bottom: "0" } },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-link btn-lg",
+            staticStyle: { outline: "none" },
+            attrs: {
+              tabindex: "0",
+              id: "smile",
+              role: "button",
+              "data-toggle": "popover",
+              "data-trigger": "focus",
+              title: "Emoji",
+              "data-content": ""
+            }
+          },
+          [_c("i", { staticClass: "fa fa-smile-o" })]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
