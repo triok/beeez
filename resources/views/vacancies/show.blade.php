@@ -47,9 +47,15 @@
                         <hr>
 
                         <div class="btn-toolbar">
-                            <a href="{{ route('vacancies.cvs.create', $vacancy) }}" class="btn btn-primary" style="margin-right: 5px;">
-                                @lang('vacancies.button_add_cv')
-                            </a>
+                            @if($vacancy->organization->user_id != auth()->id() && !$vacancy->cvs()->where('user_id', auth()->id())->count())
+                                <a href="{{ route('vacancies.cvs.create', $vacancy) }}" class="btn btn-primary" style="margin-right: 5px;">
+                                    @lang('vacancies.button_add_cv')
+                                </a>
+                            @else
+                                <a href="{{ route('vacancies.cvs.create', $vacancy) }}" disabled class="btn btn-primary" style="margin-right: 5px;">
+                                    @lang('vacancies.button_add_cv')
+                                </a>
+                            @endif
 
                             @if(!$vacancy->isFavorited())
                                 {!! Form::open(['url' => route('vacancies.favorite', $vacancy), 'method'=>'post']) !!}
