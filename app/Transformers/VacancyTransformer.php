@@ -33,7 +33,19 @@ class VacancyTransformer extends Transformer
             "published_at" => ($vacancy->published_at ? $vacancy->published_at->format('Y-m-d') : null),
 
             "is_favorited" => $vacancy->isFavorited(),
-            "is_added_cv" => (bool)$vacancy->cvs()->where('user_id', auth()->id())->count(),
+            "is_added_cv" => $this->checkIsAddedCv($vacancy),
         ];
+    }
+
+    private function checkIsAddedCv(Vacancy $vacancy) {
+        if(auth()->id() == $vacancy->organization->user_id) {
+            return true;
+        }
+
+        if($vacancy->cvs()->where('user_id', auth()->id())->count()) {
+            return true;
+        }
+
+        return false;
     }
 }

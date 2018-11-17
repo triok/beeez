@@ -15,11 +15,6 @@ use Illuminate\Http\Request;
 
 class VacancyCvsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin')->except(['create', 'store']);
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -28,6 +23,14 @@ class VacancyCvsController extends Controller
      */
     public function create(Vacancy $vacancy)
     {
+        if($vacancy->organization->user_id == auth()->id() ||
+            $vacancy->cvs()->where('user_id', auth()->id())->count()) {
+
+            flash()->warning('Вы же отклинулись на эту вакансию!');
+
+            return redirect(route('vacancies.index'));
+        }
+
         return view('vacancies.cvs.create', compact('vacancy'));
     }
 
@@ -40,6 +43,14 @@ class VacancyCvsController extends Controller
      */
     public function store(CvRequest $request, Vacancy $vacancy)
     {
+        if($vacancy->organization->user_id == auth()->id() ||
+            $vacancy->cvs()->where('user_id', auth()->id())->count()) {
+
+            flash()->warning('Вы же отклинулись на эту вакансию!');
+
+            return redirect(route('vacancies.index'));
+        }
+
         $cv = $vacancy->addCv($request->all());
 
         if ($request->hasFile('cv') && $request->file('cv')->isValid()) {
@@ -55,7 +66,7 @@ class VacancyCvsController extends Controller
                 ->update(['read_at' => Carbon::now()]);
         }
 
-        if ($admin = User::where('email', config('vacancy.admin'))->first()) {
+        if ($admin = $vacancy->organization->user) {
             $admin->notify(new CvAdminNotification($cv));
         }
 
@@ -76,7 +87,7 @@ class VacancyCvsController extends Controller
     {
         $cv->delete();
 
-        flash()->success('Отклик удвлен.');
+        flash()->success('Отклик удален.');
 
         return redirect()->back();
     }
