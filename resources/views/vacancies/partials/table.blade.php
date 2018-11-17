@@ -21,9 +21,11 @@
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
-
-                "pageLength": 20,
-
+                "pagingType": "numbers",
+                "pageLength": 40,
+                "language": {
+                  "emptyTable": "Записей нет"
+                },
                 "ajax": {
                     "url": "{{ $action }}",
                     "dataSrc": "data"

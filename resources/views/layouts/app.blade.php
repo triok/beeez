@@ -65,6 +65,7 @@
                         <h6 class="dropdown-header">@lang('layout.jobs-manager')</h6>
                         <li role="separator" class="divider"></li>                
                         <li><a href="{{ url('/') }}"><i class="fa fa-search"></i> @lang('layout.findwork')</a></li>
+                        <li role="separator" class="divider"></li>
                         <li>
                             <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
                                <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>
@@ -140,20 +141,20 @@
                 </li>
                 <li class="left-sidebar dropdown components-li">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-expanded="false"><i class="fa fa-money fa-fw"></i><span>@lang('layout.balance')</span>
+                                   aria-expanded="false"><i class="fa fa-credit-card fa-fw"></i><span>@lang('layout.balance')</span>
                     </a>
                     <ul class="dropdown-menu sub-menu" role="menu">
-                        <h6 class="dropdown-header">@lang('balance.title')</h6>
+                        <h6 class="dropdown-header">@lang('balance.title'): 0 руб.</h6>
                         <li role="separator" class="divider"></li>
                         <li>
                             <a href="#"><i class="fa fa-search fa-fw"></i>@lang('balance.review')</a>                    
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-university fa-fw"></i>@lang('balance.topup')</a>                    
+                            <a href="#"><i class="fa fa-plus fa-fw"></i>@lang('balance.topup')</a>                    
                         </li>
                         <li role="separator" class="divider"></li>                
                         <li>
-                            <a href="#"><i class="fa fa-plus fa-fw"></i>@lang('balance.history')</a>                    
+                            <a href="#"><i class="fa fa-history fa-fw"></i>@lang('balance.history')</a>                    
                         </li>                                                
                     </ul>                     
                 </li>                
@@ -204,6 +205,7 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="{{ url('/') }}"><i class="fa fa-search"></i> @lang('layout.findwork')</a></li>
+
                                     <li>
                                         <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
                                             <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>

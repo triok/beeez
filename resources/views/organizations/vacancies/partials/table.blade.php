@@ -22,9 +22,11 @@
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
-
+                "pagingType": "numbers",
                 "pageLength": 20,
-
+                "language": {
+                  "emptyTable": "Записей нет"
+                },
                 "ajax": {
                     "url": "/api/vacancies/search?all=true&organization_id={{ $organization->id }}",
                     "dataSrc": "data"

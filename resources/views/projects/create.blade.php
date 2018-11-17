@@ -37,13 +37,14 @@
             </div>
         </div>
     </div>
-
+    @if ($organizations->count())
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 <label for="team_id">Отдел</label>
                 <select class="form-control" name="structure_id">
                     <option value="">Нет</option>
+
                     @foreach($organizations as $organization)
                         @foreach($organization->structures as $structure)
                             @if($structure->id == $structure_id)
@@ -57,7 +58,15 @@
             </div>
         </div>
     </div>
-
+    @endif
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>@lang('projects.deadline')</label>
+                <input name="" class="form-control timepicker-actions" type='text' />
+            </div>
+        </div>
+    </div>    
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">

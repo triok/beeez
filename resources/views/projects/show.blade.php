@@ -1,25 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid show-project" id="main">
-    <h2>{{ $project->name }}</h2>
 
-    <div class="col-sm-2 pull-right">
+<div class="container-fluid show-project" id="main">
+    <div class="col-xs-12">
+    <a href="{{route('projects.index')}}"><span><i class="fa fa-arrow-left"></i> @lang('projects.show-back')</span></a>
+    </div>
+    <div class="col-sm-3">
+        <h2>{{ $project->name }}</h2>
+        <br>
+        <div class="text">
+        <textarea cols="50" rows="20" placeholder="@lang('projects.notes')">
+            
+        </textarea>   
+    </div>
+    </div>
+    
+    <div class="col-xs-9">
+    <div class="col-sm-2">
     <a href="{{ route('jobs.create') }}?project_id={{ $project->id }}" class="btn btn-block btn-primary" style="margin-top: 10px;">@lang('projects.post')</a>
     </div>
 
-    <div class="col-xs-12">
+    <div class="project-container col-xs-12">
             @if(count($project->jobs) > 0)  
         <table class="table table-sm table-hover">
 
             <thead>
-            <tr>
-                <td>@lang('projects.job-name')</td>
-                <td>@lang('projects.deadline')</td>
-                <td>@lang('projects.executor')</td>
-                <td>@lang('projects.price')</td>
-                <td>@lang('projects.publish')</td>
-            </tr>
+                <th>@lang('projects.job-name')</th>
+                <th>@lang('projects.deadline')</th>
+                <th>@lang('projects.executor')</th>
+                <th>@lang('projects.price')</th>
+                <th>@lang('projects.publish')</th>
             </thead>
  
             <tbody class="sortable-rows">
@@ -56,6 +67,7 @@
         </p>
         <p><span>@lang('projects.jobs-complete')</span> 0</p>
     </div>
+</div>
 </div>
    
 @endsection

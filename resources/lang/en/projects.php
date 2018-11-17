@@ -49,7 +49,7 @@ return [
 
     // Project show
     'job-name'       => 'Job name:',
-    'deadline'       => 'Deadline:',       
+    'deadline'       => 'Deadline',       
     'executor'       => 'Executor:',
     'price'          => 'Price:',
     'published'      => 'Published',
@@ -59,5 +59,7 @@ return [
     'post'           => 'Post new job',
     'publish'        => 'Publish:',
     'nousers'        => 'No',
-    'notask'         => 'There are no tasks in project.',        
+    'notask'         => 'There are no tasks in project.',
+    'show-back'      => 'Back to projects',    
+    'notes'          => 'Your notes...',      
 ];

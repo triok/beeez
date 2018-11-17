@@ -1,29 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid" id="main">
-        <div class="row">
-            <div class="col-md-12 vacancies">
-                <h2>@lang('vacancies.title')</h2>
+<div class="col-xs-3 vacancies">
+    <h2>@lang('vacancies.title')</h2>
+    <div class="filter">
 
-                <div class="row">
-                    <div class="col-md-2 search">
+                    <div class="search">
                         <input class="form-control" id="vacancy_search" placeholder="@lang('vacancies.search_name')">
                         <ul class="result"></ul>
                     </div>
 
-                    <div class="col-md-2 search">
-                        <select id="vacancy-type-filter" class="form-control border-bottom">
-                            <option value="">@lang('vacancies.search_specialization')</option>
 
-                            @foreach(config('vacancy.specializations') as $specialization)
-                                <option value="{{ $specialization }}">
-                                    @lang('vacancies.specialization_' . $specialization)
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+        <h3>@lang('vacancies.filter_specialization')</h3>
+        <ul class="list-unstyled">
+            @foreach(config('vacancy.specializations') as $specialization)
+            <li>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">
+                    @lang('vacancies.specialization_' . $specialization)
+                  </label>
+                </div>                
+            </li>
+            @endforeach
+        </ul>
+        <h3>@lang('vacancies.filter_skills')</h3>
+        <ul class="list-unstyled">
+            <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">PHP</label></div></li>
+            <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">VueJS</label></div></li>
+            <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">Ruby</label></div></li>
+            <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">Jango</label></div></li>
+        </ul>
+        <h3>@lang('vacancies.filter_salary')</h3>
+        <ul class="list-unstyled">
+            <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">от 15 000 руб.</label></div></li>            
+            <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">от 30 000 руб.</label></div></li>
+            <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">от 50 000 руб.</label></div></li> 
+            <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">от 80 000 руб.</label></div></li>
+            <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">от 100 000 руб.</label></div></li>                                   
+        </ul>
+    </div>    
+</div>
+<div class="col-xs-9">
+    <div class="container-fluid" id="main">
+        <div class="row">
+            <div class="col-md-12 vacancies">
+
+
 
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active">
@@ -54,6 +86,7 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @push('styles')

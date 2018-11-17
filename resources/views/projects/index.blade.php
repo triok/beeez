@@ -2,12 +2,20 @@
 
 @section('content')
 <div class="container-fluid projects" id="main">
+    <div class="col-xs-3">
     <h2>@lang('projects.title')</h2>
-    <div class="col-sm-2 pull-right">
+    <div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur atque rerum possimus culpa deleniti molestiae vitae nisi ut reprehenderit nemo, dicta dignissimos libero nesciunt, impedit temporibus beatae eos, harum earum?</p> 
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, voluptate inventore voluptatibus non quam tempora aliquid provident sequi eveniet? Magni esse beatae culpa tenetur deserunt? Explicabo at cupiditate deleniti magnam?</p>
+    <p class="pull-right">
         <a href="{{ route('projects.create') }}" class="btn btn-primary btn-block">
             <i class="fa fa-sitemap"></i> @lang('projects.create')
         </a>
+    </p>            
     </div>
+    </div>
+    <div class="col-xs-9">
+
 
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a data-toggle="tab" href="#current">@lang('projects.current')</a></li>
@@ -22,6 +30,7 @@
                     <th> </th>
                     <th>@lang('projects.name')</th>
                     <th>@lang('projects.desc')</th>
+                    <th>@lang('projects.deadline')</th>                    
                     <th>@lang('projects.count')</th>
                     <th></th>
                 </thead>
@@ -38,6 +47,7 @@
                             </td>
                             <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                             <td>{{ $project->description }}</td>
+                            <td>дедлайн</td>                             
                             <td>{{ $project->jobs()->count() }}/0</td>
                             <td class="text-right">
                                 {!! Form::open(['url' => route('projects.edit', $project), 'method'=>'post']) !!}
@@ -91,7 +101,7 @@
         <div id="completed" class="tab-pane fade ">
             <table class="table table-responsive table-projects">
                 <thead>
-                    <th> </td>                    
+                    <th> </th>                    
                     <th>@lang('projects.name')</th>
                     <th>@lang('projects.desc')</th>
                     <th>@lang('projects.count')</th>
@@ -130,6 +140,12 @@
                                     {!! Form::close() !!}
                                 </td>
                             </tr>
+                        @else
+                            <tr>
+                                <td colspan="5">
+                                    @lang('projects.nocompprojects')
+                                </td>
+                            </tr>                                
                         @endif
                     @endforeach
                 @else
@@ -193,6 +209,12 @@
                                     {!! Form::close() !!}
                                 </td>
                             </tr>
+                        @else
+                            <tr>
+                                <td colspan="5">
+                                    @lang('projects.nofavprojects')
+                                </td>
+                            </tr>                            
                         @endif
                     @endforeach
                 @else
@@ -206,6 +228,7 @@
             </table>
         </div>        
     </div>
+</div>
 </div>    
 @endsection
 

@@ -13,6 +13,10 @@ return [
     'specialization_accountant' => 'Accountant',
     'specialization_manager' => 'Manager',
 
+    'filter_specialization' => 'Specialization',
+    'filter_skills' => 'Skills',
+    'filter_salary' => 'Salary',        
+
     'col_name' => 'Name',
     'col_organization' => 'Organization',
     'col_specialization' => 'Specialization',

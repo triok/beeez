@@ -13,6 +13,10 @@ return [
     'specialization_accountant' => 'Бухгалтер',
     'specialization_manager' => 'Менеджер',
 
+    'filter_specialization' => 'Специализация',
+    'filter_skills' => 'Навыки',  
+    'filter_salary' => 'Зарплата',           
+
     'col_name' => 'Название',
     'col_organization' => 'Организация',
     'col_specialization' => 'Специализация',

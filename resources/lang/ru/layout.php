@@ -18,7 +18,7 @@ return [
     'logout'            => 'Выйти',
     'account'           => 'Аккаунт',
     'jobs-manager'      => 'Работа',
-    'projects'          => 'Проекты',       
+    'projects'          => 'Мои проекты',       
     'current-tasks'     => 'Текущие задания',
     'post-new'          => 'Новое задание',
     'profile'           => 'Профиль',
@@ -26,7 +26,7 @@ return [
     'applications'      => 'Мои задания',    
     'vacancies'         => 'Вакансии',
     'balance'           => 'Счет',
-    'findwork'          => 'Найти работу',
+    'findwork'          => 'Поиск работы',
 
     // Footer
     'sign'              => '2018 Lavoro',

@@ -4093,7 +4093,8 @@ fieldset[disabled] .btn-default.focus {
 /*  background-color: #3097D1;
   border-color: #2a88bd;*/
   background-color:#48b0a5;
-  border-color: #3b8c83; 
+  border-color: #3b8c83;
+  transition: 0.3s all;
 }
 
 .btn-primary:focus,
@@ -4105,7 +4106,7 @@ fieldset[disabled] .btn-default.focus {
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #2579a9;
+  background-color: #3f9890;
   border-color: #1f648b;
 }
 
@@ -11688,11 +11689,11 @@ footer {
   white-space: nowrap;
   vertical-align: middle!important;
 }
-.table-projects thead th:nth-last-child(-n+2), .table-projects thead th:first-child{
+.table-projects thead th:nth-last-child(-n+3), .table-projects thead th:first-child{
   width: 1%;
   white-space: nowrap;
 }
-.table-projects tbody td:nth-child(4) {
+.table-projects tbody td:nth-child(5) {
   text-align: center;
 }
 .sub-tasks { padding-bottom: 20px;}
@@ -12120,13 +12121,11 @@ section.other-jobs a.delete {
 .auth {
   margin-top:65px;
 }
-.projects .btn-success, .show-project .btn-primary {
-  margin-bottom: 22px;
-}
 .projects .text-right {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  align-items: center;
 }
 .search {
   margin: 20px 0px 40px;
@@ -12245,6 +12244,9 @@ section.other-jobs a.delete {
 #teams-projects .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
   background-color: #47afa5;
 }
+.create-project .icons {
+  width: 100px;
+}
 .create-project .icons option, .edit-project .icons option {
   font-family: FontAwesome;
   font-size: 20px;
@@ -12327,4 +12329,29 @@ section.other-jobs a.delete {
 }
 #teams-projects hr {
   border-top: 1px solid #d8d8d8;
+}
+.show-project textarea {
+  border-radius: 5px;
+  padding: 10px;
+  border: none;
+  background:#ffeb3b4d;
+  resize: none;
+}
+.show-project .project-container {
+  margin: 40px 0px 10px 0px;
+  min-height: 400px;
+  border-bottom: 1px solid #d8d8d8;
+
+}
+.show-project tr:hover {
+  background: #47afa51f!important;
+}
+.vacancies .filter h3{
+  border-bottom: 1px solid #d6d6d6; 
+}
+.vacancies .filter {
+  margin-top: 60px;
+  padding: 0px 20px;
+  border: 1px solid #d6d6d6;
+  border-radius: 5px;
 }
