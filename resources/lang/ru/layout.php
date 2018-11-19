@@ -26,7 +26,16 @@ return [
     'applications'      => 'Мои задания',    
     'vacancies'         => 'Вакансии',
     'balance'           => 'Счет',
+    'society'           => 'Сообщество',
     'findwork'          => 'Поиск работы',
+
+    // Graphs
+    'task-title'        => 'Заданий созадно',
+    'task-comment'      => 'за 2018 год',
+    'today-title'       => 'Заданий размещено',
+    'today-comment'     => 'сегодня', 
+    'complete-title'    => 'Заданий выполнено',
+    'complete-comment'  => 'сегодня',    
 
     // Footer
     'sign'              => '2018 Lavoro',

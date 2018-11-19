@@ -25,8 +25,17 @@ return [
     'bookmarks'         => 'Bookmark',
     'applications'      => 'My applications',
     'vacancies'         => 'Vacancies',
-    'balance'           => 'Account',    
-    'findwork'          => 'Find new work', 
+    'balance'           => 'Account',
+    'society'           => 'Society',        
+    'findwork'          => 'Find new work',
+
+    // Graphs
+    'task-title'        => 'Tasks created',
+    'task-comment'      => 'in 2018',
+    'today-title'       => 'Tasks placed',
+    'today-comment'     => 'today', 
+    'complete-title'    => 'Tasks completed',
+    'complete-comment'  => 'today', 
 
     // Footer
     'sign'              => '2018 Lavoro',

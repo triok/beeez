@@ -1,9 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-<div>
+
+    <div class="container-fluid graphs">
+        <div class="col-xs-3">
+            <div class="base-wrapper task-created">
+                <p class="number">234</p>
+                <p class="title">@lang('layout.task-title')</p>
+                <p class="comment">@lang('layout.task-comment')</p>
+                <i class="fa fa-line-chart" aria-hidden="true"></i>
+             </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="base-wrapper today-created">
+                <p class="number">46</p>
+                <p class="title">@lang('layout.today-title')</p>
+                <p class="comment">@lang('layout.today-comment')</p>
+                <i class="fa fa-rss" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="base-wrapper today-complete">
+                <p class="number">30</p>
+                <p class="title">@lang('layout.complete-title')</p>
+                <p class="comment">@lang('layout.complete-comment')</p>
+                <i class="fa fa-handshake-o" aria-hidden="true"></i>                
+           </div>
+        </div>    
+    </div>
+    <div class="container-fluid">
     <div class="col-sm-3 sidebar-offcanvas category-nav" role="navigation">
-        <div id="sidebar">
+        <div id="sidebar" class="container-fluid">
+            <div class="base-wrapper">
             <div class="Categories">@lang('layout.categories')</div>
 
             <ul class="nav list-unstyled">
@@ -44,10 +72,11 @@
                 @endforeach
             </ul>
         </div>
+        </div>
     </div>
 
     <router-view></router-view>
-</div>    
+     </div> 
 @endsection
 
 @push('modals')

@@ -2,10 +2,14 @@
 
 @section('content')
 <div class="col-xs-3 vacancies">
-    <h2>@lang('vacancies.title')</h2>
+    <div class="base-wrapper">
+        <h2>@lang('vacancies.title')</h2>
+        <p>@lang('vacancies.title-note')</p>
+    </div>
+    <div class="base-wrapper">
     <div class="filter">
 
-                    <div class="search">
+                    <div class="search input-gorup">
                         <input class="form-control" id="vacancy_search" placeholder="@lang('vacancies.search_name')">
                         <ul class="result"></ul>
                     </div>
@@ -48,10 +52,11 @@
             <li><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                   <label class="form-check-label" for="defaultCheck1">от 100 000 руб.</label></div></li>                                   
         </ul>
+    </div>
     </div>    
 </div>
 <div class="col-xs-9">
-    <div class="container-fluid" id="main">
+    <div class="base-wrapper" id="main">
         <div class="row">
             <div class="col-md-12 vacancies">
 

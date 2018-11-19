@@ -2,6 +2,7 @@
 
 return [
     'title' => 'Вакансии',
+    'title-note' => 'Поиск постоянной работы',    
     'title_new_vacancy' => 'Новая вакансия',
     'title_edit_vacancy' => 'Изменить вакансию',
 

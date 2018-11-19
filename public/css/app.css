@@ -11988,15 +11988,18 @@ section.other-jobs a.delete {
 }
 #side i {
   color: #ffca00;
+  font-size: 19px;
+  margin-left: 10px;
+  margin-right: 5px;
 }
 
-#side.active {
+/*#side.active {
   min-width: 80px;
   max-width: 80px;
   text-align: center;
-}
+}*/
 /* Toggling the sidebar header content, hide the big heading [h3] and showing the small heading [strong] and vice versa*/
-.left-sidebar {
+/*.left-sidebar {
   padding: 10px 0px 10px 20px;
 }
 #side.active .left-sidebar {
@@ -12054,23 +12057,23 @@ section.other-jobs a.delete {
 }
 #side.active #welcome, #side.active ul li a span {
   display: none;
-}
+}*/
 /* Same dropdown links padding*/
-#side.active ul ul a {
+/*#side.active ul ul a {
     padding: 10px !important;
-}
+}*/
 
 /* Changing the arrow position to bottom center position, 
    translateX(50%) works with right: 50% 
    to accurately  center the arrow */
-#side.active .dropdown-toggle::after {
+/*#side.active .dropdown-toggle::after {
     top: auto;
     bottom: 10px;
     right: 50%;
     -webkit-transform: translateX(50%);
     -ms-transform: translateX(50%);
     transform: translateX(50%);
-}
+}*/
 
 #content {
     display: flex;
@@ -12078,9 +12081,18 @@ section.other-jobs a.delete {
     width: 100%;
     padding: 20px;
     transition: all 0.3s;
-    background:#f3f3f3;
+    background:#e5e6e6;
 }
-.dropdown {
+.base-wrapper {
+  padding: 20px;
+  margin:20px;
+  background:white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+}
+.graphs  .base-wrapper:hover {
+  box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.33)
+}
+/*.dropdown {
   transition: 0.3s;
 }
 .dropdown:hover > .dropdown-menu { 
@@ -12113,7 +12125,7 @@ section.other-jobs a.delete {
 }
 .components .dropdown-menu .divider {
   padding: 0!important;
-}
+}*/
 /*menu*/
 #jobs-table thead{
   font-size: 13px;
@@ -12168,9 +12180,11 @@ section.other-jobs a.delete {
 
 }
 .left-sidebar {
-  color: white
+  color: white;
+  text-align: center; 
+  padding: 20px 0px;
 }
-.left-sidebar:hover:not(:first-child), .components-li ul li:hover {
+/*.left-sidebar:hover:not(:first-child), .components-li ul li:hover {
   background:#eaeaea;    
 }
 .left-sidebar:hover:not(:first-child) > a, .components-li ul li a:hover{
@@ -12190,6 +12204,60 @@ section.other-jobs a.delete {
 }
 .sub-menu li:hover a i {
   color: rgb(71, 175, 165)!important; 
+}*/
+#accordion {
+  line-height: 2.5;
+}
+.card {
+  border-bottom: 1px solid #d6d6d6;
+}
+.card a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #fff;
+  transition: 0.3s all;
+}
+.card a:hover {
+  background: #0e5d55;
+  padding-left: 15px;
+}
+.card-caret .card-header a:before {
+  position: relative;
+  content: '\f105';
+  display: inline-block;
+  font-family: "FontAwesome";
+  color: #FFF;
+  float: right;
+  font-size: 15px;
+  margin-right: 10px;
+  top: 0px;
+  -webkit-transition: all 300ms ease-in-out;
+  -moz-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out; 
+}
+.card-body ul {
+  background: #129286;
+}
+.card-body ul li a {
+  padding-left: 30px;
+}
+.card-body ul li a:hover {
+  padding-left: 35px;
+}
+.card-body h6 {
+  padding: 15px 0px 10px;
+  margin: 0px;
+  font-size: 14px;
+  color: white;
+  text-align: center;
+}
+.rotate-caret:before {
+  transform: rotate(90deg);
+}
+.card a span {
+  margin-left: 10px;
 }
 /*Register*/
 .auth .panel {
@@ -12349,9 +12417,42 @@ section.other-jobs a.delete {
 .vacancies .filter h3{
   border-bottom: 1px solid #d6d6d6; 
 }
-.vacancies .filter {
-  margin-top: 60px;
-  padding: 0px 20px;
-  border: 1px solid #d6d6d6;
+.task-created, .today-created, .today-complete {
+  position: relative;
   border-radius: 5px;
+}
+.task-created {
+  border-left: 3px solid orange;
+}
+.today-created {
+  border-left: 3px solid cadetblue; 
+}
+.today-complete {
+  border-left: 3px solid darkgreen;
+}
+.task-created p, .today-created p, .today-complete p {
+  margin:0;
+}
+.task-created .number, .today-created .number, .today-complete .number {
+  font-weight: bolder;
+  font-size: 25px;
+}
+.task-created .title, .today-created .title, .today-complete .title {
+  font-size: 17px;
+}
+.task-created .comment, .task-created i, .task-created .number {
+  color: orange; 
+}
+.today-created .comment, .today-created i, .today-created .number {
+  color: cadetblue;
+}
+.today-complete .comment, .today-complete i, .today-complete .number {
+  color: darkgreen;
+}
+.task-created i, .today-created i, .today-complete i {
+  position: absolute;
+  font-size: 60px;
+  opacity: 0.5;
+  right: 20px;
+  bottom: 10px;  
 }

@@ -97,6 +97,9 @@ $(document).ready(function () {
             scrollTop: $(".input-category-name").offset().top - 300
         }, 0);
     });
+    $('.carets').on('click', function () {
+        $(this).toggleClass("rotate-caret");
+    });
 });
 
 function removeSubTask() {

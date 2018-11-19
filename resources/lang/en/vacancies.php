@@ -2,6 +2,7 @@
 
 return [
     'title' => 'Vacancies',
+    'title-note' => 'Find full-time job',      
     'title_new_vacancy' => 'New vacancy',
     'title_edit_vacancy' => 'Edit vacancy',
 

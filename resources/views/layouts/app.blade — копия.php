@@ -37,7 +37,7 @@
             </div>
             <ul class="list-unstyled components">
                 @if (Auth::guest())
-                <li id="welcome" class="left-sidebar active">
+                <li id="welcome" class="left-sidebar active" style="text-align: center; padding: 20px 0px;">
                     <p>Добро пожаловать!</p>
                     <p>Зарегистрируйтесь или войдите в систему, что бы получить доступ ко всем функциям.</p>
                 </li>
@@ -60,99 +60,116 @@
                 </li>
 
 <div id="accordion">
-    <div class="card card-caret">
+    <div class="card">
         <div class="card-header" id="headingOne">
-            <a class="carets" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <i class="fa fa-dot-circle-o fa-fw" aria-hidden="true"></i><span>@lang('layout.jobs-manager')</span>
-            </a>
+            </button>
+            </h5>
         </div>
         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
                 <ul class="list-unstyled" role="menu">
                     <li role="separator" class="divider"></li>                
-                    <li><a href="{{ url('/') }}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('layout.findwork')</a></li>
+                    <li><a href="{{ url('/') }}"><i class="fa fa-search"></i> @lang('layout.findwork')</a></li>
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="{{route('my-applications')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('layout.applications')
+                        <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
                             <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>
                         </a>
                     </li>
-                    <li><a href="{{ route('projects.index') }}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('layout.projects')</a></li>
+                    <li><a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="/jobs/create"><i class="fa fa-level-up fa-rotate-90"></i> @lang('layout.post-new')</a></li>                
+                    <li><a href="/jobs/create"><i class="fa fa-plus"></i> @lang('layout.post-new')</a></li>                
                 </ul>                       
             </div>
         </div>    
     </div>
     <div class="card">
         <div class="card-header" id="headingTwo">
-            <a href="{{ route('vacancies.index') }}"><i class="fa fa-suitcase fa-fw"></i><span>@lang('layout.vacancies')</span></a>
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <a href="{{ route('vacancies.index') }}"><i class="fa fa-suitcase fa-fw"></i><span>@lang('layout.vacancies')</span></a>
+                </button>
+            </h5>
         </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                
+            </div>
+        </div>    
     </div>
-    <div class="card card-caret">
+    <div class="card">
         <div class="card-header" id="headingThree">
-                <a class="carets" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                     <i class="fa fa-user-circle fa-fw" aria-hidden="true"></i><span>@lang('peoples.title')</span>
-                </a>
+                </button>
+            </h5>
         </div>
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
             <div class="card-body">
                 <ul class="list-unstyled" role="menu">
                     <li>
-                        <a href="{{route('peoples.index')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('peoples.find')</a>                    
+                        <a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i>@lang('peoples.find')</a>                    
                     </li>      
                 </ul>          
             </div>
         </div>    
     </div>
-    <div class="card card-caret">
+    <div class="card">
         <div class="card-header" id="headingFour">
-                <a class="carets" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                     <i class="fa fa-group fa-fw" aria-hidden="true"></i><span>@lang('teams.title')</span>
-                </a>
+                </button>
+            </h5>
         </div>
         <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
             <div class="card-body">
                 <ul class="list-unstyled" role="menu">
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="{{route('teams.index')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('teams.find')</a>                    
+                        <a href="{{route('teams.index')}}"><i class="fa fa-search"></i>@lang('teams.find')</a>                    
                     </li>
                     <li>
-                        <a href="{{route('teams.myteams')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('teams.title_myteams')</a>                    
+                        <a href="{{route('teams.myteams')}}"><i class="fa fa-group"></i>@lang('teams.title_myteams')</a>                    
                      </li>
                     @if(Auth::user()->allUserTeams()->count())
                     <li>
-                        <a href="{{route('teams.projects')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('teams.projects')</a>
+                        <a href="{{route('teams.projects')}}"><i class="fa fa-sitemap"></i>@lang('teams.projects')</a>
                     </li>
                     @endif
                     <li role="separator" class="divider"></li>                
                     <li>
-                        <a href="{{route('teams.create')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('teams.create')</a>                    
+                        <a href="{{route('teams.create')}}"><i class="fa fa-plus"></i>@lang('teams.create')</a>                    
                     </li>                                                
                 </ul>         
             </div>
         </div>    
     </div>
-    <div class="card card-caret">
+    <div class="card">
         <div class="card-header" id="headingFive">
-                <a class="carets" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
                     <i class="fa fa-university fa-fw" aria-hidden="true"></i><span>@lang('organizations.title')</span>
-                </a>
+                </button>
+            </h5>
         </div>
         <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
             <div class="card-body">
                 <ul class="list-unstyled" role="menu">
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="{{route('organizations.index')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('organizations.all')</a>                    
+                        <a href="{{route('organizations.index')}}"><i class="fa fa-search fa-fw"></i>@lang('organizations.all')</a>                    
                     </li>
                     <li>
-                        <a href="{{route('organizations.my')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('organizations.title-my')</a>                    
+                        <a href="{{route('organizations.my')}}"><i class="fa fa-university fa-fw"></i>@lang('organizations.title-my')</a>                    
                     </li>
                     <li role="separator" class="divider"></li>                
                     <li>
-                        <a href="{{route('organizations.create')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('organizations.add')</a>                    
+                        <a href="{{route('organizations.create')}}"><i class="fa fa-plus fa-fw"></i>@lang('organizations.add')</a>                    
                     </li>                                                
                 </ul>        
             </div>
@@ -160,16 +177,27 @@
     </div>
     <div class="card">
         <div class="card-header" id="headingSix">
-            <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark fa-fw"></i><span>@lang('layout.bookmarks')</span>
-                <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
-            </a>
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                    <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark fa-fw"></i><span>@lang('layout.bookmarks')</span>
+                        <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
+                    </a>
+                </button>
+            </h5>
         </div>
+        <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+            <div class="card-body">
+       
+            </div>
+        </div>    
     </div>
-    <div class="card card-caret">
+    <div class="card">
         <div class="card-header" id="headingSeven">
-                <a class="carets" href="#" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
                     <i class="fa fa-credit-card fa-fw"></i><span>@lang('layout.balance')</span>
-                </a>
+                </button>
+            </h5>
         </div>
         <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
             <div class="card-body">
@@ -177,29 +205,121 @@
                     <h6 class="dropdown-header">@lang('balance.title'): 0 руб.</h6>
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="#"><i class="fa fa-level-up fa-rotate-90"></i> @lang('balance.review')</a>                    
+                        <a href="#"><i class="fa fa-search fa-fw"></i>@lang('balance.review')</a>                    
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-level-up fa-rotate-90"></i> @lang('balance.topup')</a>                    
+                        <a href="#"><i class="fa fa-plus fa-fw"></i>@lang('balance.topup')</a>                    
                     </li>
                     <li role="separator" class="divider"></li>                
                     <li>
-                        <a href="#"><i class="fa fa-level-up fa-rotate-90"></i> @lang('balance.history')</a>                    
+                        <a href="#"><i class="fa fa-history fa-fw"></i>@lang('balance.history')</a>                    
                     </li>                                                
                 </ul>       
             </div>
         </div>    
     </div>
-    <div class="card">
-        <div class="card-header" id="headingEight">
-                <a class="carets" href="#" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
-                    <i class="fa fa-comments-o fa-fw"></i><span>@lang('layout.society')</span>
-                </a>
-        </div>
-    </div>    
 </div>
 
-          
+                <li class="left-sidebar dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-expanded="false"><i class="fa fa-dot-circle-o fa-fw" aria-hidden="true"></i><span>@lang('layout.jobs-manager')</span></a>
+                    <ul class="dropdown-menu sub-menu" role="menu">
+                        <h6 class="dropdown-header">@lang('layout.jobs-manager')</h6>
+                        <li role="separator" class="divider"></li>                
+                        <li><a href="{{ url('/') }}"><i class="fa fa-search"></i> @lang('layout.findwork')</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
+                               <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>
+                            </a>
+                        </li>
+                        <li><a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/jobs/create"><i class="fa fa-plus"></i> @lang('layout.post-new')</a></li>                
+                    </ul>               
+                </li>
+                    <li class="left-sidebar dropdown components-li">
+                        <a href="{{ route('vacancies.index') }}">
+                            <i class="fa fa-suitcase fa-fw"></i>
+                            <span>@lang('layout.vacancies')</span>
+                        </a>
+                    </li>
+                <li class="left-sidebar dropdown components-li" >
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-expanded="false"><i class="fa fa-user-circle fa-fw" aria-hidden="true"></i><span>@lang('peoples.title')</span></a>
+                    <ul class="dropdown-menu sub-menu" role="menu">
+                        <h6 class="dropdown-header">@lang('peoples.title')</h6>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i>@lang('peoples.find')</a>                    
+                        </li>
+                    </ul>               
+                </li>  
+                <li class="left-sidebar dropdown components-li" >
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-expanded="false"><i class="fa fa-group fa-fw" aria-hidden="true"></i><span>@lang('teams.title')</span></a>
+                    <ul class="dropdown-menu sub-menu" role="menu">
+                        <h6 class="dropdown-header">@lang('teams.title')</h6>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{route('teams.index')}}"><i class="fa fa-search"></i>@lang('teams.find')</a>                    
+                        </li>
+                        <li>
+                            <a href="{{route('teams.myteams')}}"><i class="fa fa-group"></i>@lang('teams.title_myteams')</a>                    
+                        </li>
+                        @if(Auth::user()->allUserTeams()->count())
+                        <li>
+                            <a href="{{route('teams.projects')}}"><i class="fa fa-sitemap"></i>@lang('teams.projects')</a>
+                        </li>
+                        @endif
+                        <li role="separator" class="divider"></li>                
+                        <li>
+                            <a href="{{route('teams.create')}}"><i class="fa fa-plus"></i>@lang('teams.create')</a>                    
+                        </li>                                                
+                    </ul>                  
+                </li>  
+                <li class="left-sidebar dropdown components-li">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-expanded="false"><i class="fa fa-university fa-fw" aria-hidden="true"></i><span>@lang('organizations.title')</span></a>
+                    <ul class="dropdown-menu sub-menu" role="menu">
+                        <h6 class="dropdown-header">@lang('organizations.title')</h6>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{route('organizations.index')}}"><i class="fa fa-search fa-fw"></i>@lang('organizations.all')</a>                    
+                        </li>
+                        <li>
+                            <a href="{{route('organizations.my')}}"><i class="fa fa-university fa-fw"></i>@lang('organizations.title-my')</a>                    
+                        </li>
+                        <li role="separator" class="divider"></li>                
+                        <li>
+                            <a href="{{route('organizations.create')}}"><i class="fa fa-plus fa-fw"></i>@lang('organizations.add')</a>                    
+                        </li>                                                
+                    </ul>  
+                </li>
+                <li class="left-sidebar dropdown components-li">
+                    <a href="{{ route('my-bookmarks') }}"><i class="fa fa-bookmark fa-fw"></i><span>@lang('layout.bookmarks')</span>
+                        <span class="badge pull-right">{{count(Auth::user()->bookmarks)}}</span>
+                    </a>
+                </li>
+                <li class="left-sidebar dropdown components-li">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-expanded="false"><i class="fa fa-credit-card fa-fw"></i><span>@lang('layout.balance')</span>
+                    </a>
+                    <ul class="dropdown-menu sub-menu" role="menu">
+                        <h6 class="dropdown-header">@lang('balance.title'): 0 руб.</h6>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-search fa-fw"></i>@lang('balance.review')</a>                    
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-plus fa-fw"></i>@lang('balance.topup')</a>                    
+                        </li>
+                        <li role="separator" class="divider"></li>                
+                        <li>
+                            <a href="#"><i class="fa fa-history fa-fw"></i>@lang('balance.history')</a>                    
+                        </li>                                                
+                    </ul>                     
+                </li>                
                 @endif
             </ul>
         </nav>
