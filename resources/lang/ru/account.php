@@ -13,5 +13,14 @@ return [
         'designer' => 'Дизайнер',
         'programmer' => 'Программист',
         'courier' => 'Курьер',
+    ],
+    'days' => [
+        'MONDAY' => 'Пн',
+        'TUESDAY' => 'Вт',
+        'WEDNESDAY' => 'Ср',
+        'THURSDAY' => 'Чт',
+        'FRIDAY' => 'Пт',
+        'SATURDAY' => 'Сб',
+        'SUNDAY' => 'Вс',
     ]
 ];
