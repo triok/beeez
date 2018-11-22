@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Jobs\Job;
+use App\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -98,6 +99,20 @@ class AddSubTasksJob implements ShouldQueue
             }
         }
 
+        $this->addJobToProject($subJob);
+
         return $subJob;
+    }
+
+    protected function addJobToProject(Job $job) {
+        if (request()->has('project_id')) {
+            $project = Project::find(request()->get('project_id'));
+
+            if($project) {
+                $job->update(['project_id' => request()->get('project_id')]);
+            } else {
+                $job->update(['project_id' => null]);
+            }
+        }
     }
 }

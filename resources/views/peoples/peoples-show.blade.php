@@ -1,4 +1,4 @@
-@extends('layouts.app')
+textarea@extends('layouts.app')
 @section('content')
 <div class="container" id="main">
     <div class="row">
@@ -56,6 +56,43 @@
                                             @endif
                                         </td>
                                     </tr>
+
+                                    @if($user->show_working_hours)
+                                        @php($working_hours = $user->working_hours ? json_decode($user->working_hours, true) : [])
+                                        <tr>
+                                            <td><b>Время работы</b></td>
+                                            <td>
+                                                <table class="table table-responsive">
+                                                    <tbody>
+                                                    @foreach(config('enums.days') as $day=>$num)
+                                                        <tr>
+                                                            <td style="width: 20%">
+                                                                @lang('account.days.' . $day)
+                                                            </td>
+                                                            <td style="width: 30%">
+                                                                @if(isset($working_hours[$num]) && $working_hours[$num]['start'])
+                                                                    {{ $working_hours[$num]['start'] }}
+                                                                @else
+                                                                    <b class="text-warning">выходной</b>
+                                                                @endif
+                                                            </td>
+                                                            <td style="width: 35%">
+                                                                @if(isset($working_hours[$num]) && $working_hours[$num]['start'] && $working_hours[$num]['end'])
+                                                                    {{ $working_hours[$num]['end'] }}
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <i class="fa fa-calendar-times-o {{ (isset($working_hours[$num]) && $working_hours[$num]['start'] ? 'hide' : '') }}"></i>
+                                                                <i class="fa fa-calendar-check-o {{ (isset($working_hours[$num]) && $working_hours[$num]['start'] ? '' : 'hide') }}"></i>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    @endif
+
                                     <tr>
                                         <td><b>@lang('peoples.skills')</b></td>
                                         <td>

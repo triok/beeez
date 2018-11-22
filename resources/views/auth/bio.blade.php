@@ -64,12 +64,18 @@
         </div>
     </div>
 @endforeach
-<br>
-<div class="row">
-    <div class="col-md-12">
-        <button class="btn btn-default">Update</button>
+
+    <hr>
+
+    @include('auth.working-hours')
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-default">Update</button>
+        </div>
     </div>
-</div>
 </form>
 {{--{!! Form::close() !!}--}}
 

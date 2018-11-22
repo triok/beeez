@@ -339,8 +339,9 @@ class JobController extends Controller
     {
         return view('jobs.partials.form', [
             'task_id' => request()->get('task_id', 2),
+            'project_id' => (int)request()->get('project_id', 0),
             'usernames' => $this->usernames,
-            'projects' => auth()->user()->projects
+            'projects' => auth()->user()->allUserProjects()->get()
         ]);
     }
 
