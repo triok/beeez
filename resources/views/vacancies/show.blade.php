@@ -29,6 +29,11 @@
                             </tr>
 
                             <tr>
+                                <td><b>Зарплата, руб.</b></td>
+                                <td>{{ $vacancy->salary }}</td>
+                            </tr>
+
+                            <tr>
                                 <td><b>@lang('vacancies.show_responsibilities')</b></td>
                                 <td>{{ $vacancy->responsibilities }}</td>
                             </tr>
@@ -41,6 +46,14 @@
                             <tr>
                                 <td><b>@lang('vacancies.show_requirements')</b></td>
                                 <td>{{ $vacancy->requirements }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Навыки</b></td>
+                                <td>
+                                    @foreach($vacancy->skills as $skill)
+                                        - {{ $skill->name  }}<br>
+                                    @endforeach
+                                </td>
                             </tr>
                         </table>
 

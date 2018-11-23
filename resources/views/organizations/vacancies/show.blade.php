@@ -28,6 +28,11 @@
                             </tr>
 
                             <tr>
+                                <td><b>@lang('vacancies.show_responsibilities')</b></td>
+                                <td>{{ $vacancy->responsibilities }}</td>
+                            </tr>
+
+                            <tr>
                                 <td><b>@lang('vacancies.show_organization')</b></td>
                                 <td>
                                     <a href="{{ route('organizations.show', $vacancy->organization) }}">
@@ -37,8 +42,8 @@
                             </tr>
 
                             <tr>
-                                <td><b>@lang('vacancies.show_responsibilities')</b></td>
-                                <td>{{ $vacancy->responsibilities }}</td>
+                                <td><b>Зарплата, руб.</b></td>
+                                <td>{{ $vacancy->salary }}</td>
                             </tr>
 
                             <tr>
@@ -49,6 +54,15 @@
                             <tr>
                                 <td><b>@lang('vacancies.show_requirements')</b></td>
                                 <td>{{ $vacancy->requirements }}</td>
+                            </tr>
+
+                            <tr>
+                                <td><b>Навыки</b></td>
+                                <td>
+                                    @foreach($vacancy->skills as $skill)
+                                        - {{ $skill->name  }}<br>
+                                    @endforeach
+                                </td>
                             </tr>
                         </table>
                     </div>

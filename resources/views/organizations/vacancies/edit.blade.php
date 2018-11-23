@@ -20,6 +20,14 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    {!! Form::text('salary', $vacancy->salary, ['class'=>'form-control', 'placeholder' => 'Зарплата, руб.']) !!}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
                     {!! Form::textarea('responsibilities', $vacancy->responsibilities, ['required'=>'required', 'class'=>'form-control', 'rows' => '4', 'placeholder' => 'Обязанности']) !!}
                 </div>
             </div>
@@ -64,6 +72,25 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="input-skills">Навыки</label>
+
+                    <select class="form-control selectpicker" id="input-skills" name="skills[]" multiple data-live-search="true">
+                        <option value=""></option>
+                        @foreach(\App\Models\Jobs\Skill::all() as $skill)
+                            <option {{ (in_array($skill->id, $vacancy->skills()->pluck('skills.id')->toArray())) ? 'selected' : '' }}
+                                    value="{{ $skill->id }}">
+
+                                {{ $skill->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <hr>
 
         <div class="btn-toolbar">
@@ -79,3 +106,11 @@
         {!! Form::close() !!}
     </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="/plugins/bootstrap-select/bootstrap-select.min.css"/>
+@endpush
+
+@push('scripts')
+    <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+@endpush

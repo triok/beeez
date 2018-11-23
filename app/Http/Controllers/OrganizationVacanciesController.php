@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VacancyRequest;
 use App\Models\Organization;
 use App\Models\Vacancy;
+use App\Models\VacancySkills;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class OrganizationVacanciesController extends Controller
 {
@@ -61,7 +63,25 @@ class OrganizationVacanciesController extends Controller
             flash()->success('Вакансия создана.');
         }
 
+        $this->addSkills($vacancy, $request);
+
         return redirect(route('organizations.vacancies.index', $organization));
+    }
+
+    protected function addSkills(Vacancy $vacancy, Request $request)
+    {
+        VacancySkills::where('vacancy_id', $vacancy->id)->delete();
+
+        if ($request->get('skills')) {
+            foreach ($request->get('skills') as $skill_id) {
+                $skill = new VacancySkills([
+                    'vacancy_id' => $vacancy->id,
+                    'skill_id' => $skill_id,
+                ]);
+
+                $skill->save();
+            }
+        }
     }
 
     /**
@@ -102,6 +122,8 @@ class OrganizationVacanciesController extends Controller
 
         if ($vacancy) {
             $vacancy->update($request->all());
+
+            $this->addSkills($vacancy, $request);
 
             if ($request->get('button') == 'publish') {
                 $vacancy->published_at = Carbon::now();

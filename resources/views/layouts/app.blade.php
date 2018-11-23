@@ -387,15 +387,27 @@
         moment.locale('{{ config('app.locale') }}');
 
         $(".date-short").html(function(index, value) {
-            return moment(value, "YYYY-MM-DD mm:ss").format("ll");
+            if(value !== '') {
+                return moment(value, "YYYY-MM-DD mm:ss").format("ll");
+            }
+
+            return '';
         });
 
         $(".date-full").html(function(index, value) {
-            return moment(value, "YYYY-MM-DD hh:mm").format("lll");
+            if(value !== '') {
+                return moment(value, "YYYY-MM-DD mm:ss").format("lll");
+            }
+
+            return '';
         });
 
         $(".date-ago").html(function(index, value) {
-            return moment(value, "YYYY-MM-DD mm:ss").startOf('hour').fromNow();
+            if(value !== '') {
+                return moment(value, "YYYY-MM-DD mm:ss").startOf('hour').fromNow();
+            }
+
+            return '';
         });
     </script>
 
