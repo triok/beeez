@@ -103,6 +103,18 @@
             $('#vacancy-type-filter').on('change', function () {
                 table.ajax.url("{{ $action }}&specialization=" + $(this).val()).load();
             });
+
+            $('#vacancy-specialization-specialization input[type="checkbox"]').on('change', function () {
+                var specializations = new Array();
+
+                $('#vacancy-specialization-specialization input[type="checkbox"]').each(function(){
+                    if ($(this).prop("checked")) {
+                        specializations.push($(this).val());
+                    }
+                });
+
+                table.ajax.url("{{ $action }}&specializations=" + encodeURIComponent(JSON.stringify(specializations))).load();
+            });
         });
     </script>
 @endpush

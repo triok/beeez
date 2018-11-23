@@ -48,6 +48,12 @@ class VacanciesController extends Controller
             $vacancies->where('specialization', $request->get('specialization'));
         }
 
+        if($request->get('specializations')) {
+            $specializations = json_decode($request->get('specializations'), true);
+
+            $vacancies->whereIn('specialization', $specializations);
+        }
+
         $vacancies = $vacancies->get();
 
         if ($request->has('favorite')) {
