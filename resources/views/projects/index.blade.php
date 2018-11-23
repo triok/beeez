@@ -47,7 +47,7 @@
                             </td>
                             <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                             <td>{{ $project->description }}</td>
-                            <td>дедлайн</td>                             
+                            <td class="date-short">{{ $project->deadline_at }}</td>
                             <td>{{ $project->jobs()->count() }}/0</td>
                             <td class="text-right">
                                 {!! Form::open(['url' => route('projects.edit', $project), 'method'=>'post']) !!}
@@ -104,6 +104,7 @@
                     <th> </th>                    
                     <th>@lang('projects.name')</th>
                     <th>@lang('projects.desc')</th>
+                    <th>@lang('projects.deadline')</th>
                     <th>@lang('projects.count')</th>
                     <th></th>
                 </thead>
@@ -119,6 +120,7 @@
                                 </td>
                                 <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                                 <td>{{ $project->description }}</td>
+                                <td class="date-short">{{ $project->deadline_at }}</td>
                                 <td>{{ $project->jobs()->count() }}/0</td>
                                 <td class="text-right">
                                     {!! Form::open(['url' => route('projects.edit', $project), 'method'=>'post']) !!}
@@ -165,6 +167,7 @@
                     <th> </th>
                     <th>@lang('projects.name')</th>
                     <th>@lang('projects.desc')</th>
+                    <th>@lang('projects.deadline')</th>
                     <th>@lang('projects.count')</th>
                     <th></th>
                 </tr>
@@ -182,6 +185,7 @@
                                 </td>
                                 <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                                 <td>{{ $project->description }}</td>
+                                <td class="date-short">{{ $project->deadline_at }}</td>
                                 <td>{{ $project->jobs()->count() }}/0</td>
                                 <td class="text-right">
                                     {!! Form::open(['url' => route('projects.edit', $project), 'method'=>'post']) !!}

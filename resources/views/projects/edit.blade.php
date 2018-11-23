@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
     <div class="container edit-project" id="main">
         <h2>@lang('projects.edit-title')</h2>
@@ -48,7 +49,8 @@
                         @foreach($organizations as $organization)
                             @foreach($organization->structures as $structure)
                                 @if($structure->id == $project->structure_id)
-                                    <option selected value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
+                                    <option selected
+                                            value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
                                 @else
                                     <option value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
                                 @endif
@@ -62,7 +64,17 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="icon">@lang('projects.create-icon')</label> 
+                    <label>@lang('projects.deadline')</label>
+                    <input name="deadline_at" class="form-control timepicker" type="text"
+                           value="{{ $project->deadline_at ? $project->deadline_at->format('d.m.Y H:i') : '' }}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="icon">@lang('projects.create-icon')</label>
                     <select class="form-control" style="font-family: FontAwesome;" name="icon">
                         <option>@lang('projects.create-noicon')</option>
                         @foreach($icons as $icon_name=>$icon_code)
@@ -84,5 +96,30 @@
         </div>
 
         {!! Form::close() !!}
-        <div>
+    </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="/css/datepicker.min.css"/>
+@endpush
+
+@push('scripts')
+    <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="/js/datepicker.min.js"></script>
+    <script type="application/javascript">
+        $('.timepicker').datepicker({
+            timepicker: true,
+            startDate: new Date(),
+            minHours: 9,
+            maxHours: 24,
+            onSelect: function (fd, d, picker) {
+                if (!d) return;
+
+                picker.update({
+                    minHours: 0,
+                    maxHours: 24
+                })
+            }
+        });
+    </script>
+@endpush

@@ -8,6 +8,7 @@ use App\Models\Organization;
 use App\Models\Project;
 use App\Models\Structure;
 use App\Models\Team;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Transformers;
 
@@ -94,6 +95,12 @@ class ProjectsController extends Controller
             $request->request->set('description', '');
         }
 
+        if($request->get('deadline_at')) {
+            $request->merge([
+                'deadline_at' => Carbon::createFromFormat('d.m.Y H:i', $request->get('deadline_at'))->format('Y-m-d H:i:s')
+            ]);
+        }
+
         auth()->user()->addProject($request->all());
 
         flash()->success('Project saved!');
@@ -129,6 +136,12 @@ class ProjectsController extends Controller
     {
         if(!$request->get('description')) {
             $request->request->set('description', '');
+        }
+
+        if($request->get('deadline_at')) {
+            $request->merge([
+                'deadline_at' => Carbon::createFromFormat('d.m.Y H:i', $request->get('deadline_at'))->format('Y-m-d H:i:s')
+            ]);
         }
 
         $project->update($request->all());
