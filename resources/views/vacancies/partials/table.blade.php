@@ -17,7 +17,7 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
-            var table = $('#{{ $id }}-vacancies-table').DataTable({
+            var table_{{ $id }} = $('#{{ $id }}-vacancies-table').DataTable({
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
@@ -101,19 +101,19 @@
             });
 
             $('#vacancy-type-filter').on('change', function () {
-                table.ajax.url("{{ $action }}&specialization=" + $(this).val()).load();
+                table_{{ $id }}.ajax.url("{{ $action }}&specialization=" + $(this).val()).load();
             });
 
-            $('#vacancy-specialization-specialization input[type="checkbox"]').on('change', function () {
-                var specializations = new Array();
+            $('#vacancy-specialization-filter input[type="checkbox"]').on('change', function () {
+                table_{{ $id }}.ajax.url("{{ $action }}" + getFilterUrl()).load();
+            });
 
-                $('#vacancy-specialization-specialization input[type="checkbox"]').each(function(){
-                    if ($(this).prop("checked")) {
-                        specializations.push($(this).val());
-                    }
-                });
+            $('#vacancy-skill-filter input[type="checkbox"]').on('change', function () {
+                table_{{ $id }}.ajax.url("{{ $action }}" + getFilterUrl()).load();
+            });
 
-                table.ajax.url("{{ $action }}&specializations=" + encodeURIComponent(JSON.stringify(specializations))).load();
+            $('#vacancy-salary-filter input[type="radio"]').on('change', function () {
+                table_{{ $id }}.ajax.url("{{ $action }}" + getFilterUrl()).load();
             });
         });
     </script>

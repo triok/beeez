@@ -20,6 +20,14 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    {!! Form::text('salary', old('salary'), ['class'=>'form-control', 'placeholder' => 'Зарплата, руб.']) !!}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
                     {!! Form::textarea('responsibilities', old('responsibilities'), ['required'=>'required', 'class'=>'form-control', 'rows' => '4', 'placeholder' => 'Обязанности']) !!}
                 </div>
             </div>
@@ -49,15 +57,28 @@
                     <select class="form-control" required id="specialization" name="specialization">
                         <option value=""></option>
                         @foreach(config('vacancy.specializations') as $specialization)
-                            @if($specialization == old('specialization'))
-                                <option selected value="{{ $specialization }}">
-                                    @lang('vacancies.specialization_' . $specialization)
-                                </option>
-                            @else
-                                <option value="{{ $specialization }}">
-                                    @lang('vacancies.specialization_' . $specialization)
-                                </option>
-                            @endif
+                            <option {{ $specialization == old('specialization') ? 'selected' : '' }} value="{{ $specialization }}">
+                                @lang('vacancies.specialization_' . $specialization)
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="input-skills">Навыки</label>
+
+                    <select class="form-control selectpicker" id="input-skills" name="skills[]" multiple data-live-search="true">
+                        <option value=""></option>
+                        @foreach(\App\Models\Jobs\Skill::all() as $skill)
+                            <option {{ (is_array(old('skills')) && in_array($skill->id, old('skills'))) ? 'selected' : '' }}
+                                    value="{{ $skill->id }}">
+
+                                {{ $skill->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -79,3 +100,11 @@
         {!! Form::close() !!}
     </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="/plugins/bootstrap-select/bootstrap-select.min.css"/>
+@endpush
+
+@push('scripts')
+    <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+@endpush

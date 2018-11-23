@@ -15,7 +15,7 @@
                 </div>
 
                 <h3>@lang('vacancies.filter_specialization')</h3>
-                <ul class="list-unstyled" id="vacancy-specialization-specialization">
+                <ul class="list-unstyled" id="vacancy-specialization-filter">
                     @foreach(config('vacancy.specializations') as $specialization)
                         <li>
                             <div class="form-check">
@@ -33,65 +33,39 @@
                 </ul>
 
                 <h3>@lang('vacancies.filter_skills')</h3>
-                <ul class="list-unstyled">
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">PHP</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">VueJS</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">Ruby</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">Jango</label>
-                        </div>
-                    </li>
+                <ul class="list-unstyled" id="vacancy-skill-filter">
+                    @foreach(\App\Models\Jobs\Skill::all() as $skill)
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-label"
+                                       type="checkbox"
+                                       value="{{ $skill->id }}"
+                                       id="input-skill-{{ $skill->id }}">
+
+                                <label class="form-check-label" for="input-skill-{{ $skill->id }}">{{ $skill->name }}</label>
+                            </div>
+                        </li>
+                    @endforeach
                 </ul>
 
                 <h3>@lang('vacancies.filter_salary')</h3>
-                <ul class="list-unstyled">
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">от 15 000 руб.</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">от 30 000 руб.</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">от 50 000 руб.</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">от 80 000 руб.</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">от 100 000 руб.</label>
-                        </div>
-                    </li>
+                @php($salaries = [15000, 30000, 50000, 80000, 100000])
+                <ul class="list-unstyled" id="vacancy-salary-filter">
+                    @foreach($salaries as $salary)
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       name="salary"
+                                       type="radio"
+                                       value="{{$salary}}"
+                                       id="input-salary-{{$salary}}">
+
+                                <label class="form-check-label" for="input-salary-{{$salary}}">
+                                    от {{ number_format($salary, '0', ',', ' ') }} руб.
+                                </label>
+                            </div>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
         </div>
@@ -177,5 +151,51 @@
                 $(".result").html('').hide();
             }, 2000);
         });
+
+        function getFilterUrl() {
+            var url = "";
+
+            url += '&specializations=' + encodeURIComponent(JSON.stringify(getFilterSpecializations()));
+            url += '&skills=' + encodeURIComponent(JSON.stringify(getFilterSkills()));
+            url += '&salary=' + getFilterSalary();
+
+            return url;
+        }
+
+        function getFilterSpecializations() {
+            var specializations = new Array();
+
+            $('#vacancy-specialization-filter input[type="checkbox"]').each(function(){
+                if ($(this).prop("checked")) {
+                    specializations.push($(this).val());
+                }
+            });
+
+            return specializations;
+        }
+
+        function getFilterSkills() {
+            var skills = new Array();
+
+            $('#vacancy-skill-filter input[type="checkbox"]').each(function(){
+                if ($(this).prop("checked")) {
+                    skills.push($(this).val());
+                }
+            });
+
+            return skills;
+        }
+
+        function getFilterSalary() {
+            var salary = '';
+
+            $('#vacancy-salary-filter input[type="radio"]').each(function(){
+                if ($(this).prop("checked")) {
+                    salary = $(this).val();
+                }
+            });
+
+            return parseInt(salary);
+        }
     </script>
 @endpush
