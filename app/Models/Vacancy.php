@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Controllers\Traits\Viewable;
+use App\Models\Jobs\Skill;
 use App\Models\Traits\Favoritable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,13 +11,18 @@ class Vacancy extends Model
 {
     use Favoritable, Viewable;
 
-    protected $fillable = ['name', 'specialization', 'responsibilities', 'conditions', 'requirements'];
+    protected $fillable = ['name', 'specialization', 'responsibilities', 'conditions', 'requirements', 'salary'];
 
     protected $dates = ['published_at'];
 
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'vacancy_skills');
     }
 
     function cvs()

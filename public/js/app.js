@@ -11834,7 +11834,7 @@ var app = new Vue({
         addSubTask: function addSubTask(task_id) {
             var load = $('<div>');
 
-            load.load('/job/subtask?task_id=' + task_id, function (result) {
+            load.load('/job/subtask?task_id=' + task_id + '&project_id=' + parseInt(this.$route.query.project_id), function (result) {
                 $('.tab-content .tab-pane:last').after(result);
 
                 $('.editor1').summernote();

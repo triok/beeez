@@ -48,6 +48,14 @@ class VacanciesController extends Controller
             $vacancies->where('specialization', $request->get('specialization'));
         }
 
+        if($request->get('salary')) {
+            $vacancies->where('salary', '>=', (int)$request->get('salary'));
+        }
+
+        if($request->get('specializations') && $specializations = json_decode($request->get('specializations'), true)) {
+            $vacancies->whereIn('specialization', $specializations);
+        }
+
         $vacancies = $vacancies->get();
 
         if ($request->has('favorite')) {
@@ -59,6 +67,22 @@ class VacanciesController extends Controller
         if ($request->has('response')) {
             $vacancies = $vacancies->filter(function ($vacancy) {
                 return false; // todo: add functionality
+            });
+        }
+
+        if($request->get('skills') && $skills = json_decode($request->get('skills'), true)) {
+            $vacancies = $vacancies->filter(function ($vacancy) use ($skills) {
+                $result = false;
+
+                $vacancySkills = $vacancy->skills()->pluck('skills.id')->toArray();
+
+                foreach ($skills as $skill_id) {
+                    if(in_array($skill_id, $vacancySkills)) {
+                        $result = true;
+                    }
+                }
+
+                return $result;
             });
         }
 

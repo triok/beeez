@@ -10,9 +10,7 @@
         <h2>{{ $project->name }}</h2>
         <br>
         <div class="text">
-        <textarea cols="50" rows="20" placeholder="@lang('projects.notes')">
-            
-        </textarea>   
+        <textarea cols="40" rows="20" placeholder="@lang('projects.notes')" id="notes">{{ $project->notes }}</textarea>
     </div>
     </div>
     
@@ -82,6 +80,16 @@
                     updateDisplayOrder();
                 }
             });
+
+            $('#notes').change(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/projects/{{ $project->id }}/notes",
+                    data: 'notes=' + $(this).val(),
+                    cache: false,
+                    success: function (data) {}
+                });
+            })
         });
 
         // function to save display sort order

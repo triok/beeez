@@ -106,6 +106,10 @@ class AccountController extends Controller
         $user = auth()->user();
         $user->bio = $request->bio;
         $user->speciality = $request->get('speciality');
+
+        $user->show_working_hours = ($request->get('show_working_hours') ? true : false);
+        $user->working_hours = json_encode($request->get('day'));
+
         $user->save();
 
         //update skills
