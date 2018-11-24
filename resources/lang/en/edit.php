@@ -33,14 +33,19 @@ return [
     'noproject'      => 'Without project',     
     'cms'            => 'Select CMS',
     'nocms'          => 'Do not use CMS',                     
+    'required'       => 'Required field',
+    'additional-fields' => 'Additionl fields',
+    'task-list'      => 'Tasks list:',
 
     //Buttons
     'submit'         => 'Publish',
     'save'           => 'Save to draft',
+    'add'            => 'Add',    
 
     //tooltips
     'tooltip-desc'   => '',
     'tooltip-name'   => '',    
     'tooltip-inst'   => '',
-
+    'tooltip-status' => '',
+    'placeholder-name' => ''
 ];

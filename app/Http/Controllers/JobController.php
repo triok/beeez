@@ -58,7 +58,7 @@ class JobController extends Controller
         $title =  count($jobs) > 0 ? 'All jobs with tag: '. request()->tag : null;
 
         return view('home', ['jobs' => count($jobs) > 0 ? $jobs : Job::query()->paginate(request('count', 20)),
-                'title' => $title ]);
+                'title' => $title]);
     }
 
     /**
@@ -148,6 +148,7 @@ class JobController extends Controller
         $jobs = $category->jobs()->whereNotIn('status', [config('enums.jobs.statuses.DRAFT'), config('enums.jobs.statuses.PRIVATE')])->paginate(20);
 
         $title = 'Job under ' . ucwords($category->name) . ' category';
+
         return view('home', compact('jobs', 'category', 'title'));
     }
 

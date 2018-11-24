@@ -31,9 +31,7 @@
             <div class="side-header">
                 <a class="navbar-brand" href="{{url('/')}}">
                     <h3>Lavoro</h3>
-                    <img src="/img/light-bulb.svg" alt="">
                 </a>
-                <strong>Lavoro</strong>
             </div>
             <ul class="list-unstyled components">
                 @if (Auth::guest())
@@ -60,6 +58,11 @@
                 </li>
 
 <div id="accordion">
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <a href="#"><i class="fa fa-eye fa-fw"></i><span>@lang('layout.review')</span></a>
+        </div>
+    </div>
     <div class="card card-caret">
         <div class="card-header" id="headingOne">
             <a class="carets" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -196,7 +199,14 @@
                     <i class="fa fa-comments-o fa-fw"></i><span>@lang('layout.society')</span>
                 </a>
         </div>
-    </div>    
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingNine">
+                <a class="carets" href="#" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
+                    <i class="fa fa-check-square-o fa-fw"></i><span>@lang('layout.tasks')</span>
+                </a>
+        </div>
+    </div>        
 </div>
 
           
@@ -213,15 +223,15 @@
                                 <i class="fa fa-arrow-left"></i>
                             </button>                             
                         </li>
-                        <li>
+<!--                         <li>
                             <a href="{{ url('setlocale/en') }}">En</a>                 
                         </li>
                         <li>
                             <a href="{{ url('setlocale/ru') }}"> Ru</a>                          
-                        </li>                    
+                        </li>   -->                  
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
+<!--                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ currency()->getUserCurrency() }}<span class="caret"></span>
                             </a>
@@ -234,7 +244,7 @@
                                 </li>
                                 @endforeach
                             </ul>
-                        </li>
+                        </li> -->
                         @if (Auth::guest())
                             <li><a href="{{ route('login') }}">@lang('layout.login-title')</a></li>
                             <li><a href="{{ route('register') }}">@lang('layout.register-title')</a></li>
@@ -312,7 +322,7 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                    aria-expanded="false">
-                                    <i class="fa fa-user-circle"></i> @lang('layout.account')<span class="caret"></span>
+                                    <i class="fa fa-user-circle"></i><span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="/account"><i class="fa fa-user"></i> @lang('layout.profile')</a></li>
@@ -381,8 +391,7 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="/plugins/listjs/listjs.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-
-    <script src="/plugins/moment.min.js" type="text/javascript"></script>
+    <script src="/js/menucollapse.js"></script>
     <script>
         moment.locale('{{ config('app.locale') }}');
 
@@ -397,6 +406,7 @@
         $(".date-ago").html(function(index, value) {
             return moment(value, "YYYY-MM-DD mm:ss").startOf('hour').fromNow();
         });
+
     </script>
 
     @if(Auth::check())

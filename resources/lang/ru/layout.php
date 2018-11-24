@@ -17,6 +17,7 @@ return [
     'categories'        => 'Категории',
     'logout'            => 'Выйти',
     'account'           => 'Аккаунт',
+    'review'            => 'Обзор',
     'jobs-manager'      => 'Работа',
     'projects'          => 'Мои проекты',       
     'current-tasks'     => 'Текущие задания',
@@ -27,6 +28,7 @@ return [
     'vacancies'         => 'Вакансии',
     'balance'           => 'Счет',
     'society'           => 'Сообщество',
+    'tasks'             => 'Задачи',
     'findwork'          => 'Поиск работы',
 
     // Graphs

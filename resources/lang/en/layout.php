@@ -17,6 +17,7 @@ return [
     'categories'        => 'Categories',
     'logout'            => 'Logout',
     'account'           => 'Account',
+    'review'            => 'Review',
     'jobs-manager'      => 'Jobs manager',
     'projects'          => 'Projects',    
     'current-tasks'     => 'Current tasks',
@@ -26,7 +27,8 @@ return [
     'applications'      => 'My applications',
     'vacancies'         => 'Vacancies',
     'balance'           => 'Account',
-    'society'           => 'Society',        
+    'society'           => 'Society',
+    'tasks'             => 'Tasks',            
     'findwork'          => 'Find new work',
 
     // Graphs

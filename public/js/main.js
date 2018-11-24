@@ -373,6 +373,12 @@ function paypalPayout(app_id, job_id) {
     });
 }
 $('document').ready(function () {
+
+    $('.category-toggle').on('click', function () {
+       
+        $("i", this).toggleClass("fa-plus-square-o fa-minus-square-o");
+
+    });   
     //delete skill
     $('.delete-my-skill').click(function () {
         var id = $(this).attr('id');

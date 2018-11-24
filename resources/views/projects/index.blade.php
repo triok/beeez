@@ -16,6 +16,7 @@
     </div>
     <div class="col-xs-9">
 
+    <div class="base-wrapper">
 
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a data-toggle="tab" href="#current">@lang('projects.current')</a></li>
@@ -228,8 +229,12 @@
             </table>
         </div>        
     </div>
+    </div>
 </div>
-</div>    
+</div>
+
+
+
 @endsection
 
 @push('scripts')

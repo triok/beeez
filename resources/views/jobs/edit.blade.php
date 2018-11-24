@@ -5,6 +5,7 @@
         @include('jobs.partials.navigation')
 
         <div class="col-sm-9" id="main">
+            <div class="base-wrapper"> 
             @include('jobs.partials.tabs')
 
             @if(isset($job))
@@ -17,7 +18,7 @@
                 @include('jobs.partials.form')
             </div>
 
-            <div class="" id="savesubmit">
+            <div class="job-row savesubmit" id="savesubmit">
                 <button type="submit" class="btn btn-primary" id="submit" name="submit"
                         value="submit">@lang('edit.submit')</button>
 
@@ -28,13 +29,14 @@
             {!! Form::close() !!}
 
             @include('jobs.partials.upload')
+            </div>
         </div>
     </div>
 @endsection
 
 @include('partials.summer',['editor'=>'.editor1'])
 
-@include('partials.tinymce',['editor'=>'.editor2'])
+<!-- @include('partials.tinymce',['editor'=>'.editor2']) -->
 
 @include('jobs.partials.modal-categories')
 

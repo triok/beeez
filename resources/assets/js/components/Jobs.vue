@@ -1,6 +1,5 @@
 <template>
     <div class="col-sm-9" id="main">
-
         <ol class="breadcrumb" v-if="category">
 
             <li v-if="category && category.parent">

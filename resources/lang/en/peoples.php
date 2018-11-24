@@ -33,5 +33,8 @@ return [
     'positive'      => 'Positive',
     'negative'      => 'Negative',
     'teams'         => 'Teams:',
-    'company'       => 'Organization:',                                                       
+    'company'       => 'Organization:',
+    'count'         => 'Users',
+    'count-comment' => 'Registered',
+    'filter'        => 'Filter',                                                             
 ];

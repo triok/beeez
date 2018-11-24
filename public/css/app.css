@@ -5272,11 +5272,7 @@ tbody.collapse.in {
 .navbar {
   position: relative;
   min-height: 50px;
-  margin-bottom: 22px;
-  border: 1px solid rgb(216, 216, 216);
-  border-left: none;
-  border-right: none;
-  border-top: none;
+  margin: 10px 0px 20px;
 }
 
 .navbar:before,
@@ -5427,7 +5423,7 @@ tbody.collapse.in {
   display: flex;
 }
 .navbar-brand h3 {
-  margin-left: 15px;
+  margin: auto;
   padding-top: 3px;
   color: #ffffff;
   font-weight: 700;
@@ -11670,6 +11666,19 @@ footer {
   padding-left: 10px;
   text-decoration: none;
 }
+.projects .nav-tabs {
+  padding: 5px 20px 20px 20px;
+}
+.projects .nav-tabs > li.active > a, .projects .nav-tabs > li.active > a:hover, .projects .nav-tabs > li.active > a:focus {
+  border:1px solid #ddd;
+  border-radius: 5px;
+}
+.projects .nav-tabs li {
+  margin-right: 15px;
+}
+.projects .nav > li > a:hover, .projects .nav > li > a:focus {
+  background: #e5e6e6;
+}
 .table-search > tbody > tr, .table-projects > tbody > tr{
   transition: 0.3s;
   background: transparent!important;
@@ -11992,12 +12001,28 @@ section.other-jobs a.delete {
   margin-left: 10px;
   margin-right: 5px;
 }
-
-/*#side.active {
-  min-width: 80px;
-  max-width: 80px;
+#side.active {
+  min-width: 90px;
+  max-width: 90px;
   text-align: center;
-}*/
+}
+#side.active i {
+  margin:0px;
+  width: 100%;
+}
+#side.active #welcome, #side.active ul li a span, #side.active .card-caret .card-header a:before, #side .badge  {
+  display: none;
+}
+#side.active .card a{
+  padding: 10px 0px;
+}
+#side.active .card a:hover {
+  padding-left: 0;
+}
+#side.active .card a span {
+  margin: 0;
+  font-size: 11px;
+}
 /* Toggling the sidebar header content, hide the big heading [h3] and showing the small heading [strong] and vice versa*/
 /*.left-sidebar {
   padding: 10px 0px 10px 20px;
@@ -12087,6 +12112,7 @@ section.other-jobs a.delete {
   padding: 20px;
   margin:20px;
   background:white;
+  border-radius: 5px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
 }
 .graphs  .base-wrapper:hover {
@@ -12150,7 +12176,7 @@ section.other-jobs a.delete {
 }
 #login_search, #team_search {
   background-color: transparent;
-  width: unset;
+  width: 95%;
   box-shadow: none;
   border: 0px;
   border-bottom: 1px solid #ccd0d2;
@@ -12182,12 +12208,21 @@ section.other-jobs a.delete {
 .left-sidebar {
   color: white;
   text-align: center; 
-  padding: 20px 0px;
+  padding: 15px 15px;
 }
-/*.left-sidebar:hover:not(:first-child), .components-li ul li:hover {
-  background:#eaeaea;    
+.left-sidebar a{
+  color: white;
+  text-decoration: none;
 }
-.left-sidebar:hover:not(:first-child) > a, .components-li ul li a:hover{
+
+.left-sidebar:not(:first-child) {
+  text-align: left;
+}
+.left-sidebar:hover:not(:first-child) {
+  background:#0e5d55;    
+}
+.
+/*.left-sidebar:hover:not(:first-child) > a, .components-li ul li a:hover{
   color: black!important;
 }
 .components-li ul li:hover a{
@@ -12417,7 +12452,7 @@ section.other-jobs a.delete {
 .vacancies .filter h3{
   border-bottom: 1px solid #d6d6d6; 
 }
-.task-created, .today-created, .today-complete {
+.task-created, .today-created, .today-complete, .peoples-registered {
   position: relative;
   border-radius: 5px;
 }
@@ -12430,14 +12465,17 @@ section.other-jobs a.delete {
 .today-complete {
   border-left: 3px solid darkgreen;
 }
-.task-created p, .today-created p, .today-complete p {
+.peoples-registered {
+  border-left: 3px solid darkcyan;
+}
+.task-created p, .today-created p, .today-complete p, .peoples-registered p {
   margin:0;
 }
-.task-created .number, .today-created .number, .today-complete .number {
+.task-created .number, .today-created .number, .today-complete .number, .peoples-registered .number {
   font-weight: bolder;
   font-size: 25px;
 }
-.task-created .title, .today-created .title, .today-complete .title {
+.task-created .title, .today-created .title, .today-complete .title, .peoples-registered .title {
   font-size: 17px;
 }
 .task-created .comment, .task-created i, .task-created .number {
@@ -12449,10 +12487,160 @@ section.other-jobs a.delete {
 .today-complete .comment, .today-complete i, .today-complete .number {
   color: darkgreen;
 }
-.task-created i, .today-created i, .today-complete i {
+.peoples-registered .comment, .peoples-registered i, .peoples-registered .number {
+  color: darkcyan;
+}
+.task-created i, .today-created i, .today-complete i, .peoples-registered i {
   position: absolute;
   font-size: 60px;
   opacity: 0.5;
   right: 20px;
   bottom: 10px;  
 }
+.speciality {
+  max-height: 135px;
+  overflow-y: auto;
+}
+.speciality::-webkit-scrollbar {
+  width: 12px;
+  background-color: #e5e6e6;
+  border-radius: 10px;
+}    
+.speciality::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #80c5c5; 
+}
+.speciality::-webkit-scrollbar-thumb:hover {
+  background: #499898;
+}
+.speciality label{
+  margin-left: 15px;
+}
+.job-row {
+  padding:10px 40px 10px;
+}
+.job-form-group {
+  padding: 20px 40px;
+}
+.job-form .required {
+  color: red;
+}
+.job-form small {
+  float:right;
+  color: red;
+}
+.job-accordion .card-header{
+  padding: 10px 10px 10px 20px;
+  border-radius: 5px;
+  border: 1px solid #ccd0d2;
+}
+.job-accordion .card-header label{
+  margin-bottom: 0px;
+  color:#636b6f;
+  cursor: pointer;
+}
+.job-accordion .card-body {
+  margin-top: 15px;
+  background: #efefefc9;
+  border-radius: 5px;
+}
+.job-tabs {
+  margin: 0px 40px;
+}
+.job-form .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+  width: 100%;
+}
+.job-form .fa-question-circle-o{
+  color:#47afa5
+}
+.savesubmit{
+ padding: 40px;
+}
+.task-list h4 {
+  font-size: 14px;
+}
+.task-list .alert {
+  padding: 10px 15px;
+  margin: 0;
+}
+.task-list span{
+  cursor: pointer;
+}
+.task-list ol {
+  padding:0;
+}
+.task-list ol li {
+  border:none;
+  padding: 0px;
+}
+.task-list ol li:hover {
+  background: none;
+}
+.task-list ol li:before {
+  margin-right: 20px;
+}
+input[type="checkbox"] + .label-text:before{
+  content: "\f0c8";
+  font-family: "Font Awesome 5 Free";
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing:antialiased;
+  width: 1em;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+input[type="checkbox"]:checked + .label-text:before{
+  content: "\f14a";
+  color: #2980b9;
+  animation: effect 250ms ease-in;
+  font-weight: 900;
+}
+
+input[type="checkbox"]:disabled + .label-text{
+  color: #aaa;
+}
+
+input[type="checkbox"]:disabled + .label-text:before{
+  content: "\f0c8";
+  color: #ccc;
+}
+/*Design Grey*/
+#app {
+  background: #e5e6e6;
+}
+#side {
+  margin-left: 10px;
+  background: rgb(229, 230, 230);
+}
+#side i {
+  color: #929292;
+}
+.navbar-brand h3 {
+  color: #47afa5;
+}
+.left-sidebar, .card a, .left-sidebar a  {
+  color: #545454;
+}
+#side i, .card-caret .card-header a:before {
+  color: #929292;
+}
+.card a:hover i{
+  color: #47afa5!important;
+}
+.card a:hover, .left-sidebar:hover:not(:first-child) {
+  background: #d4d4d4;
+  border-radius: 5px;
+}
+.card-body ul {
+  background: #e0e0e0;
+}
+.nav > li > a:hover, .nav > li > a:focus {
+  background: #d4d4d4;
+  border-radius: 5px;
+}
+/*Design Grey*/
