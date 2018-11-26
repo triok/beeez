@@ -67,7 +67,7 @@
                 <div class="form-group">
                     <label>@lang('projects.deadline')</label>
                     <input name="deadline_at" class="form-control timepicker" type="text"
-                           value="{{ old('deadline_at') }}"/>
+                           value="{{ old('deadline_at') }}" autocomplete="off"/>
                 </div>
             </div>
         </div>

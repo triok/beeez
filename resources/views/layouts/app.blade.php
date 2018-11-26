@@ -392,6 +392,7 @@
     <script src="/plugins/listjs/listjs.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script src="/js/menucollapse.js"></script>
+    <script src="/plugins/moment.min.js" type="text/javascript"></script>    
     <script>
         moment.locale('{{ config('app.locale') }}');
 

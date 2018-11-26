@@ -11667,7 +11667,8 @@ footer {
   text-decoration: none;
 }
 .projects .nav-tabs {
-  padding: 5px 20px 20px 20px;
+  padding: 5px 20px 0px 20px;
+  border:none;
 }
 .projects .nav-tabs > li.active > a, .projects .nav-tabs > li.active > a:hover, .projects .nav-tabs > li.active > a:focus {
   border:1px solid #ddd;
@@ -11679,16 +11680,40 @@ footer {
 .projects .nav > li > a:hover, .projects .nav > li > a:focus {
   background: #e5e6e6;
 }
+.projects .tab-content {
+  padding: 20px;
+}
+.projects .text-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.table-projects .dropdown-menu {
+  min-width: unset;
+  background-color: #ddd;
+  border:none;
+  border-radius: 0px 0px 4px 4px;
+  padding: 5px 2.4px;
+}
+.table-projects .dropdown-menu .btn-round {
+  margin: 0px;
+  color: #333;
+  background: transparent;
+  border: none;
+}
+.table-projects .dropdown-menu .btn-round:hover {
+  color: #48b0a5;
+}
+.table-projects > thead > tr > th {
+  border-bottom: 2px solid #48b0a5;
+}
 .table-search > tbody > tr, .table-projects > tbody > tr{
   transition: 0.3s;
   background: transparent!important;
 }
 .table-search > tbody > tr:hover, .table-projects > tbody > tr:hover{
   background: #47afa51f!important;
-}
-.table-search thead, .table-projects thead {
-  background: #805db973;
-  color: #fff;
 }
 .table-search thead tr th:not(:first-child) {
   width: 1%!important;
@@ -12159,12 +12184,7 @@ section.other-jobs a.delete {
 .auth {
   margin-top:65px;
 }
-.projects .text-right {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-}
+
 .search {
   margin: 20px 0px 40px;
 }

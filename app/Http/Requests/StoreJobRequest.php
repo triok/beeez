@@ -18,10 +18,11 @@ class StoreJobRequest extends FormRequest
     {
         return [
             'name'          => 'required|max:50',
-            'price'         => 'required',
+            'price'         => 'required|digits_between:1,6|integer',
             'categories'    => 'required',
             'time_for_work' => 'required',
             'access'        => 'nullable',
+            'instructions'  => 'nullable',
             'desc'          => 'required',
         ];
     }
