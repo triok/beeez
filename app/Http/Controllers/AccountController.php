@@ -105,6 +105,8 @@ class AccountController extends Controller
         /** @var User $user */
         $user = auth()->user();
         $user->bio = $request->bio;
+        $user->country = $request->country;
+        $user->city = $request->city;
         $user->speciality = $request->get('speciality');
 
         $user->show_working_hours = ($request->get('show_working_hours') ? true : false);

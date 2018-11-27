@@ -18,6 +18,24 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
+                <label for="input-country">Страна</label>
+                {!! Form::text('country', $user->country, ['class'=>'form-control', 'id' => 'input-country']) !!}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="input-city">Город</label>
+                {!! Form::text('city', $user->city, ['class'=>'form-control', 'id' => 'input-city']) !!}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
                 <label for="input-speciality">Специализация</label>
                 <select class="form-control" name="speciality" id="input-speciality">
                     <option value="">Нет</option>

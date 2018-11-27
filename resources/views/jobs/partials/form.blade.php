@@ -199,3 +199,15 @@
     @endif
 </div>
 
+@if(isset($subtask))
+    <script>
+            $('.editor1').summernote({
+                toolbar: [
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['picture','video']],
+                ],
+            });
+    </script>
+@endif

@@ -49,7 +49,7 @@
                             </td>
                             <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                             <td>{{ $project->description }}</td>
-                            <td class="date-short">{{ $project->deadline_at }}</td>
+                            <td class="date-long">{{ $project->deadline_at }}</td>
                             <td>{{ $project->jobs()->count() }}/0</td>
                             <td class="text-right">
                                 <div class="dropdown">
@@ -133,7 +133,7 @@
                             </td>
                             <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                             <td>{{ $project->description }}</td>
-                            <td class="date-short">{{ $project->deadline_at }}</td>
+                            <td class="date-long">{{ $project->deadline_at }}</td>
                             <td>{{ $project->jobs()->count() }}/0</td>
                             <td class="text-right">
                                 <div class="dropdown">
@@ -201,7 +201,7 @@
                             </td>
                             <td><a href="{{ route('projects.show', $project) }}">{{ $project->name }}</a></td>
                             <td>{{ $project->description }}</td>
-                            <td class="date-short">{{ $project->deadline_at }}</td>
+                            <td class="date-long">{{ $project->deadline_at }}</td>
                             <td>{{ $project->jobs()->count() }}/0</td>
                             <td class="text-right">
                                 <div class="dropdown">
