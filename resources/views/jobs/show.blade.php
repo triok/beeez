@@ -306,6 +306,18 @@
                 </form>
             </div>
         </div>
+        <div class="air-card p-0-top-bottom">
+            <div class="offers">
+                <h2>@lang('show.offers')</h2>
+                @lang('show.nooffer')
+                <h2>@lang('show.offers-small')</h2>
+                <form action="#" method="post">
+                    {{csrf_field()}}
+                    <textarea required rows="5" class="form-control"></textarea>
+                    <button type="submit" class="btn btn-primary">@lang('show.addoffer')</button>  
+                </form>
+            </div>
+        </div>        
     </div>
 </div>
 @endsection

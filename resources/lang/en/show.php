@@ -32,6 +32,9 @@ return [
     'questions'      => 'Questions and comments',
     'noquestions'    => 'No questions found. You may ask question or leave first comment.',
     'attachments'    => 'Attachments',    
+    'offers'         => 'Offers',
+    'offers-small'   => 'Add your offer',
+    'nooffer'        => 'Your offer will be the first',            
 
     //Buttons
     'save'           => 'Save job',
@@ -40,6 +43,7 @@ return [
     'complain'       => 'Complain',
     'send'           => 'Send',
     'reply'          => 'Reply',
+    'addoffer'       => 'Add offer',     
 
     //tooltips
     'price'          => 'This is final price with all fees.',
