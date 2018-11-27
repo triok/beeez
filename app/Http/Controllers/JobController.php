@@ -339,6 +339,7 @@ class JobController extends Controller
     public function subtask()
     {
         return view('jobs.partials.form', [
+            'subtask' => true,
             'task_id' => request()->get('task_id', 2),
             'project_id' => (int)request()->get('project_id', 0),
             'usernames' => $this->usernames,
