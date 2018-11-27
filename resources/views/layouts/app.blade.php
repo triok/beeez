@@ -398,7 +398,7 @@
 
         $(".date-short").html(function(index, value) {
             if(value !== '') {
-                return moment(value, "YYYY-MM-DD mm:ss").format("ll");
+                return moment(value, "YYYY-MM-DD hh:mm:ss").format("ll");
             }
 
             return '';
@@ -406,7 +406,15 @@
 
         $(".date-full").html(function(index, value) {
             if(value !== '') {
-                return moment(value, "YYYY-MM-DD mm:ss").format("lll");
+                return moment(value, "YYYY-MM-DD hh:mm:ss").format("lll");
+            }
+
+            return '';
+        });
+
+        $(".date-long").html(function(index, value) {
+            if(value !== '') {
+                return moment(value, "YYYY-MM-DD hh:mm:ss").format('DD.MM.YYYY hh:mm');
             }
 
             return '';
@@ -414,7 +422,7 @@
 
         $(".date-ago").html(function(index, value) {
             if(value !== '') {
-                return moment(value, "YYYY-MM-DD mm:ss").startOf('hour').fromNow();
+                return moment(value, "YYYY-MM-DD hh:mm:ss").startOf('hour').fromNow();
             }
 
             return '';
