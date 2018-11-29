@@ -5,7 +5,7 @@
     <div class="container-fluid graphs">
         <div class="col-xs-3">
             <div class="base-wrapper task-created">
-                <p class="number">234</p>
+                <p class="number">{{ $jobsTotalByYear }}</p>
                 <p class="title">@lang('layout.task-title')</p>
                 <p class="comment">@lang('layout.task-comment')</p>
                 <i class="fa fa-line-chart" aria-hidden="true"></i>
