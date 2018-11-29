@@ -18,6 +18,14 @@
             </div>
         </div>
 
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        {!! Form::text('description', old('description'), ['class'=>'form-control', 'placeholder' => 'Краткое описание']) !!}
+                    </div>
+                </div>
+            </div>
+
         <div class="row">
             <div class="col-xs-12">
                 <div class="form-group">
