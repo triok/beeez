@@ -72,5 +72,65 @@
         function truncate(text, length){
             return text.length > length ? text.slice(0, length) + '...' : text;
         };
+
+        var x;
+
+        function getUsers(task_id, value) {
+            var result = $("#task-" + task_id).find('.search').find('.result');
+
+            result.show().html('<li>Подождите ...</li>').fadeIn();
+
+            if (x) x.abort();
+
+            x = $.ajax({
+                url: "/api/users/search",
+                data: {name: value},
+                type: 'GET',
+                success: function success(response) {
+                    if (response.length == 0) {
+                        result.html('<li>Пользователь не найден!</li>');
+
+                        return false;
+                    }
+
+                    var res = '';
+
+                    response.data.forEach(function (entry) {
+                        res += '<li onclick="setUser(' + task_id + ', ' + entry.id + ', \'' + entry.name + '\');">' +
+                            '<a href="#" onclick="return false;">' + entry.name + '</a></li>';
+                    });
+
+                    result.html(res);
+                },
+                error: function error(xhr, status, error) {}
+            });
+        }
+
+        function setUser(task_id, user_id, user_name) {
+            $("#task-" + task_id).find('.search').find('.result').html('').hide();
+
+            $("#task-" + task_id + " .search-user").val(user_id);
+            $("#task-" + task_id + " .search-input").val(user_name);
+        }
+
+        var user_search = '';
+
+        $("#task-1 .search-input").focus(function () {
+            getUsers(1, $(this).val())
+        });
+
+        $("#task-1 .search-input").keyup(function () {
+            if(user_search !== $(this).val()) {
+                user_search = $(this).val();
+
+                getUsers(1, $(this).val())
+            }
+        });
+
+        $("#task-1 .search-input").on('blur', function (e) {
+            setTimeout(function () {
+                $("#task-1").find('.search').find('.result').html('').hide();
+            }, 2000);
+        });
     </script>
 @endpush

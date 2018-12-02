@@ -17,7 +17,7 @@
 
             @php($name = isset($task_id) ? "sub-" . $task_id . "-name" : "name")
             @php($value = isset($job) ? $job->name : (isset($task_id) ? "Задание " . $task_id : ""))
-            
+
             <input name="{{ $name }}"
                    onkeyup="$('.tab-{{ isset($task_id) ? $task_id : 1 }}-name').html(truncate($(this).val(), 20))"
                    value="{{ $value }}"
@@ -38,7 +38,7 @@
             </select>
         </div>
     </div>
-        
+
     <div class="form-group job-form-group">
         <label data-toggle="tooltip" data-placement="left" title="@lang('edit.tooltip-desc')">
             @lang('edit.desc')<span class="required">*</span>
@@ -72,20 +72,18 @@
             @php($name = isset($task_id) ? "sub-" . $task_id . "-end_date" : "end_date")
             <input name="{{ $name }}" class="form-control timepicker-actions" type='text'
                    value="{{ (isset($job) ? $job->end_date->format('d.m.Y H:i') : '') }}" required autocomplete="off"/>
-            <small>@lang('edit.required')</small>       
+            <small>@lang('edit.required')</small>
         </div>
-        <div class="form-group col-md-4">
-            <label for="user">@lang('edit.chooseuser')</label><i class="fa fa-question-circle-o pull-right" aria-hidden="true"></i>
 
+        @php($application = (isset($job) && $application = $job->applications()->first()) ? $application : 0)
+        <div class="form-group col-md-4 search" style="margin: 0 0 15px 0;">
+            <label>@lang('edit.chooseuser')</label>
             @php($name = isset($task_id) ? "sub-" . $task_id . "-user" : "user")
-            <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="{{ $name }}">
-                <option selected value="">@lang('edit.anyone')</option>
-
-                @foreach($usernames as $key => $username)
-                    <option value="{{$key}}" {{isset($job) && $job->hasLogin($key) ? 'selected' : ''}}>{{$username}}</option>
-                @endforeach
-            </select>
-        </div>        
+            <input type="hidden" name="{{ $name }}" class="form-control search-user" value="{{ $application ? $application->user->id : ''}}">
+            <input type="text" class="form-control search-input" placeholder="@lang('edit.anyone')"
+                   value="{{ $application ? $application->user->name : ''}}">
+            <ul class="result" style="top: 65px;"></ul>
+        </div>
     </div>
     <div class="row job-row">
         <div class="form-group col-md-4">
@@ -132,7 +130,7 @@
 
                             @php($name = isset($task_id) ? "sub-" . $task_id . "-access" : "access")
                             {!! Form::textarea($name, isset($job) ? $job->access : '', ['class'=>'form-control', 'rows'=>'4']) !!}
-                        </div>                    
+                        </div>
                         <div class="row job-row">
                             <div class="form-group col-md-4">
                                 <label>@lang('edit.difficulty')</label><i class="fa fa-question-circle-o pull-right" aria-hidden="true"></i>
@@ -175,7 +173,7 @@
                                         <option value="{{$tag['value']}}" {{isset($job) && isset($job->tag) && $job->tag->value == $tag['value'] ? 'selected' : ''}}>{{$tag['title']}}</option>
                                     @endforeach
                                 </select>
-                            </div>                                                                                     
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -209,5 +207,25 @@
                     ['insert', ['picture','video']],
                 ],
             });
+    </script>
+
+    <script>
+        $("#task-{{$task_id}} .search-input").focus(function () {
+            getUsers('{{$task_id}}', $(this).val());
+        });
+
+        $("#task-{{$task_id}} .search-input").keyup(function () {
+            if(user_search !== $(this).val()) {
+                user_search = $(this).val();
+
+                getUsers('{{$task_id}}', $(this).val());
+            }
+        });
+
+        $("#task-{{$task_id}} .search-input").on('blur', function (e) {
+            setTimeout(function () {
+                $("#task-{{$task_id}}").find('.search').find('.result').html('').hide();
+            }, 2000);
+        });
     </script>
 @endif
