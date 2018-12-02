@@ -34,7 +34,11 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        $users = User::all();
+        if ($request->has('name')) {
+            $users = User::filterName($request->get('name'))->get();
+        } else {
+            $users = User::all();
+        }
 
         if ($request->has('favorite')) {
             $users = $users->filter(function ($user) {
