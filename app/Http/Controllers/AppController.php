@@ -16,7 +16,11 @@ class AppController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(request('count', 20));
 
-        return view('home',compact('jobs'));
+        $jobsTotalByYear = Job::whereNotIn('status', [config('enums.jobs.statuses.DRAFT'), config('enums.jobs.statuses.PRIVATE')])
+            ->whereYear('created_at', date('Y'))
+            ->count();
+
+        return view('home',compact('jobs', 'jobsTotalByYear'));
     }
     function showPage($id)
     {

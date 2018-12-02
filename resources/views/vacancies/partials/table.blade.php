@@ -36,7 +36,7 @@
                         "data": "name",
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
-                                return '<a href="' + row.route + '">' + row.name + '</a><p>График 5/2, Беслпатный обед, З/П 30 т.р., Отпуск 30 дней в год.</p>';
+                                return '<a href="' + row.route + '">' + row.name + '</a><p>' + row.description + '</p>';
                             }
 
                             return data;

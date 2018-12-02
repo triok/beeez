@@ -4,16 +4,16 @@ return [
     'admin' => 'admin@app.com',
 
     'specializations' => [
-        'Курьер',
-        'Копирайтер',
-        'SMM',
-        'SEO',
-        'Контент-менеджер',
-        'Дизайнер',
-        'Программист',
-        'Личный помощник',
-        'Сантехник',
-        'Электрик',
-        'Водитель'
+        'courier',
+        'copywriter',
+        'smm',
+        'seo',
+        'content_manager',
+        'designer',
+        'developer',
+        'assistant',
+        'plumber',
+        'electrician',
+        'driver'
     ],
 ];

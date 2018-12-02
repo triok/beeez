@@ -20,6 +20,14 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    {!! Form::text('description', $vacancy->description, ['class'=>'form-control', 'placeholder' => 'Краткое описание']) !!}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
                     {!! Form::text('salary', $vacancy->salary, ['class'=>'form-control', 'placeholder' => 'Зарплата, руб.']) !!}
                 </div>
             </div>

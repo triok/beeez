@@ -28,6 +28,11 @@
                             </tr>
 
                             <tr>
+                                <td><b>Краткое описание</b></td>
+                                <td>{{ $vacancy->description }}</td>
+                            </tr>
+
+                            <tr>
                                 <td><b>@lang('vacancies.show_responsibilities')</b></td>
                                 <td>{{ $vacancy->responsibilities }}</td>
                             </tr>

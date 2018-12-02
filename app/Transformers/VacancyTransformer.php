@@ -17,6 +17,7 @@ class VacancyTransformer extends Transformer
         return [
             "id" => $vacancy->id,
             "name" => $vacancy->name,
+            "description" => $vacancy->description,
             "route" => route('vacancies.show', $vacancy),
             "organization" => [
                 'name' => $vacancy->organization->name,
