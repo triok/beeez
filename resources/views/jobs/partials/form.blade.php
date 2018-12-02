@@ -180,21 +180,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-    @if(isset($task_id))
-        <div class="form-group">
-            <label for="sub-{{$task_id}}-files">Files:</label>
-
-            <input type="file" multiple name="sub-{{$task_id}}-files[]" id="sub-{{$task_id}}-files">
-        </div>
-    @endif
 </div>
 
 @if(isset($subtask))

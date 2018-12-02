@@ -9,9 +9,9 @@
             @include('jobs.partials.tabs')
 
             @if(isset($job))
-                {!! Form::model($job,['url'=>route('jobs.update',$job->id),'method'=>'patch']) !!}
+                {!! Form::model($job,['url'=>route('jobs.update',$job->id),'method'=>'patch', 'id'=>'form-job']) !!}
             @else
-                {!! Form::open(['url'=>'/jobs', 'files' => true, 'enctype' => 'multipart/form-data']) !!}
+                {!! Form::open(['url'=>'/jobs', 'files' => true, 'enctype' => 'multipart/form-data', 'id'=>'form-job']) !!}
             @endif
 
             <div class="tab-content">
@@ -29,6 +29,7 @@
             {!! Form::close() !!}
 
             @include('jobs.partials.upload')
+
             </div>
         </div>
     </div>
