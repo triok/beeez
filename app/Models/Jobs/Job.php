@@ -67,6 +67,11 @@ class Job extends Model
         return $this->hasMany(static::class, 'parent_id');
     }
 
+    public function proposals()
+    {
+        return $this->hasMany(Proposal::class);
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);
