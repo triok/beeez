@@ -128,6 +128,11 @@ class User extends Authenticatable
         return $query->where('username', 'like', '%' . $value . '%');
     }
 
+    public function scopeFilterName($query, $value)
+    {
+        return $query->where('name', 'like', '%' . $value . '%');
+    }
+
     public function projects()
     {
         return $this->hasMany(Project::class)

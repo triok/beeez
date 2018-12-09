@@ -11,6 +11,9 @@
         <br>
         <div class="text">
         <textarea cols="40" rows="20" placeholder="@lang('projects.notes')" id="notes">{{ $project->notes }}</textarea>
+        <button type="button" class="btn btn-warning btn-sm" onclick="saveNotes()" id="button-notes">
+            Сохранить
+        </button>
     </div>
     </div>
     
@@ -80,17 +83,21 @@
                     updateDisplayOrder();
                 }
             });
-
-            $('#notes').change(function () {
-                $.ajax({
-                    type: "POST",
-                    url: "/api/projects/{{ $project->id }}/notes",
-                    data: 'notes=' + $(this).val(),
-                    cache: false,
-                    success: function (data) {}
-                });
-            })
         });
+
+        function saveNotes() {
+            $('#button-notes').attr('disabled', 'true');
+
+            $.ajax({
+                type: "POST",
+                url: "/api/projects/{{ $project->id }}/notes",
+                data: 'notes=' + $('#notes').val(),
+                cache: false,
+                success: function (data) {
+                    $('#button-notes').removeAttr('disabled');
+                }
+            });
+        }
 
         // function to save display sort order
         function updateDisplayOrder() {

@@ -10,6 +10,10 @@ Route::group(['middleware' => 'web'], function () {
     // Info pages
     Route::get('/page/{id}','AppController@showPage');
 
+    // Proposals
+    Route::post('/jobs/{job}/proposals', 'JobProposalsController@store')->name('job.proposals');;
+    Route::post('/jobs/{job}/proposals/{proposal}/apply', 'JobProposalsController@apply')->name('proposals.apply');;
+
     //Job
     Route::resource('jobs', 'JobController');
     Route::get('jobs/category/{category}', 'JobController@jobsByCategories')->name('jobs.category');

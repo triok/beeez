@@ -58,12 +58,9 @@
                             </button>
 
 
-                            <form :action="'/jobs/'+job.id+'/apply'" method="post" v-if="job.allow_apply">
-                                <input type="hidden" name="_token" :value="csrf">
-                                <button class="btn btn-default btn-sm" type="submit">
+                                <a class="btn btn-default btn-sm" :href="'/jobs/'+job.id" v-if="job.allow_apply">
                                     <i class="fa fa-briefcase"></i> {{ trans('home.apply') }}
-                                </button>
-                            </form>
+                                </a>
 
                             <button disabled
                                     class="btn btn-default btn-sm apply-job-btn"

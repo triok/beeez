@@ -94,6 +94,16 @@
                                     @endif
 
                                     <tr>
+                                        <td><b>Страна</b></td>
+                                        <td>{{ $user->country }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><b>Город</b></td>
+                                        <td>{{ $user->city }}</td>
+                                    </tr>
+
+                                    <tr>
                                         <td><b>@lang('peoples.skills')</b></td>
                                         <td>
                                             <ul class="list-inline">

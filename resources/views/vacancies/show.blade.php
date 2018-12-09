@@ -29,6 +29,11 @@
                             </tr>
 
                             <tr>
+                                <td><b>Краткое описание</b></td>
+                                <td>{{ $vacancy->description }}</td>
+                            </tr>
+
+                            <tr>
                                 <td><b>Зарплата, руб.</b></td>
                                 <td>{{ $vacancy->salary }}</td>
                             </tr>

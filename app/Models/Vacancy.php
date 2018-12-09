@@ -11,7 +11,7 @@ class Vacancy extends Model
 {
     use Favoritable, Viewable;
 
-    protected $fillable = ['name', 'specialization', 'responsibilities', 'conditions', 'requirements', 'salary'];
+    protected $fillable = ['name', 'description', 'specialization', 'responsibilities', 'conditions', 'requirements', 'salary'];
 
     protected $dates = ['published_at'];
 
