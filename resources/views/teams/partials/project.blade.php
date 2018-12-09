@@ -10,6 +10,11 @@
     <td>{{ $project->description }}</td>
     <td>{{ $project->jobs()->count() }}/0</td>
     <td class="text-right">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">        
         @if($project->isOwn())
             {!! Form::open(['url' => route('projects.edit', $project)]) !!}
                 <button type="submit" onclick="" class="btn btn-xs btn-primary btn-round" title="@lang('projects.edit')">
@@ -65,5 +70,7 @@
             </button>
             {!! Form::close() !!}
         @endif
+            </div>
+        </div>
     </td>
 </tr>

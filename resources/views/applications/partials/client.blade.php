@@ -1,5 +1,4 @@
 <div id="client" class="tab-pane fade">
-    <div class="col-xs-12">
         <h2>@lang('application.titleclient')</h2>
 
         <table class="table table-responsive table-full-width table-search" id="client-table" style="width: 100%;">
@@ -14,7 +13,6 @@
             </thead>
             <tbody></tbody>
         </table>
-    </div>
 </div>
 
 @push('scripts')

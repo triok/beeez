@@ -34,7 +34,7 @@ return [
     'attachments'    => 'Attachments',    
     'offers'         => 'Offers',
     'offers-small'   => 'Add your offer',
-    'nooffer'        => 'Your offer will be the first',            
+    'nooffer'        => 'Your offer will be the first',
 
     //Buttons
     'save'           => 'Save job',
@@ -43,7 +43,8 @@ return [
     'complain'       => 'Complain',
     'send'           => 'Send',
     'reply'          => 'Reply',
-    'addoffer'       => 'Add offer',     
+    'addoffer'       => 'Add offer',
+    'report-request' => 'Request a report',           
 
     //tooltips
     'price'          => 'This is final price with all fees.',

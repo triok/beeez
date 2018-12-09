@@ -1,5 +1,4 @@
 <div id="favorite" class="tab-pane fade {{ isset($class) ? $class : '' }}">
-    <div class="col-xs-12">
         <h2>@lang('application.headingbookmarks')</h2>
 
         <table class="table table-striped table-responsive table-full-width table-search" id="favorite-table" style="width: 100%;">
@@ -12,7 +11,6 @@
             </thead>
             <tbody></tbody>
         </table>
-    </div>
 </div>
 
 

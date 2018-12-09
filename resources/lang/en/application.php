@@ -26,5 +26,8 @@ return [
     'freelancer'            => 'I am freelancer',
     'client'                => 'I am client',
     'menu'                  => 'Sections',      
-
+    'task-created'          => 'Task created:',
+    'task-completed'        => 'Completed tasks:',
+    'first-deadline'        => 'Closest task which will need to complete:',
+    'deadline-time'         => 'Term:',     
 ];

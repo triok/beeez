@@ -29,7 +29,7 @@ return [
             'jobs' => 'c,r',
             'profile' => 'r,u',
             'application-message' => 'c,r,u,d',
-//            'jobs-manager' => 'c,r,u,d'
+            'jobs-manager' => 'c,r,u,d',
         ],
     ],
 //    'permission_structure' => [

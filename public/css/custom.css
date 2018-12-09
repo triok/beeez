@@ -21,7 +21,7 @@ body.modal-open {
 }
 
 table.dataTable thead th {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #48b0a5;
 }
 
 table.dataTable.no-footer {

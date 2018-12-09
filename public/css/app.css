@@ -11666,21 +11666,21 @@ footer {
   padding-left: 10px;
   text-decoration: none;
 }
-.projects .nav-tabs {
+.base-wrapper .nav-tabs {
   padding: 5px 20px 0px 20px;
   border:none;
 }
-.projects .nav-tabs > li.active > a, .projects .nav-tabs > li.active > a:hover, .projects .nav-tabs > li.active > a:focus {
+.base-wrapper .nav-tabs > li.active > a, .base-wrapper .nav-tabs > li.active > a:hover, .base-wrapper .nav-tabs > li.active > a:focus {
   border:1px solid #ddd;
   border-radius: 5px;
 }
-.projects .nav-tabs li {
+.base-wrapper .nav-tabs li {
   margin-right: 15px;
 }
-.projects .nav > li > a:hover, .projects .nav > li > a:focus {
+.base-wrapper .nav > li > a:hover, .base-wrapper .nav > li > a:focus {
   background: #e5e6e6;
 }
-.projects .tab-content {
+.base-wrapper .tab-content  {
   padding: 20px;
 }
 .projects .text-right {
@@ -11708,6 +11708,37 @@ footer {
 .table-projects > thead > tr > th {
   border-bottom: 2px solid #48b0a5;
 }
+.application-info .base-wrapper {
+  position: relative;
+}
+.application-info .base-wrapper:hover i {
+  opacity: 1;
+}
+.application-info i {
+  position: absolute;
+  font-size: 48px;
+  opacity: 0.5;
+  transition: 0.3s;
+}
+.application-info .fa-tasks {
+  color: #47afa5;
+  bottom: 6px;
+  right: 18px;
+}
+.application-info .fa-handshake-o {
+  color: #af7847;
+  bottom: 9px;
+  right: 13px;  
+}
+.application-info .fa-fire {
+  color: red;
+  bottom: 13px;
+  right: 22px;  
+}
+.applications .table > tbody > tr > td, .table-peoples > tbody > tr > td  {
+  border-top: none;
+  line-height: 2.5;
+} 
 .table-search > tbody > tr, .table-projects > tbody > tr{
   transition: 0.3s;
   background: transparent!important;
@@ -11729,6 +11760,13 @@ footer {
 }
 .table-projects tbody td:nth-child(5) {
   text-align: center;
+}
+.team-projects .table-projects .dropdown-menu{
+  left: unset;
+  right: 0;
+}
+.team-projects .table-projects .dropdown {
+  text-align: right;
 }
 .sub-tasks { padding-bottom: 20px;}
 .sub-tasks table { margin-bottom: 0; }
@@ -12218,6 +12256,15 @@ section.other-jobs a.delete {
 .category-nav {
   padding-left: 0px;
 }
+.table-peoples .btn-round {
+  border: none;
+  background: transparent;
+  color: #47afa5;
+  font-size: 16px;  
+}
+.table-peoples .btn-round:hover {
+  background: #d8d8d8;
+}
 .table-peoples tbody a{
   color: #47afa5;
 }
@@ -12518,7 +12565,7 @@ section.other-jobs a.delete {
   bottom: 10px;  
 }
 .speciality {
-  max-height: 135px;
+  max-height: 218px;
   overflow-y: auto;
 }
 .speciality::-webkit-scrollbar {

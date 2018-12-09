@@ -1,7 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid" id="main">
+
+<div class="container-fluid" id="main">
+
+        @foreach ($teams as $team) 
+
+        <div class="col-xs-6">
+            <div class="base-wrapper team-projects">
+                <h2>Команда: {{ $team->name }}</h2>
+                <div class="pull-right"><a href="{{ ($team->slug) }}">О компании</a></div>
+                <div><p><span>Администратор:</span> <span><a href="{{ route('peoples.show', $AdminName->id) }}">{{ $AdminName->username }}</a></span></p></div>
+                <hr>
+                <h3>Проекты:</h3>
+                <div class="pull-right">
+                    <a href="{{ route('projects.create') }}?team_id={{ $team->id }}"
+                                   class="btn btn-primary btn-block">
+                        <i class="fa fa-sitemap"></i> @lang('projects.create')
+                    </a>
+                </div>
+                @include('teams.partials.projects')
+            </div>           
+        </div>
+  
+
+        @endforeach
+
+</div>
+
+<!--     <div class="container-fluid" id="main">
         <div class="row">
             <div class="col-md-12 teams">
                 <h2>@lang('teams.title')</h2>
@@ -38,7 +65,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> -->
 @endsection
 
 @push('styles')
@@ -46,7 +73,7 @@
 @endpush
 
 @push('scripts')
-    <script>
+<!--     <script>
         var auth_id = "{{ auth()->id() }}";
 
         $(document).ready(function () {
@@ -113,5 +140,5 @@
                 table.ajax.url("api/v1/teams/search?user_id=" + auth_id + "&type=" + $(this).val()).load();
             });
         });
-    </script>
+    </script> -->
 @endpush

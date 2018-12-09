@@ -227,7 +227,18 @@ class ApplicationsController extends Controller
 
         $clientapps = auth()->user()->jobs;
 
-        return view('applications.my-applications', compact('applications','clientapps'));
+        $firstdeadline = Auth::user()
+            ->applications()
+            ->with('job')
+            ->where('status', '=', 'in progress')
+            ->orderBy('deadline', 'ASC')
+            ->first();
+
+        $appscomplete = Auth::user()
+            ->applications()
+            ->where([['user_id', '=', auth()->user()->id],['status', '=', 'complete']])->get();
+
+        return view('applications.my-applications', compact('applications','clientapps','firstdeadline','appscomplete'));
     }
 
     /**

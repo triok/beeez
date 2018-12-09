@@ -35,11 +35,29 @@ class TeamsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function myteams() 
+    public function myteams(Team $teams) 
     {
         $teamTypes = TeamType::orderBy('name')->pluck('name', 'id');
 
-        return view('teams.myteams', compact('teamTypes'));
+        $teamIds = auth()->user()->teams()->pluck('team_id')->toArray(); 
+
+        $teams = Team::where('user_id', auth()->id())
+            ->orWhereIn('id', $teamIds)
+            ->get();
+        
+        $teamProjects = [];
+
+        foreach ($teams as $team) {
+            $projects = Project::where('team_id', $team->id)->orderBy('sort_order')->orderBy('name')->get();
+            $teamProjects[$team->id] = $projects;
+            $AdminName = User::select('username','id')->where('id', $team->user_id)->first();              
+        }
+
+        $teamSelected = request('team_id', ($teams->first() ? $teams->first()->id : 0));
+
+        
+
+        return view('teams.myteams', compact('teamTypes','teams','projects','teamProjects', 'teamSelected','AdminName' ));
     }
 
     /**

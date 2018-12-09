@@ -160,6 +160,7 @@
                                         @endif
 
                                         @if (isset($job->application) && auth()->user()->id == $job->application->user_id)
+
                                             @if ($job->status == config('enums.jobs.statuses.COMPLETE'))
                                                 <button data-id="{{$job->id}}" class="btn btn-primary btn-block btn-rating" type="button">
                                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -174,6 +175,9 @@
                                                     <i class="fa fa-star" aria-hidden="true"></i>
                                                     @lang('home.complete')
                                                 </button>
+                                            @endif
+                                            @if (isset($application))
+                                            <button class="btn btn-primary btn-block"><i class="fa fa-refresh" aria-hidden="true"></i> @lang('show.report-request')</button>
                                             @endif
                                         @endif
 
@@ -310,6 +314,7 @@
             <div class="offers">
                 <h2>@lang('show.offers')</h2>
                 @lang('show.nooffer')
+                
                 <h2>@lang('show.offers-small')</h2>
                 <form action="#" method="post">
                     {{csrf_field()}}
@@ -317,7 +322,22 @@
                     <button type="submit" class="btn btn-primary">@lang('show.addoffer')</button>  
                 </form>
             </div>
-        </div>        
+        </div>
+        @if(isset($job->application) || auth()->user()->id == $job->user_id)
+        <div class="air-card p-0-top-bottom">
+            <div class="offers">
+                <h2>@lang('show.reports')</h2>
+                @lang('show.noreports')
+                
+
+                <form action="#" method="post">
+                    {{csrf_field()}}
+                    <textarea required rows="5" class="form-control"></textarea>
+                    <button type="submit" class="btn btn-primary">@lang('show.addreport')</button>  
+                </form>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection

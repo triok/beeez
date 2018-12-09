@@ -1,5 +1,4 @@
 <div id="freelancer" class="tab-pane fade in active">
-    <div class="col-xs-12">
         <h2>@lang('application.titlefreelancer')</h2>
 
         <table class="table table-striped table-responsive table-full-width table-search" id="freelancer-table" style="width: 100%;">
@@ -12,7 +11,6 @@
             </thead>
             <tbody></tbody>
         </table>
-    </div>
 </div>
 
 @push('scripts')

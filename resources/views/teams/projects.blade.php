@@ -31,7 +31,7 @@
                                     <i class="fa fa-sitemap"></i> @lang('projects.create')
                                 </a>
                             </div>
-
+                    
                             @include('teams.partials.projects')
                         </div>
                     @endforeach

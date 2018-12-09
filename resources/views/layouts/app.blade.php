@@ -73,16 +73,16 @@
             <div class="card-body">
                 <ul class="list-unstyled" role="menu">
                     <li role="separator" class="divider"></li>                
-                    <li><a href="{{ url('/') }}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('layout.findwork')</a></li>
+                    <li><a href="{{ url('/') }}">- @lang('layout.findwork')</a></li>
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="{{route('my-applications')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('layout.applications')
+                        <a href="{{route('my-applications')}}">- @lang('layout.applications')
                             <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>
                         </a>
                     </li>
-                    <li><a href="{{ route('projects.index') }}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('layout.projects')</a></li>
+                    <li><a href="{{ route('projects.index') }}">- @lang('layout.projects')</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="/jobs/create"><i class="fa fa-level-up fa-rotate-90"></i> @lang('layout.post-new')</a></li>                
+                    <li><a href="/jobs/create">- @lang('layout.post-new')</a></li>                
                 </ul>                       
             </div>
         </div>    
@@ -102,7 +102,7 @@
             <div class="card-body">
                 <ul class="list-unstyled" role="menu">
                     <li>
-                        <a href="{{route('peoples.index')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('peoples.find')</a>                    
+                        <a href="{{route('peoples.index')}}">- @lang('peoples.find')</a>                    
                     </li>      
                 </ul>          
             </div>
@@ -119,19 +119,19 @@
                 <ul class="list-unstyled" role="menu">
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="{{route('teams.index')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('teams.find')</a>                    
+                        <a href="{{route('teams.index')}}">- @lang('teams.find')</a>                    
                     </li>
                     <li>
-                        <a href="{{route('teams.myteams')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('teams.title_myteams')</a>                    
+                        <a href="{{route('teams.myteams')}}">- @lang('teams.title_myteams')</a>                    
                      </li>
                     @if(Auth::user()->allUserTeams()->count())
                     <li>
-                        <a href="{{route('teams.projects')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('teams.projects')</a>
+                        <a href="{{route('teams.projects')}}">- @lang('teams.projects')</a>
                     </li>
                     @endif
                     <li role="separator" class="divider"></li>                
                     <li>
-                        <a href="{{route('teams.create')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('teams.create')</a>                    
+                        <a href="{{route('teams.create')}}">- @lang('teams.create')</a>                    
                     </li>                                                
                 </ul>         
             </div>
@@ -148,14 +148,14 @@
                 <ul class="list-unstyled" role="menu">
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="{{route('organizations.index')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('organizations.all')</a>                    
+                        <a href="{{route('organizations.index')}}">- @lang('organizations.all')</a>                    
                     </li>
                     <li>
-                        <a href="{{route('organizations.my')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('organizations.title-my')</a>                    
+                        <a href="{{route('organizations.my')}}">- @lang('organizations.title-my')</a>                    
                     </li>
                     <li role="separator" class="divider"></li>                
                     <li>
-                        <a href="{{route('organizations.create')}}"><i class="fa fa-level-up fa-rotate-90"></i> @lang('organizations.add')</a>                    
+                        <a href="{{route('organizations.create')}}">- @lang('organizations.add')</a>                    
                     </li>                                                
                 </ul>        
             </div>
@@ -177,17 +177,17 @@
         <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
             <div class="card-body">
                 <ul class="list-unstyled" role="menu">
-                    <h6 class="dropdown-header">@lang('balance.title'): 0 руб.</h6>
+                    <h6 class="dropdown-header">- @lang('balance.title'): 0 руб.</h6>
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="#"><i class="fa fa-level-up fa-rotate-90"></i> @lang('balance.review')</a>                    
+                        <a href="#">- @lang('balance.review')</a>                    
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-level-up fa-rotate-90"></i> @lang('balance.topup')</a>                    
+                        <a href="#">- @lang('balance.topup')</a>                    
                     </li>
                     <li role="separator" class="divider"></li>                
                     <li>
-                        <a href="#"><i class="fa fa-level-up fa-rotate-90"></i> @lang('balance.history')</a>                    
+                        <a href="#">- @lang('balance.history')</a>                    
                     </li>                                                
                 </ul>       
             </div>

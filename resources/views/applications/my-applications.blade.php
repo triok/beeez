@@ -2,14 +2,23 @@
 
 @section('content')
     <div class="container-fluid applications">
-        @include('applications.partials.nav-tabs')
+        <div class="col-xs-8">
+            <div class="base-wrapper">
+            @include('applications.partials.nav-tabs')
 
-        <div class="tab-content">
-            @include('applications.partials.freelancer')
+            <div class="tab-content">
+                @include('applications.partials.freelancer')
 
-            @include('applications.partials.client')
+                @include('applications.partials.client')
 
-            @include('applications.partials.favorite')
+                @include('applications.partials.favorite')
+            </div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            
+                @include('applications.partials.info')
+            
         </div>
     </div>
 @endsection
