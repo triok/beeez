@@ -327,29 +327,30 @@
                 @endif
 
                 @if(auth()->id() != $job->user_id && !$job->applications->count())
-                    <h2>@lang('show.offers-small')</h2>
+                    @if(!$job->proposals()->where('user_id', auth()->id())->count())
+                        <h2>@lang('show.offers-small')</h2>
 
-                    {!! Form::open(['url' => route('job.proposals', $job), 'method'=>'post']) !!}
+                        {!! Form::open(['url' => route('job.proposals', $job), 'method'=>'post']) !!}
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <textarea required rows="5" name="body" class="form-control"></textarea>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <textarea required rows="5" name="body" class="form-control"></textarea>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">@lang('show.addoffer')</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">@lang('show.addoffer')</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {!! Form::close() !!}
+                        {!! Form::close() !!}
+                    @endif
                 @endif
-
             </div>
         </div>
         @if(isset($job->application) || auth()->user()->id == $job->user_id)

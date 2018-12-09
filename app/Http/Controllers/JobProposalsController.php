@@ -28,6 +28,12 @@ class JobProposalsController extends Controller
      */
     public function store(ProposalRequest $request, Job $job)
     {
+        if($job->proposals()->where('user_id', auth()->id())->count()) {
+            flash()->error('Вы уже добавили предложение!');
+
+            return redirect()->back();
+        }
+
         $job->proposals()->create([
             'user_id' => auth()->id(),
             'body' => $request->get('body')
