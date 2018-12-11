@@ -72,6 +72,11 @@ class Job extends Model
         return $this->hasMany(Proposal::class);
     }
 
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);

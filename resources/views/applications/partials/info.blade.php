@@ -8,11 +8,12 @@
         <i class="fa fa-handshake-o" aria-hidden="true"></i>
     </div>
     @if (isset($firstdeadline))
+    @php($attr = $firstdeadline->getAttributes())
     <div class="base-wrapper">
         <p>@lang('application.first-deadline')</p>
         <p><a href="/jobs/{{ $firstdeadline->job->id }}">{{ $firstdeadline->job->name }}</a></p>
         <span>@lang('application.deadline-time')</span>
-        <span class="">{{ $firstdeadline->deadline }}</span>
+        <span class="date-full">{{ $attr['deadline'] }}</span>
         <i class="fa fa-fire" aria-hidden="true"></i>
     </div>    
     @endif
