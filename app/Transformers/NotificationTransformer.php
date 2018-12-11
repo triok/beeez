@@ -3,8 +3,10 @@
 namespace App\Transformers;
 
 use App\Models\Cv;
+use App\Models\Jobs\Job;
 use App\Models\Organization;
 use App\Models\Team;
+use App\User;
 
 class NotificationTransformer extends Transformer
 {
@@ -33,6 +35,8 @@ class NotificationTransformer extends Transformer
             'App\Notifications\CvAdminNotification' => 'Пользователь откликнулся на вакансию',
             'App\Notifications\CvApprovedNotification' => 'Работодатель принял Ваш отклик',
             'App\Notifications\CvDeclinedNotification' => 'Соискатель отклонил Ваше предложение',
+            'App\Notifications\JobReportNotification' => 'Запрос на отчет',
+            'App\Notifications\JobOwnerReportNotification' => 'Новый отчет',
         ];
 
         return isset($titles[$notification['type']]) ? $titles[$notification['type']] : '';
@@ -114,6 +118,20 @@ class NotificationTransformer extends Transformer
 
                 return $str;
             }
+        }
+
+        if ($notification['type'] == 'App\Notifications\JobReportNotification') {
+            $job = Job::find($notification['data']['job_id']);
+
+            return 'Заказчик задания <a href="' . route('jobs.show', $job)  . '">' . $job->name . '</a> запрашивает отчет о проделанной работе.';
+        }
+
+        if ($notification['type'] == 'App\Notifications\JobOwnerReportNotification') {
+            $job = Job::find($notification['data']['job_id']);
+            $user = User::find($notification['data']['user_id']);
+            $report = $notification['data']['report'];
+
+            return '<p>Пользователь ' . $user->name . ' ставил отчет в задании <a href="' . route('jobs.show', $job)  . '">' . $job->name . '</a>.</p><p>' . $report . '</p>';
         }
 
         return '';

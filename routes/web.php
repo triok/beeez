@@ -11,8 +11,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/page/{id}','AppController@showPage');
 
     // Proposals
-    Route::post('/jobs/{job}/proposals', 'JobProposalsController@store')->name('job.proposals');;
-    Route::post('/jobs/{job}/proposals/{proposal}/apply', 'JobProposalsController@apply')->name('proposals.apply');;
+    Route::post('/jobs/{job}/proposals', 'JobProposalsController@store')->name('job.proposals');
+    Route::post('/jobs/{job}/proposals/{proposal}/apply', 'JobProposalsController@apply')->name('proposals.apply');
+
+    // Reports
+    Route::post('/jobs/{job}/reports', 'JobReportsController@store')->name('job.reports');;
+    Route::post('/jobs/{job}/notify', 'JobReportsController@notify')->name('job.notify');;
 
     //Job
     Route::resource('jobs', 'JobController');
