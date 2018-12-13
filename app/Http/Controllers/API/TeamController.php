@@ -36,6 +36,12 @@ class TeamController extends Controller
             $teams->where('team_type_id', $request->get('type'));
         }
 
+        if ($request->get('types')) {
+            $team_types = explode(',', $request->get('types'));
+
+            $teams->whereIn('team_type_id', $team_types);
+        }
+
         if ($request->get('user_id')) {
             $teamIds = TeamUsers::where('user_id', $request->get('user_id'))->pluck('team_id')->toArray();
 
