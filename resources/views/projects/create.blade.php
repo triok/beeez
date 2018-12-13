@@ -110,6 +110,7 @@
             startDate: new Date(),
             minHours: 9,
             maxHours: 24,
+            minDate: new Date(),
             onSelect: function (fd, d, picker) {
                 if (!d) return;
 
