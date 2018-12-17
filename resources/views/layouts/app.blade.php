@@ -121,10 +121,11 @@
                     <li>
                         <a href="{{route('teams.index')}}">- @lang('teams.find')</a>                    
                     </li>
+                    @if(Auth::user()->allUserTeams()->count())
                     <li>
                         <a href="{{route('teams.myteams')}}">- @lang('teams.title_myteams')</a>                    
                      </li>
-                    @if(Auth::user()->allUserTeams()->count())
+
                     <li>
                         <a href="{{route('teams.projects')}}">- @lang('teams.projects')</a>
                     </li>
