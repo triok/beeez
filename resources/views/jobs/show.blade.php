@@ -176,8 +176,15 @@
                                                     @lang('home.complete')
                                                 </button>
                                             @endif
+
                                             @if (isset($application))
-                                            <button class="btn btn-primary btn-block"><i class="fa fa-refresh" aria-hidden="true"></i> @lang('show.report-request')</button>
+                                                <form action="{{route('job.notify', $job)}}" method="post">
+                                                    {{csrf_field()}}
+                                                    <input type="hidden" name="user_id" value="{{ $application->id }}">
+                                                    <button class="btn btn-primary btn-block" type="submit">
+                                                        <i class="fa fa-refresh" aria-hidden="true"></i> @lang('show.report-request')
+                                                    </button>
+                                                </form>
                                             @endif
                                         @endif
 
@@ -311,61 +318,10 @@
             </div>
         </div>
 
-        <div class="air-card p-0-top-bottom">
-            <div class="offers">
-                <h2>@lang('show.offers')</h2>
+        @include('jobs.proposals')
 
-
-                @if($job->proposals->count())
-                    <ul class="media-list">
-                        @foreach($job->proposals as $proposal)
-                            @include('jobs.proposal')
-                        @endforeach
-                    </ul>
-                @else
-                    @lang('show.nooffer')
-                @endif
-
-                @if(auth()->id() != $job->user_id && !$job->applications->count())
-                    <h2>@lang('show.offers-small')</h2>
-
-                    {!! Form::open(['url' => route('job.proposals', $job), 'method'=>'post']) !!}
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <textarea required rows="5" name="body" class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">@lang('show.addoffer')</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {!! Form::close() !!}
-                @endif
-
-            </div>
-        </div>
-        @if(isset($job->application) || auth()->user()->id == $job->user_id)
-        <div class="air-card p-0-top-bottom">
-            <div class="offers">
-                <h2>@lang('show.reports')</h2>
-                @lang('show.noreports')
-                
-
-                <form action="#" method="post">
-                    {{csrf_field()}}
-                    <textarea required rows="5" class="form-control"></textarea>
-                    <button type="submit" class="btn btn-primary">@lang('show.addreport')</button>  
-                </form>
-            </div>
-        </div>
+        @if(isset($job->application) || auth()->id() == $job->user_id)
+            @include('jobs.reports')
         @endif
     </div>
 </div>

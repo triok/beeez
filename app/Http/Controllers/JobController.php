@@ -230,13 +230,23 @@ class JobController extends Controller
 
     function store(StoreJobRequest $request)
     {
-        $request->merge([
-            'end_date' => Carbon::createFromFormat('d.m.Y H:i', $request->get('end_date'))->format('Y-m-d H:i:s')
-        ]);
+        if($request->get('end_date')) {
+            $request->merge([
+                'end_date' => Carbon::createFromFormat('d.m.Y H:i', $request->get('end_date'))->format('Y-m-d H:i:s')
+            ]);
+        }
+
+        if(!$request->get('desc')) $request->merge(['desc' => '']);
+        if(!$request->get('price')) $request->merge(['price' => 0]);
 
         $job = Job::query()->create(array_intersect_key($request->all(), array_flip(Job::getAllAttributes())));
+
         dispatch(new AddFilesJob($job));
-        dispatch(new AddCategoriesJob($job));
+
+        if($request->get('category_id')) {
+            dispatch(new AddCategoriesJob($job));
+        }
+
         dispatch(new AddSkillsJob($job));
         dispatch(new AddApplicationsJob($job));
         dispatch(new AddSubTasksJob($job));
@@ -273,14 +283,23 @@ class JobController extends Controller
 
     function update(StoreJobRequest $request, Job $job)
     {
-        $request->merge([
-            'end_date' => Carbon::createFromFormat('d.m.Y H:i', $request->get('end_date'))->format('Y-m-d H:i:s')
-        ]);
+        if($request->get('end_date')) {
+            $request->merge([
+                'end_date' => Carbon::createFromFormat('d.m.Y H:i', $request->get('end_date'))->format('Y-m-d H:i:s')
+            ]);
+        }
+
+        if(!$request->get('desc')) $request->merge(['desc' => '']);
+        if(!$request->get('price')) $request->merge(['price' => 0]);
 
         $job->update(array_intersect_key($request->all(), array_flip(Job::getAllAttributes())));
 
         dispatch(new AddFilesJob($job));
-        dispatch(new AddCategoriesJob($job));
+
+        if($request->get('category_id')) {
+            dispatch(new AddCategoriesJob($job));
+        }
+        
         dispatch(new AddSkillsJob($job));
         dispatch(new AddApplicationsJob($job));
         dispatch(new AddTagJob($job));

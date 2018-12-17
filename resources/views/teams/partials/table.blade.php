@@ -101,8 +101,16 @@
                 ]
             });
 
-            $('#team-type-filter').on('change', function () {
-                table.ajax.url("{{ $action }}&type=" + $(this).val()).load();
+            $('#team-type-filter input[type="checkbox"]').on('click', function () {
+                var team_types = [];
+
+                $('#team-type-filter input[type="checkbox"]').each(function () {
+                    if(this.checked) {
+                        team_types.push($(this).val());
+                    }
+                });
+
+                table.ajax.url("{{ $action }}&types=" + team_types).load();
             });
         });
     </script>

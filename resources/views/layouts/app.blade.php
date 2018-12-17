@@ -125,7 +125,6 @@
                     <li>
                         <a href="{{route('teams.myteams')}}">- @lang('teams.title_myteams')</a>                    
                      </li>
-
                     <li>
                         <a href="{{route('teams.projects')}}">- @lang('teams.projects')</a>
                     </li>

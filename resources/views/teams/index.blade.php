@@ -19,27 +19,16 @@
                         <i class="fa fa-search" aria-hidden="true"></i>
                         <ul class="result"></ul>
                     </div>
-                    <div class="search">
-<!--                         <select id="team-type-filter" class="form-control"
-                                style="border: none; border-bottom: 1px solid #ccd0d2;">
-
-                            <option value="">Тип команды ...</option>
-
-                            @foreach($teamTypes as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </select> -->
-                    </div>
-                    <ul class="list-unstyled">
+                    <ul class="list-unstyled" id="team-type-filter">
                         @foreach($teamTypes as $key => $value)
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input"
                                            type="checkbox"
                                            value="{{ $key }}"
-                                           id="input-{{ $key }}">
+                                           id="input-team-type-{{ $key }}">
 
-                                    <label class="form-check-label" for="input-{{ $key }}">
+                                    <label class="form-check-label" for="input-team-type-{{ $key }}">
                                         {{ $value }}
                                     </label>
                                 </div>                                

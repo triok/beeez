@@ -45,7 +45,7 @@
         </label>
 
         @php($name = isset($task_id) ? "sub-" . $task_id . "-desc" : "desc")
-        {!! Form::textarea($name, isset($job) ? $job->desc : '',['class'=>'editor1', 'required' => 'required']) !!}
+        {!! Form::textarea($name, isset($job) ? $job->desc : '',['class'=>'editor1']) !!}
         <small>@lang('edit.required')</small>
     </div>
 
@@ -63,7 +63,7 @@
             <label>@lang('edit.price'), руб.<span class="required">*</span></label>
 
             @php($name = isset($task_id) ? "sub-" . $task_id . "-price" : "price")
-            {!! Form::input('input', $name, isset($job) ? $job->price: null, ['class'=>'form-control', 'required' => 'required', 'name' => 'price']) !!}
+            {!! Form::input('input', $name, isset($job) ? $job->price: null, ['class'=>'form-control', 'name' => 'price']) !!}
             <small>@lang('edit.required')</small>
         </div>
         <div class="form-group col-md-4">
@@ -71,7 +71,7 @@
 
             @php($name = isset($task_id) ? "sub-" . $task_id . "-end_date" : "end_date")
             <input name="{{ $name }}" class="form-control timepicker-actions" type='text'
-                   value="{{ (isset($job) ? $job->end_date->format('d.m.Y H:i') : '') }}" required autocomplete="off"/>
+                   value="{{ ((isset($job) && $job->end_date) ? $job->end_date->format('d.m.Y H:i') : '') }}" autocomplete="off"/>
             <small>@lang('edit.required')</small>
         </div>
 
@@ -93,8 +93,8 @@
                 $category = null;
                 $categoryParent = null;
 
-                if(isset($job) && $job->jobCategories()) {
-                    $category_id = $job->jobCategories()->first()->category_id;
+                if(isset($job) && $job->jobCategories() && $j = $job->jobCategories()->first()) {
+                    $category_id = $j->category_id;
 
                     $category = \App\Models\Jobs\Category::find($category_id);
                 }
@@ -104,7 +104,7 @@
             {!! Form::input('hidden', $name, ($category ? $category->id : ''), ['class'=>'form-control', 'id'=>'input-category-id']) !!}
 
             @php($name = isset($task_id) ? "sub-" . $task_id . "-category_name" : "category_name")
-            {!! Form::input('input', $name, ($category ? (($category->parent ? $category->parent->nameEu . ' & ' : '') . $category->nameEu) : ''), ['class'=>'form-control input-category-name', 'required'=>'required']) !!}
+            {!! Form::input('input', $name, ($category ? (($category->parent ? $category->parent->nameEu . ' & ' : '') . $category->nameEu) : ''), ['class'=>'form-control input-category-name']) !!}
             <small>@lang('edit.required')</small>
         </div>
     </div>
