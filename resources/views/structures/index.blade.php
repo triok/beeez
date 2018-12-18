@@ -10,28 +10,41 @@
                     <div id="sidebar">
                         <h2>@lang('structure.title')</h2>
 
-                        <a href="{{ route('structure.create', $organization) }}" class="btn btn-primary btn-xs">
-                            <i class="fa fa-plus"></i> @lang('structure.create')
-                        </a>
+                        @if($organization->user_id == auth()->id())
+                            <a href="{{ route('structure.create', $organization) }}" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> @lang('structure.create')
+                            </a>
+                        @endif
 
                         <ul class="list-unstyled">
                             @foreach($structures as $structure)
-                                <li class="{{ ($structure->id == $structures->first()->id ? 'active' : '') }}">
-                                    <a data-toggle="tab" href="#panel{{ $structure->id }}">{{ $structure->name }}</a>
-                                    <a href="{{ route('structure.show', [$organization, $structure]) }}">
-                                        <i class="fa fa-align-justify pull-right"></i>
-                                    </a>
-                                </li>
+                                @if($organization->user_id == auth()->id())
+                                    <li class="{{ ($structure->id == $structures->first()->id ? 'active' : '') }}">
+                                        <a data-toggle="tab" href="#panel{{ $structure->id }}">{{ $structure->name }}</a>
+                                        <a href="{{ route('structure.show', [$organization, $structure]) }}">
+                                            <i class="fa fa-align-justify pull-right"></i>
+                                        </a>
+                                    </li>
+                                @else
+                                    <li class="{{ ($structure->id == $structures->first()->id ? 'active' : '') }}">
+                                        <span>{{ $structure->name }}</span>
+                                        <span>
+                                            <i class="fa fa-align-justify pull-right"></i>
+                                        </span>
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>
                 </div>
 
-                <div class="tab-content">
-                    @foreach($structures as $structure)
-                        @include('structures.partials.employees')
-                    @endforeach
-                </div>
+                @if($organization->user_id == auth()->id())
+                    <div class="tab-content">
+                        @foreach($structures as $structure)
+                            @include('structures.partials.employees')
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
     </div>
