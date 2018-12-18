@@ -10,7 +10,7 @@ class Project extends Model
 {
     use Favoritable;
 
-    protected $fillable = ['user_id', 'team_id', 'structure_id', 'name', 'description', 'icon', 'is_archived', 'deadline_at'];
+    protected $fillable = ['user_id', 'team_id', 'structure_id', 'name', 'description', 'icon', 'is_archived', 'deadline_at', 'project_type'];
 
     protected $dates = ['deadline_at'];
 

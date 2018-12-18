@@ -18,6 +18,10 @@
     <div class="col-sm-9">
         <h2>@lang('structure.projects')</h2>
 
+        <a href="{{ route('projects.create') . '?structure_id=' . $structure->id }}" class="btn btn-primary btn-xs">
+            <i class="fa fa-plus"></i> @lang('projects.create')
+        </a>
+
         <ul class="list-unstyled">
             @foreach($structure->projects as $project)
                 <li>{{ $project->name }}</li>
