@@ -86,13 +86,22 @@ class ProjectsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param ProjectRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ProjectRequest $request)
     {
         if(!$request->get('description')) {
             $request->request->set('description', '');
+        }
+
+        if($request->get('team_id') == 'organization') {
+            $request->request->set('team_id', null);
+            $request->request->set('project_type', 'organization');
+        } elseif ($request->get('team_id')) {
+            $request->request->set('project_type', 'team');
+        } else {
+            $request->request->set('project_type', 'personal');
         }
 
         if($request->get('deadline_at')) {
@@ -136,6 +145,15 @@ class ProjectsController extends Controller
     {
         if(!$request->get('description')) {
             $request->request->set('description', '');
+        }
+
+        if($request->get('team_id') == 'organization') {
+            $request->request->set('team_id', null);
+            $request->request->set('project_type', 'organization');
+        } elseif ($request->get('team_id')) {
+            $request->request->set('project_type', 'team');
+        } else {
+            $request->request->set('project_type', 'personal');
         }
 
         if($request->get('deadline_at')) {
@@ -293,7 +311,7 @@ class ProjectsController extends Controller
     {
         if (request('redirect') == 'my-bookmarks#projects') {
             return redirect(route('my-bookmarks') . '#projects');
-        } elseif (request('team_id')) {
+        } elseif (request('team_id') && request('team_id') != 'organization') {
             return redirect(route('teams.projects') . '#team-' . (int)request('team_id'));
         } elseif (request('structure_id') && $structure = Structure::find(request('structure_id'))) {
             return redirect(route('structure.show', [$structure->organization, $structure]));

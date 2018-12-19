@@ -9,33 +9,36 @@
                 в <a href="{{ route('structure.index', $organization) }}"> {{ $organization->name }}</a>
             </h2>
 
-            <div class="col-sm-2 pull-right">
-                {!! Form::open(['url' => route('structure.destroy', [$organization, $structure]), 'method'=>'delete', 'class' => 'form-delete']) !!}
-                <button type="submit" class="btn btn-danger btn-xs" title="@lang('structure.delete')">
-                    <i class="fa fa-trash"></i> @lang('structure.delete')
-                </button>
-                {!! Form::close() !!}
-            </div>
+            @if(auth()->user()->isOrganizationAdmin($organization))
+                <div class="col-sm-2 pull-right">
+                    {!! Form::open(['url' => route('structure.destroy', [$organization, $structure]), 'method'=>'delete', 'class' => 'form-delete']) !!}
+                    <button type="submit" class="btn btn-danger btn-xs" title="@lang('structure.delete')">
+                        <i class="fa fa-trash"></i> @lang('structure.delete')
+                    </button>
+                    {!! Form::close() !!}
+                </div>
+            @endif
 
             {!! Form::open(['url' => route('structure.update', [$organization, $structure]), 'method'=>'patch']) !!}
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="input-name">@lang('structure.name')</label>
-                        {!! Form::text('name', $structure->name, ['required'=>'required', 'class'=>'form-control', 'id' => 'input-name']) !!}
+            @if(auth()->user()->isOrganizationAdmin($organization))
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="input-name">@lang('structure.name')</label>
+                            {!! Form::text('name', $structure->name, ['required'=>'required', 'class'=>'form-control', 'id' => 'input-name']) !!}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="input-description">@lang('structure.description')</label>
-                        {!! Form::textarea('description', $structure->description, ['id' => 'input-description', 'class'=>'form-control', 'rows' => '5']) !!}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="input-description">@lang('structure.description')</label>
+                            {!! Form::textarea('description', $structure->description, ['id' => 'input-description', 'class'=>'form-control', 'rows' => '5']) !!}
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
             @include('structures.partials.form_users')
 

@@ -26,6 +26,13 @@
                     <label for="team_id">@lang('projects.create-type')</label>
                     <select class="form-control" name="team_id">
                         <option value="">@lang('projects.create-personal')</option>
+
+                        @if(!$team_id && $structure_id)
+                            <option selected value="organization">Проект организации</option>
+                        @else
+                            <option value="organization">Проект организации</option>
+                        @endif
+
                         @foreach($teams as $team)
                             @if($team->id == $team_id)
                                 <option selected
