@@ -18,7 +18,7 @@
 
                         <ul class="list-unstyled">
                             @foreach($structures as $structure)
-                                @if($organization->user_id == auth()->id())
+                                @if($organization->user_id == auth()->id() || $structure->employees()->find(auth()->id()))
                                     <li class="{{ ($structure->id == $structures->first()->id ? 'active' : '') }}">
                                         <a data-toggle="tab" href="#panel{{ $structure->id }}">{{ $structure->name }}</a>
                                         <a href="{{ route('structure.show', [$organization, $structure]) }}">
@@ -38,13 +38,13 @@
                     </div>
                 </div>
 
-                @if($organization->user_id == auth()->id())
-                    <div class="tab-content">
-                        @foreach($structures as $structure)
+                <div class="tab-content">
+                    @foreach($structures as $structure)
+                        @if($organization->user_id == auth()->id() || $structure->employees()->find(auth()->id()))
                             @include('structures.partials.employees')
-                        @endforeach
-                    </div>
-                @endif
+                        @endif
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
