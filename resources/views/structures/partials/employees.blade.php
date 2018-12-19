@@ -4,7 +4,7 @@
     <div class="col-sm-3 employee">
         <h2>@lang('structure.show_users')</h2>
 
-        @if($organization->user_id == auth()->id())
+        @if($organization->user_id == auth()->id() || ($connection && $connection->can_add_user))
             <a href="{{ route('structure.edit', [$organization, $structure]) }}" class="btn btn-primary btn-xs">
                 <i class="fa fa-plus"></i> @lang('structure.add_users')
             </a>
@@ -20,7 +20,7 @@
     <div class="col-sm-9">
         <h2>@lang('structure.projects')</h2>
 
-        @if($organization->user_id == auth()->id())
+        @if($organization->user_id == auth()->id() || ($connection && $connection->can_add_project))
             <a href="{{ route('projects.create') . '?structure_id=' . $structure->id }}" class="btn btn-primary btn-xs">
                 <i class="fa fa-plus"></i> @lang('projects.create')
             </a>
@@ -28,7 +28,12 @@
 
         <ul class="list-unstyled">
             @foreach($structure->projects as $project)
-                <li>{{ $project->name }}</li>
+                @if($organization->user_id == auth()->id() ||
+                    $project->user_id == auth()->id() ||
+                    ($connection && $connection->can_see_all_projects))
+
+                    <li>{{ $project->name }}</li>
+                @endif
             @endforeach
         </ul>
     </div>

@@ -12,6 +12,7 @@ use App\Models\Jobs\Bookmark;
 use App\Models\Jobs\Job;
 use App\Models\Jobs\Skill;
 use App\Models\Message;
+use App\Models\Organization;
 use App\Models\OrganizationUsers;
 use App\Models\Participant;
 use App\Models\RoleUser;
@@ -196,5 +197,23 @@ class User extends Authenticatable
 
     public function isAdmin() {
         return $this->email == config('app.admin_email');
+    }
+
+    public function isOrganizationAdmin(Organization $organization)
+    {
+        if ($organization->user_id == $this->id) {
+            return true;
+        }
+
+        $connection = OrganizationUsers::where('organization_id', $organization->id)
+            ->where('user_id', $this->id)
+            ->where('is_admin', true)
+            ->first();
+
+        if ($connection && $connection->is_admin) {
+            return true;
+        }
+
+        return false;
     }
 }

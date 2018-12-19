@@ -40,7 +40,13 @@
 
                 <div class="tab-content">
                     @foreach($structures as $structure)
-                        @if($organization->user_id == auth()->id() || $structure->employees()->find(auth()->id()))
+                        @php
+                            $connection = \App\Models\StructureUsers::where('structure_id', $structure->id)
+                                ->where('user_id', auth()->id())
+                                ->first();
+                        @endphp
+
+                        @if($organization->user_id == auth()->id() || $connection)
                             @include('structures.partials.employees')
                         @endif
                     @endforeach
