@@ -71,7 +71,7 @@ class Organization extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'organization_users', 'organization_id', 'user_id')
-            ->withPivot('position', 'is_admin', 'is_owner', 'created_at');
+            ->withPivot('position', 'is_admin', 'is_owner', 'is_approved', 'created_at');
     }
 
     function structures()

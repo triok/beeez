@@ -30,6 +30,9 @@ class NotificationTransformer extends Transformer
     {
         $titles = [
             'App\Notifications\TeamUserNotification' => 'Вас приняли в команду',
+            'App\Notifications\OrganizationUserNotification' => 'Вас приняли в организацию',
+            'App\Notifications\OrganizationUserApproveNotification' => 'Пользователь вступил в организацию',
+            'App\Notifications\OrganizationUserRejectNotification' => 'Пользователь отклонил Ваше предложение',
             'App\Notifications\OrganizationNotification' => 'Новая организация',
             'App\Notifications\CvUserNotification' => 'Вы отклинулись на вакансию',
             'App\Notifications\CvAdminNotification' => 'Пользователь откликнулся на вакансию',
@@ -51,6 +54,38 @@ class NotificationTransformer extends Transformer
                 return 'Вас приняли в команду "' . $team->name . '" на должность "' . $notification['data']['position'] . '".';
             } else {
                 return 'Вас приняли в команду.';
+            }
+        }
+
+        if ($notification['type'] == 'App\Notifications\OrganizationUserNotification') {
+            $organization = Organization::find($notification['data']['organization_id']);
+
+            if($organization) {
+                return 'Вас приняли в организацию "' . $organization->name . '" на должность "' . $notification['data']['position'] . '".';
+            } else {
+                return 'Вас приняли в организацию.';
+            }
+        }
+
+        if ($notification['type'] == 'App\Notifications\OrganizationUserApproveNotification') {
+            $organization = Organization::find($notification['data']['organization_id']);
+            $user = User::find($notification['data']['user_id']);
+
+            if($organization) {
+                return 'Пользователь "' . $user->name . '", вступил в "' . $organization->name . '" на должность "' . $notification['data']['position'] . '".';
+            } else {
+                return 'Пользователь вступил в организацию.';
+            }
+        }
+
+        if ($notification['type'] == 'App\Notifications\OrganizationUserRejectNotification') {
+            $organization = Organization::find($notification['data']['organization_id']);
+            $user = User::find($notification['data']['user_id']);
+
+            if($organization) {
+                return 'Пользователь "' . $user->name . '" отклонил Ваше предложение вступить в организацию "' . $organization->name . '" на должность "' . $notification['data']['position'] . '".';
+            } else {
+                return 'Пользователь отклонил Ваше предложение.';
             }
         }
 
@@ -141,15 +176,16 @@ class NotificationTransformer extends Transformer
     {
         $actions = [];
 
-        if ($notification['type'] == 'App\Notifications\TeamUserNotification') {
+        if ($notification['type'] == 'App\Notifications\TeamUserNotification' ||
+            $notification['type'] == 'App\Notifications\OrganizationUserNotification') {
             $actions[] = [
-                'route' => route('notifications.approve'),
+                'route' => route('notifications.approveOrganization'),
                 'title' => 'Принять',
                 'class' => 'btn-success',
             ];
 
             $actions[] = [
-                'route' => route('notifications.reject'),
+                'route' => route('notifications.rejectOrganization'),
                 'title' => 'Отклонить',
                 'class' => 'btn-danger',
             ];

@@ -8,6 +8,7 @@ use App\Mail\NewOrganization;
 use App\Models\Organization;
 use App\Models\OrganizationUsers;
 use App\Notifications\OrganizationNotification;
+use App\Notifications\OrganizationUserNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -202,11 +203,15 @@ class OrganizationsController extends Controller
 
                     unset($connectionIds[$user_id]);
                 } else {
-                    OrganizationUsers::create([
+                    $organizationUser = OrganizationUsers::create([
                         'organization_id' => $organization->id,
                         'user_id' => $user_id,
                         'position' => $connection['position']
                     ]);
+
+                    if ($recipient = User::find($user_id)) {
+                        $recipient->notify(new OrganizationUserNotification($organizationUser));
+                    }
                 }
             }
 
