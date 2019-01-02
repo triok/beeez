@@ -34,7 +34,12 @@ class OrganizationsController extends Controller
      */
     public function my()
     {
-        $organizations = Organization::my()->paginate(request('count', 20));
+        $organizationIds1 = Organization::my()->pluck('id')->toArray();
+        $organizationIds2 = OrganizationUsers::where('user_id', Auth::id())->pluck('organization_id')->toArray();
+
+        $organizationIds = array_merge($organizationIds1, $organizationIds2);
+
+        $organizations = Organization::whereIn('id', $organizationIds)->paginate(request('count', 20));
 
         return view('organizations.my-organizations', compact('organizations'));
     }
