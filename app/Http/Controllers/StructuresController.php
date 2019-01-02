@@ -209,7 +209,7 @@ class StructuresController extends Controller
                     unset($connectionIds[$user_id]);
                 } else {
                     if($isAdmin) {
-                        StructureUsers::create([
+                        $structureUsers = StructureUsers::create([
                             'structure_id' => $structure->id,
                             'user_id' => $user_id,
                             'position' => $connection['position'],
@@ -219,12 +219,20 @@ class StructuresController extends Controller
                             'can_see_all_projects' => isset($connection['can_see_all_projects']),
                             'can_add_user_to_project' => isset($connection['can_add_user_to_project'])
                         ]);
+
+                        if ($recipient = User::find($user_id)) {
+                            $recipient->notify(new StructureUserNotification($structureUsers));
+                        }
                     } else {
-                        StructureUsers::create([
+                        $structureUsers = StructureUsers::create([
                             'structure_id' => $structure->id,
                             'user_id' => $user_id,
                             'position' => $connection['position'],
                         ]);
+
+                        if ($recipient = User::find($user_id)) {
+                            $recipient->notify(new StructureUserNotification($structureUsers));
+                        }
                     }
                 }
             }

@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Models\Cv;
 use App\Models\Jobs\Job;
 use App\Models\Organization;
+use App\Models\Structure;
 use App\Models\Team;
 use App\User;
 
@@ -33,6 +34,9 @@ class NotificationTransformer extends Transformer
             'App\Notifications\OrganizationUserNotification' => 'Вас приняли в организацию',
             'App\Notifications\OrganizationUserApproveNotification' => 'Пользователь вступил в организацию',
             'App\Notifications\OrganizationUserRejectNotification' => 'Пользователь отклонил Ваше предложение',
+            'App\Notifications\StructureUserNotification' => 'Вас приняли в отдел',
+            'App\Notifications\StructureUserApproveNotification' => 'Пользователь вступил в организацию',
+            'App\Notifications\StructureUserRejectNotification' => 'Пользователь отклонил Ваше предложение',
             'App\Notifications\OrganizationNotification' => 'Новая организация',
             'App\Notifications\CvUserNotification' => 'Вы отклинулись на вакансию',
             'App\Notifications\CvAdminNotification' => 'Пользователь откликнулся на вакансию',
@@ -58,34 +62,78 @@ class NotificationTransformer extends Transformer
         }
 
         if ($notification['type'] == 'App\Notifications\OrganizationUserNotification') {
-            $organization = Organization::find($notification['data']['organization_id']);
+            if(isset($notification['data']['organization_id'])) {
+                $organization = Organization::find($notification['data']['organization_id']);
 
-            if($organization) {
-                return 'Вас приняли в организацию "' . $organization->name . '" на должность "' . $notification['data']['position'] . '".';
-            } else {
-                return 'Вас приняли в организацию.';
+                if ($organization) {
+                    return 'Вас приняли в организацию "' . $organization->name . '" на должность "' . $notification['data']['position'] . '".';
+                } else {
+                    return 'Вас приняли в организацию.';
+                }
             }
         }
 
         if ($notification['type'] == 'App\Notifications\OrganizationUserApproveNotification') {
-            $organization = Organization::find($notification['data']['organization_id']);
-            $user = User::find($notification['data']['user_id']);
+            if(isset($notification['data']['organization_id'])) {
+                $organization = Organization::find($notification['data']['organization_id']);
+                $user = User::find($notification['data']['user_id']);
 
-            if($organization) {
-                return 'Пользователь "' . $user->name . '", вступил в "' . $organization->name . '" на должность "' . $notification['data']['position'] . '".';
-            } else {
-                return 'Пользователь вступил в организацию.';
+                if ($organization) {
+                    return 'Пользователь "' . $user->name . '", вступил в "' . $organization->name . '" на должность "' . $notification['data']['position'] . '".';
+                } else {
+                    return 'Пользователь вступил в организацию.';
+                }
             }
         }
 
         if ($notification['type'] == 'App\Notifications\OrganizationUserRejectNotification') {
-            $organization = Organization::find($notification['data']['organization_id']);
-            $user = User::find($notification['data']['user_id']);
+            if(isset($notification['data']['organization_id'])) {
+                $organization = Organization::find($notification['data']['organization_id']);
+                $user = User::find($notification['data']['user_id']);
 
-            if($organization) {
-                return 'Пользователь "' . $user->name . '" отклонил Ваше предложение вступить в организацию "' . $organization->name . '" на должность "' . $notification['data']['position'] . '".';
-            } else {
-                return 'Пользователь отклонил Ваше предложение.';
+                if ($organization) {
+                    return 'Пользователь "' . $user->name . '" отклонил Ваше предложение вступить в организацию "' . $organization->name . '" на должность "' . $notification['data']['position'] . '".';
+                } else {
+                    return 'Пользователь отклонил Ваше предложение.';
+                }
+            }
+        }
+
+        if ($notification['type'] == 'App\Notifications\StructureUserNotification') {
+            if(isset($notification['data']['structure_id'])) {
+                $structure = Structure::find($notification['data']['structure_id']);
+
+                if ($structure) {
+                    return 'Вас приняли в организацию "' . $structure->organization->name . '"->"' . $structure->name . '"  на должность "' . $notification['data']['position'] . '".';
+                } else {
+                    return 'Вас приняли в организацию.';
+                }
+            }
+        }
+
+        if ($notification['type'] == 'App\Notifications\StructureUserApproveNotification') {
+            if(isset($notification['data']['structure_id'])) {
+                $structure = Structure::find($notification['data']['structure_id']);
+                $user = User::find($notification['data']['user_id']);
+
+                if ($structure) {
+                    return 'Пользователь "' . $user->name . '", вступил в "' . $structure->organization->name . '"->"' . $structure->name . '" на должность "' . $notification['data']['position'] . '".';
+                } else {
+                    return 'Пользователь вступил в организацию.';
+                }
+            }
+        }
+
+        if ($notification['type'] == 'App\Notifications\StructureUserRejectNotification') {
+            if(isset($notification['data']['structure_id'])) {
+                $structure = Structure::find($notification['data']['structure_id']);
+                $user = User::find($notification['data']['user_id']);
+
+                if ($structure) {
+                    return 'Пользователь "' . $user->name . '" отклонил Ваше предложение вступить в организацию "' . $structure->organization->name . '"->"' . $structure->name . '" на должность "' . $notification['data']['position'] . '".';
+                } else {
+                    return 'Пользователь отклонил Ваше предложение вступить в организацию.';
+                }
             }
         }
 
@@ -176,8 +224,23 @@ class NotificationTransformer extends Transformer
     {
         $actions = [];
 
-        if ($notification['type'] == 'App\Notifications\TeamUserNotification' ||
-            $notification['type'] == 'App\Notifications\OrganizationUserNotification') {
+        if ($notification['type'] == 'App\Notifications\TeamUserNotification') {
+            $actions[] = [
+                'route' => route('notifications.approve'),
+                'title' => 'Принять',
+                'class' => 'btn-success',
+            ];
+
+            $actions[] = [
+                'route' => route('notifications.reject'),
+                'title' => 'Отклонить',
+                'class' => 'btn-danger',
+            ];
+
+            return $actions;
+        }
+
+        if ($notification['type'] == 'App\Notifications\OrganizationUserNotification') {
             $actions[] = [
                 'route' => route('notifications.approveOrganization'),
                 'title' => 'Принять',
@@ -186,6 +249,22 @@ class NotificationTransformer extends Transformer
 
             $actions[] = [
                 'route' => route('notifications.rejectOrganization'),
+                'title' => 'Отклонить',
+                'class' => 'btn-danger',
+            ];
+
+            return $actions;
+        }
+
+        if ($notification['type'] == 'App\Notifications\StructureUserNotification') {
+            $actions[] = [
+                'route' => route('notifications.approveStructure'),
+                'title' => 'Принять',
+                'class' => 'btn-success',
+            ];
+
+            $actions[] = [
+                'route' => route('notifications.rejectStructure'),
                 'title' => 'Отклонить',
                 'class' => 'btn-danger',
             ];

@@ -179,6 +179,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('notifications/approveOrganization', 'NotificationsController@approveOrganization')->name('notifications.approveOrganization');
     Route::post('notifications/rejectOrganization', 'NotificationsController@rejectOrganization')->name('notifications.rejectOrganization');
 
+    Route::post('notifications/approveStructure', 'NotificationsController@approveStructure')->name('notifications.approveStructure');
+    Route::post('notifications/rejectStructure', 'NotificationsController@rejectStructure')->name('notifications.rejectStructure');
+
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
         if (in_array($locale, \Config::get('app.locales'))) {
