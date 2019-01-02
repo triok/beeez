@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Jobs\Job;
 use App\Models\Organization;
+use App\Models\OrganizationUsers;
 use App\Models\Project;
 use App\Models\Structure;
 use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Transformers;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectsController extends Controller
 {
@@ -74,7 +76,7 @@ class ProjectsController extends Controller
 
         $teams = auth()->user()->allUserTeams()->get();
 
-        $organizations = Organization::where('user_id', auth()->id())->get();
+        $organizations = $this->getOrganizations();
 
         $team_id = request('team_id');
 
@@ -129,7 +131,7 @@ class ProjectsController extends Controller
 
         $teams = auth()->user()->allUserTeams()->get();
 
-        $organizations = Organization::where('user_id', auth()->id())->get();
+        $organizations = $this->getOrganizations();
 
         return view('projects.edit', compact('project', 'icons', 'teams', 'organizations'));
     }
@@ -328,5 +330,15 @@ class ProjectsController extends Controller
         }
 
         return currency_format($totalPrice, currency()->getUserCurrency());
+    }
+
+    private function getOrganizations()
+    {
+        $organizationIds1 = Organization::my()->pluck('id')->toArray();
+        $organizationIds2 = OrganizationUsers::where('user_id', Auth::id())->pluck('organization_id')->toArray();
+
+        $organizationIds = array_merge($organizationIds1, $organizationIds2);
+
+        return Organization::whereIn('id', $organizationIds)->get();
     }
 }

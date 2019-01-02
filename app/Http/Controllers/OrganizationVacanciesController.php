@@ -11,12 +11,6 @@ use Illuminate\Http\Request;
 
 class OrganizationVacanciesController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('organization.owner');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -37,9 +31,12 @@ class OrganizationVacanciesController extends Controller
      *
      * @param Organization $organization
      * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create(Organization $organization)
     {
+        $this->authorize('updateVacancies', $organization);
+
         return view('organizations.vacancies.create', compact('organization'));
     }
 
@@ -49,9 +46,12 @@ class OrganizationVacanciesController extends Controller
      * @param VacancyRequest $request
      * @param Organization $organization
      * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(VacancyRequest $request, Organization $organization)
     {
+        $this->authorize('updateVacancies', $organization);
+
         $vacancy = $organization->vacancies()->create($request->all());
 
         if ($request->get('button') == 'publish') {
@@ -87,24 +87,30 @@ class OrganizationVacanciesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Vacancy $vacancy
      * @param Organization $organization
+     * @param  Vacancy $vacancy
      * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Organization $organization, Vacancy $vacancy)
     {
+        $this->authorize('updateVacancies', $organization);
+
         return view('organizations.vacancies.show', compact('organization', 'vacancy'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Vacancy $vacancy
      * @param Organization $organization
+     * @param  \App\Models\Vacancy $vacancy
      * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Organization $organization, Vacancy $vacancy)
     {
+        $this->authorize('updateVacancies', $organization);
+
         return view('organizations.vacancies.edit', compact('organization', 'vacancy'));
     }
 
@@ -115,9 +121,12 @@ class OrganizationVacanciesController extends Controller
      * @param Organization $organization
      * @param  Vacancy $vacancy
      * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(VacancyRequest $request, Organization $organization, Vacancy $vacancy)
     {
+        $this->authorize('updateVacancies', $organization);
+
         $vacancy = $organization->vacancies()->find($vacancy->id);
 
         if ($vacancy) {
@@ -148,6 +157,8 @@ class OrganizationVacanciesController extends Controller
      */
     public function destroy(Organization $organization, Vacancy $vacancy)
     {
+        $this->authorize('updateVacancies', $organization);
+
         $vacancy = $organization->vacancies()->find($vacancy->id);
 
         if ($vacancy) {
@@ -165,9 +176,12 @@ class OrganizationVacanciesController extends Controller
      * @param Organization $organization
      * @param  Vacancy $vacancy
      * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function publish(Organization $organization, Vacancy $vacancy)
     {
+        $this->authorize('updateVacancies', $organization);
+
         $vacancy = $organization->vacancies()->find($vacancy->id);
 
         if ($vacancy) {

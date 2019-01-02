@@ -10,7 +10,7 @@
     <td>{{ $project->description }}</td>
     <td>{{ $project->jobs()->count() }}/0</td>
     <td class="text-right">
-        @if($project->isOwn())
+        @if($project->isOwn() || auth()->user()->isOrganizationFullAccess($organization))
             {!! Form::open(['url' => route('projects.edit', $project)]) !!}
                 <button type="submit" onclick="" class="btn btn-xs btn-primary" title="@lang('projects.edit')">
                     <i class="fa fa-pencil"></i>
@@ -56,7 +56,7 @@
             {!! Form::close() !!}
         @endif
 
-        @if($project->isOwn())
+        @if($project->isOwn() || auth()->user()->isOrganizationFullAccess($organization))
             {!! Form::open(['url' => route('projects.destroy', $project) . '?structure_id=' . $project->structure_id, 'method'=>'delete', 'class' => 'form-delete']) !!}
             <button type="submit" onclick=""
                     class="btn btn-xs btn-danger"

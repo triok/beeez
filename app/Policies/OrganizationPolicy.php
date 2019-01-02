@@ -35,6 +35,18 @@ class OrganizationPolicy
     }
 
     /**
+     * Determine whether the user can update the organization.
+     *
+     * @param User $user
+     * @param Organization $organization
+     * @return mixed
+     */
+    public function updateVacancies(User $user, Organization $organization)
+    {
+        return $user->isOrganizationFullAccess($organization);
+    }
+
+    /**
      * Determine whether the user can add an admin access to the organization.
      *
      * @param User $user
