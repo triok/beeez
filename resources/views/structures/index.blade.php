@@ -10,15 +10,15 @@
                     <div id="sidebar">
                         <h2>@lang('structure.title')</h2>
 
-                        @if($organization->user_id == auth()->id())
+                        @can('updateStructure', $organization)
                             <a href="{{ route('structure.create', $organization) }}" class="btn btn-primary btn-xs">
                                 <i class="fa fa-plus"></i> @lang('structure.create')
                             </a>
-                        @endif
+                        @endcan
 
                         <ul class="list-unstyled">
                             @foreach($structures as $structure)
-                                @if($organization->user_id == auth()->id() || $structure->employees()->find(auth()->id()))
+                                @if(auth()->user()->isOrganizationFullAccess($organization) || $structure->employees()->find(auth()->id()))
                                     <li class="{{ ($structure->id == $structures->first()->id ? 'active' : '') }}">
                                         <a data-toggle="tab" href="#panel{{ $structure->id }}">{{ $structure->name }}</a>
                                         <a href="{{ route('structure.show', [$organization, $structure]) }}">
@@ -46,7 +46,7 @@
                                 ->first();
                         @endphp
 
-                        @if($organization->user_id == auth()->id() || $connection)
+                        @if(auth()->user()->isOrganizationFullAccess($organization) || $connection)
                             @include('structures.partials.employees')
                         @endif
                     @endforeach
