@@ -206,6 +206,21 @@ class User extends Authenticatable
     }
 
     /**
+     * Determines if user is an Owner of an Organization.
+     *
+     * @param Organization $organization
+     * @return bool
+     */
+    public function isOrganizationOwner(Organization $organization)
+    {
+        if ($organization->user_id == $this->id) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determines if user is an Admin of an Organization.
      *
      * @param Organization $organization
@@ -214,6 +229,10 @@ class User extends Authenticatable
     public function isOrganizationAdmin(Organization $organization)
     {
         if ($this->isOrganizationOwner($organization)) {
+            return true;
+        }
+
+        if ($this->isOrganizationFullAccess($organization)) {
             return true;
         }
 
@@ -235,9 +254,9 @@ class User extends Authenticatable
      * @param Organization $organization
      * @return bool
      */
-    public function isOrganizationOwner(Organization $organization)
+    public function isOrganizationFullAccess(Organization $organization)
     {
-        if ($organization->user_id == $this->id) {
+        if ($this->isOrganizationOwner($organization)) {
             return true;
         }
 

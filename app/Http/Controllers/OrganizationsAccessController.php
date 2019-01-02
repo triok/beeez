@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organization;
-use App\Models\OrganizationUsers;
 
 class OrganizationsAccessController extends Controller
 {
@@ -66,32 +65,21 @@ class OrganizationsAccessController extends Controller
      *
      * @param Organization $organization
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function addAdmin(Organization $organization)
     {
-        if (auth()->id() != $organization->user_id) {
-            flash()->error('Access denied!');
+        $this->authorize('addAdmin', $organization);
 
+        if (!$connection = $this->getOrganizationUser($organization)) {
             return redirect()->back();
         }
 
-        $connection = OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->first();
-
-        if (!$connection) {
-            flash()->error('Access denied!');
-
-            return redirect(route('organizations.show', $organization));
-        }
-
-        OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->update(['is_admin' => true]);
+        $connection->pivot->update(['is_admin' => true]);
 
         flash()->success('Доступ открыт.');
 
-        return redirect(route('organizations.show', $organization));
+        return redirect()->back();
     }
 
     /**
@@ -99,32 +87,65 @@ class OrganizationsAccessController extends Controller
      *
      * @param Organization $organization
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function deleteAdmin(Organization $organization)
     {
-        if (auth()->id() != $organization->user_id) {
-            flash()->error('Access denied!');
+        $this->authorize('addAdmin', $organization);
 
+        if (!$connection = $this->getOrganizationUser($organization)) {
             return redirect()->back();
         }
 
-        $connection = OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->first();
-
-        if (!$connection) {
-            flash()->error('Access denied!');
-
-            return redirect(route('organizations.show', $organization));
-        }
-
-        OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->update(['is_admin' => false]);
+        $connection->pivot->update(['is_admin' => false]);
 
         flash()->success('Доступ закрыт.');
 
-        return redirect(route('organizations.show', $organization));
+        return redirect()->back();
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Organization $organization
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function addFullAccess(Organization $organization)
+    {
+        $this->authorize('addFullAccess', $organization);
+
+        if (!$connection = $this->getOrganizationUser($organization)) {
+            return redirect()->back();
+        }
+
+        $connection->pivot->update(['is_owner' => true]);
+
+        flash()->success('Доступ открыт.');
+
+        return redirect()->back();
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Organization $organization
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function deleteFullAccess(Organization $organization)
+    {
+        $this->authorize('addFullAccess', $organization);
+
+        if (!$connection = $this->getOrganizationUser($organization)) {
+            return redirect()->back();
+        }
+
+        $connection->pivot->update(['is_owner' => false]);
+
+        flash()->success('Доступ закрыт.');
+
+        return redirect()->back();
     }
 
     /**
@@ -149,5 +170,26 @@ class OrganizationsAccessController extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * Check the user exist in the organization.
+     *
+     * @param Organization $organization
+     * @return Organization|bool
+     */
+    private function getOrganizationUser(Organization $organization)
+    {
+        $connection = $organization->users()
+            ->where('user_id', request('user_id'))
+            ->first();
+
+        if ($connection) {
+            return $connection;
+        }
+
+        flash()->error('Пользователь еще не добавлен в организацию!');
+
+        return false;
     }
 }

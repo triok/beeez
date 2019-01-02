@@ -21,4 +21,28 @@ class OrganizationPolicy
     {
         return $user->isOrganizationAdmin($organization);
     }
+
+    /**
+     * Determine whether the user can add an admin access to the organization.
+     *
+     * @param User $user
+     * @param Organization $organization
+     * @return mixed
+     */
+    public function addAdmin(User $user, Organization $organization)
+    {
+        return $user->isOrganizationFullAccess($organization);
+    }
+
+    /**
+     * Determine whether the user can add a fu access to the organization.
+     *
+     * @param User $user
+     * @param Organization $organization
+     * @return mixed
+     */
+    public function addFullAccess(User $user, Organization $organization)
+    {
+        return $user->isOrganizationOwner($organization);
+    }
 }

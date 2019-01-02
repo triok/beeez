@@ -202,8 +202,11 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/organizations/moderation','OrganizationsAccessController@moderation')->name('organizations.moderation');
         Route::post('/organizations/approve/{organization}','OrganizationsAccessController@approve')->name('organizations.approve');
         Route::post('/organizations/reject/{organization}','OrganizationsAccessController@approve')->name('organizations.reject');
+
         Route::post('/organizations/{organization}/addAdmin','OrganizationsAccessController@addAdmin')->name('organizations.addAdmin');
         Route::post('/organizations/{organization}/deleteAdmin','OrganizationsAccessController@deleteAdmin')->name('organizations.deleteAdmin');
+        Route::post('/organizations/{organization}/addFullAccess','OrganizationsAccessController@addFullAccess')->name('organizations.addFullAccess');
+        Route::post('/organizations/{organization}/deleteFullAccess','OrganizationsAccessController@deleteFullAccess')->name('organizations.deleteFullAccess');
 
         Route::get('/organizations/my-organizations','OrganizationsController@my')->name('organizations.my');
         Route::resource('organizations', 'OrganizationsController');
