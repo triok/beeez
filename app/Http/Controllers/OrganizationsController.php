@@ -11,17 +11,10 @@ use App\Notifications\OrganizationNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 
 class OrganizationsController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('organization.approve')->only(['moderation', 'approve', 'reject']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -44,13 +37,6 @@ class OrganizationsController extends Controller
         $organizations = Organization::my()->paginate(request('count', 20));
 
         return view('organizations.my-organizations', compact('organizations'));
-    }
-
-    public function moderation()
-    {
-        $organizations = Organization::moderation()->paginate(request('count', 20));
-
-        return view('organizations.moderation', compact('organizations'));
     }
 
     /**
@@ -187,151 +173,6 @@ class OrganizationsController extends Controller
         }
 
         return redirect(route('organizations.show', $organization));
-    }
-
-    /**
-     * Update a resource in storage.
-     *
-     * @param Organization $organization
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     */
-    public function approve(Organization $organization)
-    {
-        $organization->status = 'approved';
-
-        $organization->save();
-
-        $this->updateNotification($organization);
-
-        flash()->success('Organization approved!');
-
-        return redirect()->back();
-    }
-
-    /**
-     * Update a resource in storage.
-     *
-     * @param Organization $organization
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     */
-    public function reject(Organization $organization)
-    {
-        $organization->status = 'rejected';
-
-        $organization->save();
-
-        $this->updateNotification($organization);
-
-        flash()->success('Organization rejected!');
-
-        return redirect()->back();
-    }
-
-    /**
-     * Update a resource in storage.
-     *
-     * @param Organization $organization
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     */
-    public function addAdmin(Organization $organization)
-    {
-        if (auth()->id() != $organization->user_id) {
-            flash()->error('Access denied!');
-
-            return redirect()->back();
-        }
-
-        $connection = OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->first();
-
-        if (!$connection) {
-            flash()->error('Access denied!');
-
-            return redirect(route('organizations.show', $organization));
-        }
-
-        OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->update(['is_admin' => true]);
-
-        flash()->success('Доступ открыт.');
-
-        return redirect(route('organizations.show', $organization));
-    }
-
-    /**
-     * Update a resource in storage.
-     *
-     * @param Organization $organization
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     */
-    public function deleteAdmin(Organization $organization)
-    {
-        if (auth()->id() != $organization->user_id) {
-            flash()->error('Access denied!');
-
-            return redirect()->back();
-        }
-
-        $connection = OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->first();
-
-        if (!$connection) {
-            flash()->error('Access denied!');
-
-            return redirect(route('organizations.show', $organization));
-        }
-
-        OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->update(['is_admin' => false]);
-
-        flash()->success('Доступ закрыт.');
-
-        return redirect(route('organizations.show', $organization));
-    }
-
-    /**
-     * @param $organization
-     */
-    private function updateNotification($organization)
-    {
-        $notifications = auth()->user()
-            ->notifications()
-            ->where('type', 'App\Notifications\OrganizationNotification')
-            ->get();
-
-
-        foreach ($notifications as $notification) {
-            if ($notification['data']['id'] == $organization->id) {
-                $notification = auth()->user()
-                    ->notifications()
-                    ->find($notification['id']);
-
-                if ($notification) {
-                    $notification->update(['is_archived' => true]);
-                }
-            }
-        }
-    }
-
-    private function userIsOrganizationAdmin($organization)
-    {
-        if (auth()->id() == $organization->user_id) {
-            return true;
-        }
-
-        if ($connection = OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', auth()->id())
-            ->where('is_admin', true)
-            ->first()) {
-
-            return true;
-        }
-
-        return false;
     }
 
     /**
