@@ -4,7 +4,7 @@
     <div class="col-sm-3 employee">
         <h2>@lang('structure.show_users')</h2>
 
-        @if($organization->user_id == auth()->id() || ($connection && $connection->can_add_user))
+        @if(auth()->user()->isOrganizationFullAccess($organization) || ($connection && $connection->can_add_user))
             <a href="{{ route('structure.edit', [$organization, $structure]) }}" class="btn btn-primary btn-xs">
                 <i class="fa fa-plus"></i> @lang('structure.add_users')
             </a>
@@ -20,7 +20,7 @@
     <div class="col-sm-9">
         <h2>@lang('structure.projects')</h2>
 
-        @if($organization->user_id == auth()->id() || ($connection && $connection->can_add_project))
+        @if(auth()->user()->isOrganizationFullAccess($organization) || ($connection && $connection->can_add_project))
             <a href="{{ route('projects.create') . '?structure_id=' . $structure->id }}" class="btn btn-primary btn-xs">
                 <i class="fa fa-plus"></i> @lang('projects.create')
             </a>

@@ -22,7 +22,7 @@
                                     ->first();
                             @endphp
 
-                            @if($organization->user_id == auth()->id() || ($connection && $connection->can_add_project))
+                            @if(auth()->user()->isOrganizationFullAccess($organization) || ($connection && $connection->can_add_project))
                                 <a href="{{ route('projects.create') }}?structure_id={{ $structure->id }}"
                                    class="btn btn-primary btn-block">
 

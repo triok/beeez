@@ -55,12 +55,14 @@
 
                             @foreach($organizations as $organization)
                                 @foreach($organization->structures as $structure)
-                                    @if($structure->id == $structure_id)
-                                        <option selected
-                                                value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
-                                    @else
-                                        <option value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
-                                    @endif
+                                    @can('updateStructure', $organization)
+                                        @if($structure->id == $structure_id)
+                                            <option selected
+                                                    value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
+                                        @else
+                                            <option value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
+                                        @endif
+                                    @endcan
                                 @endforeach
                             @endforeach
                         </select>
@@ -76,6 +78,12 @@
                     <input name="deadline_at" class="form-control timepicker" type="text"
                            value="{{ old('deadline_at') }}" autocomplete="off"/>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                @include('projects.partials.form_users')
             </div>
         </div>
 

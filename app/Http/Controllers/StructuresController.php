@@ -16,12 +16,6 @@ use Illuminate\Support\Facades\Validator;
 
 class StructuresController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('structure')->except(['index', 'show']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -57,10 +51,13 @@ class StructuresController extends Controller
      *
      * @param Organization $organization
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create(Organization $organization)
     {
-        $users = User::where('id', '!=', auth()->id())->get();
+        $this->authorize('updateStructure', $organization);
+
+        $users = User::where('id', '!=', $organization->user_id)->get();
 
         return view('structures.create', compact('organization', 'users'));
     }
@@ -75,6 +72,8 @@ class StructuresController extends Controller
      */
     public function store(Request $request, Organization $organization)
     {
+        $this->authorize('updateStructure', $organization);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
         ]);
@@ -101,9 +100,12 @@ class StructuresController extends Controller
      * @param Organization $organization
      * @param Structure $structure
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Organization $organization, Structure $structure)
     {
+        $this->authorize('updateStructure', $organization);
+
         $connections = StructureUsers::where('structure_id', $structure->id)->get();
 
         $users = User::where('id', '!=', auth()->id())->get();
@@ -122,6 +124,8 @@ class StructuresController extends Controller
      */
     public function update(Request $request, Organization $organization, Structure $structure)
     {
+        $this->authorize('updateStructure', $organization);
+
         if(Auth::user()->isOrganizationAdmin($organization)) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:200',
@@ -156,6 +160,8 @@ class StructuresController extends Controller
      */
     public function destroy(Organization $organization, Structure $structure)
     {
+        $this->authorize('updateStructure', $organization);
+
         StructureUsers::where('structure_id', $structure->id)->delete();
 
         $structure->delete();
@@ -203,7 +209,7 @@ class StructuresController extends Controller
                     unset($connectionIds[$user_id]);
                 } else {
                     if($isAdmin) {
-                        StructureUsers::create([
+                        $structureUsers = StructureUsers::create([
                             'structure_id' => $structure->id,
                             'user_id' => $user_id,
                             'position' => $connection['position'],
@@ -213,12 +219,20 @@ class StructuresController extends Controller
                             'can_see_all_projects' => isset($connection['can_see_all_projects']),
                             'can_add_user_to_project' => isset($connection['can_add_user_to_project'])
                         ]);
+
+                        if ($recipient = User::find($user_id)) {
+                            $recipient->notify(new StructureUserNotification($structureUsers));
+                        }
                     } else {
-                        StructureUsers::create([
+                        $structureUsers = StructureUsers::create([
                             'structure_id' => $structure->id,
                             'user_id' => $user_id,
                             'position' => $connection['position'],
                         ]);
+
+                        if ($recipient = User::find($user_id)) {
+                            $recipient->notify(new StructureUserNotification($structureUsers));
+                        }
                     }
                 }
             }
