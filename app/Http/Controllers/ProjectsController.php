@@ -7,8 +7,11 @@ use App\Models\Jobs\Job;
 use App\Models\Organization;
 use App\Models\OrganizationUsers;
 use App\Models\Project;
+use App\Models\ProjectUsers;
 use App\Models\Structure;
+use App\Models\StructureUsers;
 use App\Models\Team;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Transformers;
@@ -53,7 +56,7 @@ class ProjectsController extends Controller
                 ->where('id', $project->team_id)
                 ->get();
 
-            if(!$team) {
+            if (!$team) {
                 flash()->error('Access denied!');
 
                 return $this->getRedirectRoute();
@@ -69,6 +72,7 @@ class ProjectsController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function create()
     {
@@ -82,7 +86,15 @@ class ProjectsController extends Controller
 
         $structure_id = request('structure_id');
 
-        return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structure_id'));
+        $users = [];
+
+        if($structure = Structure::find($structure_id)) {
+            $userIds = StructureUsers::where('structure_id', $structure_id)->pluck('user_id')->toArray();
+
+            $users = User::whereIn('id', $userIds)->get();
+        }
+
+        return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structure_id', 'users'));
     }
 
     /**
@@ -93,11 +105,11 @@ class ProjectsController extends Controller
      */
     public function store(ProjectRequest $request)
     {
-        if(!$request->get('description')) {
+        if (!$request->get('description')) {
             $request->request->set('description', '');
         }
 
-        if($request->get('team_id') == 'organization') {
+        if ($request->get('team_id') == 'organization') {
             $request->request->set('team_id', null);
             $request->request->set('project_type', 'organization');
         } elseif ($request->get('team_id')) {
@@ -106,13 +118,15 @@ class ProjectsController extends Controller
             $request->request->set('project_type', 'personal');
         }
 
-        if($request->get('deadline_at')) {
+        if ($request->get('deadline_at')) {
             $request->merge([
                 'deadline_at' => Carbon::createFromFormat('d.m.Y H:i', $request->get('deadline_at'))->format('Y-m-d H:i:s')
             ]);
         }
 
-        auth()->user()->addProject($request->all());
+        $project = auth()->user()->addProject($request->all());
+
+        $this->addConnection($request, $project);
 
         flash()->success('Project saved!');
 
@@ -133,23 +147,34 @@ class ProjectsController extends Controller
 
         $organizations = $this->getOrganizations();
 
-        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations'));
+        $connections = ProjectUsers::where('project_id', $project->id)->get();
+
+        $users = [];
+
+        if($structure = Structure::find($project->structure_id)) {
+            $userIds = StructureUsers::where('structure_id', $project->structure_id)->pluck('user_id')->toArray();
+
+            $users = User::whereIn('id', $userIds)->get();
+        }
+
+        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations', 'users', 'connections'));
     }
 
     /**
      * Update a resource in storage.
      *
-     * @param Request $request
+     * @param ProjectRequest $request
      * @param Project $project
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
      */
     public function update(ProjectRequest $request, Project $project)
     {
-        if(!$request->get('description')) {
+        if (!$request->get('description')) {
             $request->request->set('description', '');
         }
 
-        if($request->get('team_id') == 'organization') {
+        if ($request->get('team_id') == 'organization') {
             $request->request->set('team_id', null);
             $request->request->set('project_type', 'organization');
         } elseif ($request->get('team_id')) {
@@ -158,13 +183,15 @@ class ProjectsController extends Controller
             $request->request->set('project_type', 'personal');
         }
 
-        if($request->get('deadline_at')) {
+        if ($request->get('deadline_at')) {
             $request->merge([
                 'deadline_at' => Carbon::createFromFormat('d.m.Y H:i', $request->get('deadline_at'))->format('Y-m-d H:i:s')
             ]);
         }
 
         $project->update($request->all());
+
+        $this->addConnection($request, $project);
 
         flash()->success('Project updated!');
 
@@ -322,10 +349,11 @@ class ProjectsController extends Controller
         }
     }
 
-    protected function getTotalPrice(Project $project) {
+    protected function getTotalPrice(Project $project)
+    {
         $totalPrice = $project->jobs()->sum('price');
 
-        if(currency()->getUserCurrency() != currency()->config('default')) {
+        if (currency()->getUserCurrency() != currency()->config('default')) {
             $totalPrice = currency($totalPrice, currency()->config('default'), currency()->getUserCurrency(), false);
         }
 
@@ -340,5 +368,40 @@ class ProjectsController extends Controller
         $organizationIds = array_merge($organizationIds1, $organizationIds2);
 
         return Organization::whereIn('id', $organizationIds)->get();
+    }
+
+    /**
+     * Add connections.
+     *
+     * @param Request $request
+     * @param Project $project
+     * @throws \Exception
+     */
+    protected function addConnection(Request $request, Project $project)
+    {
+        if ($request->has('connections')) {
+            $connectionIds = ProjectUsers::where('project_id', $project->id)
+                ->pluck('project_id', 'user_id')
+                ->toArray();
+
+            foreach ($request->get('connections') as $user_id => $connection) {
+                if (isset($connectionIds[$user_id])) {
+                    unset($connectionIds[$user_id]);
+                } else {
+                    ProjectUsers::create([
+                        'project_id' => $project->id,
+                        'user_id' => $user_id
+                    ]);
+                }
+            }
+
+            foreach ($connectionIds as $user_id => $position) {
+                ProjectUsers::where('project_id', $project->id)
+                    ->where('user_id', $user_id)
+                    ->delete();
+            }
+        } else {
+            ProjectUsers::where('structure_id', $project->id)->delete();
+        }
     }
 }
