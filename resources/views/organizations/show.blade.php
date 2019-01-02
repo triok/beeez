@@ -10,10 +10,10 @@
                     <span><i class="fa fa-arrow-left"></i> @lang('organizations.back_to_list')</span>
                 </a>
 
-                @if($userIsAdmin)
-                <a href="{{ route('organizations.edit', $organization) }}" class="btn btn-default btn-xs pull-right">
-                    <i class="fa fa-pencil"></i> @lang('organizations.edit')
-                </a>
+                @can('update', $organization)
+                    <a href="{{ route('organizations.edit', $organization) }}" class="btn btn-default btn-xs pull-right">
+                        <i class="fa fa-pencil"></i> @lang('organizations.edit')
+                    </a>
                 @endif
 
                 @if(auth()->user()->email == config('organization.admin') && $organization->status == 'moderation')
@@ -27,11 +27,11 @@
                 @endif
             </div>
 
-            @if(auth()->user()->isAdmin() || $organization->user_id == auth()->id())
+            @can('update', $organization)
                 @include('organizations.partials.owner-info')
             @else
                 @include('organizations.partials.guest-info')
-            @endif
+            @endcan
         </div>
     </div>
 </div>    

@@ -159,19 +159,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/teams/{team}/unfavorite', 'TeamsController@unfavorite')->name('teams.unfavorite');
     Route::resource('teams', 'TeamsController');
 
-    Route::get('/organizations/my-organizations','OrganizationsController@my')->name('organizations.my');
-    Route::get('/organizations/moderation','OrganizationsController@moderation')->name('organizations.moderation');
-    Route::post('/organizations/approve/{organization}','OrganizationsController@approve')->name('organizations.approve');
-    Route::post('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
-    Route::post('/organizations/{organization}/addAdmin','OrganizationsController@addAdmin')->name('organizations.addAdmin');
-    Route::post('/organizations/{organization}/deleteAdmin','OrganizationsController@deleteAdmin')->name('organizations.deleteAdmin');
-    Route::resource('organizations', 'OrganizationsController');
-
-    Route::resource('/organizations/{organization}/structure', 'StructuresController');
-
-    Route::resource('/organizations/{organization}/vacancies', 'OrganizationVacanciesController', ['as' => 'organizations']);
-    Route::patch('/organizations/{organization}/vacancies/{vacancy}/publish', 'OrganizationVacanciesController@publish')->name('organizations.vacancies.publish');
-
     Route::resource('/vacancies', 'VacanciesController', ['only' => ['index', 'show']]);
     Route::post('/vacancies/{vacancy}/favorite', 'VacanciesController@favorite')->name('vacancies.favorite');
     Route::post('/vacancies/{vacancy}/unfavorite', 'VacanciesController@unfavorite')->name('vacancies.unfavorite');
@@ -209,6 +196,21 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('/', ['as' => 'messages.store', 'uses' => 'MessagesController@store']);
         Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessagesController@show']);
         Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
+    });
+
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/organizations/my-organizations','OrganizationsController@my')->name('organizations.my');
+        Route::get('/organizations/moderation','OrganizationsController@moderation')->name('organizations.moderation');
+        Route::post('/organizations/approve/{organization}','OrganizationsController@approve')->name('organizations.approve');
+        Route::post('/organizations/reject/{organization}','OrganizationsController@approve')->name('organizations.reject');
+        Route::post('/organizations/{organization}/addAdmin','OrganizationsController@addAdmin')->name('organizations.addAdmin');
+        Route::post('/organizations/{organization}/deleteAdmin','OrganizationsController@deleteAdmin')->name('organizations.deleteAdmin');
+        Route::resource('organizations', 'OrganizationsController');
+
+        Route::resource('/organizations/{organization}/structure', 'StructuresController');
+
+        Route::resource('/organizations/{organization}/vacancies', 'OrganizationVacanciesController', ['as' => 'organizations']);
+        Route::patch('/organizations/{organization}/vacancies/{vacancy}/publish', 'OrganizationVacanciesController@publish')->name('organizations.vacancies.publish');
     });
 });
 

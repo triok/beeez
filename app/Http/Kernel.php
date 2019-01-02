@@ -65,10 +65,8 @@ class Kernel extends HttpKernel
         'ability' => \Laratrust\Middleware\LaratrustAbility::class,
 
         'project.owner' => \App\Http\Middleware\ProjectOwner::class,
-        'team.admin' => \App\Http\Middleware\TeamAdmin::class,
-        'organization.owner' => \App\Http\Middleware\OrganizationOwner::class,
         'structure' => \App\Http\Middleware\StructureAccess::class,
-        'organization.admin' => \App\Http\Middleware\OrganizationAdmin::class,
+        'organization.approve' => \App\Http\Middleware\OrganizationApprove::class,
         'admin' => \App\Http\Middleware\IsAdmin::class,
     ];
 }

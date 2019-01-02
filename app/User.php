@@ -167,6 +167,12 @@ class User extends Authenticatable
             ->orWhereIn('id', $projectIds);
     }
 
+    // todo: fix "2"
+    public function organizations2()
+    {
+        return $this->hasMany(Organization::class);
+    }
+
     public function organizations()
     {
         return $this->hasMany(OrganizationUsers::class)
@@ -199,9 +205,15 @@ class User extends Authenticatable
         return $this->email == config('app.admin_email');
     }
 
+    /**
+     * Determines if user is an Admin of an Organization.
+     *
+     * @param Organization $organization
+     * @return bool
+     */
     public function isOrganizationAdmin(Organization $organization)
     {
-        if ($organization->user_id == $this->id) {
+        if ($this->isOrganizationOwner($organization)) {
             return true;
         }
 
@@ -211,6 +223,30 @@ class User extends Authenticatable
             ->first();
 
         if ($connection && $connection->is_admin) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines if user is an Owner of an Organization.
+     *
+     * @param Organization $organization
+     * @return bool
+     */
+    public function isOrganizationOwner(Organization $organization)
+    {
+        if ($organization->user_id == $this->id) {
+            return true;
+        }
+
+        $connection = OrganizationUsers::where('organization_id', $organization->id)
+            ->where('user_id', $this->id)
+            ->where('is_owner', true)
+            ->first();
+
+        if ($connection && $connection->is_owner) {
             return true;
         }
 

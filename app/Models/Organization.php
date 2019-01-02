@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class Organization extends Model
@@ -69,7 +70,8 @@ class Organization extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'organization_users');
+        return $this->belongsToMany(User::class, 'organization_users', 'organization_id', 'user_id')
+            ->withPivot('position', 'is_admin', 'is_owner', 'created_at');
     }
 
     function structures()

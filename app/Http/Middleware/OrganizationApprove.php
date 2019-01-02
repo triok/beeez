@@ -3,8 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
-class OrganizationAdmin
+class OrganizationApprove
 {
     /**
      * Handle an incoming request.
@@ -15,7 +16,7 @@ class OrganizationAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->email != config('organization.admin')) {
+        if (Auth::user()->email != config('app.admin_email')) {
             flash()->error('Access denied!');
 
             return redirect(route('organizations.index'));

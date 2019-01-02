@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrganizationStoreRequest;
+use App\Http\Requests\OrganizationUpdateRequest;
 use App\Mail\NewOrganization;
 use App\Models\Organization;
 use App\Models\OrganizationUsers;
 use App\Notifications\OrganizationNotification;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,9 +19,7 @@ class OrganizationsController extends Controller
 {
     function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('organization.owner')->only(['edit', 'update', 'destroy']);
-        $this->middleware('organization.admin')->only(['moderation', 'approve', 'reject']);
+        $this->middleware('organization.approve')->only(['moderation', 'approve', 'reject']);
     }
 
     /**
@@ -59,11 +61,9 @@ class OrganizationsController extends Controller
      */
     public function show(Organization $organization)
     {
-        $userIsAdmin = $this->userIsOrganizationAdmin($organization);
+        $connections = $organization->users;
 
-        $connections = OrganizationUsers::where('organization_id', $organization->id)->get();
-
-        return view('organizations.show', compact('organization', 'connections', 'userIsAdmin'));
+        return view('organizations.show', compact('organization', 'connections'));
     }
 
     /**
@@ -81,40 +81,17 @@ class OrganizationsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param OrganizationStoreRequest $request
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function store(Request $request)
+    public function store(OrganizationStoreRequest $request)
     {
-        $rules = [
-            'name'           => 'required|max:200',
-            'ownership'      => 'required|max:200',
-            'ohrn'           => 'required|digits_between:13,15|integer|unique:organizations',
-            'inn'            => 'required|digits_between:10,12|integer|unique:organizations',
-            'bic'            => 'nullable|digits:9|integer',
-            'curaccount'     => 'nullable|digits:20|integer',
-            'coraccount'     => 'nullable|digits:20|integer',                       
-            'kpp'            => 'required_if:ownership,"organization"|nullable|digits:9|integer',
-            'contact_person' => 'required|max:200',
-            'email'          => 'required|email|max:200',
-            'slug'           => 'required|unique:organizations',
-            'logo'           => 'nullable|image|mimes:jpeg,jpg,png,gif',
-        ];
-
         $attributes = $request->all();
 
         $attributes['slug'] = str_slug($request->get('name', ''));
 
-        $validator = Validator::make($attributes, $rules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $attributes['user_id'] = auth()->user()->id;
-
-        $organization = Organization::create($attributes);
+        $organization = Auth::user()->organizations2()->create($attributes);
 
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
             $organization->addLogo($request->file('logo'));
@@ -131,13 +108,13 @@ class OrganizationsController extends Controller
             }
         }
 
-        $admin = User::where('email', config('organization.admin'))->first();
+        $admin = User::where('email', config('app.admin_email'))->first();
 
-        if($admin) {
+        if ($admin) {
             $admin->notify(new OrganizationNotification($organization));
         }
 
-        Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
+        Mail::to(config('app.admin_email'))->send(new NewOrganization($organization));
 
         flash()->success("Ваше заявление на регистрацию компании принято и поступило на модерацию");
 
@@ -149,9 +126,12 @@ class OrganizationsController extends Controller
      *
      * @param Organization $organization
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Organization $organization)
     {
+        $this->authorize('update', $organization);
+
         $connections = OrganizationUsers::where('organization_id', $organization->id)->get();
 
         $users = User::all();
@@ -162,26 +142,14 @@ class OrganizationsController extends Controller
     /**
      * Update a resource in storage.
      *
-     * @param Request $request
+     * @param OrganizationUpdateRequest $request
      * @param Organization $organization
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Organization $organization)
+    public function update(OrganizationUpdateRequest $request, Organization $organization)
     {
-        $rules = [
-            'ownership' => 'required|max:200',
-            'inn' => 'required|max:200',
-            'contact_person' => 'required|max:200',
-            'email' => 'required|max:200',
-            'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        $this->authorize('update', $organization);
 
         $organization->update($request->all());
 
@@ -211,7 +179,7 @@ class OrganizationsController extends Controller
         }
 
         if ($organization->status == 'moderation') {
-            Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
+            Mail::to(config('app.admin_email'))->send(new NewOrganization($organization));
 
             flash()->success("Ваше заявление на регистрацию компании принято и поступило на модерацию");
         } else {
@@ -328,7 +296,8 @@ class OrganizationsController extends Controller
     /**
      * @param $organization
      */
-    private function updateNotification($organization) {
+    private function updateNotification($organization)
+    {
         $notifications = auth()->user()
             ->notifications()
             ->where('type', 'App\Notifications\OrganizationNotification')
@@ -336,12 +305,12 @@ class OrganizationsController extends Controller
 
 
         foreach ($notifications as $notification) {
-            if($notification['data']['id'] == $organization->id) {
+            if ($notification['data']['id'] == $organization->id) {
                 $notification = auth()->user()
                     ->notifications()
                     ->find($notification['id']);
 
-                if($notification) {
+                if ($notification) {
                     $notification->update(['is_archived' => true]);
                 }
             }

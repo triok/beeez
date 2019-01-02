@@ -135,11 +135,11 @@
                             @foreach($connections as $connection)
                                 <tr>
                                     <td>
-                                        <a href="{{ route('peoples.show', $connection->user) }}">{{ $connection->user->name }}</a>
+                                        <a href="{{ route('peoples.show', $connection) }}">{{ $connection->name }}</a>
                                     </td>
-                                    <td>{{ $connection->position }}</td>
-                                    <td>
-                                        {{ \Carbon\Carbon::parse($connection->created_at)->format('d M, Y') }}
+                                    <td>{{ $connection->pivot->position }}</td>
+                                    <td class="date-full">
+                                        {{ $connection->pivot->created_at }}
                                     </td>
                                     <td class="text-right">
                                         @if($connection->user_id != $organization->user_id)
