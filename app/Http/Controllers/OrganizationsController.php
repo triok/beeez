@@ -98,8 +98,10 @@ class OrganizationsController extends Controller
             'kpp'            => 'required_if:ownership,"organization"|nullable|digits:9|integer',
             'contact_person' => 'required|max:200',
             'email'          => 'required|email|max:200',
+            'description'    => 'nullable|max:2000',
             'slug'           => 'required|unique:organizations',
             'logo'           => 'nullable|image|mimes:jpeg,jpg,png,gif',
+
         ];
 
         $attributes = $request->all();

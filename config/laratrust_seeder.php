@@ -21,6 +21,7 @@ return [
             'job-categories' => 'c,r,u,d',
             'job-skills' => 'c,r,u,d',
             'job-applications' => 'c,r,u,d',
+            'jobs-manager' => 'c,r,u,d',
             'application-message' => 'c,r,u,d',
             'profile' => 'r,u'
         ],

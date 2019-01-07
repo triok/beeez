@@ -10,7 +10,7 @@
         $("#{{$elem}}").tokenInput("{{$path}}",{
             preventDuplicates: true,
             minChars: 2,
-            tokenLimit: 20
+            tokenLimit: 20,
         });
     });
 </script>

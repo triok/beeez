@@ -74,7 +74,7 @@
                     </tbody>
                 </table>
             @else
-                @lang('projects.teamnoprojects')
+                @lang('projects.nofavprojects')
             @endif
         </div>
 
@@ -103,7 +103,7 @@
                     </tbody>
                 </table>
             @else
-                @lang('projects.teamnoprojects')
+                @lang('projects.nocompprojects')
             @endif
         </div>
     </div>

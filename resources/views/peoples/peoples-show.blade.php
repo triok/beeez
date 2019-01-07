@@ -89,6 +89,7 @@
                                                     @endforeach
                                                     </tbody>
                                                 </table>
+                                                <p class="pull-right"><i class="fa fa-globe" aria-hidden="true"></i> <small >Указано местно время</small></p>
                                             </td>
                                         </tr>
                                     @endif

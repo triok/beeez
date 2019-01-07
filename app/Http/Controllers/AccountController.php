@@ -93,9 +93,13 @@ class AccountController extends Controller
             auth()->user()->updateAvatar($request->file('avatar'));
         }
 
+        $id = Auth::user()->id;
+
         $rules = [
-            'bio'   => 'required',
+            'bio'   => 'nullable|max:2000',
             'avatar' => 'nullable|image|mimes:jpeg,jpg,png,gif',
+            'name' => 'required|max:50',
+            'email' => 'required|email|unique:users,email,' . $id,
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -104,6 +108,8 @@ class AccountController extends Controller
         }
         /** @var User $user */
         $user = auth()->user();
+        $user->email = $request->email;
+        $user->name = $request->name;
         $user->bio = $request->bio;
         $user->country = $request->country;
         $user->city = $request->city;

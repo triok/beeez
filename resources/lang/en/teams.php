@@ -11,6 +11,8 @@ return [
     'actions'  => 'Actions',
     'create' => 'Create team',        
     'search' => 'Enter name...',
+    'navigation' => 'Navigation',
+    'list' => 'List of teams',    
 
     // My teams
     'title_myteams' => 'My teams',

@@ -12480,10 +12480,10 @@ section.other-jobs a.delete {
   margin-right: 2px;
 }
 #team-type-filter {
-  background: #f3f3f3;
   box-shadow: none;
   border-radius: 0px;
 }
+
 #teams-projects .tab-content {
   margin-top: 20px;
 }
@@ -12647,35 +12647,6 @@ section.other-jobs a.delete {
 .task-list ol li:before {
   margin-right: 20px;
 }
-input[type="checkbox"] + .label-text:before{
-  content: "\f0c8";
-  font-family: "Font Awesome 5 Free";
-  speak: none;
-  font-style: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing:antialiased;
-  width: 1em;
-  display: inline-block;
-  margin-right: 5px;
-}
-
-input[type="checkbox"]:checked + .label-text:before{
-  content: "\f14a";
-  color: #2980b9;
-  animation: effect 250ms ease-in;
-  font-weight: 900;
-}
-
-input[type="checkbox"]:disabled + .label-text{
-  color: #aaa;
-}
-
-input[type="checkbox"]:disabled + .label-text:before{
-  content: "\f0c8";
-  color: #ccc;
-}
 /*Design Grey*/
 #app {
   background: #e5e6e6;
@@ -12711,3 +12682,50 @@ input[type="checkbox"]:disabled + .label-text:before{
   border-radius: 5px;
 }
 /*Design Grey*/
+/*custom checkbox styles*/
+label{
+  position: relative;
+  cursor: pointer;
+  color: #666;
+}
+input[type="checkbox"], input[type="radio"]{
+  position: absolute;
+  right: 9000px;
+}
+/*Check box*/
+input[type="checkbox"] + .label-text:before{
+  content: "\f096";
+  font-family: "FontAwesome";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing:antialiased;
+  width: 1em;
+  display: inline-block;
+  margin-right: 5px;
+}
+input[type="checkbox"]:checked + .label-text:before{
+  content: "\f14a";
+  color: #48b0a5;
+  animation: effect 250ms ease-in;
+}
+input[type="checkbox"]:disabled + .label-text{
+  color: #aaa;
+}
+input[type="checkbox"]:disabled + .label-text:before{
+  content: "\f0c8";
+  color: #ccc;
+}
+@keyframes effect{
+  0%{transform: scale(0);}
+  25%{transform: scale(1.3);}
+  75%{transform: scale(1.4);}
+  100%{transform: scale(1);}
+}
+/*end*/
+.test li {
+  padding: 5px;
+}

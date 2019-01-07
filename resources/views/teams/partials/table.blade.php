@@ -1,5 +1,5 @@
 @include('teams.partials.actions-template')
-
+<h2>@lang('teams.list')</h2>
 <table class="table table-responsive table-full-width table-peoples table-hover table-search" id="teams-table" style="width: 100%;">
     <thead>
     <tr>

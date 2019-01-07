@@ -11,6 +11,8 @@ return [
     'actions'  => 'Действия',
     'create' => 'Создать команду',
     'search' => 'Введите название...',
+    'navigation' => 'Навигация',
+    'list' => 'Список команд',
 
     // My teams
     'title_myteams' => 'Мои команды',

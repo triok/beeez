@@ -14,6 +14,7 @@
                     </div>                    
                 </div>
                 <div class="base-wrapper">
+                    <h2>@lang('teams.navigation')</h2>
                     <div class="search">
                         <input type="text" class="form-control" id="team_search" placeholder="@lang('teams.search')">
                         <i class="fa fa-search" aria-hidden="true"></i>
@@ -28,7 +29,7 @@
                                            value="{{ $key }}"
                                            id="input-team-type-{{ $key }}">
 
-                                    <label class="form-check-label" for="input-team-type-{{ $key }}">
+                                    <label class="form-check-label label-text" for="input-team-type-{{ $key }}">
                                         {{ $value }}
                                     </label>
                                 </div>                                

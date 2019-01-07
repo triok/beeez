@@ -9,7 +9,7 @@
         <div class="col-xs-6">
             <div class="base-wrapper team-projects">
                 <h2>Команда: {{ $team->name }}</h2>
-                <div class="pull-right"><a href="{{ ($team->slug) }}">О компании</a></div>
+                <div class="pull-right"><a href="{{ ($team->slug) }}">Информация</a></div>
                 <div><p><span>Администратор:</span> <span><a href="{{ route('peoples.show', $AdminName->id) }}">{{ $AdminName->username }}</a></span></p></div>
                 <hr>
                 <h3>Проекты:</h3>

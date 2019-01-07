@@ -29,7 +29,7 @@
                         @foreach($teams as $team)
                             @if($team->id == $team_id)
                                 <option selected
-                                        value="{{ $team->id }}">@lang('projects.inteam') {{ $team->name }}</option>
+                                        value="{{ $team->id }}">@lang('projects.create-inteam') {{ $team->name }}</option>
                             @else
                                 <option value="{{ $team->id }}">@lang('projects.create-inteam') {{ $team->name }}</option>
                             @endif
