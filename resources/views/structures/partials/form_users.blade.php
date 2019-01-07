@@ -45,6 +45,16 @@
                             <input name="connections[{{ $connection->user_id }}][position]" type="text"
                                    value="{{ $connection->position }}" class="form-control">
                         </td>
+
+                        @if($organization->user_id == auth()->id())
+                            <td class="text-right">
+                                <button type="button" onclick="$('#user-access-{{ $connection->user_id }}').attr('class', '')"
+                                        class="btn btn-default btn-sm">
+                                    <i aria-hidden="true" class="fa fa-key {{ ($connection->isAccess() ? 'text-danger' : '') }}"></i>
+                                </button>
+                            </td>
+                        @endif
+
                         @if($connection->user_id != $structure->user_id)
                         <td class="text-right">
                             <button type="button" onclick="deleteUser({{ $connection->user_id }})"
@@ -54,6 +64,39 @@
                         </td>
                         @endif
                     </tr>
+                    @if($organization->user_id == auth()->id())
+                        <tr class="hidden" id="user-access-{{ $connection->user_id }}">
+                            <td colspan="4">
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="connections[{{ $connection->user_id }}][can_add_user]" value="1"
+                                                {{ ($connection->can_add_user ? 'checked' : '') }}>
+                                        Может добавить других пользователей в этот отдел.
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="connections[{{ $connection->user_id }}][can_add_project]" value="1"
+                                                {{ ($connection->can_add_project ? 'checked' : '') }}>
+                                        Может создать проект в этом отделе.
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="connections[{{ $connection->user_id }}][can_add_job]" value="1"
+                                                {{ ($connection->can_add_job ? 'checked' : '') }}>
+                                        Может создать задания в этих проектах.
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="connections[{{ $connection->user_id }}][can_see_all_projects]" value="1"
+                                                {{ ($connection->can_see_all_projects ? 'checked' : '') }}>
+                                        Может видеть все проекты своего отдела.
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="connections[{{ $connection->user_id }}][can_add_user_to_project]" value="1"
+                                                {{ ($connection->can_add_user_to_project ? 'checked' : '') }}>
+                                        Может добавить пользователя из своего отдела в проект.
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
                 @endforeach
             @endif
             </tbody>

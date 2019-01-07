@@ -10,13 +10,18 @@ class Project extends Model
 {
     use Favoritable;
 
-    protected $fillable = ['user_id', 'team_id', 'structure_id', 'name', 'description', 'icon', 'is_archived', 'deadline_at'];
+    protected $fillable = ['user_id', 'team_id', 'structure_id', 'name', 'description', 'icon', 'is_archived', 'deadline_at', 'project_type'];
 
     protected $dates = ['deadline_at'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'project_users', 'project_id', 'user_id');
     }
 
     public function team()

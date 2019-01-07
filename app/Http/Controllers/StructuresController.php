@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organization;
+use App\Models\OrganizationUsers;
 use App\Models\Project;
 use App\Models\Structure;
 use App\Models\StructureType;
@@ -10,16 +11,11 @@ use App\Models\StructureUsers;
 use App\Notifications\StructureUserNotification;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class StructuresController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('organization.owner')->except(['index', 'show']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -55,10 +51,13 @@ class StructuresController extends Controller
      *
      * @param Organization $organization
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create(Organization $organization)
     {
-        $users = User::where('id', '!=', auth()->id())->get();
+        $this->authorize('updateStructure', $organization);
+
+        $users = User::where('id', '!=', $organization->user_id)->get();
 
         return view('structures.create', compact('organization', 'users'));
     }
@@ -73,6 +72,8 @@ class StructuresController extends Controller
      */
     public function store(Request $request, Organization $organization)
     {
+        $this->authorize('updateStructure', $organization);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
         ]);
@@ -99,9 +100,12 @@ class StructuresController extends Controller
      * @param Organization $organization
      * @param Structure $structure
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Organization $organization, Structure $structure)
     {
+        $this->authorize('updateStructure', $organization);
+
         $connections = StructureUsers::where('structure_id', $structure->id)->get();
 
         $users = User::where('id', '!=', auth()->id())->get();
@@ -120,20 +124,26 @@ class StructuresController extends Controller
      */
     public function update(Request $request, Organization $organization, Structure $structure)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:200',
-        ]);
+        $this->authorize('updateStructure', $organization);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        if(Auth::user()->isOrganizationAdmin($organization)) {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|max:200',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $structure->update([
+                'name' => $request->get('name'),
+                'description' => $request->get('description')
+            ]);
+
+            $this->addConnection($request, $structure, true);
+        } else {
+            $this->addConnection($request, $structure, false);
         }
-
-        $structure->update([
-            'name' => $request->get('name'),
-            'description' => $request->get('description')
-        ]);
-
-        $this->addConnection($request, $structure);
 
         flash()->success('Отдел обновлен!');
 
@@ -150,6 +160,8 @@ class StructuresController extends Controller
      */
     public function destroy(Organization $organization, Structure $structure)
     {
+        $this->authorize('updateStructure', $organization);
+
         StructureUsers::where('structure_id', $structure->id)->delete();
 
         $structure->delete();
@@ -166,7 +178,7 @@ class StructuresController extends Controller
      * @param Structure $structure
      * @throws \Exception
      */
-    protected function addConnection(Request $request, Structure $structure)
+    protected function addConnection(Request $request, Structure $structure, $isAdmin = true)
     {
         if ($request->has('connections')) {
             $connectionIds = StructureUsers::where('structure_id', $structure->id)
@@ -175,19 +187,53 @@ class StructuresController extends Controller
 
             foreach ($request->get('connections') as $user_id => $connection) {
                 if (isset($connectionIds[$user_id])) {
-                    if ($connectionIds[$user_id] != $connection['position']) {
+                    if($isAdmin) {
                         StructureUsers::where('structure_id', $structure->id)
                             ->where('user_id', $user_id)
-                            ->update(['position' => $connection['position']]);
+                            ->update([
+                                'position' => $connection['position'],
+                                'can_add_user' => isset($connection['can_add_user']),
+                                'can_add_project' => isset($connection['can_add_project']),
+                                'can_add_job' => isset($connection['can_add_job']),
+                                'can_see_all_projects' => isset($connection['can_see_all_projects']),
+                                'can_add_user_to_project' => isset($connection['can_add_user_to_project'])
+                            ]);
+                    } else {
+                        StructureUsers::where('structure_id', $structure->id)
+                            ->where('user_id', $user_id)
+                            ->update([
+                                'position' => $connection['position']
+                            ]);
                     }
 
                     unset($connectionIds[$user_id]);
                 } else {
-                    StructureUsers::create([
-                        'structure_id' => $structure->id,
-                        'user_id' => $user_id,
-                        'position' => $connection['position']
-                    ]);
+                    if($isAdmin) {
+                        $structureUsers = StructureUsers::create([
+                            'structure_id' => $structure->id,
+                            'user_id' => $user_id,
+                            'position' => $connection['position'],
+                            'can_add_user' => isset($connection['can_add_user']),
+                            'can_add_project' => isset($connection['can_add_project']),
+                            'can_add_job' => isset($connection['can_add_job']),
+                            'can_see_all_projects' => isset($connection['can_see_all_projects']),
+                            'can_add_user_to_project' => isset($connection['can_add_user_to_project'])
+                        ]);
+
+                        if ($recipient = User::find($user_id)) {
+                            $recipient->notify(new StructureUserNotification($structureUsers));
+                        }
+                    } else {
+                        $structureUsers = StructureUsers::create([
+                            'structure_id' => $structure->id,
+                            'user_id' => $user_id,
+                            'position' => $connection['position'],
+                        ]);
+
+                        if ($recipient = User::find($user_id)) {
+                            $recipient->notify(new StructureUserNotification($structureUsers));
+                        }
+                    }
                 }
             }
 

@@ -16,11 +16,19 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="pull-right">
-                            <a href="{{ route('projects.create') }}?structure_id={{ $structure->id }}"
-                               class="btn btn-primary btn-block">
+                            @php
+                                $connection = \App\Models\StructureUsers::where('structure_id', $structure->id)
+                                    ->where('user_id', auth()->id())
+                                    ->first();
+                            @endphp
 
-                                <i class="fa fa-sitemap"></i> @lang('projects.create')
-                            </a>
+                            @if(auth()->user()->isOrganizationFullAccess($organization) || ($connection && $connection->can_add_project))
+                                <a href="{{ route('projects.create') }}?structure_id={{ $structure->id }}"
+                                   class="btn btn-primary btn-block">
+
+                                    <i class="fa fa-sitemap"></i> @lang('projects.create')
+                                </a>
+                            @endif
                         </div>
 
                         @include('structures.partials.projects')

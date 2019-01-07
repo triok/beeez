@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrganizationUsers extends Model
 {
-    protected $fillable = ['user_id', 'organization_id', 'position', 'is_admin'];
+    protected $fillable = ['user_id', 'organization_id', 'position', 'is_admin', 'is_approved'];
 
     public function user()
     {

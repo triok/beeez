@@ -10,18 +10,29 @@
                     <div id="sidebar">
                         <h2>@lang('structure.title')</h2>
 
-                        <a href="{{ route('structure.create', $organization) }}" class="btn btn-primary btn-xs">
-                            <i class="fa fa-plus"></i> @lang('structure.create')
-                        </a>
+                        @can('updateStructure', $organization)
+                            <a href="{{ route('structure.create', $organization) }}" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> @lang('structure.create')
+                            </a>
+                        @endcan
 
                         <ul class="list-unstyled">
                             @foreach($structures as $structure)
-                                <li class="{{ ($structure->id == $structures->first()->id ? 'active' : '') }}">
-                                    <a data-toggle="tab" href="#panel{{ $structure->id }}">{{ $structure->name }}</a>
-                                    <a href="{{ route('structure.show', [$organization, $structure]) }}">
-                                        <i class="fa fa-align-justify pull-right"></i>
-                                    </a>
-                                </li>
+                                @if(auth()->user()->isOrganizationFullAccess($organization) || $structure->employees()->find(auth()->id()))
+                                    <li class="{{ ($structure->id == $structures->first()->id ? 'active' : '') }}">
+                                        <a data-toggle="tab" href="#panel{{ $structure->id }}">{{ $structure->name }}</a>
+                                        <a href="{{ route('structure.show', [$organization, $structure]) }}">
+                                            <i class="fa fa-align-justify pull-right"></i>
+                                        </a>
+                                    </li>
+                                @else
+                                    <li class="{{ ($structure->id == $structures->first()->id ? 'active' : '') }}">
+                                        <span>{{ $structure->name }}</span>
+                                        <span>
+                                            <i class="fa fa-align-justify pull-right"></i>
+                                        </span>
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>
@@ -29,7 +40,15 @@
 
                 <div class="tab-content">
                     @foreach($structures as $structure)
-                        @include('structures.partials.employees')
+                        @php
+                            $connection = \App\Models\StructureUsers::where('structure_id', $structure->id)
+                                ->where('user_id', auth()->id())
+                                ->first();
+                        @endphp
+
+                        @if(auth()->user()->isOrganizationFullAccess($organization) || $connection)
+                            @include('structures.partials.employees')
+                        @endif
                     @endforeach
                 </div>
             </div>

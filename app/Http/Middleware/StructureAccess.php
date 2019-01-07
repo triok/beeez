@@ -3,9 +3,10 @@
 namespace App\Http\Middleware;
 
 use App\Models\OrganizationUsers;
+use App\Models\StructureUsers;
 use Closure;
 
-class OrganizationOwner
+class StructureAccess
 {
     /**
      * Handle an incoming request.
@@ -26,6 +27,14 @@ class OrganizationOwner
             ->first();
 
         if ($connection && $connection->is_admin) {
+            return $next($request);
+        }
+
+        $connection = StructureUsers::where('structure_id', $request->structure->id)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if ($connection && $connection->isAccess()) {
             return $next($request);
         }
 

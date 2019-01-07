@@ -7,6 +7,7 @@ use App\Models\Vacancy;
 use App\Http\Controllers\Controller;
 use App\Transformers\VacancyTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VacanciesController extends Controller
 {
@@ -36,7 +37,7 @@ class VacanciesController extends Controller
     {
         $organization = $this->getOrganization($request);
 
-        if ($organization && $request->get('all') && $organization->user_id == auth()->id()) {
+        if ($organization && $request->get('all') && Auth::user()->isOrganizationFullAccess($organization)) {
             $vacancies = Vacancy::where('organization_id', $organization->id);
         } else if ($organization) {
             $vacancies = Vacancy::published()->where('organization_id', $organization->id);

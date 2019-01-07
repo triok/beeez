@@ -2,24 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrganizationStoreRequest;
+use App\Http\Requests\OrganizationUpdateRequest;
 use App\Mail\NewOrganization;
 use App\Models\Organization;
 use App\Models\OrganizationUsers;
 use App\Notifications\OrganizationNotification;
+use App\Notifications\OrganizationUserNotification;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 
 class OrganizationsController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('organization.owner')->only(['edit', 'update', 'destroy']);
-        $this->middleware('organization.admin')->only(['moderation', 'approve', 'reject']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -39,16 +35,14 @@ class OrganizationsController extends Controller
      */
     public function my()
     {
-        $organizations = Organization::my()->paginate(request('count', 20));
+        $organizationIds1 = Organization::my()->pluck('id')->toArray();
+        $organizationIds2 = OrganizationUsers::where('user_id', Auth::id())->pluck('organization_id')->toArray();
+
+        $organizationIds = array_merge($organizationIds1, $organizationIds2);
+
+        $organizations = Organization::whereIn('id', $organizationIds)->paginate(request('count', 20));
 
         return view('organizations.my-organizations', compact('organizations'));
-    }
-
-    public function moderation()
-    {
-        $organizations = Organization::moderation()->paginate(request('count', 20));
-
-        return view('organizations.moderation', compact('organizations'));
     }
 
     /**
@@ -59,11 +53,9 @@ class OrganizationsController extends Controller
      */
     public function show(Organization $organization)
     {
-        $userIsAdmin = $this->userIsOrganizationAdmin($organization);
+        $connections = $organization->users;
 
-        $connections = OrganizationUsers::where('organization_id', $organization->id)->get();
-
-        return view('organizations.show', compact('organization', 'connections', 'userIsAdmin'));
+        return view('organizations.show', compact('organization', 'connections'));
     }
 
     /**
@@ -81,42 +73,18 @@ class OrganizationsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param OrganizationStoreRequest $request
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function store(Request $request)
+    public function store(OrganizationStoreRequest $request)
     {
-        $rules = [
-            'name'           => 'required|max:200',
-            'ownership'      => 'required|max:200',
-            'ohrn'           => 'required|digits_between:13,15|integer|unique:organizations',
-            'inn'            => 'required|digits_between:10,12|integer|unique:organizations',
-            'bic'            => 'nullable|digits:9|integer',
-            'curaccount'     => 'nullable|digits:20|integer',
-            'coraccount'     => 'nullable|digits:20|integer',                       
-            'kpp'            => 'required_if:ownership,"organization"|nullable|digits:9|integer',
-            'contact_person' => 'required|max:200',
-            'email'          => 'required|email|max:200',
-            'description'    => 'nullable|max:2000',
-            'slug'           => 'required|unique:organizations',
-            'logo'           => 'nullable|image|mimes:jpeg,jpg,png,gif',
-
-        ];
 
         $attributes = $request->all();
 
         $attributes['slug'] = str_slug($request->get('name', ''));
 
-        $validator = Validator::make($attributes, $rules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $attributes['user_id'] = auth()->user()->id;
-
-        $organization = Organization::create($attributes);
+        $organization = Auth::user()->organizations2()->create($attributes);
 
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
             $organization->addLogo($request->file('logo'));
@@ -133,13 +101,13 @@ class OrganizationsController extends Controller
             }
         }
 
-        $admin = User::where('email', config('organization.admin'))->first();
+        $admin = User::where('email', config('app.admin_email'))->first();
 
-        if($admin) {
+        if ($admin) {
             $admin->notify(new OrganizationNotification($organization));
         }
 
-        Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
+        Mail::to(config('app.admin_email'))->send(new NewOrganization($organization));
 
         flash()->success("Ваше заявление на регистрацию компании принято и поступило на модерацию");
 
@@ -151,9 +119,12 @@ class OrganizationsController extends Controller
      *
      * @param Organization $organization
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Organization $organization)
     {
+        $this->authorize('update', $organization);
+
         $connections = OrganizationUsers::where('organization_id', $organization->id)->get();
 
         $users = User::all();
@@ -164,26 +135,14 @@ class OrganizationsController extends Controller
     /**
      * Update a resource in storage.
      *
-     * @param Request $request
+     * @param OrganizationUpdateRequest $request
      * @param Organization $organization
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Organization $organization)
+    public function update(OrganizationUpdateRequest $request, Organization $organization)
     {
-        $rules = [
-            'ownership' => 'required|max:200',
-            'inn' => 'required|max:200',
-            'contact_person' => 'required|max:200',
-            'email' => 'required|max:200',
-            'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        $this->authorize('update', $organization);
 
         $organization->update($request->all());
 
@@ -213,7 +172,7 @@ class OrganizationsController extends Controller
         }
 
         if ($organization->status == 'moderation') {
-            Mail::to(config('organization.admin'))->send(new NewOrganization($organization));
+            Mail::to(config('app.admin_email'))->send(new NewOrganization($organization));
 
             flash()->success("Ваше заявление на регистрацию компании принято и поступило на модерацию");
         } else {
@@ -221,150 +180,6 @@ class OrganizationsController extends Controller
         }
 
         return redirect(route('organizations.show', $organization));
-    }
-
-    /**
-     * Update a resource in storage.
-     *
-     * @param Organization $organization
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     */
-    public function approve(Organization $organization)
-    {
-        $organization->status = 'approved';
-
-        $organization->save();
-
-        $this->updateNotification($organization);
-
-        flash()->success('Organization approved!');
-
-        return redirect()->back();
-    }
-
-    /**
-     * Update a resource in storage.
-     *
-     * @param Organization $organization
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     */
-    public function reject(Organization $organization)
-    {
-        $organization->status = 'rejected';
-
-        $organization->save();
-
-        $this->updateNotification($organization);
-
-        flash()->success('Organization rejected!');
-
-        return redirect()->back();
-    }
-
-    /**
-     * Update a resource in storage.
-     *
-     * @param Organization $organization
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     */
-    public function addAdmin(Organization $organization)
-    {
-        if (auth()->id() != $organization->user_id) {
-            flash()->error('Access denied!');
-
-            return redirect()->back();
-        }
-
-        $connection = OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->first();
-
-        if (!$connection) {
-            flash()->error('Access denied!');
-
-            return redirect(route('organizations.show', $organization));
-        }
-
-        OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->update(['is_admin' => true]);
-
-        flash()->success('Доступ открыт.');
-
-        return redirect(route('organizations.show', $organization));
-    }
-
-    /**
-     * Update a resource in storage.
-     *
-     * @param Organization $organization
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
-     */
-    public function deleteAdmin(Organization $organization)
-    {
-        if (auth()->id() != $organization->user_id) {
-            flash()->error('Access denied!');
-
-            return redirect()->back();
-        }
-
-        $connection = OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->first();
-
-        if (!$connection) {
-            flash()->error('Access denied!');
-
-            return redirect(route('organizations.show', $organization));
-        }
-
-        OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', request('user_id'))
-            ->update(['is_admin' => false]);
-
-        flash()->success('Доступ закрыт.');
-
-        return redirect(route('organizations.show', $organization));
-    }
-
-    /**
-     * @param $organization
-     */
-    private function updateNotification($organization) {
-        $notifications = auth()->user()
-            ->notifications()
-            ->where('type', 'App\Notifications\OrganizationNotification')
-            ->get();
-
-
-        foreach ($notifications as $notification) {
-            if($notification['data']['id'] == $organization->id) {
-                $notification = auth()->user()
-                    ->notifications()
-                    ->find($notification['id']);
-
-                if($notification) {
-                    $notification->update(['is_archived' => true]);
-                }
-            }
-        }
-    }
-
-    private function userIsOrganizationAdmin($organization)
-    {
-        if (auth()->id() == $organization->user_id) {
-            return true;
-        }
-
-        if ($connection = OrganizationUsers::where('organization_id', $organization->id)
-            ->where('user_id', auth()->id())
-            ->where('is_admin', true)
-            ->first()) {
-
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -389,11 +204,15 @@ class OrganizationsController extends Controller
 
                     unset($connectionIds[$user_id]);
                 } else {
-                    OrganizationUsers::create([
+                    $organizationUser = OrganizationUsers::create([
                         'organization_id' => $organization->id,
                         'user_id' => $user_id,
                         'position' => $connection['position']
                     ]);
+
+                    if ($recipient = User::find($user_id)) {
+                        $recipient->notify(new OrganizationUserNotification($organizationUser));
+                    }
                 }
             }
 
