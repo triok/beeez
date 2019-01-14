@@ -1,3 +1,15 @@
+@php
+    $connection = \App\Models\StructureUsers::where('structure_id', $project->structure_id)
+        ->where('user_id', auth()->id())
+        ->where('is_approved', true)
+        ->first();
+
+    $projectConnection = \App\Models\ProjectUsers::where('project_id', $project->id)
+        ->where('user_id', auth()->id())
+        ->first();
+@endphp
+
+@if(auth()->user()->isOrganizationFullAccess($organization) || ($connection && $projectConnection))
 <tr class="sort-row" id="{{ $project->id }}">
     <td>
         @if($project->icon)
@@ -67,3 +79,4 @@
         @endif
     </td>
 </tr>
+@endif

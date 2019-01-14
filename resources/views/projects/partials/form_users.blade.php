@@ -23,14 +23,8 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-7">
         <table class="table table-responsive" id="table-users">
-            <thead>
-            <tr>
-                <td>@lang('structure.show_user_name')</td>
-                <td></td>
-            </tr>
-            </thead>
             <tbody>
             @if(isset($connections))
                 @foreach($connections as $connection)

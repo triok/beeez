@@ -238,6 +238,7 @@ class User extends Authenticatable
 
         $connection = OrganizationUsers::where('organization_id', $organization->id)
             ->where('user_id', $this->id)
+            ->where('is_approved', true)
             ->where('is_admin', true)
             ->first();
 
@@ -262,6 +263,7 @@ class User extends Authenticatable
 
         $connection = OrganizationUsers::where('organization_id', $organization->id)
             ->where('user_id', $this->id)
+            ->where('is_approved', true)
             ->where('is_owner', true)
             ->first();
 

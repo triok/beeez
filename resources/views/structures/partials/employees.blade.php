@@ -12,7 +12,13 @@
 
         <ul class="list-unstyled">
             @foreach($structure->employees as $employee)
-                <li>{{ $employee->name }}</li>
+                <li>
+                    {{ $employee->name }}
+
+                    @if(!$employee->pivot->is_approved)
+                        <i class="fa fa-warning" title="Не подтвержден"></i>
+                    @endif
+                </li>
             @endforeach
         </ul>
     </div>
@@ -28,9 +34,16 @@
 
         <ul class="list-unstyled">
             @foreach($structure->projects as $project)
+                @php
+                    $projectConnection = \App\Models\ProjectUsers::where('project_id', $project->id)
+                        ->where('user_id', auth()->id())
+                        ->first();
+                @endphp
+
                 @if($organization->user_id == auth()->id() ||
                     $project->user_id == auth()->id() ||
-                    ($connection && $connection->can_see_all_projects))
+                    ($connection && $connection->can_see_all_projects) ||
+                    $projectConnection)
 
                     <li>{{ $project->name }}</li>
                 @endif
