@@ -401,7 +401,7 @@ class ProjectsController extends Controller
                     ->delete();
             }
         } else {
-            ProjectUsers::where('structure_id', $project->id)->delete();
+            ProjectUsers::where('project_id', $project->id)->delete();
         }
     }
 }
