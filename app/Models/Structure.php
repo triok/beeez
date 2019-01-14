@@ -16,7 +16,8 @@ class Structure extends Model
 
     public function employees()
     {
-        return $this->belongsToMany(User::class, 'structure_users');
+        return $this->belongsToMany(User::class, 'structure_users')
+            ->withPivot('position', 'is_approved');
     }
 
     public function projects()

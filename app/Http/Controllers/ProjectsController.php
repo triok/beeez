@@ -89,7 +89,10 @@ class ProjectsController extends Controller
         $users = [];
 
         if($structure = Structure::find($structure_id)) {
-            $userIds = StructureUsers::where('structure_id', $structure_id)->pluck('user_id')->toArray();
+            $userIds = StructureUsers::where('structure_id', $structure_id)
+                ->where('is_approved', true)
+                ->pluck('user_id')
+                ->toArray();
 
             $users = User::whereIn('id', $userIds)->get();
         }
@@ -152,7 +155,10 @@ class ProjectsController extends Controller
         $users = [];
 
         if($structure = Structure::find($project->structure_id)) {
-            $userIds = StructureUsers::where('structure_id', $project->structure_id)->pluck('user_id')->toArray();
+            $userIds = StructureUsers::where('structure_id', $project->structure_id)
+                ->where('is_approved', true)
+                ->pluck('user_id')
+                ->toArray();
 
             $users = User::whereIn('id', $userIds)->get();
         }

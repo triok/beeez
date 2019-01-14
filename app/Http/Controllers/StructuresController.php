@@ -186,7 +186,7 @@ class StructuresController extends Controller
                 ->toArray();
 
             foreach ($request->get('connections') as $user_id => $connection) {
-                if (isset($connectionIds[$user_id])) {
+                if (isset($connection['position']) && isset($connectionIds[$user_id])) {
                     if($isAdmin) {
                         StructureUsers::where('structure_id', $structure->id)
                             ->where('user_id', $user_id)
@@ -207,7 +207,7 @@ class StructuresController extends Controller
                     }
 
                     unset($connectionIds[$user_id]);
-                } else {
+                } elseif(isset($connection['position'])) {
                     if($isAdmin) {
                         $structureUsers = StructureUsers::create([
                             'structure_id' => $structure->id,
