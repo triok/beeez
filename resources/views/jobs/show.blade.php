@@ -293,34 +293,37 @@
                 </section>
             </div>
         </div>
-        <div class="air-card p-0-top-bottom">
-            <div class="comments">
-                <h2>@lang('show.questions') ({{$job->commentCount()}})</h2>
-                <ul class="media-list">
-                    @forelse($job->comments as $comment)
-                        @include('jobs.comment', ['tag' => 'li'])
-                    @empty
-                        <li class="media">
-                            <div class="alert alert-warning">@lang('show.noquestions')</div>
-                        </li>
-                    @endforelse
-                </ul>
+
+        @if($job->applications()->count())
+            <div class="air-card p-0-top-bottom">
+                <div class="comments">
+                    <h2>@lang('show.questions') ({{$job->commentCount()}})</h2>
+                    <ul class="media-list">
+                        @forelse($job->comments as $comment)
+                            @include('jobs.comment', ['tag' => 'li'])
+                        @empty
+                            <li class="media">
+                                <div class="alert alert-warning">@lang('show.noquestions')</div>
+                            </li>
+                        @endforelse
+                    </ul>
+                </div>
+                <div class="form-container">
+                    <h2>@lang('show.question')</h2>
+                    <form action="{{route('comments.store')}}" method="post">
+                        {{csrf_field()}}
+                        <input type="hidden" name="parent" id="parent" value="">
+                        <input type="hidden" name="job" value="{{$job->id}}">
+                        <textarea name="body" id="body" required rows="3" class="form-control"></textarea>
+                        <button type="submit" class="btn btn-info" style="margin-top: 10px;">@lang('show.send')</button>
+                    </form>
+                </div>
             </div>
-            <div class="form-container">
-                <h2>@lang('show.question')</h2>
-                <form action="{{route('comments.store')}}" method="post">
-                    {{csrf_field()}}
-                    <input type="hidden" name="parent" id="parent" value="">
-                    <input type="hidden" name="job" value="{{$job->id}}">
-                    <textarea name="body" id="body" required rows="3" class="form-control"></textarea>
-                    <button type="submit" class="btn btn-info" style="margin-top: 10px;">@lang('show.send')</button>
-                </form>
-            </div>
-        </div>
+        @endif
 
         @include('jobs.proposals')
 
-        @if(isset($job->application) || auth()->id() == $job->user_id)
+        @if($job->applications()->count())
             @include('jobs.reports')
         @endif
     </div>
