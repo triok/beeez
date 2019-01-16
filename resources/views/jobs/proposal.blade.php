@@ -14,6 +14,7 @@
             </div>
 
             <div class="author">
+                @include('partials.online', ['user' => $proposal->user])
                 {{$proposal->user->username}}
             </div>
 

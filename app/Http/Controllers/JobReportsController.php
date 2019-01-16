@@ -38,7 +38,11 @@ class JobReportsController extends Controller
             $recipient->notify(new JobOwnerReportNotification($job, $user, $request->get('body')));
         }
 
-        flash()->success('Отчет добавлен.');
+        if(auth()->id() == $job->user_id) {
+            flash()->success('Запрос отправлен.');
+        } else{
+            flash()->success('Отчет добавлен.');
+        }
 
         return redirect()->back();
     }

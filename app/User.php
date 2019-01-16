@@ -25,6 +25,7 @@ use App\Models\Traits\Favoritable;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Cache;
 use Laratrust\Traits\LaratrustUserTrait;
 use Cmgmyr\Messenger\Traits\Messagable;
 use Cmgmyr\Messenger\Models\Models;
@@ -149,6 +150,11 @@ class User extends Authenticatable
     public function ownTeams()
     {
         return $this->hasMany(Team::class);
+    }
+
+    public function isOnline()
+    {
+        return Cache::has('user-is-online-' . $this->id);
     }
 
     public function allUserTeams() {

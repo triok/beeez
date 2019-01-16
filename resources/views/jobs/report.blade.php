@@ -2,6 +2,7 @@
     <div class="media-body">
         <div class="media-heading">
             <div class="author">
+                @include('partials.online', ['user' => $report->user])
                 {{$report->user->username}}
             </div>
 
