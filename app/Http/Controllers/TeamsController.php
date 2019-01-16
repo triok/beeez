@@ -9,6 +9,7 @@ use App\Models\TeamUsers;
 use App\Notifications\TeamUserNotification;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TeamsController extends Controller
@@ -100,6 +101,12 @@ class TeamsController extends Controller
      */
     public function store(Request $request)
     {
+        if(Auth::user()->ownTeams()->count() >= 3) {
+            flash()->error('Вы можете создать не больше 3 комманды!');
+
+            return redirect()->back();
+        }
+
         $rules = [
             'name' => 'required|max:200',
             'team_type_id' => 'required',
