@@ -104,7 +104,7 @@ class StructuresController extends Controller
      */
     public function edit(Organization $organization, Structure $structure)
     {
-        $this->authorize('updateStructure', $organization);
+        $this->authorize('updateStructure', [$organization, $structure]);
 
         $connections = StructureUsers::where('structure_id', $structure->id)->get();
 
@@ -124,7 +124,7 @@ class StructuresController extends Controller
      */
     public function update(Request $request, Organization $organization, Structure $structure)
     {
-        $this->authorize('updateStructure', $organization);
+        $this->authorize('updateStructure', [$organization, $structure]);
 
         if(Auth::user()->isOrganizationAdmin($organization)) {
             $validator = Validator::make($request->all(), [
