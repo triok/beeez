@@ -22,7 +22,7 @@ class ProjectsController extends Controller
     function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('project.owner')->only(['edit', 'update', 'destroy']);
+        $this->middleware('project.owner')->only(['show', 'edit', 'update', 'destroy']);
     }
 
     /**
@@ -45,7 +45,7 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
-        if ($project->user_id != auth()->id()) {
+        if ($project->user_id != auth()->id() && !$project->structure_id) {
             if (!$project->team_id) {
                 flash()->error('Access denied!');
 
@@ -91,12 +91,20 @@ class ProjectsController extends Controller
         $users = [];
 
         if($structure = Structure::find($structure_id)) {
-            $userIds = StructureUsers::where('structure_id', $structure_id)
-                ->where('is_approved', true)
-                ->pluck('user_id')
-                ->toArray();
+            $connection = StructureUsers::where('structure_id', $structure_id)
+                ->where('user_id', auth()->id())
+                ->first();
 
-            $users = User::whereIn('id', $userIds)->get();
+            if(auth()->user()->isOrganizationFullAccess($structure->organization)
+                || ($connection &&  $connection->can_add_user_to_project)) {
+                
+                $userIds = StructureUsers::where('structure_id', $structure_id)
+                    ->where('is_approved', true)
+                    ->pluck('user_id')
+                    ->toArray();
+
+                $users = User::whereIn('id', $userIds)->get();
+            }
         }
 
         return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structures', 'structure_id', 'users'));

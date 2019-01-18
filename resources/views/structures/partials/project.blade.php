@@ -9,7 +9,10 @@
         ->first();
 @endphp
 
-@if(auth()->user()->isOrganizationFullAccess($organization) || auth()->id() == $project->user_id || ($connection && $projectConnection))
+@if(auth()->user()->isOrganizationFullAccess($organization)
+    || auth()->id() == $project->user_id
+    || ($connection && $projectConnection)
+    || ($connection && $connection->can_see_all_projects))
 <tr class="sort-row" id="{{ $project->id }}">
     <td>
         @if($project->icon)
