@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Structure;
 use Closure;
 
 class ProjectOwner
@@ -15,12 +16,22 @@ class ProjectOwner
      */
     public function handle($request, Closure $next)
     {
-        if (isset($request->project) && $request->project->user_id != auth()->user()->id) {
-            flash()->error('Access denied!');
+        if (isset($request->project)) {
+            if($request->project->user_id == auth()->user()->id) {
+                return $next($request);
+            }
 
-            return redirect(route('projects.index'));
+            if($request->project->structure_id) {
+                $structure = Structure::find($request->project->structure_id);
+
+                if($structure && $structure->organization->user_id == auth()->id()) {
+                    return $next($request);
+                }
+            }
         }
 
-        return $next($request);
+        flash()->error('Access denied!');
+
+        return redirect(route('projects.index'));
     }
 }

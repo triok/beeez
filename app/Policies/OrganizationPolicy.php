@@ -86,4 +86,30 @@ class OrganizationPolicy
     {
         return $user->isOrganizationOwner($organization);
     }
+
+    /**
+     * Determine whether the user can update the organization.
+     *
+     * @param User $user
+     * @param Structure|null $structure
+     * @return mixed
+     */
+    public function addProjectToStructure(User $user, Structure $structure)
+    {
+        if($user->isOrganizationFullAccess($structure->organization)) {
+            return true;
+        }
+
+        if($structure) {
+            $connection = StructureUsers::where('user_id', $user->id)
+                ->where('structure_id', $structure->id)
+                ->first();
+
+            if($connection && $connection->can_add_project) {
+                return true;
+            }
+        }
+
+        return true;
+    }
 }

@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        @if ($organizations->count())
+        @if ($structures->count())
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -53,17 +53,16 @@
                         <select class="form-control" name="structure_id">
                             <option value="">Нет</option>
 
-                            @foreach($organizations as $organization)
-                                @foreach($organization->structures as $structure)
-                                    @can('updateStructure', $organization)
-                                        @if($structure->id == $structure_id)
-                                            <option selected
-                                                    value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
-                                        @else
-                                            <option value="{{ $structure->id }}">{{ $organization->name . ' -> ' . $structure->name }}</option>
-                                        @endif
-                                    @endcan
-                                @endforeach
+                            @foreach($structures as $structure)
+                                @if($structure->id == $structure_id)
+                                    <option selected value="{{ $structure->id }}">
+                                        {{ $structure->organization->name . ' -> ' . $structure->name }}
+                                    </option>
+                                @else
+                                    <option value="{{ $structure->id }}">
+                                        {{ $structure->organization->name . ' -> ' . $structure->name }}
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
                     </div>

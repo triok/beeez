@@ -82,6 +82,8 @@ class ProjectsController extends Controller
 
         $organizations = $this->getOrganizations();
 
+        $structures = $this->getStructures();
+
         $team_id = request('team_id');
 
         $structure_id = request('structure_id');
@@ -97,7 +99,7 @@ class ProjectsController extends Controller
             $users = User::whereIn('id', $userIds)->get();
         }
 
-        return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structure_id', 'users'));
+        return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structures', 'structure_id', 'users'));
     }
 
     /**
@@ -105,6 +107,7 @@ class ProjectsController extends Controller
      *
      * @param ProjectRequest $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function store(ProjectRequest $request)
     {
@@ -150,6 +153,8 @@ class ProjectsController extends Controller
 
         $organizations = $this->getOrganizations();
 
+        $structures = $this->getStructures();
+
         $connections = ProjectUsers::where('project_id', $project->id)->get();
 
         $users = [];
@@ -163,7 +168,7 @@ class ProjectsController extends Controller
             $users = User::whereIn('id', $userIds)->get();
         }
 
-        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations', 'users', 'connections'));
+        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations', 'structures', 'users', 'connections'));
     }
 
     /**
@@ -374,6 +379,26 @@ class ProjectsController extends Controller
         $organizationIds = array_merge($organizationIds1, $organizationIds2);
 
         return Organization::whereIn('id', $organizationIds)->get();
+    }
+
+    private function getStructures()
+    {
+        $organizationIdsOwner = Organization::my()
+            ->pluck('id')
+            ->toArray();
+
+        $structureIdsOwner = Structure::whereIn('organization_id', $organizationIdsOwner)
+            ->pluck('id')
+            ->toArray();
+
+        $structureIdsAccess = StructureUsers::where('user_id', Auth::id())
+            ->where('can_add_project', true)
+            ->pluck('structure_id')
+            ->toArray();
+
+        $structureIds = array_merge($structureIdsOwner, $structureIdsAccess);
+
+        return Structure::whereIn('id', $structureIds)->get();
     }
 
     /**
