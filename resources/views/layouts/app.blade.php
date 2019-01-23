@@ -249,69 +249,12 @@
                             <li><a href="{{ route('login') }}">@lang('layout.login-title')</a></li>
                             <li><a href="{{ route('register') }}">@lang('layout.register-title')</a></li>
                         @else
-                            <li class="dropdown">
-                                @role('admin')
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-expanded="false">
-                                    <i class="fa fa-dot-circle-o" aria-hidden="true"></i> @lang('layout.jobs-manager')<span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ url('/') }}"><i class="fa fa-search"></i> @lang('layout.findwork')</a></li>
-
-                                    <li>
-                                        <a href="{{route('my-applications')}}"><i class="fa fa-briefcase"></i> @lang('layout.applications')
-                                            <span class="badge">{{Auth::user()->applications()->where('status','!=','complete')->count()}}</span>
-                                        </a>
-                                    </li>
-                                    <li><a href="{{ route('projects.index') }}"><i class="fa fa-sitemap"></i> @lang('layout.projects')</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="/jobs/create"><i class="fa fa-plus-circle"></i> @lang('layout.post-new')</a></li>
-
-                                    @permission('read-jobs-manager')
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <a href="{{ route('jobs-admin') }}"><i class="fa fa-dashboard"></i> @lang('layout.current-tasks')</a>
-                                    </li>
-                                    @endpermission
-                                    @permission('read-job-categories')
-                                    <li><a href="{{ route('categories.index') }}"><i class="fa fa-th-list"></i>
-                                            Categories</a></li>
-                                    @endpermission
-                                    @permission('read-job-skills')
-                                    <li>
-                                        <a href="{{ route('skills.index') }}"><i class="fa fa-th-list"></i> Skills</a>
-                                    </li>
-                                    @endpermission
-                                    @permission('read-job-applications')
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="{{ route('applications-admin') }}"><i class="fa fa-briefcase"></i>
-                                            Job Applications</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li role="separator" class="divider"></li>
-                                    @endpermission
-
-                                    
-                                </ul>
-                            </li>
-                            <li><a href="{{route('peoples.index')}}"><i class="fa fa-user-circle"></i> @lang('peoples.title')</a></li>
-                            <li><a href="{{route('teams.index')}}"><i class="fa fa-group"></i> @lang('teams.title')</a></li>  
-                            @endrole
-
-                            @permission('read-payouts')
-                            <li><a href="/payouts"><i class="fa fa-money"></i> Payouts</a></li>
-                            @endpermission
-
-                            @permission('read-pages')
-                            <li><a href="admin/pages"><i class="fa fa-file-powerpoint-o"></i> Pages</a></li>
-                            @endpermission
-
                             <li>
                                 <a href="{{route('messages')}}" title="@lang('messages.title')">
                                     <i class="fa fa-envelope"></i>
                                     @include('messenger.unread-count')
                                 </a>
                             </li>
-
                             <li>
                                 <a href="{{route('notifications.index')}}" title="Уведомления">
                                     <i class="fa fa-bell"></i>
@@ -340,16 +283,7 @@
                                     </li>                                
 
                                     @role('admin')
-                                    @permission('read-users')
-                                    <li><a href="{{ route('users') }}"><i class="fa fa-group"></i> Users</a></li>
-                                    @endpermission
                                     <li><a href="/admin/settings"><i class="fa fa-wrench"></i> Settings</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="/roles"><i class="fa fa-key"></i> Roles</a></li>
-                                    @permission('read-logs')
-                                    <li><a href="/admin/logs"><i class="fa fa-history"></i> System logs</a></li>
-                                    <li><a href="/admin/debug"><i class="fa fa-bug"></i> Debug logs</a></li>
-                                    @endpermission
                                     @endrole                                
                                 </ul>
                             </li>

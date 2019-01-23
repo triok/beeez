@@ -3,8 +3,9 @@
 return [
     'title'        => 'My profile',
     'home'         => 'Profile',
-    'profile'      => 'Edit profile',    
-    'bio'          => 'Bio',
+    'profile'      => 'Security',    
+    'bio'          => 'Edit profile',
+    'jobs'         => 'Job examples',
     'name'         => 'Name: ',    
     'login'        => 'Login: ',
     'member'       => 'Registeration date: ',
@@ -34,7 +35,9 @@ return [
     'jobscreated'  => 'Created tasks:',
     'email'        => 'E-mail:',
     'country'      => 'Country:',
-    'city'         => 'City:',                        
+    'city'         => 'City:',
+    'save'         => 'Save',
+    'experience'   => 'Experience',                          
 
     'speciality' => [
         'designer'   => 'Designer',

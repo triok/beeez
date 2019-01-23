@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Structure extends Model
 {
-    protected $fillable = ['organization_id', 'name', 'description'];
+    protected $fillable = ['organization_id', 'name'];
 
     public function organization()
     {

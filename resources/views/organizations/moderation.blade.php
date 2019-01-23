@@ -1,9 +1,13 @@
 @extends('layouts.app')
+
 @section('content')
-<div class="container-fluid" id="main">
-   <div class="row">
-      <div class="col-md-12">
-         <h2>@lang('organizations.title')</h2>
+
+
+<div class="row">
+        @include('admin.settings-nav')
+
+      <div class="col-md-9">
+         <h2>Moderation</h2>
 
          <div class="row">
 
@@ -59,6 +63,6 @@
          </table>
          {!! $organizations->links() !!}
       </div>
-   </div>
+
 </div>
 @endsection

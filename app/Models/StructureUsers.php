@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StructureUsers extends Model
 {
-    protected $fillable = ['user_id', 'structure_id', 'position', 'is_approved',
+    protected $fillable = ['user_id', 'structure_id', 'is_approved',
         'can_add_user', 'can_add_project', 'can_add_job', 'can_see_all_projects', 'can_add_user_to_project'];
 
     public function user()

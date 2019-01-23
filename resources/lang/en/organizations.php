@@ -11,6 +11,8 @@ return [
 
     'search'                 => 'Enter name...',
 
+    'moderation'             => 'Moderation',    
+
     // Form
     'name'                   => 'Enter your Organization or PE name',
     'logo'                   => 'Select logo',

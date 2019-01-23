@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('content')
-    <h2>Skills</h2>
+
     <div class="row">
-        <div class="col-md-8">
+        @include('admin.settings-nav')
+        <div class="col-md-9">
+                <h2>Skills</h2>
             <table class="table table-responsive table-striped">
                 <tr>
                     <th>Skill</th>

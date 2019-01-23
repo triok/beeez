@@ -22,9 +22,11 @@ class AppController extends Controller
 
         return view('home',compact('jobs', 'jobsTotalByYear'));
     }
+
     function showPage($id)
     {
         $page = Page::find($id);
         return view('page', compact('page'));
     } 
+
 }

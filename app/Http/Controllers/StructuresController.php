@@ -57,7 +57,7 @@ class StructuresController extends Controller
     {
         $this->authorize('updateStructure', $organization);
 
-        $users = User::where('id', '!=', $organization->user_id)->get();
+        $users = $organization->users()->get();
 
         return view('structures.create', compact('organization', 'users'));
     }
@@ -107,8 +107,9 @@ class StructuresController extends Controller
         $this->authorize('updateStructure', $organization);
 
         $connections = StructureUsers::where('structure_id', $structure->id)->get();
+        $users = $organization->users()->get();
 
-        $users = User::where('id', '!=', auth()->id())->get();
+        // $users = User::where('id', '!=', auth()->id())->get();
 
         return view('structures.edit', compact('organization', 'structure', 'connections', 'users'));
     }
@@ -182,7 +183,7 @@ class StructuresController extends Controller
     {
         if ($request->has('connections')) {
             $connectionIds = StructureUsers::where('structure_id', $structure->id)
-                ->pluck('position', 'user_id')
+                ->pluck('user_id')
                 ->toArray();
 
             foreach ($request->get('connections') as $user_id => $connection) {
@@ -191,7 +192,6 @@ class StructuresController extends Controller
                         StructureUsers::where('structure_id', $structure->id)
                             ->where('user_id', $user_id)
                             ->update([
-                                'position' => $connection['position'],
                                 'can_add_user' => isset($connection['can_add_user']),
                                 'can_add_project' => isset($connection['can_add_project']),
                                 'can_add_job' => isset($connection['can_add_job']),
@@ -200,10 +200,7 @@ class StructuresController extends Controller
                             ]);
                     } else {
                         StructureUsers::where('structure_id', $structure->id)
-                            ->where('user_id', $user_id)
-                            ->update([
-                                'position' => $connection['position']
-                            ]);
+                            ->where('user_id', $user_id);
                     }
 
                     unset($connectionIds[$user_id]);
@@ -211,8 +208,6 @@ class StructuresController extends Controller
                     if($isAdmin) {
                         $structureUsers = StructureUsers::create([
                             'structure_id' => $structure->id,
-                            'user_id' => $user_id,
-                            'position' => $connection['position'],
                             'can_add_user' => isset($connection['can_add_user']),
                             'can_add_project' => isset($connection['can_add_project']),
                             'can_add_job' => isset($connection['can_add_job']),
@@ -227,7 +222,7 @@ class StructuresController extends Controller
                         $structureUsers = StructureUsers::create([
                             'structure_id' => $structure->id,
                             'user_id' => $user_id,
-                            'position' => $connection['position'],
+                            
                         ]);
 
                         if ($recipient = User::find($user_id)) {

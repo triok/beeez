@@ -2,7 +2,8 @@
 @section('content')
 <div class="container" id="main">
    <div class="row">
-      <div class="col-md-12">
+      @include('admin.settings-nav') 
+      <div class="col-md-9">
          <h2>Pages</h2>
          <form action="{{ url('admin/create-page') }}">
             <button class="btn btn-success">New page</button>

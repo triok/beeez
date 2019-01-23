@@ -28,7 +28,6 @@
             <thead>
             <tr>
                 <td>@lang('structure.show_user_name')</td>
-                <td>@lang('structure.show_user_position')</td>
                 <td></td>
             </tr>
             </thead>
@@ -41,10 +40,7 @@
                                    value="{{ $connection->user->name }}">
                             <a href="">{{ $connection->user->name }}</a>
                         </td>
-                        <td>
-                            <input name="connections[{{ $connection->user_id }}][position]" type="text"
-                                   value="{{ $connection->position }}" class="form-control">
-                        </td>
+
 
                         @if($organization->user_id == auth()->id())
                             <td class="text-right">
@@ -125,7 +121,7 @@
         var user_name = $('#input-users :selected').text();
 
         var template = '<tr id="user-' + user_id + '"><td><input type="hidden" name="connections[' + user_id + '][name]" value="user"><a href="">' + user_name + '</a></td>';
-        template += '<td><input name="connections[' + user_id + '][position]" type="text" value="" class="form-control"></td>';
+        
         template += '<td class="text-right"><button type="button" onclick="deleteUser(' + user_id + ')" class="btn btn-danger btn-sm"><i aria-hidden="true" class="fa fa-close"></i></button></td></tr>';
 
         $('#table-users').find('tbody').append(template);

@@ -16,6 +16,26 @@
             <a href="/roles">
                 <i class="fa fa-key"></i> Roles/Permissions </a>
         </li>
+        <li class="{{Request()->segment(2)=='moderation'?'active':''}}">
+            <a href="{{route('organizations.moderation')}}">
+                <i class="fa fa-university"></i> Moderation </a>
+        </li> 
+        <li class="{{Request()->segment(2)=='skills'?'active':''}}">
+            <a href="{{ route('skills.index') }}">
+                <i class="fa fa-graduation-cap"></i> Skills </a>
+        </li>
+        <li class="{{Request()->segment(2)=='categories'?'active':''}}">
+            <a href="{{ route('categories.index') }}">
+                <i class="fa fa-th-list"></i> Categories </a>
+        </li>
+        <li class="{{Request()->segment(2)=='jobs'?'active':''}}">
+            <a href="{{ route('jobs-admin') }}">
+                <i class="fa fa-dashboard"></i> Jobs </a>
+        </li>                                         
+        <li class="{{Request()->segment(2)=='pages'?'active':''}}">
+            <a href="/admin/pages">
+                <i class="fa fa-file-powerpoint-o"></i> Pages </a>
+        </li>        
         <li class="{{Request()->segment(2)=='logs'?'active':''}}">
             <a href="/admin/logs">
                 <i class="fa fa-bug"></i> Logs </a>

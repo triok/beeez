@@ -1,9 +1,11 @@
 @extends('layouts.app')
 @section('content')
-    <h2>Job categories</h2>
+    
 
     <div class="row">
-        <div class="col-md-10">
+        @include('admin.settings-nav')
+        <h2>Job categories</h2>
+        <div class="col-md-9">
             <div class="alert alert-info">
                 Drag to order
             </div>

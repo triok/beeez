@@ -12688,8 +12688,8 @@ label{
   cursor: pointer;
   color: #666;
 }
-input[type="checkbox"], input[type="radio"]{
-  position: absolute;
+input[type="checkbox"]{
+  position: inherit;
   right: 9000px;
 }
 /*Check box*/
