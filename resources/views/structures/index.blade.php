@@ -43,6 +43,7 @@
                         @php
                             $connection = \App\Models\StructureUsers::where('structure_id', $structure->id)
                                 ->where('user_id', auth()->id())
+                                ->where('is_approved', true)
                                 ->first();
                         @endphp
 

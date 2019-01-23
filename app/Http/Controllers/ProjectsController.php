@@ -22,7 +22,7 @@ class ProjectsController extends Controller
     function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('project.owner')->only(['edit', 'update', 'destroy']);
+        $this->middleware('project.owner')->only(['show', 'edit', 'update', 'destroy']);
     }
 
     /**
@@ -45,7 +45,7 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
-        if ($project->user_id != auth()->id()) {
+        if ($project->user_id != auth()->id() && !$project->structure_id) {
             if (!$project->team_id) {
                 flash()->error('Access denied!');
 
@@ -82,6 +82,8 @@ class ProjectsController extends Controller
 
         $organizations = $this->getOrganizations();
 
+        $structures = $this->getStructures();
+
         $team_id = request('team_id');
 
         $structure_id = request('structure_id');
@@ -89,12 +91,23 @@ class ProjectsController extends Controller
         $users = [];
 
         if($structure = Structure::find($structure_id)) {
-            $userIds = StructureUsers::where('structure_id', $structure_id)->pluck('user_id')->toArray();
+            $connection = StructureUsers::where('structure_id', $structure_id)
+                ->where('user_id', auth()->id())
+                ->first();
 
-            $users = User::whereIn('id', $userIds)->get();
+            if(auth()->user()->isOrganizationFullAccess($structure->organization)
+                || ($connection &&  $connection->can_add_user_to_project)) {
+                
+                $userIds = StructureUsers::where('structure_id', $structure_id)
+                    ->where('is_approved', true)
+                    ->pluck('user_id')
+                    ->toArray();
+
+                $users = User::whereIn('id', $userIds)->get();
+            }
         }
 
-        return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structure_id', 'users'));
+        return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structures', 'structure_id', 'users'));
     }
 
     /**
@@ -102,6 +115,7 @@ class ProjectsController extends Controller
      *
      * @param ProjectRequest $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function store(ProjectRequest $request)
     {
@@ -147,17 +161,22 @@ class ProjectsController extends Controller
 
         $organizations = $this->getOrganizations();
 
+        $structures = $this->getStructures();
+
         $connections = ProjectUsers::where('project_id', $project->id)->get();
 
         $users = [];
 
         if($structure = Structure::find($project->structure_id)) {
-            $userIds = StructureUsers::where('structure_id', $project->structure_id)->pluck('user_id')->toArray();
+            $userIds = StructureUsers::where('structure_id', $project->structure_id)
+                ->where('is_approved', true)
+                ->pluck('user_id')
+                ->toArray();
 
             $users = User::whereIn('id', $userIds)->get();
         }
 
-        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations', 'users', 'connections'));
+        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations', 'structures', 'users', 'connections'));
     }
 
     /**
@@ -370,6 +389,26 @@ class ProjectsController extends Controller
         return Organization::whereIn('id', $organizationIds)->get();
     }
 
+    private function getStructures()
+    {
+        $organizationIdsOwner = Organization::my()
+            ->pluck('id')
+            ->toArray();
+
+        $structureIdsOwner = Structure::whereIn('organization_id', $organizationIdsOwner)
+            ->pluck('id')
+            ->toArray();
+
+        $structureIdsAccess = StructureUsers::where('user_id', Auth::id())
+            ->where('can_add_project', true)
+            ->pluck('structure_id')
+            ->toArray();
+
+        $structureIds = array_merge($structureIdsOwner, $structureIdsAccess);
+
+        return Structure::whereIn('id', $structureIds)->get();
+    }
+
     /**
      * Add connections.
      *
@@ -401,7 +440,7 @@ class ProjectsController extends Controller
                     ->delete();
             }
         } else {
-            ProjectUsers::where('structure_id', $project->id)->delete();
+            ProjectUsers::where('project_id', $project->id)->delete();
         }
     }
 }

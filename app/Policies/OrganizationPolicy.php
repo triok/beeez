@@ -3,6 +3,8 @@
 namespace App\Policies;
 
 use App\Models\Organization;
+use App\Models\Structure;
+use App\Models\StructureUsers;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -27,11 +29,26 @@ class OrganizationPolicy
      *
      * @param User $user
      * @param Organization $organization
+     * @param Structure|null $structure
      * @return mixed
      */
-    public function updateStructure(User $user, Organization $organization)
+    public function updateStructure(User $user, Organization $organization, Structure $structure = null)
     {
-        return $user->isOrganizationFullAccess($organization);
+        if($user->isOrganizationFullAccess($organization)) {
+            return true;
+        }
+
+        if($structure) {
+            $connection = StructureUsers::where('user_id', $user->id)
+                ->where('structure_id', $structure->id)
+                ->first();
+
+            if($connection && $connection->can_add_user) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -68,5 +85,31 @@ class OrganizationPolicy
     public function addFullAccess(User $user, Organization $organization)
     {
         return $user->isOrganizationOwner($organization);
+    }
+
+    /**
+     * Determine whether the user can update the organization.
+     *
+     * @param User $user
+     * @param Structure|null $structure
+     * @return mixed
+     */
+    public function addProjectToStructure(User $user, Structure $structure)
+    {
+        if($user->isOrganizationFullAccess($structure->organization)) {
+            return true;
+        }
+
+        if($structure) {
+            $connection = StructureUsers::where('user_id', $user->id)
+                ->where('structure_id', $structure->id)
+                ->first();
+
+            if($connection && $connection->can_add_project) {
+                return true;
+            }
+        }
+
+        return true;
     }
 }

@@ -25,6 +25,7 @@ use App\Models\Traits\Favoritable;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Cache;
 use Laratrust\Traits\LaratrustUserTrait;
 use Cmgmyr\Messenger\Traits\Messagable;
 use Cmgmyr\Messenger\Models\Models;
@@ -151,6 +152,11 @@ class User extends Authenticatable
         return $this->hasMany(Team::class);
     }
 
+    public function isOnline()
+    {
+        return Cache::has('user-is-online-' . $this->id);
+    }
+
     public function allUserTeams() {
         $teamIds = $this->teams()->pluck('team_id')->toArray();
 
@@ -238,6 +244,7 @@ class User extends Authenticatable
 
         $connection = OrganizationUsers::where('organization_id', $organization->id)
             ->where('user_id', $this->id)
+            ->where('is_approved', true)
             ->where('is_admin', true)
             ->first();
 
@@ -262,6 +269,7 @@ class User extends Authenticatable
 
         $connection = OrganizationUsers::where('organization_id', $organization->id)
             ->where('user_id', $this->id)
+            ->where('is_approved', true)
             ->where('is_owner', true)
             ->first();
 

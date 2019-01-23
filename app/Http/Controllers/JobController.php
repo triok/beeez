@@ -43,7 +43,7 @@ class JobController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('permission:read-jobs',['only'=>['jobsAdmin']]);
-        $this->middleware('permission:read-jobs-manager',['only'=>['create','store','jobsAdmin']]);
+        $this->middleware('permission:read-jobs-manager',['only'=>['jobsAdmin']]);
         $this->middleware('permission:update-jobs',['only'=>['edit','update','updateJobStatus']]);
         $this->middleware('permission:delete-jobs',['only'=>['destroy']]);
 
