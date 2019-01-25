@@ -89,6 +89,11 @@
     </div>
     <div class="card">
         <div class="card-header" id="headingTwo">
+            <a href="{{ route('tasks.index') }}"><i class="fa fa-check-circle fa-fw"></i><span>Задачи</span></a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingTwo">
             <a href="{{ route('vacancies.index') }}"><i class="fa fa-suitcase fa-fw"></i><span>@lang('layout.vacancies')</span></a>
         </div>
     </div>

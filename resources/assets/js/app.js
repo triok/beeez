@@ -9,6 +9,8 @@ Vue.use(VueRouter);
 Vue.component('job-navigation', require('./components/job/navigation'));
 Vue.component('job-tabs', require('./components/job/tabs'));
 
+Vue.component('v-tasks', require('./components/tasks'));
+
 var filter = function(text, length){
     return text.length > length ? text.slice(0, length) + '...' : text;
 };

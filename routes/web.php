@@ -222,6 +222,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::resource('/organizations/{organization}/vacancies', 'OrganizationVacanciesController', ['as' => 'organizations']);
         Route::patch('/organizations/{organization}/vacancies/{vacancy}/publish', 'OrganizationVacanciesController@publish')->name('organizations.vacancies.publish');
     });
+
+    Route::get('tasks', 'TasksController@index')->name('tasks.index');
 });
 
 // Localization
