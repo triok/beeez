@@ -52,6 +52,7 @@
     <script src="/plugins/bootstrap-select/bootstrap-select.min.js"></script>
     <script src="/js/custom.js"></script>
     <script src="/js/datepicker.min.js"></script>
+    <script src="/plugins/dropzone/dropzone.js" type="text/javascript"></script>
     <script>
         $('.timepicker-actions').datepicker({
             timepicker: true,
@@ -132,5 +133,31 @@
                 $("#task-1").find('.search').find('.result').html('').hide();
             }, 2000);
         });
+
+        var myDropzone = Dropzone.options.dropzone = {
+            maxFilesize: 5,
+            addRemoveLinks: true,
+            maxFiles: 10,
+            parallelUploads: 1,
+            url: "{{route('files.upload')}}",
+            headers: {
+                'x-csrf-token': "{{ csrf_token() }}",
+            },
+
+            init: function () {
+                this.on("addedfile", function (file) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{route('files.upload')}}",
+                        data: {
+                            task_id: 0,
+                            file: file.name,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        dataType: 'html',
+                    });
+                });
+            },
+        };
     </script>
 @endpush

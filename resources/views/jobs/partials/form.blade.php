@@ -182,7 +182,7 @@
     </div>
 
     <div class="job-row">
-        @include('jobs.partials.upload', ['field_name' => 'files[]'])
+        @include('jobs.partials.upload', ['task_id' => (isset($task_id) ? $task_id : 0)])
     </div>
 </div>
 

@@ -241,7 +241,7 @@ class JobController extends Controller
 
         $job = Job::query()->create(array_intersect_key($request->all(), array_flip(Job::getAllAttributes())));
 
-        dispatch(new AddFilesJob($job));
+        dispatch(new AddFilesJob($job, 0));
 
         if($request->get('category_id')) {
             dispatch(new AddCategoriesJob($job));

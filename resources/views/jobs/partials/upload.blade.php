@@ -2,32 +2,41 @@
 
 <div class="row file-upload">
     <div class="col-md-12">
-        <div class="dropzone" id="dropzone">
+        <div class="dropzone dz-clickable" id="dropzone{{ (isset($subtask) ? $subtask : '') }}">
             <h3>Upload Multiple Files By Click On Box</h3>
+            <div class="dz-default dz-message">
+                <span>Drop files here to upload</span>
+            </div>
         </div>
     </div>
 </div>
 
-@push('scripts')
-    <script src="/plugins/dropzone/dropzone.js" type="text/javascript"></script>
+@if(isset($subtask))
     <script>
-        var myDropzone = Dropzone.options.dropzone = {
+        $("#dropzone{{ $subtask }}").dropzone({
             maxFilesize: 5,
             addRemoveLinks: true,
             maxFiles: 10,
             parallelUploads: 1,
-            url: "{{route('files.upload')}}",
+            url: "{{route('files.upload')}}?task_id={{ $task_id }}",
+            headers: {
+                'x-csrf-token': "{{ csrf_token() }}",
+            },
 
             init: function () {
                 this.on("addedfile", function (file) {
                     $.ajax({
                         type: 'POST',
                         url: "{{route('files.upload')}}",
-                        data: {file: file.name, _token: "{{ csrf_token() }}"},
+                        data: {
+                            task_id: "{{ $task_id }}",
+                            file: file.name,
+                            _token: "{{ csrf_token() }}"
+                        },
                         dataType: 'html',
                     });
                 });
             },
-        };
+        });
     </script>
-@endpush
+@endif

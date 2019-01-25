@@ -42,7 +42,7 @@ class AddSubTasksJob implements ShouldQueue
     }
 
 
-    private function create(array $data, int $indx = 1)
+    private function create(array $data, $indx = 1)
     {
         //dd($data);
         /** @var Job $subJob */
@@ -83,21 +83,7 @@ class AddSubTasksJob implements ShouldQueue
             $subJob->tag()->create(['value' => $data['sub-'.$indx.'-tag']]);
         }
 
-        if(!empty(request()->files->get('sub-'.$indx.'-files'))) {
-
-            $subJob->files()->delete();
-
-            foreach (request()->files->get('sub-'.$indx.'-files') as $file) {
-                $name = time().$file->getClientOriginalName();
-
-                $subJob->files()->create([
-                    'file'          => $name,
-                    'size'          => $file->getSize() ?? 0,
-                    'type'          => $file->getMimeType(),
-                    'original_name' => $file->getClientOriginalName(),
-                ]);
-            }
-        }
+        dispatch(new AddFilesJob($subJob, $indx));
 
         $this->addJobToProject($subJob);
 
