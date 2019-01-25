@@ -28,8 +28,6 @@
 
             {!! Form::close() !!}
 
-            @include('jobs.partials.upload')
-
             </div>
         </div>
     </div>

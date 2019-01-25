@@ -180,6 +180,10 @@
             </div>
         </div>
     </div>
+
+    <div class="job-row">
+        @include('jobs.partials.upload', ['field_name' => 'files[]'])
+    </div>
 </div>
 
 @if(isset($subtask))
