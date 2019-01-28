@@ -106,10 +106,15 @@ class SkillsController extends Controller
     function skillsJson()
     {
         $term = $_GET['q'];
+
+        $exists = Auth::user()->skills()->pluck('skill_id')->toArray();
+
         $skills = Skill::where('name', 'LIKE', "%$term%")
-            ->orWhere('desc', 'LIKE', "%$term%")->get();
+            ->whereNotIn('id', $exists)
+            ->get();
 
         $json = array();
+
         foreach ($skills as $skill) {
             array_push($json, array(
                     'id' => $skill->id,

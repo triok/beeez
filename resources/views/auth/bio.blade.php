@@ -41,15 +41,12 @@
             @endforeach
             </select> 
             </p>
-            <p>
-            <label>@lang('account.skills')</label>
-            {!! Form::text('skills',null,['id'=>'skills','class'=>'form-control']) !!}
-            <div>
-            @foreach($user->skills as $skill)
-                <span class="label label-default">{{$skill->name}} &nbsp; <i id="{{$skill->id}}" class="fa fa-times delete-my-skill" style="cursor:pointer;"></i> </span>
-            @endforeach
+
+            <div id="skills-list" style="position: relative;margin-bottom: 20px;">
+                <label>@lang('account.skills')</label>
+                {!! Form::text('skills',null,['id'=>'skills','class'=>'form-control']) !!}
             </div>
-            </p>
+
             <p>
             <label>@lang('account.joblist')</label>
             <div class="form-inline">
@@ -115,7 +112,7 @@
 </form>
 {{--{!! Form::close() !!}--}}
 
-@include('partials.tokeninput',['elem'=>'skills','path'=>'/skills-json'])
+@include('partials.tokeninput',['elem'=>'skills','path'=>'/skills-json','elements'=>$user->skills])
 
 @push('scripts')
 <script>
