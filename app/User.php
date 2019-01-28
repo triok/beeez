@@ -6,6 +6,7 @@ use App\Http\Controllers\Traits\Avatarable;
 use App\Http\Controllers\Traits\Commentable;
 use App\Http\Controllers\Traits\Imageable;
 use App\Models\Billing\Stripe;
+use App\Models\Favorite;
 use App\Models\Image;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\Bookmark;
@@ -26,6 +27,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Laratrust\Traits\LaratrustUserTrait;
 use Cmgmyr\Messenger\Traits\Messagable;
 use Cmgmyr\Messenger\Models\Models;
@@ -171,6 +173,35 @@ class User extends Authenticatable
 
         return Project::where('user_id', $this->id)
             ->orWhereIn('id', $projectIds);
+    }
+
+    public function favoritedTeams()
+    {
+        $teamIds = TeamUsers::where('user_id', $this->id)->pluck('team_id')->toArray();
+
+        $teams = Team::where('user_id', $this->id)
+            ->orWhereIn('id', $teamIds)
+            ->get();
+
+        $teams = $teams->filter(function ($team) {
+            return $team->isFavorited();
+        });
+
+        return $teams;
+    }
+
+    public function favoritedUsers()
+    {
+        $userIds = $this->favorited()
+            ->where('favoritable_type', 'App\User')
+            ->pluck('favoritable_id');
+
+        return User::whereIn('id', $userIds)->get();
+    }
+
+    public function favorited()
+    {
+        return Favorite::where('user_id', $this->id);
     }
 
     // todo: fix "2"

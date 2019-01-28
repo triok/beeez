@@ -94,11 +94,29 @@
         <div class="col-xs-2" id="peoples">
             <div class="base-wrapper">
                 @lang('bookmarks.peoples')
+                <table class="table table-responsive">
+                    @foreach($favoritedUsers as $user)
+                        <tr>
+                            <td>
+                                <a href="{{ route('peoples.show', $user) }}">{{ $user->username }}</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
             </div>
         </div>
         <div class="col-xs-2">
             <div class="base-wrapper">
                 @lang('bookmarks.teams')
+                <table class="table table-responsive">
+                    @foreach($favoritedTeams as $team)
+                        <tr>
+                            <td>
+                                <a href="{{ route('teams.show', $team) }}">{{ $team->name }}</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
             </div>
         </div>
         <div class="col-xs-2">
