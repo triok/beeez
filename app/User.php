@@ -19,6 +19,7 @@ use App\Models\Participant;
 use App\Models\RoleUser;
 use App\Models\Social;
 use App\Models\Project;
+use App\Models\Task;
 use App\Models\Team;
 use App\Models\TeamUsers;
 use App\Models\Thread;
@@ -152,6 +153,11 @@ class User extends Authenticatable
     public function ownTeams()
     {
         return $this->hasMany(Team::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 
     public function isOnline()
