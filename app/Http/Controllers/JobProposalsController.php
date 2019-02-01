@@ -9,6 +9,8 @@ use App\Models\Jobs\Job;
 use App\Models\Jobs\Proposal;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Mockery\Exception;
 
@@ -28,13 +30,14 @@ class JobProposalsController extends Controller
      */
     public function store(ProposalRequest $request, Job $job)
     {
-        if($job->proposals()->where('user_id', auth()->id())->count()) {
+        if ($job->proposals()->where('user_id', auth()->id())->count()) {
             flash()->error('Вы уже добавили предложение!');
 
             return redirect()->back();
         }
-
+        
         $job->proposals()->create([
+            'proposal_type' => $this->getProposalType($request),
             'user_id' => auth()->id(),
             'body' => $request->get('body')
         ]);
@@ -73,5 +76,26 @@ class JobProposalsController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * Proposal type.
+     *
+     * @param Request $request
+     * @return int
+     */
+    protected function getProposalType(Request $request)
+    {
+        $proposalType = 0;
+
+        if ((int)$teamId = $request->get('proposal_type')) {
+            $team = Auth::user()->ownTeams()->where('id', $teamId)->first();
+
+            if ($team) {
+                return $team->id;
+            }
+        }
+
+        return $proposalType;
     }
 }
