@@ -21,7 +21,7 @@ class StoreJobRequest extends FormRequest
                 'name' => 'required|max:50',
             ];
         }
-
+        
         return [
             'name' => 'required|max:50',
             'price' => 'required|digits_between:1,6|integer',

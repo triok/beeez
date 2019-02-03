@@ -8,6 +8,7 @@
 @endpush
 @push('scripts')
 <script src="/plugins/summernote/summernote.min.js"></script>
+<script src="/plugins/summernote/lang/summernote-ru-RU.js"></script>
 <script>
     $(document).ready(function() {
         $('{{$editor}}').summernote({
@@ -17,6 +18,7 @@
                 ['table', ['table']],
                 ['insert', ['picture','video']],
             ],
+            lang: "ru-RU"
         });
     });
 </script>

@@ -27,6 +27,8 @@ use Carbon\Carbon;
 use App\User;
 use App\Models\Jobs\Job;
 use App\Models\Jobs\JobCategories;
+use App\Models\Jobs\Skill;
+use App\Models\Jobs\TimeForWork;
 
 $factory->define(User::class, function (Faker\Generator $faker) {
     static $password;
@@ -71,6 +73,18 @@ $factory->define(JobCategories::class, function (Faker\Generator $faker) {
   return [
         'category_id'         => $faker->randomElement(App\Models\Jobs\Category::pluck('id')->toArray()),
         'job_id'              => $faker->randomElement(Job::pluck('id')->toArray()),
+    ];
+});
+
+$factory->define(Skill::class, function (Faker\Generator $faker) {
+  return [
+        'name'         => $faker->sentence,
+    ];
+});
+
+$factory->define(TimeForWork::class, function (Faker\Generator $faker) {
+  return [
+        'value'         => $faker->sentence,
     ];
 });
 

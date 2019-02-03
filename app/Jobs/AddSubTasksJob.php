@@ -53,7 +53,7 @@ class AddSubTasksJob implements ShouldQueue
         $subJob->access              = $data['sub-'.$indx.'-access'];
         $subJob->end_date            = Carbon::createFromFormat('d.m.Y H:i', $data['sub-'.$indx.'-end_date'])->format('Y-m-d H:i:s');
         $subJob->price               = $data['sub-'.$indx.'-price'] ?? 0;
-        $subJob->difficulty_level_id = $data['sub-'.$indx.'-difficulty_level_id'];
+        // $subJob->difficulty_level_id = $data['sub-'.$indx.'-difficulty_level_id'];
         $subJob->status              = request()->has('draft')? config('enums.jobs.statuses.DRAFT'): config('enums.jobs.statuses.OPEN');
         $subJob->time_for_work       = $data['sub-'.$indx.'-time_for_work'];
         $subJob->parent_id           = $this->job->id;

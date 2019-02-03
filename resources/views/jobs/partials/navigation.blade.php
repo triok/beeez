@@ -15,7 +15,7 @@
                 </button>
 
                 <div v-if="tabs.length > 0" id="task-list" class="base-wrapper task-list nav">
-                    <h3>@lang('edit.task-list')Список заданий:</h3>
+                    <h3>@lang('edit.task-list')</h3>
                     <ol>
                         <div v-for="tab in tabs" class="media alert">
                         <li>

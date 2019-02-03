@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container-fluid graphs">
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             <div class="base-wrapper task-created">
                 <p class="number">{{ $jobsTotalByYear }}</p>
                 <p class="title">@lang('layout.task-title')</p>
@@ -11,7 +11,7 @@
                 <i class="fa fa-line-chart" aria-hidden="true"></i>
              </div>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             <div class="base-wrapper today-created">
                 <p class="number">46</p>
                 <p class="title">@lang('layout.today-title')</p>
@@ -19,7 +19,7 @@
                 <i class="fa fa-rss" aria-hidden="true"></i>
             </div>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             <div class="base-wrapper today-complete">
                 <p class="number">30</p>
                 <p class="title">@lang('layout.complete-title')</p>
@@ -32,9 +32,14 @@
     <div class="col-sm-3 sidebar-offcanvas category-nav" role="navigation">
         <div id="sidebar" class="container-fluid">
             <div class="base-wrapper">
-            <div class="Categories">@lang('layout.categories')</div>
+            <h3>@lang('layout.categories')</h3>
 
             <ul class="nav list-unstyled">
+                <li>
+                    <div style="display: flex; justify-content: space-between;">
+                        <router-link to="/">Все задания</router-link>
+                    </div>
+                </li>
                 @foreach(\App\Queries\CategoryQuery::onlyParent()->orderBy('cat_order','ASC')->get() as $cat)
                     <li>
                         <div style="display: flex; justify-content: space-between;">
@@ -72,14 +77,23 @@
                 @endforeach
             </ul>
         </div>
+        <div class="base-wrapper">
+            <h3>Навыки</h3>
+            <ul class="nav list-unstyled">
+            @foreach($skills as $skill)
+            <li>{{ $skill->name }}</li>
+            @endforeach
+            </ul>
+        </div>        
         </div>
     </div>
+    
 
     <router-view></router-view>
      </div> 
 @endsection
 
-@push('modals')
+<!-- @push('modals')
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
@@ -226,7 +240,7 @@
         </div>
 
 
-        @endpush
+        @endpush -->
         @push('scripts')
             <script src="/js/custom.js"></script>
 @endpush

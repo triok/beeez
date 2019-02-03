@@ -27,7 +27,7 @@ return [
     'timefor'        => 'Time for work' , 
     'chooseuser'     => 'Choose user',
     'anyone'         => 'For anyone',
-    'category'       => 'Select category & subcategory',
+    'category'       => 'Category',
     'nocategory'     => 'Without category',
     'project'        => 'Project',
     'noproject'      => 'Without project',     

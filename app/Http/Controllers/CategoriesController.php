@@ -15,8 +15,9 @@ class CategoriesController extends Controller
         $this->middleware('role:admin');
     }
     public function index(){
-        $categories = Category::orderBy('cat_order','ASC')->get();
-        return view('jobs.categories',compact('categories'));
+        // $categories = Category::orderBy('cat_order','ASC')->get();
+        // $skills = 'test';        
+        // return view('jobs.categories',compact('categories','skills'));
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +28,8 @@ class CategoriesController extends Controller
     {
         $category = Category::find($id);
         $jobs = $category->jobs()->paginate(20);
-        $title = 'Job by ' . $category->nameEu;
+        $title = 'Job by ' . $category->nameRu;
+
         return view('home', compact('jobs', 'category', 'title'));
     }
 

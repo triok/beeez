@@ -5,7 +5,8 @@
     <div class="jd-container standalone">
         <div class="jd-card air-card p-0-top-bottom m-0-top-bottom">
             <div class="row">
-                <div class="content col-lg-8">
+                <div class="content col-lg-9">
+                    <div class="base-wrapper">
                     <header>
                         <h2>{{$job->name}}</h2>
                     </header>
@@ -52,9 +53,8 @@
                         <ul class="job-features">
                             <li data-toggle="tooltip" data-placement="left" title="@lang('show.price')">
 
-                                <strong> {{$job->formattedPrice}}</strong>
+                                <span>@lang('show.budget')</span><strong> {{$job->formattedPrice}}</strong>
 
-                                <small class="text-muted">@lang('show.fixedprice')</small>
                             </li>
  
                             @if(isset($job->tag))
@@ -72,17 +72,17 @@
                             {!! $job->desc !!}
                         </div>
                     </section>
-                    <section class="air-card-divider-sm">
+<!--                     <section class="air-card-divider-sm">
                         <label>@lang('show.instruction')</label>
                         <div class="job-description">
                             {!! $job->instructions !!}
                         </div>
-                    </section>
+                    </section> -->
 
                     <section class="air-card-divider-sm">
                         <ul class="list-unstyled">
                             <li>
-                                <strong class="m-sm-right">@lang('show.timefor')</strong><span> {{ $job->time_for_work }} {{ $job->time_for_work == 1 ? 'hour' : 'hours' }}</span>
+                                <strong class="m-sm-right">@lang('show.timefor')</strong><span> {{ $time->value }}</span>
                             </li>
                             <li>
                                 <strong class="m-sm-right">@lang('show.enddate')</strong><span class="enddate"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ \Carbon\Carbon::parse($job->end_date)->format('d M, Y H:i') }}</span>
@@ -107,24 +107,24 @@
                                 @endif
                             </li> -->
 
-                            <li>
+<!--                             <li>
                                 @if(isset($job->difficulty))
                                 <strong class="m-sm-right">@lang('show.difficulty')</strong><span class="label label-default"> {{ $job->difficulty->name }}</span>
                                 @endif
-                            </li>
+                            </li> -->
 
                         </ul>
                     </section>
+                    @if(count($job->skills) > 0)
                     <section class="air-card-divider-sm">
                         <label>@lang('show.skills')</label>
                         <div class="tag-list">
-                            @forelse($job->skills as $skill)
+                            @foreach($job->skills as $skill)
                                 <span  class="o-tag-skill">{{$skill->name}}</span>
-                            @empty
-                                <span class="label label-warning">@lang('show.noskills')</span>
-                            @endforelse
+                            @endforeach
                         </div>
                     </section>
+                    @endif
                     @if(count($job->files) > 0)
                     <section class="air-card-divider-sm">
                         <div class="m-lg-bottom">
@@ -140,7 +140,69 @@
                         </div>
                     </section>
                     @endif
+                    @if(count($job->jobs) > 0)
+                    <section class="air-card-divider-sm">
+                        <label>@lang('show.related')</label>
+                        <ul class="list-unstyled" >
+                            @foreach($job->jobs as $subJob)
+                            <li>
+                                <strong><a href="{{route('jobs.show', $subJob)}}"  target="_self">{{$subJob->name}}</a> </strong>
+                            </li>
+                            @endforeach
 
+                            @if(isset($job->parent_id))
+                                @php $parents = \App\Models\Jobs\Job::query()->where('parent_id',$job->parent_id )->get(); @endphp
+                                @if(isset($job->parent))
+                                    <li>
+                                        <strong><a href="{{route('jobs.show', $job->parent)}}" target="_self">{{$job->parent->name}}</a> </strong>
+                                    </li>
+                                @endif
+                                @foreach($parents as $parentJob)
+                                    @continue($parentJob->id == $job->id)
+                                    <li>
+                                        <strong><a href="{{route('jobs.show', $parentJob)}}"  target="_self">{{$parentJob->name}}</a> </strong>
+                                    </li>
+                                @endforeach
+                            @endif
+
+                        </ul>                        
+                    </section>
+                    @endif
+                    <section class="air-card-divider-sm">
+                        @if($job->applications()->count())
+                            <div class="air-card p-0-top-bottom">
+                                <div class="comments">
+                                    <h2>@lang('show.questions') ({{$job->commentCount()}})</h2>
+                                    <ul class="media-list">
+                                        @forelse($job->comments as $comment)
+                                            @include('jobs.comment', ['tag' => 'li'])
+                                        @empty
+                                            <li class="media">
+                                                <div class="alert alert-warning">@lang('show.noquestions')</div>
+                                            </li>
+                                        @endforelse
+                                    </ul>
+                                </div>
+                                <div class="form-container">
+                                    <h2>@lang('show.question')</h2>
+                                    <form action="{{route('comments.store')}}" method="post">
+                                        {{csrf_field()}}
+                                        <input type="hidden" name="parent" id="parent" value="">
+                                        <input type="hidden" name="job" value="{{$job->id}}">
+                                        <textarea name="body" id="body" required rows="3" class="form-control"></textarea>
+                                        <button type="submit" class="btn btn-info" style="margin-top: 10px;">@lang('show.send')</button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endif
+
+                        @include('jobs.proposals')
+
+                        @if($job->applications()->count())
+                            @include('jobs.reports')
+                        @endif
+                    </section>   
+                </div>
                 </div>
                 <aside class="sidebar-actions col-lg-3">
                     <div class="sidebar">
@@ -148,7 +210,7 @@
                             <div class="row buttons">
                                 <div class="primary col-lg-12 col-sm-6 col-xs-6">
                                     @if($job->applications)
-                                        @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
+<!--                                         @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
                                             @if(isset($job->application))
                                                 <button data-id="{{$job->id}}" {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-block btn-review">
                                                     <i class="fa fa-handshake-o" aria-hidden="true"></i>
@@ -157,7 +219,7 @@
                                             @else
                                                 <button disabled class="btn btn-warning btn-block "><i class="fa fa-history" aria-hidden="true"></i> @lang('home.in_progress') </button>
                                             @endif
-                                        @endif
+                                        @endif -->
 
                                         @if (isset($job->application) && auth()->user()->id == $job->application->user_id)
 
@@ -258,74 +320,6 @@
         </div>
 
 
-        <div class="air-card p-0-top-bottom">
-            <header>
-                <h2>@lang('show.related')</h2>
-            </header>
-            <div>
-                <section class="other-jobs">
-                    <ul class="list-unstyled" >
-                        @foreach($job->jobs as $subJob)
-                        <li>
-                            <strong><a href="{{route('jobs.show', $subJob)}}"  target="_self">{{$subJob->name}}</a> </strong>
-                        </li>
-                        @endforeach
-
-                        @if(isset($job->parent_id))
-                            @php $parents = \App\Models\Jobs\Job::query()->where('parent_id',$job->parent_id )->get(); @endphp
-                            @if(isset($job->parent))
-                                <li>
-                                    <strong><a href="{{route('jobs.show', $job->parent)}}" target="_self">{{$job->parent->name}}</a> </strong>
-                                </li>
-                            @endif
-                            @foreach($parents as $parentJob)
-                                @continue($parentJob->id == $job->id)
-                                <li>
-                                    <strong><a href="{{route('jobs.show', $parentJob)}}"  target="_self">{{$parentJob->name}}</a> </strong>
-                                </li>
-                            @endforeach
-                        @endif
-
-                        @if($job->jobs()->count() <= 0 && !isset($parents))
-                            <li><div class="alert alert-warning">@lang('show.norelated')</div></li>
-                        @endif
-                    </ul>
-                </section>
-            </div>
-        </div>
-
-        @if($job->applications()->count())
-            <div class="air-card p-0-top-bottom">
-                <div class="comments">
-                    <h2>@lang('show.questions') ({{$job->commentCount()}})</h2>
-                    <ul class="media-list">
-                        @forelse($job->comments as $comment)
-                            @include('jobs.comment', ['tag' => 'li'])
-                        @empty
-                            <li class="media">
-                                <div class="alert alert-warning">@lang('show.noquestions')</div>
-                            </li>
-                        @endforelse
-                    </ul>
-                </div>
-                <div class="form-container">
-                    <h2>@lang('show.question')</h2>
-                    <form action="{{route('comments.store')}}" method="post">
-                        {{csrf_field()}}
-                        <input type="hidden" name="parent" id="parent" value="">
-                        <input type="hidden" name="job" value="{{$job->id}}">
-                        <textarea name="body" id="body" required rows="3" class="form-control"></textarea>
-                        <button type="submit" class="btn btn-info" style="margin-top: 10px;">@lang('show.send')</button>
-                    </form>
-                </div>
-            </div>
-        @endif
-
-        @include('jobs.proposals')
-
-        @if($job->applications()->count())
-            @include('jobs.reports')
-        @endif
     </div>
 </div>
 @endsection

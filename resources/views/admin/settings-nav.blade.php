@@ -1,4 +1,4 @@
-<div class="col-sm-3 bg-gray admin-nav">
+<div class="col-md-3 bg-gray admin-nav">
     <button class="btn btn-info btn-xs admin-nav-btn dropdown-toggle hidden-lg hidden-sm hidden-md"
             data-toggle="dropdown"><i class="fa fa-gear"></i> Settings menu
     </button>

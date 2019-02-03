@@ -26,18 +26,19 @@
                 @endforeach
             </table>
             {!! $skills->links() !!}
-        </div>
-        <div class="col-md-4">
-            <strong>Add a skill</strong>
-            {!! Form::open(['url'=>'skills','method'=>'post']) !!}
+            <div class="col-md-5">
+                <strong>Add a skill</strong>
+                {!! Form::open(['url'=>'skills','method'=>'post']) !!}
 
-            {{ Form::text('name',null,['class'=>'form-control','id'=>'','placeholder'=>'Name']) }}
-            <br/>
-            {!! Form::textarea('desc',null,['class'=>'form-control','rows'=>3,'placeholder'=>'Description']) !!}
-            <br/>
-            <button class="btn btn-default">Submit</button>
-            {!! Form::close() !!}
+                {{ Form::text('name',null,['class'=>'form-control','id'=>'','placeholder'=>'Name']) }}
+                <br/>
+                {!! Form::textarea('desc',null,['class'=>'form-control','rows'=>3,'placeholder'=>'Description']) !!}
+                <br/>
+                <button class="btn btn-default">Submit</button>
+                {!! Form::close() !!}
+            </div>            
         </div>
+
     </div>
 
 @endsection

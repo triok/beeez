@@ -25,5 +25,7 @@ return [
     'complete'          => 'Complete',
     'completed'         => 'Completed',     
     'hours'             => 'hr',
+    'status'            => 'Status', 
+    'created'           => 'Created',   
 
 ];

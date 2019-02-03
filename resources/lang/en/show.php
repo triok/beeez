@@ -35,6 +35,7 @@ return [
     'offers'         => 'Offers',
     'offers-small'   => 'Add your offer',
     'nooffer'        => 'Your offer will be the first',
+    'budget'         => 'Budget',
 
     //Buttons
     'save'           => 'Save job',

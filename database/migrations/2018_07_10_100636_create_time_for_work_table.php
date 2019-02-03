@@ -13,9 +13,9 @@ class CreateTimeForWorkTable extends Migration
      */
     public function up()
     {
-        Schema::create('time_for_work', function (Blueprint $table) {
+        Schema::create('time_for_works', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('value',10);
+            $table->string('value',15);
             $table->timestamps();
         });
     }

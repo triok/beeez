@@ -22,8 +22,10 @@ class AddSkillsJob implements ShouldQueue
 
     public function handle()
     {
-        if(!isset(request()->skills)) return;
+        if(!isset(request()->Skills)) return;
 
-        $this->job->skills()->sync(array_values(request()->skills));
+        // $this->job->Skills()->sync(array_values(request()->Skills));
+        $this->job->Skills()->sync(request()->Skills);
+
     }
 }

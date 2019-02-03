@@ -8,6 +8,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     {!! Form::text('name', old('name'), ['required'=>'required', 'class'=>'form-control', 'placeholder' => __('projects.create-name')]) !!}
+                    <small>Обязательное поле</small>
                 </div>
             </div>
         </div>
@@ -30,7 +31,7 @@
                         @if(!$team_id && $structure_id)
                             <option selected value="organization">Проект организации</option>
                         @else
-                            <option value="organization">Проект организации</option>
+                            <!-- <option value="organization">Проект организации</option> -->
                         @endif
 
                         @foreach($teams as $team)
@@ -42,6 +43,7 @@
                             @endif
                         @endforeach
                     </select>
+                    <small>Обязательное поле</small>
                 </div>
             </div>
         </div>
@@ -80,11 +82,13 @@
             </div>
         </div>
 
+        @if ($structures->count() || $teams->count())
         <div class="row">
             <div class="col-md-6">
                 @include('projects.partials.form_users')
             </div>
         </div>
+        @endif
 
         <div class="row">
             <div class="col-md-6">

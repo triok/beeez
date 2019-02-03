@@ -47758,7 +47758,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\ntable.dataTable thead th {\n    border-bottom: 1px solid #ddd;\n}\ntable.dataTable.no-footer {\n    border-bottom: 1px solid #ddd;\n}\n", ""]);
+exports.push([module.i, "\n.dataTables_wrapper {\n    padding: 0 20px;\n}\ntable.dataTable thead th {\n    border-bottom: 1px solid #ddd;\n}\ntable.dataTable.no-footer {\n    border-bottom: 1px solid #ddd;\n}\ntable.dataTable tbody tr {\n    height:100px;\n    transition: 0.5s;\n}\ntable.dataTable tbody tr .job-name {\n    position:relative;\n}\ntable.dataTable tbody tr .center {\n    text-align:center;\n    vertical-align:middle;\n}\ntable.dataTable tbody tr .job-name>a{\n    font-size:17px;\n    font-weight:bold;\n}\ntable.dataTable tbody tr .job-name div {\n    position:absolute;\n    bottom:0;\n}\ntable.dataTable tbody tr .job-name div p{\n    margin:0;\n    font-size: 13px;\n    color: #8e8e8e;\n}\ntable.dataTable tbody tr .searching {\n    color:#48b0a5;\n}\ntable.dataTable tbody tr .disabled {\n    color:#8e8e8e;\n}\ntable.dataTable tbody tr .enddate {\n    color:#de4848;\n}     \n", ""]);
 
 // exports
 
@@ -47769,34 +47769,6 @@ exports.push([module.i, "\ntable.dataTable thead th {\n    border-bottom: 1px so
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -47922,12 +47894,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     self.table = $('#jobs-table').DataTable({
                         bFilter: false,
                         bInfo: false,
+                        "order": [[2, "desc"]],
+                        "pageLength": 20,
                         "lengthChange": false
                     });
                 } else {
                     self.table = $('#jobs-table').DataTable({
                         bFilter: false,
                         bInfo: false,
+                        "order": [[2, "desc"]],
+                        "pageLength": 20,
                         "lengthChange": false
                     });
                 }
@@ -47971,52 +47947,54 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-sm-9", attrs: { id: "main" } }, [
-    _vm.category
-      ? _c("ol", { staticClass: "breadcrumb" }, [
-          _vm.category && _vm.category.parent
-            ? _c("li", [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "/jobs/category/" + _vm.category.parent.id }
-                  },
-                  [_vm._v(_vm._s(_vm.category.parent.nameRu))]
-                )
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.category
-            ? _c("li", [
-                _c(
-                  "a",
-                  { attrs: { href: "/jobs/category/" + _vm.category.id } },
-                  [_vm._v(_vm._s(_vm.category.nameRu))]
-                )
-              ])
+    _c("div", { staticClass: "row current-jobs base-wrapper" }, [
+      _vm.category
+        ? _c("ol", { staticClass: "breadcrumb" }, [
+            _vm.category && _vm.category.parent
+              ? _c("li", [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: "/jobs/category/" + _vm.category.parent.id
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.category.parent.nameRu))]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.category
+              ? _c("li", [
+                  _c(
+                    "a",
+                    { attrs: { href: "/jobs/category/" + _vm.category.id } },
+                    [_vm._v(_vm._s(_vm.category.nameRu))]
+                  )
+                ])
+              : _vm._e()
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.show_title,
+              expression: "show_title"
+            }
+          ]
+        },
+        [
+          !_vm.category
+            ? _c("h3", [_vm._v(_vm._s(_vm.trans("home.title")))])
             : _vm._e()
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.show_title,
-            expression: "show_title"
-          }
         ]
-      },
-      [
-        !_vm.category
-          ? _c("h3", [_vm._v(_vm._s(_vm.trans("home.title")))])
-          : _vm._e()
-      ]
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "row current-jobs" }, [
+      ),
+      _vm._v(" "),
       _c(
         "table",
         {
@@ -48028,7 +48006,7 @@ var render = function() {
               expression: "show_table"
             }
           ],
-          staticClass: "table table-striped",
+          staticClass: "table table-responsive",
           attrs: { id: "jobs-table" }
         },
         [
@@ -48043,7 +48021,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("th", { attrs: { scope: "col" } }, [
-                _vm._v(_vm._s(_vm.trans("home.before")))
+                _vm._v(_vm._s(_vm.trans("home.created")))
               ]),
               _vm._v(" "),
               _c("th", { attrs: { scope: "col" } }, [
@@ -48051,7 +48029,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("th", { attrs: { scope: "col" } }, [
-                _vm._v(_vm._s(_vm.trans("home.work")))
+                _vm._v(_vm._s(_vm.trans("home.status")))
               ])
             ])
           ]),
@@ -48061,32 +48039,78 @@ var render = function() {
             _vm._l(_vm.jobs, function(job) {
               return _c("tr", [
                 _c("td", { staticClass: "job-name", attrs: { scope: "row" } }, [
-                  _c("a", { attrs: { href: "/jobs/" + job.id, id: job.id } }, [
-                    _vm._v(_vm._s(job.name))
-                  ]),
+                  job.status == "open"
+                    ? _c(
+                        "a",
+                        { attrs: { href: "/jobs/" + job.id, id: job.id } },
+                        [_vm._v(_vm._s(job.name))]
+                      )
+                    : _c(
+                        "a",
+                        {
+                          staticClass: "disabled",
+                          attrs: { href: "/jobs/" + job.id, id: job.id }
+                        },
+                        [_vm._v(_vm._s(job.name))]
+                      ),
                   _vm._v(" "),
-                  _c("span", { domProps: { innerHTML: _vm._s(job.comment) } })
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(job.time_for_work) +
-                      " " +
-                      _vm._s(_vm.trans("home.hours")) +
-                      "\n                "
+                  _c("span", { domProps: { innerHTML: _vm._s(job.comment) } }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    [
+                      _c("p", [
+                        _vm._v(
+                          _vm._s(_vm.trans("home.before")) +
+                            " " +
+                            _vm._s(job.end_date)
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v("Размещено: "),
+                        _c(
+                          "a",
+                          { attrs: { href: "/peoples/" + job.client_id } },
+                          [_vm._v(_vm._s(job.client))]
+                        ),
+                        _vm._v(" ("),
+                        _c("span", { staticClass: "text-success" }, [
+                          _vm._v(_vm._s(job.client_rating_positive))
+                        ]),
+                        _vm._v("/"),
+                        _c("span", { staticClass: "text-danger" }, [
+                          _vm._v(_vm._s(job.client_rating_negative))
+                        ]),
+                        _vm._v(")")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(job.skills, function(skill) {
+                        return _c("span", { staticClass: "badge" }, [
+                          _vm._v(_vm._s(skill.name))
+                        ])
+                      })
+                    ],
+                    2
                   )
                 ]),
                 _vm._v(" "),
-                _c("td", [
+                _c("td", { staticClass: "center" }, [
+                  _c("span", { staticClass: "hidden" }, [
+                    _vm._v(_vm._s(job.time_for_work.id))
+                  ]),
                   _vm._v(
-                    "\n                    " +
-                      _vm._s(job.end_date) +
-                      "\n                "
+                    " " + _vm._s(job.time_for_work.value) + "\n                "
                   )
                 ]),
                 _vm._v(" "),
-                _c("td", [
+                _c("td", { staticClass: "center" }, [
+                  _c("span", { staticClass: "date-short" }, [
+                    _vm._v(_vm._s(job.created_at))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "center" }, [
                   _vm._v(
                     "\n                    " +
                       _vm._s(job.price) +
@@ -48094,139 +48118,60 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("td", [
+                _c("td", { staticClass: "center" }, [
                   job.auth_check
                     ? _c("div", [
-                        job.applications_count && job.application
-                          ? _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-success btn-sm btn-review",
-                                attrs: { disabled: job.status == "in review" }
-                              },
-                              [
-                                _c("i", { staticClass: "fa fa-handshake-o" }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(_vm.trans("home.complete")) +
-                                    "\n                        "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        job.applications_count && !job.application
-                          ? _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-warning btn-sm",
-                                attrs: { disabled: "" }
-                              },
-                              [
-                                _c("i", { staticClass: "fa fa-history" }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(_vm.trans("home.in_progress")) +
-                                    "\n                        "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
                         job.allow_apply
-                          ? _c(
-                              "a",
-                              {
-                                staticClass: "btn btn-default btn-sm",
-                                attrs: { href: "/jobs/" + job.id }
-                              },
-                              [
-                                _c("i", { staticClass: "fa fa-briefcase" }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(_vm.trans("home.apply")) +
-                                    "\n                            "
-                                )
-                              ]
-                            )
+                          ? _c("span", { staticClass: "searching" }, [
+                              _c("i", { staticClass: "fa fa-search" }),
+                              _vm._v(
+                                " Поиск исполнителя\n                        "
+                              )
+                            ])
                           : _vm._e(),
                         _vm._v(" "),
-                        (job.status == "in progress" ||
-                          job.status == "in review") &&
-                        !job.application
-                          ? _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-default btn-sm apply-job-btn",
-                                attrs: { disabled: "" }
-                              },
-                              [
-                                _c("i", { staticClass: "fa fa-handshake-o" }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(_vm.trans("home.in_progress")) +
-                                    "\n\n                        "
-                                )
-                              ]
-                            )
+                        job.status == "in progress" || job.status == "in review"
+                          ? _c("span", { staticClass: "disabled" }, [
+                              _c("i", { staticClass: "fa fa-handshake-o" }),
+                              _vm._v(
+                                " " +
+                                  _vm._s(_vm.trans("home.in_progress")) +
+                                  "\n                        "
+                              )
+                            ])
                           : _vm._e(),
                         _vm._v(" "),
-                        job.status == "complete" && !job.application
-                          ? _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-default btn-sm apply-job-btn",
-                                attrs: { disabled: "" }
-                              },
-                              [
-                                _c("i", { staticClass: "fa fa-handshake-o" }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(_vm.trans("home.complete")) +
-                                    "\n\n                        "
-                                )
-                              ]
-                            )
+                        job.status == "complete"
+                          ? _c("span", { staticClass: "disabled" }, [
+                              _c("i", { staticClass: "fa fa-check" }),
+                              _vm._v(
+                                " " +
+                                  _vm._s(_vm.trans("home.completed")) +
+                                  "\n                        "
+                              )
+                            ])
                           : _vm._e(),
                         _vm._v(" "),
                         (job.status == "open" && job.ended) ||
                         job.status == "closed"
-                          ? _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-default btn-sm apply-job-btn",
-                                attrs: { disabled: "" }
-                              },
-                              [
-                                _c("i", { staticClass: "fa fa-handshake-o" }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(_vm.trans("home.enddate")) +
-                                    "\n\n                        "
-                                )
-                              ]
-                            )
+                          ? _c("span", { staticClass: "enddate" }, [
+                              _c("i", { staticClass: "fa fa-clock-o" }),
+                              _vm._v(
+                                " " +
+                                  _vm._s(_vm.trans("home.enddate")) +
+                                  "\n                        "
+                              )
+                            ])
                           : _vm._e()
                       ])
                     : _vm._e(),
                   _vm._v(" "),
                   !job.auth_check
-                    ? _c(
-                        "button",
-                        { staticClass: "btn btn-default btn-sm apply-job-btn" },
-                        [
-                          _c("i", { staticClass: "fa fa-handshake-o" }),
-                          _vm._v(
-                            " " +
-                              _vm._s(_vm.trans("home.apply")) +
-                              "\n\n                    "
-                          )
-                        ]
-                      )
+                    ? _c("span", [
+                        _vm._v(
+                          "\n\n                        not authorized\n                       \n\n                    "
+                        )
+                      ])
                     : _vm._e()
                 ])
               ])

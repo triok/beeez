@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\JobFilters;
 use App\Models\Jobs\Job;
 use App\Models\Page;
+use App\Models\Jobs\Skill;
 
 class AppController extends Controller
 {
@@ -20,7 +21,9 @@ class AppController extends Controller
             ->whereYear('created_at', date('Y'))
             ->count();
 
-        return view('home',compact('jobs', 'jobsTotalByYear'));
+
+        $skills = Skill::paginate(25);
+        return view('home',compact('jobs', 'jobsTotalByYear','skills'));
     }
 
     function showPage($id)

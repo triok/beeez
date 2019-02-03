@@ -7,7 +7,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title" id="title">
-                        Category selection
+                        @lang('edit.category')
                     </h4>
                 </div>
 
@@ -24,7 +24,7 @@
                                        class="list-group-item {{isset($job) && $job->hasCategory($cat, true) ? 'active' : ''}}">
 
                                         <span class="badge">&gt;</span>
-                                        {{$cat->nameEu}}
+                                        {{$cat->nameRu}}
                                     </a>
                                 @endforeach
                             </div>
@@ -38,9 +38,9 @@
                                 <div class="list-group">
                                     @foreach($cat->subcategories as $subcat)
                                         <a href="#"
-                                           onclick="setCategory('{{ $subcat->id }}', '{{ $cat->nameEu . " & " . $subcat->nameEu }}')"
+                                           onclick="setCategory('{{ $subcat->id }}', '{{ $cat->nameRu . " & " . $subcat->nameRu }}')"
                                            class="list-group-item {{(isset($job) && $job->hasCategory($subcat)) ? 'active' : ''}}">
-                                            {{$subcat->nameEu}}
+                                            {{$subcat->nameRu}}
                                         </a>
                                     @endforeach
                                 </div>

@@ -5,7 +5,7 @@
         @include('jobs.partials.navigation')
 
         <div class="col-sm-9" id="main">
-            <div class="base-wrapper"> 
+            <div class="base-wrapper">
             @include('jobs.partials.tabs')
 
             @if(isset($job))

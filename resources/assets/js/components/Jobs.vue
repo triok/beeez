@@ -1,103 +1,75 @@
 <template>
     <div class="col-sm-9" id="main">
-        <ol class="breadcrumb" v-if="category">
+        <div class="row current-jobs base-wrapper">
+            <ol class="breadcrumb" v-if="category">
 
-            <li v-if="category && category.parent">
-                <a :href="'/jobs/category/'+ category.parent.id">{{ category.parent.nameRu }}</a>
-            </li>
-            <li v-if="category">
-                <a :href="'/jobs/category/'+ category.id">{{ category.nameRu }}</a>
-            </li>
-        </ol>
-
-
-        <div v-show="show_title">
-            <h3 v-if="!category">{{ trans('home.title') }}</h3>
-        </div>
-
-        <div class="row current-jobs">
-            <table class="table table-striped" id="jobs-table" v-show="show_table">
+                <li v-if="category && category.parent">
+                    <a :href="'/jobs/category/'+ category.parent.id">{{ category.parent.nameRu }}</a>
+                </li>
+                <li v-if="category">
+                    <a :href="'/jobs/category/'+ category.id">{{ category.nameRu }}</a>
+                </li>
+            </ol>
+            <div v-show="show_title">
+                <h3 v-if="!category">{{ trans('home.title') }}</h3>
+            </div>       
+            <table class="table table-responsive" id="jobs-table" v-show="show_table">
                 <thead>
                 <tr>
                     <th scope="col">{{ trans('home.task') }}</th>
                     <th scope="col">{{ trans('home.timefor') }}</th>
-                    <th scope="col">{{ trans('home.before') }}</th>
+                    <th scope="col">{{ trans('home.created') }}</th>
                     <th scope="col">{{ trans('home.price') }}</th>
-                    <th scope="col">{{ trans('home.work') }}</th>
+                    <th scope="col">{{ trans('home.status') }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="job in jobs">
                     <td scope="row" class="job-name">
-                        <a :href="'/jobs/' + job.id" :id="job.id">{{ job.name }}</a>
+
+                        <a v-if="job.status == 'open'" :href="'/jobs/' + job.id" :id="job.id">{{ job.name }}</a>
+                        <a v-else class="disabled" :href="'/jobs/' + job.id" :id="job.id">{{ job.name }}</a>                        
                         <span v-html="job.comment"> </span>
+                        <div>
+                            <p>{{ trans('home.before') }} {{ job.end_date }}</p>
+                            <p>Размещено: <a :href="'/peoples/' + job.client_id">{{ job.client }}</a> (<span class="text-success">{{ job.client_rating_positive }}</span>/<span class="text-danger">{{ job.client_rating_negative }}</span>)</p>
+                            <span class="badge" v-for="skill in job.skills">{{ skill.name }}</span>
+                        </div>
                     </td>
-                    <td>
-                        {{ job.time_for_work }} {{ trans('home.hours') }}
+                    <td class="center">
+                        <span class="hidden">{{ job.time_for_work.id }}</span> {{ job.time_for_work.value }}
                     </td>
-                    <td>
-                        {{ job.end_date }}
+                    <td class="center">
+                        <span class="date-short">{{ job.created_at }}</span>
                     </td>
-                    <td>
+                    <td class="center">
                         {{ job.price }}
                     </td>
-                    <td>
+                    <td class="center">
                         <div v-if="job.auth_check">
-                            <button :disabled="job.status == 'in review'"
-                                    class="btn btn-success btn-sm btn-review"
-                                    v-if="job.applications_count && job.application">
+                            <span class="searching" v-if="job.allow_apply">
+                                <i class="fa fa-search"></i> Поиск исполнителя
+                            </span>
 
-                                <i class="fa fa-handshake-o"></i> {{ trans('home.complete') }}
-                            </button>
-
-                            <button disabled
-                                    class="btn btn-warning btn-sm"
-                                    v-if="job.applications_count && !job.application">
-
-                                <i class="fa fa-history"></i> {{ trans('home.in_progress') }}
-                            </button>
-
-
-                                <a class="btn btn-default btn-sm" :href="'/jobs/'+job.id" v-if="job.allow_apply">
-                                    <i class="fa fa-briefcase"></i> {{ trans('home.apply') }}
-                                </a>
-
-                            <button disabled
-                                    class="btn btn-default btn-sm apply-job-btn"
-                                    v-if="(job.status == 'in progress' || job.status == 'in review') && !job.application">
-
-
+                            <span class="disabled" v-if="(job.status == 'in progress' || job.status == 'in review')">
                                 <i class="fa fa-handshake-o"></i> {{ trans('home.in_progress') }}
+                            </span>
 
-                            </button>
+                            <span class="disabled" v-if="job.status == 'complete'">
+                                <i class="fa fa-check"></i> {{ trans('home.completed') }}
+                            </span>
 
-
-                            <button disabled
-                                    class="btn btn-default btn-sm apply-job-btn"
-                                    v-if="job.status == 'complete' && !job.application">
-
-
-                                <i class="fa fa-handshake-o"></i> {{ trans('home.complete') }}
-
-                            </button>
-
-                            <button disabled
-                                    class="btn btn-default btn-sm apply-job-btn"
-                                    v-if="(job.status == 'open' && job.ended) || job.status == 'closed'">
-
-
-                                <i class="fa fa-handshake-o"></i> {{ trans('home.enddate') }}
-
-                            </button>
+                            <span class="enddate" v-if="(job.status == 'open' && job.ended) || job.status == 'closed'">
+                                <i class="fa fa-clock-o"></i> {{ trans('home.enddate') }}
+                            </span>                           
                         </div>
 
-                        <button class="btn btn-default btn-sm apply-job-btn"
-                                v-if="!job.auth_check">
+                        <span v-if="!job.auth_check">
 
+                            not authorized
+                           
 
-                            <i class="fa fa-handshake-o"></i> {{ trans('home.apply') }}
-
-                        </button>
+                        </span>
                     </td>
                 </tr>
                 </tbody>
@@ -148,12 +120,16 @@
                             self.table = $('#jobs-table').DataTable({
                                 bFilter: false,
                                 bInfo: false,
+                                "order": [[ 2, "desc" ]],
+                                "pageLength": 20,
                                 "lengthChange": false
                             });
                         } else {
                             self.table = $('#jobs-table').DataTable({
                                 bFilter: false,
                                 bInfo: false,
+                                "order": [[ 2, "desc" ]],
+                                "pageLength": 20,
                                 "lengthChange": false
                             });
                         }
@@ -182,12 +158,16 @@
                 }
 
                 return '/api/jobs?category_id=' + this.$route.params.id;
-            }
+            },
         }
     }
 </script>
 
 <style>
+    .dataTables_wrapper {
+        padding: 0 20px;
+    }
+
     table.dataTable thead th {
         border-bottom: 1px solid #ddd;
     }
@@ -195,4 +175,46 @@
     table.dataTable.no-footer {
         border-bottom: 1px solid #ddd;
     }
+
+    table.dataTable tbody tr {
+        height:100px;
+        transition: 0.5s;
+    }
+
+    table.dataTable tbody tr .job-name {
+        position:relative;
+    }
+
+    table.dataTable tbody tr .center {
+        text-align:center;
+        vertical-align:middle;
+    }    
+
+    table.dataTable tbody tr .job-name>a{
+        font-size:17px;
+        font-weight:bold;
+    }
+
+    table.dataTable tbody tr .job-name div {
+        position:absolute;
+        bottom:0;
+    } 
+
+    table.dataTable tbody tr .job-name div p{
+        margin:0;
+        font-size: 13px;
+        color: #8e8e8e;        
+    } 
+
+    table.dataTable tbody tr .searching {
+        color:#48b0a5;
+    }    
+
+    table.dataTable tbody tr .disabled {
+        color:#8e8e8e;
+    } 
+
+    table.dataTable tbody tr .enddate {
+        color:#de4848;
+    }     
 </style>

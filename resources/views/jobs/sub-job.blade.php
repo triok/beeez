@@ -50,7 +50,7 @@
                 </div>
             </td>
         </tr>
-        <tr class="form-group">
+<!--         <tr class="form-group">
             <td><label for="sub-{{$sub}}-difficulty_level">Difficulty level:</label></td>
             <td>
                 <select class="form-control" id="sub-{{$sub}}-difficulty_level" name="sub-{{$sub}}-difficulty_level">
@@ -59,7 +59,7 @@
                     @endforeach
                 </select>
             </td>
-        </tr>
+        </tr> -->
         <tr class="form-group">
             <td><label for="sub-{{$sub}}-end_date">End date:</label></td>
             <td><input type="datetime-local" id="sub-{{$sub}}-end_date" name="sub-{{$sub}}-end_date"

@@ -28,7 +28,7 @@ return [
     'timefor'        => 'Время на работу',   
     'chooseuser'     => 'Выбрать исполнителя',
     'anyone'         => 'Для всех',
-    'category'       => 'Выберете категорию и подкатегорию',
+    'category'       => 'Категория',
     'nocategory'     => 'Без категории',
     'project'        => 'Проект',
     'noproject'      => 'Без проекта',     
@@ -40,7 +40,7 @@ return [
 
     //Buttons
     'submit'         => 'Опубликовать',
-    'save'           => 'В черновик',
+    'save'           => 'Сохранить в черновик',
     'add'            => 'Добавить',    
 
     //tooltips & placeholders

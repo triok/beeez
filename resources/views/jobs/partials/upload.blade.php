@@ -3,9 +3,10 @@
 <div class="row file-upload">
     <div class="col-md-12">
         <div class="dropzone dz-clickable" id="dropzone{{ (isset($subtask) ? $subtask : '') }}">
-            <h3>Upload Multiple Files By Click On Box</h3>
+            <h3><i class="fa fa-paperclip"></i> @lang('partials.upload')</h3>
             <div class="dz-default dz-message">
-                <span>Drop files here to upload</span>
+                <p>@lang('partials.drop')</p>
+                <p>@lang('partials.max')</p>
             </div>
         </div>
     </div>

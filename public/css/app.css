@@ -11390,7 +11390,6 @@ button.close {
 
 
 #sidebar {
-  padding: 20px 20px;
   margin: 0px;
 }
 #sidebarCollapse {
@@ -11400,7 +11399,6 @@ button.close {
   outline: none;
 }
 #sidebar .nav {
-  width: 95%;
   margin-top: 30px;
 }
 #sidebar .nav i {
@@ -11415,8 +11413,6 @@ button.close {
   padding-left: 5px;
 }
 #sidebar li {
-  border: 0 #f2f2f2 solid;
-  border-bottom-width: 1px;
   line-height: 3;
   padding: 0px 10px;
   transition: 0.3s; 
@@ -11575,10 +11571,6 @@ button.close {
   background-color: #fefde5 !important;
 }
 /*styles*/
-.Categories {
-  font-size: 17px;
-  font-weight: bold;
-}
 .subcategory-ul .subcategory-li i {
   color: darkgrey;
 }
@@ -11602,7 +11594,7 @@ button.close {
 }
 .current-jobs tbody tr:hover {
   color: #ff6b6b;
-  background: #fae97038;
+  background: #b5b5b536;
 }
 footer {
   margin: 50px 0px 50px;
@@ -12254,7 +12246,7 @@ section.other-jobs a.delete {
 }
 
 .category-nav {
-  padding-left: 0px;
+  padding: 0px;
 }
 .table-peoples .btn-round {
   border: none;
@@ -12593,7 +12585,7 @@ section.other-jobs a.delete {
 .job-form .required {
   color: red;
 }
-.job-form small {
+.job-form small, .create-project small {
   float:right;
   color: red;
 }

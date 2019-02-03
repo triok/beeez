@@ -32,9 +32,11 @@
 
             @php($name = isset($task_id) ? "sub-" . $task_id . "-status" : "status")
             <select name="{{ $name }}" id="status" class="form-control">
-                @foreach(config('enums.jobs.statuses') as $status)
+                @foreach(array_slice(config('enums.jobs.statuses'),0,2) as $status)
                     <option value="{{$status}}" {{isset($job) && $job->status == $status ? 'selected' : '' }}>{{$status}}</option>
                 @endforeach
+
+
             </select>
         </div>
     </div>
@@ -99,13 +101,22 @@
                     $category = \App\Models\Jobs\Category::find($category_id);
                 }
             @endphp
-
+            
             @php($name = isset($task_id) ? "sub-" . $task_id . "-categories[]" : "categories[]")
             {!! Form::input('hidden', $name, ($category ? $category->id : ''), ['class'=>'form-control', 'id'=>'input-category-id']) !!}
 
-            @php($name = isset($task_id) ? "sub-" . $task_id . "-category_name" : "category_name")
-            {!! Form::input('input', $name, ($category ? (($category->parent ? $category->parent->nameEu . ' & ' : '') . $category->nameEu) : ''), ['class'=>'form-control input-category-name']) !!}
+             @php($name = isset($task_id) ? "sub-" . $task_id . "-category_name" : "category_name")
+            {!! Form::input('input', $name, ($category ? (($category->parent ? $category->parent->nameRu . ' & ' : '') . $category->nameRu) : ''), ['class'=>'form-control input-category-name', 'autocomplete' => 'off']) !!}
             <small>@lang('edit.required')</small>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="categories2">Skills</label>
+            <select class="form-control" id="Skills" name="Skills">
+                @foreach ($skills as $skill)
+                    <option value="{{ $skill->id }}">{{ $skill->name }}</option>
+                @endforeach
+                
+            </select>
         </div>
     </div>
 
@@ -132,19 +143,19 @@
                             {!! Form::textarea($name, isset($job) ? $job->access : '', ['class'=>'form-control', 'rows'=>'4']) !!}
                         </div>
                         <div class="row job-row">
-                            <div class="form-group col-md-4">
+<!--                             <div class="form-group col-md-4">
                                 <label>@lang('edit.difficulty')</label><i class="fa fa-question-circle-o pull-right" aria-hidden="true"></i>
 
                                 @php($name = isset($task_id) ? "sub-" . $task_id . "-difficulty_level_id" : "difficulty_level_id")
                                 {!! Form::select($name, $_difficultyLevels, (isset($job) && $job->difficulty) ? $job->difficulty->id : 1,['class'=>'form-control']) !!}
-                            </div>
+                            </div> -->
                             <div class="form-group col-md-2">
                                 <label for="time_for_work">@lang('edit.timefor')</label><i class="fa fa-question-circle-o pull-right" aria-hidden="true"></i>
 
                                 @php($name = isset($task_id) ? "sub-" . $task_id . "-time_for_work" : "time_for_work")
-                                {!! Form::select($name, array('1' => '1 hour', '2' => '2 hours', '3' => '3 hours'), isset($job) ? $job->time_for_work : 1,['class'=>'form-control', 'id' => 'time_for_work'] )!!}
+                                {!! Form::select($name, $times, isset($job) ? $job->time_for_work : null,['class'=>'form-control', 'id' => 'time_for_work'] )!!}
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-7">
                                 <label for="input-projects">@lang('edit.project')</label><i class="fa fa-question-circle-o pull-right" aria-hidden="true"></i>
 
                                 @php($name = isset($task_id) ? "sub-" . $task_id . "-project_id" : "project_id")
@@ -218,3 +229,4 @@
         });
     </script>
 @endif
+

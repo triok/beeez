@@ -20,6 +20,8 @@ use App\Models\Jobs\Category;
 use App\Models\Jobs\DifficultyLevel;
 use App\Models\Jobs\JobCategories;
 use App\Models\Jobs\Job;
+use App\Models\Jobs\Skill;
+use App\Models\Jobs\TimeForWork;
 use App\Models\Project;
 use App\Queries\JobQuery;
 use App\User;
@@ -96,7 +98,7 @@ class JobController extends Controller
 //            return json_encode($job->toArray());
 ////            return view('jobs.show', compact('job'));
 //        }
-
+        $time = TimeForWork::find($job->time_for_work);
         $application = $job->applications()->first();
 
         if($application) {
@@ -104,7 +106,8 @@ class JobController extends Controller
         }
 
         $users = UserQuery::users();
-        return view('jobs.show', compact('job', 'users', 'application'));
+
+        return view('jobs.show', compact('job', 'users', 'application','time'));
     }
 
     /**
@@ -223,13 +226,16 @@ class JobController extends Controller
         unset($this->usernames[Auth::id()]);
 
         $projects = auth()->user()->allUserProjects()->get();
+        $skills = Skill::all();
+        $times = TimeForWork::pluck('value');
 
-        return view('jobs.edit', ['usernames' => $this->usernames, 'projects' => $projects]);
+        return view('jobs.edit', ['usernames' => $this->usernames, 'projects' => $projects, 'skills' => $skills,'times' => $times]);
     }
 
 
     function store(StoreJobRequest $request)
     {
+        
         if($request->get('end_date')) {
             $request->merge([
                 'end_date' => Carbon::createFromFormat('d.m.Y H:i', $request->get('end_date'))->format('Y-m-d H:i:s')

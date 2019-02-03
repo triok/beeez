@@ -26,7 +26,7 @@ class VacancyCvsController extends Controller
         if($vacancy->organization->user_id == auth()->id() ||
             $vacancy->cvs()->where('user_id', auth()->id())->count()) {
 
-            flash()->warning('Вы же отклинулись на эту вакансию!');
+            flash()->warning('Вы уже отклинулись на эту вакансию!');
 
             return redirect(route('vacancies.index'));
         }
