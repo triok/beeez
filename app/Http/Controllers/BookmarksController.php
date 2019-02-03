@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Jobs\Bookmark;
 use App\Models\Jobs\Job;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Lang;
@@ -160,7 +162,11 @@ class BookmarksController extends Controller
         $jobs = self::bJobs($jobs, $request, 20);
         $title = __('layout.bookmarks');
         $projects = auth()->user()->projects()->where('team_id', null)->get();
-        return view('auth.bookmarks', compact('jobs', 'bookmarks', 'title', 'projects'));
+
+        $favoritedTeams = Auth::user()->favoritedTeams();
+        $favoritedUsers = Auth::user()->favoritedUsers();
+
+        return view('auth.bookmarks', compact('jobs', 'bookmarks', 'title', 'projects', 'favoritedTeams', 'favoritedUsers'));
 
     }
 

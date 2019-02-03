@@ -18,5 +18,8 @@
     "lodash": "^4.17.4",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
+  },
+  "dependencies": {
+    "vuejs-datepicker": "^1.5.4"
   }
 }

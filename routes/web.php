@@ -265,4 +265,8 @@ Route::group(['prefix' => 'api', 'namespace' => '\API'], function () {
     Route::get('cvs/search', 'CvsController@search');
 
     Route::post('projects/{project}/notes', 'ProjectsController@notes');
+
+    Route::resource('tasks', 'TasksController', [
+        'as' => 'api'
+    ]);
 });

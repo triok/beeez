@@ -19,10 +19,13 @@
                 </div>
 
                 <div class="col-md-3">
-                    <input class="form-control timepicker-actions"
-                           autocomplete="off"
-                           placeholder="Дата"
-                           v-model="newTaskDate">
+                    <datepicker
+                            input-class="form-control"
+                            autocomplete="off"
+                            placeholder="Дата"
+                            v-model="newTaskDate"
+                            :format="customFormatter"
+                            :disabledDates="{to: fromDate()}"></datepicker>
                 </div>
 
                 <div class="col-md-1">
@@ -35,7 +38,7 @@
             </div>
         </header>
 
-        <section class="main" v-show="tasks.length" v-cloak>
+        <section class="main" v-show="tasks && tasks.length" v-cloak>
             <div class="row row-title">
                 <div class="col-md-1"></div>
                 <div class="col-md-4">Название</div>
@@ -46,33 +49,31 @@
 
             <div class="row task"
                  v-for="task in activeTasks"
-                 :key="task.id"
-                 :class="{ completed: task.completed }">
+                 :key="task.id">
 
                 <div class="col-md-1">
-                    <input class="form-control toggle"
+                    <input class="form-control"
                            type="checkbox"
-                           v-model="task.completed">
+                           @click="completeTask(task)">
                 </div>
 
-                <div class="col-md-4">{{ task.title }}</div>
+                <div class="col-md-4">{{ task.name }}</div>
 
-                <div class="col-md-2">{{ task.endDate }}</div>
+                <div class="col-md-2">{{ task.do_date }}</div>
 
                 <div class="col-md-4">
                     <span v-if="task != editedTask">{{ task.comment}}</span>
 
                     <input class="form-control"
                            autocomplete="off"
-                           @keyup="editTask(task)"
                            v-if="task == editedTask"
-                           v-model="task.comment">
+                           v-model="taskComment">
                 </div>
 
                 <div class="col-md-1" style="padding-left: 0;">
                     <button type="button"
                             class="btn btn-xs btn-primary"
-                            @click="saveTask(task)"
+                            @click="saveComment(task)"
                             v-if="task == editedTask">
 
                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -89,7 +90,7 @@
             </div>
         </section>
 
-        <footer class="footer" v-show="tasks.length" v-cloak>
+        <footer class="footer" v-show="tasks && tasks.length" v-cloak>
             <h2>Выполнено</h2>
 
             <div class="row row-title">
@@ -100,37 +101,22 @@
                 <div class="col-md-1"></div>
             </div>
 
-            <div class="row task"
+            <div class="row task completed"
                  v-for="task in completedTasks"
-                 :key="task.id"
-                 :class="{ completed: task.completed, editing: task == editedTask }">
+                 :key="task.id">
 
                 <div class="col-md-1">
-                    <input class="form-control toggle"
+                    <input class="form-control"
                            type="checkbox"
-                           v-model="task.completed">
+                           checked
+                           @click="uncompleteTask(task)">
                 </div>
 
-                <div class="col-md-4">
-                    <span @dblclick="editTask(task)">{{ task.title }}</span>
-                </div>
+                <div class="col-md-4">{{ task.name }}</div>
 
-                <div class="col-md-5" v-show="false">
-                    <input class="edit" type="text"
-                           v-model="task.title"
-                           v-task-focus="task == editedTask"
-                           @blur="doneEdit(task)"
-                           @keyup.enter="doneEdit(task)"
-                           @keyup.esc="cancelEdit(task)">
-                </div>
+                <div class="col-md-2">{{ task.do_date }}</div>
 
-                <div class="col-md-2">
-                    <span @dblclick="editTask(task)">{{ task.endDate }}</span>
-                </div>
-
-                <div class="col-md-4">
-                    {{ task.comment }}
-                </div>
+                <div class="col-md-4">{{ task.comment }}</div>
 
                 <div class="col-md-1" style="padding-left: 0;">
                     <button type="button" class="btn btn-xs btn-danger" @click="removeTask(task)">
@@ -143,29 +129,14 @@
 </template>
 
 <script>
-    var STORAGE_KEY = 'tasks-vuejs-2.0';
-
-    var taskStorage = {
-        fetch: function () {
-            var tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-
-            tasks.forEach(function (task, index) {
-                task.id = index
-            })
-
-            taskStorage.uid = tasks.length
-
-            return tasks
-        },
-        save: function (tasks) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
-        }
-    }
+    import Datepicker from 'vuejs-datepicker';
 
     export default {
         data: function () {
             return {
-                tasks: taskStorage.fetch(),
+                route: '/api/tasks',
+
+                tasks: [],
 
                 showForm: false,
                 newTask: '',
@@ -176,42 +147,43 @@
             }
         },
 
-        watch: {
-            tasks: {
-                handler: function (tasks) {
-                    taskStorage.save(tasks)
-                },
-                deep: true
-            }
+        mounted() {
+            this.getTasks();
         },
 
         computed: {
             activeTasks: function () {
-                return this.tasks.filter(function (task) {
-                    return !task.completed
-                })
+                if(this.tasks) {
+                    return this.tasks.filter(function (task) {
+                        return !task.completed
+                    })
+                }
             },
             completedTasks: function () {
-                return this.tasks.filter(function (task) {
-                    return task.completed
-                })
+                if(this.tasks) {
+                    return this.tasks.filter(function (task) {
+                        return task.completed
+                    })
+                }
             },
         },
 
         methods: {
+            getTasks() {
+                axios.get(this.route)
+                    .then(response => (this.tasks = response.data.data));
+            },
+
             addTask: function () {
-                var title = this.newTask && this.newTask.trim();
-                var endDate = this.newTaskDate;
+                var name = this.newTask && this.newTask.trim();
+                var do_date = this.newTaskDate;
 
-                if (!title) return;
+                if (!name) return;
 
-                this.tasks.push({
-                    id: taskStorage.uid++,
-                    title: title,
-                    endDate: endDate,
-                    comment: '',
-                    completed: false
-                })
+                axios.post(this.route, {
+                    name: name,
+                    do_date: do_date
+                }).then(response => (this.tasks = response.data.data));
 
                 this.newTask = '';
                 this.newTaskDate = '';
@@ -219,29 +191,61 @@
                 this.showForm = false;
             },
 
-            removeTask: function (task) {
-                this.tasks.splice(this.tasks.indexOf(task), 1)
+            saveTask(task) {
+                this.editedTask = null;
+
+                axios.patch(this.taskUrl(task), task)
+                    .then(response => (this.tasks = response.data.data));
             },
 
-            editTask: function (task) {
+            completeTask(task) {
+                task.completed = true;
+
+                this.saveTask(task);
+            },
+
+            uncompleteTask(task) {
+                task.completed = false;
+
+                this.saveTask(task);
+            },
+
+            saveComment(task) {
+                task.comment = this.taskComment;
+
+                this.taskComment = null;
+
+                this.saveTask(task);
+            },
+
+            editTask(task) {
                 this.editedTask = task;
             },
 
-            saveTask: function (task) {
-                if (!this.editedTask) return;
+            removeTask(task) {
+                axios.delete(this.taskUrl(task))
+                    .then(response => (this.tasks = response.data.data));
+            },
 
-                task.comment = task.comment.trim();
+            taskUrl(task) {
+                return this.route + '/' + task.id
+            },
 
-                this.editedTask = null;
+            customFormatter(date) {
+                return moment(date).format('DD.MM.YYYY');
+            },
+
+            fromDate() {
+                var d = new Date();
+
+                d.setDate(d.getDate()-1);
+
+                return d;
             }
         },
 
-        directives: {
-            'task-focus': function (el, binding) {
-                if (binding.value) {
-                    el.focus()
-                }
-            }
+        components: {
+            Datepicker
         }
     }
 </script>
