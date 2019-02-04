@@ -21,6 +21,7 @@ use App\Models\Jobs\DifficultyLevel;
 use App\Models\Jobs\JobCategories;
 use App\Models\Jobs\Job;
 use App\Models\Project;
+use App\Models\Team;
 use App\Queries\JobQuery;
 use App\User;
 use App\Queries\UserQuery;
@@ -104,7 +105,29 @@ class JobController extends Controller
         }
 
         $users = UserQuery::users();
-        return view('jobs.show', compact('job', 'users', 'application'));
+
+        $jobTeam = $this->getJobTeam($job);
+
+        return view('jobs.show', compact('job', 'users', 'application', 'jobTeam'));
+    }
+
+    protected function getJobTeam(Job $job)
+    {
+        if($job->user_id == Auth::id()) {
+            return false;
+        }
+
+        $project = $job->teamProject;
+
+        if(!$project || !$project->team_id) {
+            return false;
+        }
+
+        $team = Auth::user()->allUserTeams()
+            ->where('id', $project->team_id)
+            ->first();
+
+        return $team;
     }
 
     /**
@@ -278,6 +301,45 @@ class JobController extends Controller
         $projects = auth()->user()->allUserProjects()->get();
 
         return view('jobs.edit', ['job' => $job, 'usernames' => $this->usernames, 'projects' => $projects]);
+    }
+
+    function editProject(Job $job)
+    {
+        if(!$team = $this->getJobTeam($job)) {
+            flash()->success('Access denied!');
+
+            return redirect()->back();
+        }
+
+        return view('jobs.edit-project', [
+            'job' => $job,
+            'projects' => $team->projects
+        ]);
+    }
+
+    function updateProject(Request $request, Job $job)
+    {
+        if(!$team = $this->getJobTeam($job)) {
+            flash()->success('Access denied!');
+
+            return redirect()->back();
+        }
+
+        $oldProject = $job->teamProject;
+
+        if($request->get('team_project_id')) {
+            $job->team_project_id = $request->get('team_project_id');
+
+            $job->save();
+        }
+
+        if($oldProject->is_temporary) {
+            $oldProject->delete();
+        }
+        
+        flash()->success('Job updated!');
+
+        return redirect(route('jobs.show', $job));
     }
 
 

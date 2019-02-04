@@ -10,7 +10,7 @@ class Project extends Model
 {
     use Favoritable;
 
-    protected $fillable = ['user_id', 'team_id', 'structure_id', 'name', 'description', 'icon', 'is_archived', 'deadline_at', 'project_type'];
+    protected $guarded = ['id'];
 
     protected $dates = ['deadline_at'];
 
@@ -39,6 +39,15 @@ class Project extends Model
         return $this->hasMany(Job::class)
             ->orderBy('sort_order_for_project')
             ->orderBy('name');
+    }
+
+    public function teamJobs()
+    {
+        return Job::where('project_id', $this->id)
+            ->orWhere('team_project_id', $this->id)
+            ->orderBy('sort_order_for_project')
+            ->orderBy('name')
+            ->get();
     }
 
     public function isArchived() {

@@ -23,7 +23,7 @@
     </div>
 
     <div class="project-container col-xs-12">
-            @if(count($project->jobs) > 0)  
+            @if(count($project->teamJobs()) > 0)
         <table class="table table-sm table-hover">
 
             <thead>
@@ -36,7 +36,7 @@
  
             <tbody class="sortable-rows">
  
-            @foreach($project->jobs as $job)
+            @foreach($project->teamJobs() as $job)
             <tr class="sort-row" id="{{ $job->id }}">
                 <td><a href="{{ route('jobs.show', $job) }}">{{ $job->name }}</a></td>
                 <td class="date-short">{{ \Carbon\Carbon::parse($job->end_date) }}</td>

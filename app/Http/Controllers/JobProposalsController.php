@@ -7,8 +7,11 @@ use App\Mail\AdminNewJobAppNotice;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\Job;
 use App\Models\Jobs\Proposal;
+use App\Models\Team;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Mockery\Exception;
 
@@ -28,13 +31,14 @@ class JobProposalsController extends Controller
      */
     public function store(ProposalRequest $request, Job $job)
     {
-        if($job->proposals()->where('user_id', auth()->id())->count()) {
+        if ($job->proposals()->where('user_id', auth()->id())->count()) {
             flash()->error('Вы уже добавили предложение!');
 
             return redirect()->back();
         }
 
         $job->proposals()->create([
+            'proposal_type' => $this->getProposalType($request),
             'user_id' => auth()->id(),
             'body' => $request->get('body')
         ]);
@@ -65,6 +69,18 @@ class JobProposalsController extends Controller
 
         $job->update(['status' => config('enums.applications.statuses.IN_PROGRESS')]);
 
+        if($proposal->proposal_type && $team = Team::find($proposal->proposal_type)) {
+            $project = $team->projects()->create([
+                'user_id' => $proposal->user_id,
+                'name' => 'Без проекта',
+                'project_type' => 'team',
+                'description' => '',
+                'is_temporary' => true
+            ]);
+
+            $job->update(['team_project_id' => $project->id]);
+        }
+
         try {
             Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));
             flash()->success('Предложение принято.');
@@ -73,5 +89,30 @@ class JobProposalsController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * Proposal type.
+     *
+     * @param Request $request
+     * @return int
+     */
+    protected function getProposalType(Request $request)
+    {
+        $proposalType = 0;
+
+        if ((int)$teamId = $request->get('proposal_type')) {
+            $teams = Auth::user()->proposalTeams();
+
+            $teams->search(function ($item) use ($teamId) {
+                return $item->id == $teamId;
+            });
+
+            if ($teams->count()) {
+                return $teamId;
+            }
+        }
+
+        return $proposalType;
     }
 }

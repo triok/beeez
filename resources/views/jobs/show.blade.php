@@ -28,13 +28,25 @@
                             <strong><i class="fa fa-eye"></i> {{$job->getViews()}}</strong>
                         </div>
 
-                        @if($job->project)
+                        @if(auth()->id() == $job->user_id && $job->project)
                         <div class="m-md-top nowrap text-muted">
                             <span>Проект</span>
                             <a href="{{ route('projects.show', $job->project) }}">
                                 <span class="username">{{ $job->project->name }}</span>
                             </a>
                         </div>
+                        @endif
+
+                        @if($jobTeam)
+                            <div class="m-md-top nowrap text-muted">
+                                <span>Проект в команде <a href="{{ route('teams.show', $jobTeam) }}">{{ $jobTeam->name }}</a>: </span>
+                                <a href="{{ route('projects.show', $job->teamProject) }}">
+                                    <span class="username">{{ $job->teamProject->name }}</span>
+                                </a>
+                                <a href="{{ route('jobs.editProject', $job) }}">
+                                    <i class="fa fa-pencil" title="Изменить"></i>
+                                </a>
+                            </div>
                         @endif
 
                         @if($application)
