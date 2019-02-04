@@ -35,7 +35,7 @@ class JobProposalsController extends Controller
 
             return redirect()->back();
         }
-        
+
         $job->proposals()->create([
             'proposal_type' => $this->getProposalType($request),
             'user_id' => auth()->id(),
@@ -89,10 +89,14 @@ class JobProposalsController extends Controller
         $proposalType = 0;
 
         if ((int)$teamId = $request->get('proposal_type')) {
-            $team = Auth::user()->ownTeams()->where('id', $teamId)->first();
+            $teams = Auth::user()->proposalTeams();
 
-            if ($team) {
-                return $team->id;
+            $teams->search(function ($item) use ($teamId) {
+                return $item->id == $teamId;
+            });
+
+            if ($teams->count()) {
+                return $teamId;
             }
         }
 

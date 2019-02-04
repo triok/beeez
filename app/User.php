@@ -155,6 +155,18 @@ class User extends Authenticatable
         return $this->hasMany(Team::class);
     }
 
+    public function proposalTeams()
+    {
+        $teamIds = $this->teams()
+            ->where('is_admin', 1)
+            ->pluck('team_id')
+            ->toArray();
+
+        return Team::where('user_id', $this->id)
+            ->orWhereIn('id', $teamIds)
+            ->get();
+    }
+
     public function tasks()
     {
         return $this->hasMany(Task::class);

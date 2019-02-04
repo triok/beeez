@@ -26,13 +26,13 @@
                     </div>
                 </div>
 
-                @if(auth()->user()->ownTeams)
+                @if(auth()->user()->proposalTeams()->count())
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <select name="proposal_type" class="form-control">
                                 <option value="0">От себя</option>
-                                @foreach(auth()->user()->ownTeams as $team)
+                                @foreach(auth()->user()->proposalTeams() as $team)
                                     <option value="{{ $team->id }}">От имени команды {{ $team->name }}</option>
                                 @endforeach
                             </select>

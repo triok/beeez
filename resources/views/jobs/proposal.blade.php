@@ -15,7 +15,11 @@
 
             <div class="author">
                 @include('partials.online', ['user' => $proposal->user])
-                {{$proposal->user->username}}
+                @if($proposal->proposal_type)
+                    Команда <a href="{{ route('teams.show', $proposal->team) }}">{{ $proposal->team->name }}</a>
+                @else
+                    {{$proposal->user->username}}
+                @endif
             </div>
 
             <div class="metadata">
