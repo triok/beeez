@@ -25,7 +25,7 @@ class TaskRequest extends FormRequest
     {
         return [
             'name' => 'required|max:200',
-            'do_date' => 'date',
+            'do_date' => 'nullable|date',
             'completed' => 'boolean'
         ];
     }
