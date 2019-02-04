@@ -7,6 +7,7 @@ use App\Mail\AdminNewJobAppNotice;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\Job;
 use App\Models\Jobs\Proposal;
+use App\Models\Team;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -67,6 +68,18 @@ class JobProposalsController extends Controller
         ]);
 
         $job->update(['status' => config('enums.applications.statuses.IN_PROGRESS')]);
+
+        if($proposal->proposal_type && $team = Team::find($proposal->proposal_type)) {
+            $project = $team->projects()->create([
+                'user_id' => $proposal->user_id,
+                'name' => 'Без проекта',
+                'project_type' => 'team',
+                'description' => '',
+                'is_temporary' => true
+            ]);
+
+            $job->update(['team_project_id' => $project->id]);
+        }
 
         try {
             Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));

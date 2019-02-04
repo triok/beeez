@@ -163,7 +163,13 @@ class ProjectsController extends Controller
 
         $structures = $this->getStructures();
 
-        $connections = ProjectUsers::where('project_id', $project->id)->get();
+        $connections = ProjectUsers::where('project_id', $project->id)
+            ->where('user_role', 'employer')
+            ->get();
+
+        $followers = ProjectUsers::where('project_id', $project->id)
+            ->where('user_role', 'follower')
+            ->get();
 
         $users = [];
 
@@ -176,7 +182,7 @@ class ProjectsController extends Controller
             $users = User::whereIn('id', $userIds)->get();
         }
 
-        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations', 'structures', 'users', 'connections'));
+        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations', 'structures', 'users', 'connections', 'followers'));
     }
 
     /**
@@ -414,20 +420,25 @@ class ProjectsController extends Controller
      *
      * @param Request $request
      * @param Project $project
+     * @param string $role
      * @throws \Exception
      */
-    protected function addConnection(Request $request, Project $project)
+    protected function addConnection(Request $request, Project $project, $role = 'employer')
     {
-        if ($request->has('connections')) {
+        $field = $role == 'employer' ? 'connections' : 'followers';
+
+        if ($request->has($field)) {
             $connectionIds = ProjectUsers::where('project_id', $project->id)
+                ->where('user_role', $role)
                 ->pluck('project_id', 'user_id')
                 ->toArray();
 
-            foreach ($request->get('connections') as $user_id => $connection) {
+            foreach ($request->get($field) as $user_id => $connection) {
                 if (isset($connectionIds[$user_id])) {
                     unset($connectionIds[$user_id]);
                 } else {
                     ProjectUsers::create([
+                        'user_role' => $role,
                         'project_id' => $project->id,
                         'user_id' => $user_id
                     ]);
@@ -436,11 +447,14 @@ class ProjectsController extends Controller
 
             foreach ($connectionIds as $user_id => $position) {
                 ProjectUsers::where('project_id', $project->id)
+                    ->where('user_role', $role)
                     ->where('user_id', $user_id)
                     ->delete();
             }
         } else {
-            ProjectUsers::where('project_id', $project->id)->delete();
+            ProjectUsers::where('project_id', $project->id)
+                ->where('user_role', $role)
+                ->delete();
         }
     }
 }

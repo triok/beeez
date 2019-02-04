@@ -66,6 +66,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('jobs/{job}/review', 'ApplicationsController@review')->name('jobs.review');
     Route::post('jobs/{job}/rating', 'ApplicationsController@rating')->name('jobs.rating');
 
+    Route::get('jobs/{job}/editProject', 'JobController@editProject')->name('jobs.editProject');
+    Route::post('jobs/{job}/updateProject', 'JobController@updateProject')->name('jobs.updateProject');
+
     //Bookmark
     Route::get('my-bookmarks', 'BookmarksController@userBookmarks')->name('my-bookmarks');
     Route::post('bookmark/{job}', 'BookmarksController@store')->name('bookmark.store');
