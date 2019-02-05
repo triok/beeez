@@ -27,6 +27,6 @@ class CreateTimeForWorkTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('time_for_work');
+        Schema::dropIfExists('time_for_works');
     }
 }

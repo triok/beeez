@@ -79,6 +79,7 @@
 </template>
 
 <script>
+
     export default {
         data: function () {
             return {
@@ -122,7 +123,7 @@
                                 bInfo: false,
                                 "order": [[ 2, "desc" ]],
                                 "pageLength": 20,
-                                "lengthChange": false
+                                "lengthChange": false,
                             });
                         } else {
                             self.table = $('#jobs-table').DataTable({
@@ -130,7 +131,7 @@
                                 bInfo: false,
                                 "order": [[ 2, "desc" ]],
                                 "pageLength": 20,
-                                "lengthChange": false
+                                "lengthChange": false,
                             });
                         }
 

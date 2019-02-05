@@ -22,7 +22,7 @@ class AppController extends Controller
             ->count();
 
 
-        $skills = Skill::paginate(25);
+        $skills = Skill::all();
         return view('home',compact('jobs', 'jobsTotalByYear','skills'));
     }
 

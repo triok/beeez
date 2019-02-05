@@ -9,7 +9,8 @@ class DatabaseSeeder extends Seeder
     {
          $this->call(LaratrustSeeder::class);
          $this->call(CategoriesTableSeeder::class);
-         $this->call(SkillsTableSeeder::class);             
+         $this->call(SkillsTableSeeder::class);
+         $this->call(TimeForWorkTableSeeder::class);                        
          $this->call(JobsSeeder::class);
          $this->call(ModuleSeeder::class);
          $this->call(SocialTableSeeder::class);

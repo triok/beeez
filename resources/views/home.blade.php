@@ -79,10 +79,21 @@
         </div>
         <div class="base-wrapper">
             <h3>Навыки</h3>
-            <ul class="nav list-unstyled">
-            @foreach($skills as $skill)
-            <li>{{ $skill->name }}</li>
-            @endforeach
+            <ul class="list-unstyled speciality skills-list" id="skills-filter">
+                @foreach($skills as $key => $value)
+                    <li>
+                        <div class="form-check">
+                            <input style="display: none;" 
+                                   type="checkbox"
+                                   value="{{ $key }}"
+                                   id="input-skill-{{ $key }}">
+                            <label class="form-check-label label-text" for="input-skill-{{ $key }}">    
+                            {{ $value->name }}
+                            </label>                               
+                        </div>
+                        
+                    </li>
+                @endforeach
             </ul>
         </div>        
         </div>
@@ -243,4 +254,5 @@
         @endpush -->
         @push('scripts')
             <script src="/js/custom.js"></script>
+
 @endpush

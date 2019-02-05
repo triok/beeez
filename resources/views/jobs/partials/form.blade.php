@@ -111,12 +111,13 @@
         </div>
         <div class="form-group col-md-4">
             <label for="categories2">Skills</label>
-            <select class="form-control" id="Skills" name="Skills">
+<!--             <select class="form-control" id="Skills" name="Skills">
                 @foreach ($skills as $skill)
                     <option value="{{ $skill->id }}">{{ $skill->name }}</option>
                 @endforeach
                 
-            </select>
+            </select> -->
+                {!! Form::text('Skills',null,['id'=>'Skills','class'=>'form-control']) !!}            
         </div>
     </div>
 
@@ -153,7 +154,7 @@
                                 <label for="time_for_work">@lang('edit.timefor')</label><i class="fa fa-question-circle-o pull-right" aria-hidden="true"></i>
 
                                 @php($name = isset($task_id) ? "sub-" . $task_id . "-time_for_work" : "time_for_work")
-                                {!! Form::select($name, $times, isset($job) ? $job->time_for_work : null,['class'=>'form-control', 'id' => 'time_for_work'] )!!}
+                                {!! Form::select($name, $times, isset($job) ? $job->time_for_work : 1,['class'=>'form-control', 'id' => 'time_for_work'] )!!}
                             </div>
                             <div class="form-group col-md-7">
                                 <label for="input-projects">@lang('edit.project')</label><i class="fa fa-question-circle-o pull-right" aria-hidden="true"></i>
@@ -196,7 +197,7 @@
         @include('jobs.partials.upload', ['task_id' => (isset($task_id) ? $task_id : 0)])
     </div>
 </div>
-
+@include('jobs.partials.tokeninput',['elem'=>'Skills','path'=>'/skills-json','elements'=>$skills])
 @if(isset($subtask))
     <script>
             $('.editor1').summernote({

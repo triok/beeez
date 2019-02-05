@@ -12576,6 +12576,12 @@ section.other-jobs a.delete {
 .speciality label{
   margin-left: 15px;
 }
+.skills-list {
+  max-height: 320px;
+}
+.skills-list li{
+  line-height: 2!important;;
+} 
 .job-row {
   padding:10px 40px 10px;
 }

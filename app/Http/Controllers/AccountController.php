@@ -119,7 +119,7 @@ class AccountController extends Controller
         $user->working_hours = json_encode($request->get('day'));
 
         $user->save();
-
+dd($request);
         //update skills
         if ($request->has('skills')) {
             $skills = explode(',', $request->skills);

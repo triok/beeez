@@ -24,8 +24,14 @@ class AddSkillsJob implements ShouldQueue
     {
         if(!isset(request()->Skills)) return;
 
+        $skills = explode(',', request()->Skills);
+
+        // foreach ($skills as $skill) {
+        //         UserSkills::firstOrCreate(['user_id' => Auth::user()->id, 'skill_id' => $skill]);
+        //     }
+
         // $this->job->Skills()->sync(array_values(request()->Skills));
-        $this->job->Skills()->sync(request()->Skills);
+        $this->job->Skills()->sync(array_values($skills));
 
     }
 }

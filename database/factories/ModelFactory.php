@@ -53,7 +53,7 @@ $factory->define(Job::class, function (Faker\Generator $faker) {
         'user_id'             => User::query()->exists() ? $faker->randomElement(User::query()->pluck('id')->toArray()) : create(User::class)->id,
         'price'               => $faker->randomNumber(2),
         'difficulty_level_id' => create(DifficultyLevel::class)->id,
-        'time_for_work'       => random_int(1, 3),
+        'time_for_work'       => random_int(1, 11),
         'status'              => $faker->randomElement(array_values(config('enums.jobs.statuses'))),
         'parent_id'           => random_int(1, 12),
     ];

@@ -26,7 +26,7 @@
     $(document).ready(function () {
         var tokenField = $("#{{$elem}}").tokenInput("{{$path}}",{
             preventDuplicates: true,
-            minChars: 2,
+            minChars: 1,
             tokenLimit: 10,
             onDelete: function (item) {
                 deleteUserSkill(item);
