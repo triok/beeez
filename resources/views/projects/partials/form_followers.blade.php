@@ -6,9 +6,11 @@
             <select id="input-followers" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
                 <option selected></option>
 
-                @foreach($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                @endforeach
+                @if($allFollowers)
+                    @foreach($allFollowers as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                @endif
             </select>
         </div>
     </div>
