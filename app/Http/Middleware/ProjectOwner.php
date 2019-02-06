@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ProjectUsers;
 use App\Models\Structure;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectOwner
 {
@@ -25,6 +27,20 @@ class ProjectOwner
                 $structure = Structure::find($request->project->structure_id);
 
                 if($structure && $structure->organization->user_id == auth()->id()) {
+                    return $next($request);
+                }
+            }
+
+            if($request->project->team_id) {
+                $team = Auth::user()->allUserTeams()
+                    ->where('id', $request->project->team_id)
+                    ->get();
+
+                $isFollower = ProjectUsers::where('project_id', $request->project->id)
+                    ->where('user_id', Auth::id())
+                    ->first();
+
+                if ($team && $isFollower) {
                     return $next($request);
                 }
             }

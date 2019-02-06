@@ -183,7 +183,7 @@ class User extends Authenticatable
             return true;
         }
 
-        if($this->teams()->where('is_admin', 1)->count()) {
+        if($team->users()->where('is_admin', 1)->count()) {
             return true;
         }
 

@@ -24,14 +24,16 @@
                         <div id="team-{{ $team->id }}"
                              class="tab-pane fade {{ ($team->id == $teams->first()->id ? 'in active' : '') }}">
 
-                            <div class="pull-right">
-                                <a href="{{ route('projects.create') }}?team_id={{ $team->id }}"
-                                   class="btn btn-primary btn-block">
+                            @if(!isset($followerProjects[$team->id]))
+                                <div class="pull-right">
+                                    <a href="{{ route('projects.create') }}?team_id={{ $team->id }}"
+                                       class="btn btn-primary btn-block">
 
-                                    <i class="fa fa-sitemap"></i> @lang('projects.create')
-                                </a>
-                            </div>
-                    
+                                        <i class="fa fa-sitemap"></i> @lang('projects.create')
+                                    </a>
+                                </div>
+                            @endif
+
                             @include('teams.partials.projects')
                         </div>
                     @endforeach

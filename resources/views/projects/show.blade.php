@@ -19,7 +19,11 @@
     
     <div class="col-xs-9">
     <div class="col-sm-2">
-    <a href="{{ route('jobs.create') }}?project_id={{ $project->id }}" class="btn btn-block btn-primary" style="margin-top: 10px;">@lang('projects.post')</a>
+
+        @if($project->team && auth()->user()->isTeamAdmin($project->team))
+            <a href="{{ route('jobs.create') }}?project_id={{ $project->id }}" class="btn btn-block btn-primary" style="margin-top: 10px;">@lang('projects.post')</a>
+        @endif
+
     </div>
 
     <div class="project-container col-xs-12">

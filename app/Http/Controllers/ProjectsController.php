@@ -45,24 +45,6 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
-        if ($project->user_id != auth()->id() && !$project->structure_id) {
-            if (!$project->team_id) {
-                flash()->error('Access denied!');
-
-                return $this->getRedirectRoute();
-            }
-
-            $team = auth()->user()->allUserTeams()
-                ->where('id', $project->team_id)
-                ->get();
-
-            if (!$team) {
-                flash()->error('Access denied!');
-
-                return $this->getRedirectRoute();
-            }
-        }
-
         $totalPrice = $this->getTotalPrice($project);
 
         return view('projects.show', compact('project', 'totalPrice'));
@@ -339,6 +321,25 @@ class ProjectsController extends Controller
         flash()->success('Project updated!');
 
         return $this->getRedirectRoute();
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function unfollow(Project $project)
+    {
+        ProjectUsers::where('project_id', $project->id)
+            ->where('user_id', Auth::id())
+            ->where('user_role', 'follower')
+            ->delete();
+
+        flash()->success('Project deleted!');
+
+        return redirect()->back();
     }
 
     protected function getRedirectRoute()
