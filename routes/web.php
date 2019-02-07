@@ -50,6 +50,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('projects/{project}/favorite', 'ProjectsController@favorite')->name('projects.favorite');
     Route::post('projects/{project}/unfavorite', 'ProjectsController@unfavorite')->name('projects.unfavorite');
+    Route::post('projects/{project}/unfollow', 'ProjectsController@unfollow')->name('projects.unfollow');
 
     Route::post('order-projects', 'ProjectsController@order');
     Route::post('order-project-jobs', 'ProjectsController@orderJobs');

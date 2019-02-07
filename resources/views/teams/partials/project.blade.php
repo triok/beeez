@@ -9,12 +9,21 @@
     </td>
     <td>{{ $project->description }}</td>
     <td>{{ $project->teamJobs()->count() }}/0</td>
-    <td class="text-right">
+    <td class="text-right" style="width: 100px;">
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">        
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+
+        @if(isset($followed) && $followed)
+                    {!! Form::open(['url' => route('projects.unfollow', $project)]) !!}
+                    <button type="submit" onclick="" class="btn btn-xs btn-primary btn-round" title="Отписаться">
+                        <i class="fa fa-close fa-fw"></i>
+                    </button>
+                    {!! Form::close() !!}
+        @else
+
         @if($project->isOwn())
             {!! Form::open(['url' => route('projects.edit', $project)]) !!}
                 <button type="submit" onclick="" class="btn btn-xs btn-primary btn-round" title="@lang('projects.edit')">
@@ -69,6 +78,8 @@
                 <i class="fa fa-trash fa-fw"></i>
             </button>
             {!! Form::close() !!}
+        @endif
+
         @endif
             </div>
         </div>

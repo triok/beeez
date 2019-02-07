@@ -168,6 +168,28 @@ class User extends Authenticatable
             ->get();
     }
 
+    public function isTeamOwner(Team $team)
+    {
+        if($team->user_id == $this->id) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isTeamAdmin(Team $team)
+    {
+        if($this->isTeamOwner($team)) {
+            return true;
+        }
+
+        if($team->users()->where('is_admin', 1)->count()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function tasks()
     {
         return $this->hasMany(Task::class);

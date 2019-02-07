@@ -45,24 +45,6 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
-        if ($project->user_id != auth()->id() && !$project->structure_id) {
-            if (!$project->team_id) {
-                flash()->error('Access denied!');
-
-                return $this->getRedirectRoute();
-            }
-
-            $team = auth()->user()->allUserTeams()
-                ->where('id', $project->team_id)
-                ->get();
-
-            if (!$team) {
-                flash()->error('Access denied!');
-
-                return $this->getRedirectRoute();
-            }
-        }
-
         $totalPrice = $this->getTotalPrice($project);
 
         return view('projects.show', compact('project', 'totalPrice'));
@@ -88,26 +70,11 @@ class ProjectsController extends Controller
 
         $structure_id = request('structure_id');
 
-        $users = [];
+        $users = $this->getProjectUsers($structure_id);
 
-        if($structure = Structure::find($structure_id)) {
-            $connection = StructureUsers::where('structure_id', $structure_id)
-                ->where('user_id', auth()->id())
-                ->first();
+        $allFollowers = $this->getProjectFollowers($team_id);
 
-            if(auth()->user()->isOrganizationFullAccess($structure->organization)
-                || ($connection &&  $connection->can_add_user_to_project)) {
-                
-                $userIds = StructureUsers::where('structure_id', $structure_id)
-                    ->where('is_approved', true)
-                    ->pluck('user_id')
-                    ->toArray();
-
-                $users = User::whereIn('id', $userIds)->get();
-            }
-        }
-
-        return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structures', 'structure_id', 'users'));
+        return view('projects.create', compact('icons', 'teams', 'team_id', 'organizations', 'structures', 'structure_id', 'users', 'allFollowers'));
     }
 
     /**
@@ -138,9 +105,10 @@ class ProjectsController extends Controller
             ]);
         }
 
-        $project = auth()->user()->addProject($request->all());
+        $project = auth()->user()->addProject($request->except('followers'));
 
-        $this->addConnection($request, $project);
+        $this->addConnection($request, $project, 'employer');
+        $this->addConnection($request, $project, 'follower');
 
         flash()->success('Project saved!');
 
@@ -171,18 +139,11 @@ class ProjectsController extends Controller
             ->where('user_role', 'follower')
             ->get();
 
-        $users = [];
+        $users = $this->getProjectUsers($project->structure_id);
 
-        if($structure = Structure::find($project->structure_id)) {
-            $userIds = StructureUsers::where('structure_id', $project->structure_id)
-                ->where('is_approved', true)
-                ->pluck('user_id')
-                ->toArray();
+        $allFollowers = $this->getProjectFollowers($project->team_id);
 
-            $users = User::whereIn('id', $userIds)->get();
-        }
-
-        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations', 'structures', 'users', 'connections', 'followers'));
+        return view('projects.edit', compact('project', 'icons', 'teams', 'organizations', 'structures', 'users', 'connections', 'allFollowers', 'followers'));
     }
 
     /**
@@ -214,9 +175,10 @@ class ProjectsController extends Controller
             ]);
         }
 
-        $project->update($request->all());
+        $project->update($request->except('followers'));
 
-        $this->addConnection($request, $project);
+        $this->addConnection($request, $project, 'employer');
+        $this->addConnection($request, $project, 'follower');
 
         flash()->success('Project updated!');
 
@@ -361,6 +323,25 @@ class ProjectsController extends Controller
         return $this->getRedirectRoute();
     }
 
+    /**
+     * Update a resource in storage.
+     *
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function unfollow(Project $project)
+    {
+        ProjectUsers::where('project_id', $project->id)
+            ->where('user_id', Auth::id())
+            ->where('user_role', 'follower')
+            ->delete();
+
+        flash()->success('Project deleted!');
+
+        return redirect()->back();
+    }
+
     protected function getRedirectRoute()
     {
         if (request('redirect') == 'my-bookmarks#projects') {
@@ -456,5 +437,85 @@ class ProjectsController extends Controller
                 ->where('user_role', $role)
                 ->delete();
         }
+    }
+
+    /**
+     * @param $structure_id
+     * @return User[]|null
+     */
+    private function getProjectUsers($structure_id)
+    {
+        if (!$structure_id || !$structure = Structure::find($structure_id)) {
+            return null;
+        }
+
+        if (Auth::user()->isOrganizationFullAccess($structure->organization)) {
+            $userIds = $this->getProjectUsersId($structure_id);
+
+            return User::whereIn('id', $userIds)->get();
+        }
+
+        $connection = StructureUsers::where('structure_id', $structure_id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($connection && $connection->can_add_user_to_project) {
+            $userIds = $this->getProjectUsersId($structure_id);
+
+            return User::whereIn('id', $userIds)->get();
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $structure_id
+     * @return array
+     */
+    private function getProjectUsersId($structure_id)
+    {
+        return StructureUsers::where('structure_id', $structure_id)
+            ->where('is_approved', true)
+            ->pluck('user_id')
+            ->toArray();
+    }
+
+    /**
+     * @param $team_id
+     * @return User[]|null
+     */
+    private function getProjectFollowers($team_id)
+    {
+        $team = Team::find($team_id);
+
+        if (!$team || !Auth::user()->isTeamAdmin($team)) {
+            return null;
+        }
+
+        $userIds = $this->getProjectFollowersId($team);
+
+        return User::whereIn('id', $userIds)
+            ->where('id', '<>', Auth::id())
+            ->get();
+    }
+
+    /**
+     * @param Team $team
+     * @return array
+     */
+    private function getProjectFollowersId(Team $team)
+    {
+        $userIds = [];
+
+        foreach ($team->projects as $project) {
+            $userIds = array_merge(
+                $userIds,
+                $project->jobs()
+                    ->pluck('user_id')
+                    ->toArray()
+            );
+        }
+
+        return $userIds;
     }
 }

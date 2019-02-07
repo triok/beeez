@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\ProjectUsers;
 use App\Models\Team;
 use App\Models\TeamType;
 use App\Models\TeamUsers;
@@ -216,23 +217,57 @@ class TeamsController extends Controller
      */
     public function projects()
     {
-        $teamIds = auth()->user()->teams()->pluck('team_id')->toArray();
+        $teamIds = Auth::user()
+            ->teams()
+            ->pluck('team_id')
+            ->toArray();
+
+        $followerTeamIds = $this->getFollowerTeamIds();
 
         $teams = Team::where('user_id', auth()->id())
-            ->orWhereIn('id', $teamIds)
+            ->orWhereIn('id', array_merge($teamIds, $followerTeamIds))
             ->get();
 
         $teamProjects = [];
+        $followerProjects = [];
 
         foreach ($teams as $team) {
-            $projects = Project::where('team_id', $team->id)->orderBy('sort_order')->orderBy('name')->get();
+            $projects = Project::where('team_id', $team->id)
+                ->orderBy('sort_order')
+                ->orderBy('name')
+                ->get();
 
-            $teamProjects[$team->id] = $projects;
+            if(in_array($team->id, $followerTeamIds)) {
+                $projects = $projects->filter(function ($project) {
+                    return ProjectUsers::where('project_id', $project->id)
+                        ->where('user_id', Auth::id())
+                        ->where('user_role', 'follower')
+                        ->count();
+                });
+
+                $followerProjects[$team->id] = $projects;
+            } else {
+                $teamProjects[$team->id] = $projects;
+            }
         }
 
         $teamSelected = request('team_id', ($teams->first() ? $teams->first()->id : 0));
 
-        return view('teams.projects', compact('projects', 'teams', 'teamProjects', 'teamSelected'));
+
+        return view('teams.projects', compact('projects', 'teams', 'teamProjects', 'teamSelected', 'followerProjects'));
+    }
+
+    private function getFollowerTeamIds()
+    {
+        $followerProjectIds = ProjectUsers::where('user_id', Auth::id())
+            ->where('user_role', 'follower')
+            ->pluck('project_id')
+            ->toArray();
+
+        return Project::whereIn('id', $followerProjectIds)
+            ->whereNotNull('team_id')
+            ->pluck('team_id')
+            ->toArray();
     }
 
     /**
