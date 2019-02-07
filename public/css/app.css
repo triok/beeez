@@ -12582,6 +12582,9 @@ section.other-jobs a.delete {
 .skills-list li{
   line-height: 2!important;;
 } 
+.skills-list label{
+  margin-left: unset;
+} 
 .job-row {
   padding:10px 40px 10px;
 }

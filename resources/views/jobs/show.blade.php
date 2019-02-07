@@ -19,7 +19,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="m-md-top nowrap text-muted">
-                            @lang('show.posted') <span class="ago" >{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</span> @lang('show.by') <a href="{{route('peoples.show', $job->user)}}"><span class="username">{{ $job->user->name }}</span></a>
+                            @lang('show.posted') <span class="ago" ><strong>{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</strong></span> @lang('show.by') <a href="{{route('peoples.show', $job->user)}}"><span class="username">{{ $job->user->name }}</span></a>
                              (<span class="text-success">{{$job->user->rating_positive}}</span>/<span class="text-danger">{{$job->user->rating_negative}}</span>)
                         </div>
                         {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
@@ -29,7 +29,16 @@
                             <strong><i class="fa fa-eye"></i> {{$job->getViews()}}</strong>
                         </div>
 
-                        @if($job->project)
+                        @if($application)
+                            <div class="m-md-top nowrap text-muted">
+                                <span>@lang('show.performer') </span>
+                                <a href="{{ route('peoples.show', $application) }}">
+                                    <span class="username">{{ $application->name }}</span>
+                                </a>
+                            </div>
+                        @endif
+
+                        @if(auth()->id() == $job->user_id && $job->project)
                         <div class="m-md-top nowrap text-muted">
                             <span>Проект</span>
                             <a href="{{ route('projects.show', $job->project) }}">
@@ -38,14 +47,19 @@
                         </div>
                         @endif
 
-                        @if($application)
+                        @if($jobTeam)
                             <div class="m-md-top nowrap text-muted">
-                                <span>Исполнитель </span>
-                                <a href="{{ route('peoples.show', $application) }}">
-                                    <span class="username">{{ $application->name }}</span>
+                                <span>Проект в команде <a href="{{ route('teams.show', $jobTeam) }}">{{ $jobTeam->name }}</a>: </span>
+                                <a href="{{ route('projects.show', $job->teamProject) }}">
+                                    <span class="username">{{ $job->teamProject->name }}</span>
+                                </a>
+                                <a href="{{ route('jobs.editProject', $job) }}">
+                                    <i class="fa fa-pencil" title="Изменить"></i>
                                 </a>
                             </div>
                         @endif
+
+
                     </section>
 
 
@@ -57,12 +71,6 @@
 
                             </li>
  
-                            @if(isset($job->tag))
-                            <li>
-                                <strong><i class="fa fa-tag" aria-hidden="true"></i> <a href="{{route('jobs.index')}}?tag={{$job->tag->value}}" class="text-muted">{{$job->tag->value}}</a></strong>
-                                <small class="text-muted">@lang('show.tag')</small>
-                            </li>
-                            @endif
                         </ul>
                     </section>
 
@@ -125,6 +133,12 @@
                         </div>
                     </section>
                     @endif
+                    @if(isset($job->tag))
+                    <section class="air-card-divider-sm">
+                        <label>@lang('show.cms')</label>
+                        <span  class="o-tag-skill">{{$job->tag->value}}</span>
+                    </section>    
+                    @endif                                    
                     @if(count($job->files) > 0)
                     <section class="air-card-divider-sm">
                         <div class="m-lg-bottom">
@@ -170,7 +184,7 @@
                     @endif
                     <section class="air-card-divider-sm">
                         @if($job->applications()->count())
-                            <div class="air-card p-0-top-bottom">
+<!--                             <div class="air-card p-0-top-bottom">
                                 <div class="comments">
                                     <h2>@lang('show.questions') ({{$job->commentCount()}})</h2>
                                     <ul class="media-list">
@@ -193,10 +207,10 @@
                                         <button type="submit" class="btn btn-info" style="margin-top: 10px;">@lang('show.send')</button>
                                     </form>
                                 </div>
-                            </div>
+                            </div> -->
                         @endif
 
-                        @include('jobs.proposals')
+
 
                         @if($job->applications()->count())
                             @include('jobs.reports')
@@ -261,30 +275,7 @@
                                         @endif
                                     @endif
 
-                                    {{--@if(isset($job->application))--}}
-                                        {{--<button id="{{$job->application->id}}" class="btn btn-primary btn-block job-app-status-btn" type="button">--}}
-                                            {{--<i class="fa fa-briefcase"></i>--}}
-                                            {{--Check Status--}}
-                                        {{--</button>--}}
-                                        {{--<button disabled class="btn btn-primary btn-block" type="button">--}}
-                                            {{--<i class="fa fa-history" aria-hidden="true"></i>--}}
-                                            {{--@lang('home.in_progress')--}}
-                                        {{--</button>--}}
-
-                                    {{--@else--}}
-                                        {{--@if(\Carbon\Carbon::now() <= $job->end_date)--}}
-                                            {{--<button id="{{$job->id}}" class="btn btn-primary btn-block apply-job-btn" type="button">--}}
-                                                {{--<i class="fa fa-briefcase"></i>--}}
-                                                {{--@lang('home.apply')--}}
-                                            {{--</button>--}}
-                                        {{--@else--}}
-                                            {{--<button disabled id="{{$job->id}}" class="btn btn-primary btn-block apply-job-btn" type="button">--}}
-                                                {{--<i class="fa fa-briefcase"></i>--}}
-                                                {{--@lang('home.enddate')--}}
-                                            {{--</button>--}}
-                                        {{--@endif--}}
-                                    {{--@endif--}}
-
+ 
                                 </div>
                                 @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
                                 <form action="{{route('bookmark.store', $job)}}" method="post">
@@ -314,6 +305,7 @@
                             </div>
                         </section>
                     </div>
+                    <div class="base-wrapper">@include('jobs.proposals')</div>
                 </aside>
 
             </div>

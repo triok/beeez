@@ -15,7 +15,7 @@ class TaskTransformer extends Transformer
             "name" => $task->name,
             "comment" => $task->comment,
             "completed" => (boolean)$task->completed,
-            "do_date" => date('d.m.Y', strtotime($task->do_date)),
+            "do_date" => $task->do_date ? date('d.m.Y', strtotime($task->do_date)) : null,
         ];
     }
 }

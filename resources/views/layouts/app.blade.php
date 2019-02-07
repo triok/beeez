@@ -89,7 +89,7 @@
     </div>
     <div class="card">
         <div class="card-header" id="headingTwo">
-            <a href="{{ route('tasks.index') }}"><i class="fa fa-check-circle fa-fw"></i><span>Задачи</span></a>
+            <a href="{{ route('tasks.index') }}"><i class="fa fa-check-circle fa-fw"></i><span>@lang('layout.tasks')</span></a>
         </div>
     </div>
     <div class="card">
@@ -205,13 +205,7 @@
                 </a>
         </div>
     </div>
-    <div class="card">
-        <div class="card-header" id="headingNine">
-                <a class="carets" href="#" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
-                    <i class="fa fa-check-square-o fa-fw"></i><span>@lang('layout.tasks')</span>
-                </a>
-        </div>
-    </div>        
+    
 </div>
 
           

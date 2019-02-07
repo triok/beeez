@@ -82,6 +82,11 @@ class Job extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function teamProject()
+    {
+        return $this->belongsTo(Project::class, 'team_project_id');
+    }
+
     public function jobsWithOut()
     {
         return $this->hasMany(static::class, 'parent_id')

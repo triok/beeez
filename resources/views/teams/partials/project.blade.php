@@ -8,7 +8,7 @@
         <a href="{{ route('projects.show', $project) . '?team_id=' . $project->team_id }}">{{ $project->name }}</a>
     </td>
     <td>{{ $project->description }}</td>
-    <td>{{ $project->jobs()->count() }}/0</td>
+    <td>{{ $project->teamJobs()->count() }}/0</td>
     <td class="text-right">
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

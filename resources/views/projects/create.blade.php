@@ -92,6 +92,12 @@
 
         <div class="row">
             <div class="col-md-6">
+                @include('projects.partials.form_followers')
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="icon">@lang('projects.create-icon')</label>
                     <select class="form-control icons" style="font-family: FontAwesome;" name="icon">

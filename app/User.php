@@ -141,6 +141,7 @@ class User extends Authenticatable
     public function projects()
     {
         return $this->hasMany(Project::class)
+            ->where('is_temporary', false)
             ->orderBy('sort_order')
             ->orderBy('name');
     }
@@ -153,6 +154,18 @@ class User extends Authenticatable
     public function ownTeams()
     {
         return $this->hasMany(Team::class);
+    }
+
+    public function proposalTeams()
+    {
+        $teamIds = $this->teams()
+            ->where('is_admin', 1)
+            ->pluck('team_id')
+            ->toArray();
+
+        return Team::where('user_id', $this->id)
+            ->orWhereIn('id', $teamIds)
+            ->get();
     }
 
     public function tasks()
@@ -175,7 +188,10 @@ class User extends Authenticatable
     public function allUserProjects() {
         $teamIds = $this->allUserTeams()->pluck('id')->toArray();
 
-        $projectIds = Project::whereIn('team_id', $teamIds)->pluck('id')->toArray();
+        $projectIds = Project::whereIn('team_id', $teamIds)
+            ->where('is_temporary', false)
+            ->pluck('id')
+            ->toArray();
 
         return Project::where('user_id', $this->id)
             ->orWhereIn('id', $projectIds);
