@@ -1,4 +1,4 @@
-<div class="air-card p-0-top-bottom">
+<div class="p-0-top-bottom">
     <div class="offers">
         <h2>@lang('show.reports')</h2>
 
@@ -14,12 +14,8 @@
 
         {!! Form::open(['url' => route('job.reports', $job), 'method'=>'post']) !!}
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <textarea required rows="5" name="body" class="form-control"></textarea>
-                </div>
-            </div>
+        <div class="form-group">
+            <textarea required rows="5" name="body" class="form-control"></textarea>
         </div>
 
         <div class="row">

@@ -11842,6 +11842,9 @@ footer {
 }
 .air-card header {
   border-bottom: 1px solid #E0E0E0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;  
 }
 .air-card section {
   border-bottom: 1px solid #E0E0E0;
@@ -12033,8 +12036,7 @@ section.other-jobs a.delete {
   font-size: 13px;
 }
 .comment-box {
-  border: 1px solid #dadada;
-  background: #fff;
+  background: #f3f3f3;
   padding: 10px;
 }
 /*menu*/

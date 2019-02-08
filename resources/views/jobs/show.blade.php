@@ -5,10 +5,56 @@
     <div class="jd-container standalone">
         <div class="jd-card air-card p-0-top-bottom m-0-top-bottom">
             <div class="row">
-                <div class="content col-lg-9">
+                <div class="content col-lg-7">
                     <div class="base-wrapper">
                     <header>
-                        <h2>{{$job->name}}</h2>
+                        <div>
+                            <h2>{{$job->name}}</h2>
+                            @if(auth()->id() == $job->user_id && $job->project)
+                            <div class="m-md-top nowrap text-muted">
+                                <p>
+                                    <span>Проект</span>
+                                    <a href="{{ route('projects.show', $job->project) }}">
+                                        <span class="username">{{ $job->project->name }}</span>
+                                    </a>
+                                </p>
+                            </div>
+                            @endif
+
+                            @if($jobTeam)
+                                <div class="m-md-top nowrap text-muted">
+                                    <p>
+                                        <span>Проект в команде <a href="{{ route('teams.show', $jobTeam) }}">{{ $jobTeam->name }}</a>: </span>
+                                        <a href="{{ route('projects.show', $job->teamProject) }}">
+                                            <span class="username">{{ $job->teamProject->name }}</span>
+                                        </a>
+                                        <a href="{{ route('jobs.editProject', $job) }}">
+                                            <i class="fa fa-pencil" title="Изменить"></i>
+                                        </a>
+                                    </p>
+                                </div>
+                            @endif                            
+                        </div>
+                        <div>
+                            @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
+                            <form action="{{route('bookmark.store', $job)}}" method="post" style="display: inline-flex;">
+                                {{csrf_field()}}
+                                <button class="btn btn-info" type="submit" title="{{ trans('show.save') }}">
+                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                    <?php if (isset($job->bookmarkUser)) { ?>
+                                        @lang('show.saved')  
+                                    <?php }  ?>
+                                </button>
+                            </form>
+                            <button id="{{$job->id}}" data-title="{{$job->name}}" class="btn btn-success share-job-btn" title="{{ trans('show.share') }}">
+                                <i class="fa fa-share" aria-hidden="true"></i> 
+                            </button>
+                            @endif
+                            <button id="{{$job->id}}" data-title="{{$job->name}}" class="btn btn-danger complain-job-btn" title="{{ trans('show.complain') }}">
+                                <i class="fa fa-warning" aria-hidden="true"></i> 
+                            </button>
+                                                    
+                        </div>
                     </header>
 
                     <section class="air-card-divider-sm header-section">
@@ -38,26 +84,7 @@
                             </div>
                         @endif
 
-                        @if(auth()->id() == $job->user_id && $job->project)
-                        <div class="m-md-top nowrap text-muted">
-                            <span>Проект</span>
-                            <a href="{{ route('projects.show', $job->project) }}">
-                                <span class="username">{{ $job->project->name }}</span>
-                            </a>
-                        </div>
-                        @endif
 
-                        @if($jobTeam)
-                            <div class="m-md-top nowrap text-muted">
-                                <span>Проект в команде <a href="{{ route('teams.show', $jobTeam) }}">{{ $jobTeam->name }}</a>: </span>
-                                <a href="{{ route('projects.show', $job->teamProject) }}">
-                                    <span class="username">{{ $job->teamProject->name }}</span>
-                                </a>
-                                <a href="{{ route('jobs.editProject', $job) }}">
-                                    <i class="fa fa-pencil" title="Изменить"></i>
-                                </a>
-                            </div>
-                        @endif
 
 
                     </section>
@@ -209,16 +236,12 @@
                                 </div>
                             </div> -->
                         @endif
+                    </section>
 
-
-
-                        @if($job->applications()->count())
-                            @include('jobs.reports')
-                        @endif
-                    </section>   
                 </div>
+                <div class="base-wrapper">@include('jobs.proposals')</div>                
                 </div>
-                <aside class="sidebar-actions col-lg-3">
+                <div class="col-lg-5">
                     <div class="sidebar">
                         <section >
                             <div class="row buttons">
@@ -253,15 +276,7 @@
                                                 </button>
                                             @endif
 
-                                            @if (isset($application))
-                                                <form action="{{route('job.notify', $job)}}" method="post">
-                                                    {{csrf_field()}}
-                                                    <input type="hidden" name="user_id" value="{{ $application->id }}">
-                                                    <button class="btn btn-primary btn-block" type="submit">
-                                                        <i class="fa fa-refresh" aria-hidden="true"></i> @lang('show.report-request')
-                                                    </button>
-                                                </form>
-                                            @endif
+
                                         @endif
 
                                     @else
@@ -277,36 +292,28 @@
 
  
                                 </div>
-                                @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
-                                <form action="{{route('bookmark.store', $job)}}" method="post">
-                                    {{csrf_field()}}
-                                    <div class=" col-lg-12 col-sm-6 col-xs-6">
-                                        <button class="btn btn-info btn-block" type="submit">
-                                            <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                            <?php if (!isset($job->bookmarkUser)) { ?>
-                                                @lang('show.save')
-                                            <?php } else { ?> 
-                                                @lang('show.saved')                                                
-                                            <?php } ?>
-                                        </button>
-                                    </div>
-                                </form>
-                                <div class="col-lg-12 col-sm-6 col-xs-6">
-                                    <button id="{{$job->id}}" data-title="{{$job->name}}" class="btn btn-success btn-block share-job-btn">
-                                        <i class="fa fa-share" aria-hidden="true"></i> @lang('show.share')
-                                    </button>
-                                </div>
-                                @endif
-                                <div class="col-lg-12 col-sm-6 col-xs-6">
-                                    <button id="{{$job->id}}" data-title="{{$job->name}}" class="btn btn-danger btn-block complain-job-btn">
-                                        <i class="fa fa-warning" aria-hidden="true"></i> @lang('show.complain')
-                                    </button>
-                                </div>
+
+
                             </div>
                         </section>
                     </div>
-                    <div class="base-wrapper">@include('jobs.proposals')</div>
-                </aside>
+
+                    @if($job->applications()->count())
+                        <div class="base-wrapper">
+                            @if (isset($application))
+                                <form action="{{route('job.notify', $job)}}" method="post">
+                                    {{csrf_field()}}
+                                    <input type="hidden" name="user_id" value="{{ $application->id }}">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i> @lang('show.report-request')
+                                    </button>
+                                </form>
+                            @endif                        
+                            @include('jobs.reports')
+                        </div>
+                    @endif
+                    
+                </div>
 
             </div>
         </div>
@@ -314,6 +321,7 @@
 
     </div>
 </div>
+
 @endsection
 @push('scripts')
     <script src="/js/custom.js"></script>

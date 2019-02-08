@@ -1,4 +1,4 @@
-<div class="air-card p-0-top-bottom">
+<div class="p-0-top-bottom">
     <div class="offers">
         <h2>@lang('show.offers')</h2>
 
@@ -11,7 +11,7 @@
         @else
             @lang('show.nooffer')
         @endif
-
+    @if(\Carbon\Carbon::now() <= $job->end_date)
         @if(auth()->id() != $job->user_id && !$job->applications->count())
             @if(!$job->proposals()->where('user_id', auth()->id())->count())
                 <h2>@lang('show.offers-small')</h2>
@@ -52,5 +52,6 @@
                 {!! Form::close() !!}
             @endif
         @endif
+    @endif    
     </div>
 </div>

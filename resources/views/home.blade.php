@@ -83,8 +83,8 @@
                 @foreach($skills as $key => $value)
                     <li>
                         <div class="form-check">
-                            <input style="display: none;" 
-                                   type="checkbox"
+                            <input 
+                                   type="radio"
                                    value="{{ $key }}"
                                    id="input-skill-{{ $key }}">
                             <label class="form-check-label label-text" for="input-skill-{{ $key }}">    
