@@ -24,6 +24,8 @@ use App\Models\Team;
 use App\Models\TeamUsers;
 use App\Models\Thread;
 use App\Models\Traits\Favoritable;
+use App\Models\UserPortfolio;
+use App\Models\UserService;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -136,6 +138,18 @@ class User extends Authenticatable
     public function scopeFilterName($query, $value)
     {
         return $query->where('name', 'like', '%' . $value . '%');
+    }
+
+    public function services()
+    {
+        return $this->hasMany(UserService::class)
+            ->orderBy('name');
+    }
+
+    public function portfolio()
+    {
+        return $this->hasMany(UserPortfolio::class)
+            ->orderBy('name');
     }
 
     public function projects()

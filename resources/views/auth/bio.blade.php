@@ -47,14 +47,25 @@
                 {!! Form::text('skills',null,['id'=>'skills','class'=>'form-control']) !!}
             </div>
 
-            <p>
             <label>@lang('account.joblist')</label>
             <div class="form-inline">
-            <div class="form-group">
-                {!! Form::input('joblist','joblist',null,['class'=>'form-control']) !!} <button type="button" class="btn btn-primary"><i aria-hidden="true" class="fa fa-plus"></i></button>
+                <div class="form-group">
+                    <input type="text" id="input-service" class="form-control" style="width:500px;">
+                    <button type="button" class="btn btn-primary" onclick="addService()">
+                        <i aria-hidden="true" class="fa fa-plus"></i>
+                    </button>
+                </div>
+
+                <ul id="services" class="token-input-list services-list">
+                    @foreach(auth()->user()->services as $service)
+                    <li class="token-input-token">
+                        <input type="hidden" name="services[]" value="{{ $service->name }}">
+                        <p>{{ $service->name }}</p>
+                        <span class="token-input-delete-token" onclick="$(this).parent().remove();">×</span>
+                    </li>
+                    @endforeach
+                </ul>
             </div>
-            </div>
-            </p>
         </div>
     </div>
     <div class="row">
@@ -114,6 +125,10 @@
 
 @include('partials.tokeninput',['elem'=>'skills','path'=>'/skills-json','elements'=>$user->skills])
 
+@push('styles')
+    <link rel="stylesheet" href="/css/custom.css"/>
+@endpush
+
 @push('scripts')
 <script>
 $(function() {
@@ -136,5 +151,26 @@ $(function() {
         });
   });
 });
+
+function addService() {
+    if ($('#services li').length >= 20) {
+        alert('Максимум строк - 20');
+        return;
+    }
+
+    var value = $('#input-service').val();
+
+    if(value.length > 70) {
+        alert('Максимальное количество символов в строке 70');
+        return;
+    }
+
+    $('#input-service').val('');
+
+    $('#services').append('<li class="token-input-token">\n' +
+        '<input type="hidden" name="services[]" value="' + value + '"><p>' + value + '</p>\n' +
+        '<span class="token-input-delete-token" onclick="$(this).parent().remove();">×</span>\n' +
+    '</li>');
+}
 </script>
 @endpush
