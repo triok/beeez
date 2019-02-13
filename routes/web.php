@@ -79,6 +79,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/', 'AccountController@index');
         Route::patch('/profile', 'AccountController@updateProfile');
         Route::post('/bio', 'AccountController@updateBio');
+        Route::post('/portfolio', 'AccountController@addPortfolio');
+        Route::delete('/portfolio/{id}', 'AccountController@deletePortfolio');
     });
 
     //users

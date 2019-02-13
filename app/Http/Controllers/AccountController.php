@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
@@ -139,7 +140,67 @@ class AccountController extends Controller
         }
 
         flash()->success('You profile has been updated!');
-        return redirect()->back();
+
+        return redirect()->to(url()->previous() . '#bio');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function addPortfolio(Request $request)
+    {
+        if (Auth::user()->portfolio()->count() >= 20) {
+            flash()->error('Можно добавить до 20 работ!');
+
+            return redirect()->to(url()->previous() . '#examples');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name'   => 'required|max:250',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $portfolio = Auth::user()->portfolio()->create([
+            'name' => $request->get('name'),
+            'description' => $request->get('description'),
+        ]);
+
+        foreach ($request->file('portfolio') as $file) {
+            $path = $file->store('public/portfolio');
+
+            $portfolio->files()->create([
+                'file' => $path,
+                'original_name' => $file->getClientOriginalName(),
+            ]);
+        }
+
+        flash()->success('Пример работы добавлен.');
+
+        return redirect()->to(url()->previous() . '#examples');
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function deletePortfolio($id)
+    {
+        $portfolio = Auth::user()->portfolio()->where('id', $id)->first();
+
+        if($portfolio) {
+            $portfolio->files()->delete();
+
+            $portfolio->delete();
+
+            flash()->success('Пример работы удален.');
+        } else {
+            flash()->error('Пример работы не найден.');
+        }
+
+        return redirect()->to(url()->previous() . '#examples');
+    }
 }
