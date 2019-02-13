@@ -63,3 +63,19 @@ table.dataTable.no-footer {
 #vacancies-table tbody tr td:last-child {
     text-align: right;
 }
+
+.services-list {
+    border: none;
+    margin-top: 10px;
+}
+
+ul.services-list {
+    border: none;
+    margin-top: 10px;
+}
+
+ul.services-list li {
+    display: block;
+    background: #ddd;
+    margin-top: 5px;
+}

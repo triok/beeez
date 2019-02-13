@@ -119,7 +119,7 @@ class AccountController extends Controller
         $user->working_hours = json_encode($request->get('day'));
 
         $user->save();
-dd($request);
+
         //update skills
         if ($request->has('skills')) {
             $skills = explode(',', $request->skills);
@@ -127,6 +127,17 @@ dd($request);
                 UserSkills::firstOrCreate(['user_id' => Auth::user()->id, 'skill_id' => $skill]);
             }
         }
+
+        //update services
+        Auth::user()->services()->delete();
+        if ($request->has('services') && is_array($request->get('services'))) {
+            foreach ($request->get('services') as $service) {
+                Auth::user()->services()->create([
+                    'name' => $service
+                ]);
+            }
+        }
+
         flash()->success('You profile has been updated!');
         return redirect()->back();
     }
