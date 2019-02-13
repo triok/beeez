@@ -65,8 +65,9 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="m-md-top nowrap text-muted">
-                            @lang('show.posted') <span class="ago" ><strong>{{\Carbon\Carbon::parse($job->created_at)->diffForHumans()}}</strong></span> @lang('show.by') <a href="{{route('peoples.show', $job->user)}}"><span class="username">{{ $job->user->name }}</span></a>
-                             (<span class="text-success">{{$job->user->rating_positive}}</span>/<span class="text-danger">{{$job->user->rating_negative}}</span>)
+                            @lang('show.posted') <span class="ago" ><strong class="date-ago">{{ $job->created_at }}</strong></span>
+                            @lang('show.by') <a href="{{route('peoples.show', $job->user)}}"><span class="username">{{ $job->user->name }}</span></a>
+                            (<span class="text-success">{{$job->user->rating_positive}}</span>/<span class="text-danger">{{$job->user->rating_negative}}</span>)
                         </div>
                         {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') && isset($job->application) ? '<p class="label label-danger">Your task is under review</p>' : '' !!}
 

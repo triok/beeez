@@ -439,6 +439,8 @@ class JobController extends Controller
             'task_id' => request()->get('task_id', 2),
             'project_id' => (int)request()->get('project_id', 0),
             'usernames' => $this->usernames,
+            'skills' => Skill::all(),
+            'times' => TimeForWork::pluck('value'),
             'projects' => auth()->user()->allUserProjects()->get()
         ]);
     }
