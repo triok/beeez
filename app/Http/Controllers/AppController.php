@@ -21,9 +21,11 @@ class AppController extends Controller
             ->whereYear('created_at', date('Y'))
             ->count();
 
-
         $skills = Skill::all();
-        return view('home',compact('jobs', 'jobsTotalByYear','skills'));
+
+        $selectedSkill = request('skill');
+
+        return view('home',compact('jobs', 'jobsTotalByYear','skills','selectedSkill'));
     }
 
     function showPage($id)

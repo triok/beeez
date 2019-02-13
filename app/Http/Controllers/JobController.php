@@ -176,7 +176,15 @@ class JobController extends Controller
 
         $title = 'Job under ' . ucwords($category->name) . ' category';
 
-        return view('home', compact('jobs', 'category', 'title'));
+        $jobsTotalByYear = Job::whereNotIn('status', [config('enums.jobs.statuses.DRAFT'), config('enums.jobs.statuses.PRIVATE')])
+            ->whereYear('created_at', date('Y'))
+            ->count();
+
+        $skills = Skill::all();
+
+        $selectedSkill = request('skill');
+
+        return view('home', compact('jobs', 'category', 'title', 'jobsTotalByYear', 'skills', 'selectedSkill'));
     }
 
     /**
@@ -431,6 +439,8 @@ class JobController extends Controller
             'task_id' => request()->get('task_id', 2),
             'project_id' => (int)request()->get('project_id', 0),
             'usernames' => $this->usernames,
+            'skills' => Skill::all(),
+            'times' => TimeForWork::pluck('value'),
             'projects' => auth()->user()->allUserProjects()->get()
         ]);
     }
