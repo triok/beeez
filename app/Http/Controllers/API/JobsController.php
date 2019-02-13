@@ -10,6 +10,7 @@ use App\Models\Jobs\Job;
 use App\Transformers\JobTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class JobsController extends Controller
 {
@@ -20,16 +21,21 @@ class JobsController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->has('category_id')) {
-            $category = Category::find($request->get('category_id'));
+        $jobs = DB::table('jobs');
 
-            $jobs = $category->jobs();
-        } else {
-            $jobs = Job::select();
+        if ($request->get('skill')) {
+            $jobs->join('job_skills', 'jobs.id', '=', 'job_skills.job_id')
+                ->where('job_skills.skill_id', $request->get('skill'));
         }
 
-        $jobs = $jobs->whereNotIn('status', [config('enums.jobs.statuses.DRAFT'), config('enums.jobs.statuses.PRIVATE')])
-            ->orderBy('created_at', 'desc')
+        if ($request->get('category_id')) {
+            $jobs->join('job_categories', 'jobs.id', '=', 'job_categories.job_id')
+                ->where('job_categories.category_id', $request->get('category_id'));
+        }
+
+        $jobs = $jobs->whereNotIn('jobs.status', [config('enums.jobs.statuses.DRAFT'), config('enums.jobs.statuses.PRIVATE')])
+            ->orderBy('jobs.created_at', 'desc')
+            ->select('jobs.*')
             ->get();
 
         return response()->json($this->transformer->transformCollection($jobs));

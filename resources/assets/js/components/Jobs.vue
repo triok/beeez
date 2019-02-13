@@ -40,7 +40,7 @@
                         <span class="hidden">{{ job.time_for_work.id }}</span> {{ job.time_for_work.value }}
                     </td>
                     <td class="center">
-                        <span class="date-short">{{ job.created_at }}</span>
+                        <span class="date-short">{{ customFormatter(job.created_at) }}</span>
                     </td>
                     <td class="center">
                         {{ job.price }}
@@ -154,11 +154,21 @@
             },
 
             getUrl() {
-                if (this.$route.params.id === undefined) {
-                    return '/api/jobs';
+                var skill = 'skill=';
+
+                if (this.$route.query.skill !== undefined) {
+                    skill += this.$route.query.skill;
                 }
 
-                return '/api/jobs?category_id=' + this.$route.params.id;
+                if (this.$route.params.id === undefined) {
+                    return '/api/jobs?' + skill;
+                }
+
+                return '/api/jobs?category_id=' + this.$route.params.id + '&' + skill;
+            },
+
+            customFormatter(date) {
+                return moment(date).format('ll');
             },
         }
     }

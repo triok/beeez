@@ -80,15 +80,16 @@
         <div class="base-wrapper">
             <h3>Навыки</h3>
             <ul class="list-unstyled speciality skills-list" id="skills-filter">
-                @foreach($skills as $key => $value)
+                @foreach($skills as $skill)
                     <li>
                         <div class="form-check">
-                            <input 
+                            <input onchange="location.href = '?skill={{ $skill->id }}';"
                                    type="radio"
-                                   value="{{ $key }}"
-                                   id="input-skill-{{ $key }}">
-                            <label class="form-check-label label-text" for="input-skill-{{ $key }}">    
-                            {{ $value->name }}
+                                   {{ ($skill->id === $selectedSkill ? 'checked' : '') }}
+                                   id="input-skill-{{ $skill->id }}"
+                                   name="filter_skill">
+                            <label class="form-check-label label-text" for="input-skill-{{ $skill->id }}">
+                            {{ $skill->name }}
                             </label>                               
                         </div>
                         

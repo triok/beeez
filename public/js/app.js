@@ -49244,11 +49244,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         getUrl: function getUrl() {
-            if (this.$route.params.id === undefined) {
-                return '/api/jobs';
+            var skill = 'skill=';
+
+            if (this.$route.query.skill !== undefined) {
+                skill += this.$route.query.skill;
             }
 
-            return '/api/jobs?category_id=' + this.$route.params.id;
+            if (this.$route.params.id === undefined) {
+                return '/api/jobs?' + skill;
+            }
+
+            return '/api/jobs?category_id=' + this.$route.params.id + '&' + skill;
+        },
+        customFormatter: function customFormatter(date) {
+            return moment(date).format('ll');
         }
     }
 });
@@ -49421,7 +49430,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", { staticClass: "center" }, [
                   _c("span", { staticClass: "date-short" }, [
-                    _vm._v(_vm._s(job.created_at))
+                    _vm._v(_vm._s(_vm.customFormatter(job.created_at)))
                   ])
                 ]),
                 _vm._v(" "),

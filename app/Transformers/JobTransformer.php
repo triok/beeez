@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Jobs\Job;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Jobs\TimeForWork;
@@ -14,6 +15,8 @@ class JobTransformer extends Transformer
      */
     public function transform($job)
     {
+        $job = Job::find($job->id);
+
         return [
             "id" => $job->id,
             "name" => $job->name,
