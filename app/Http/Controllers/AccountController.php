@@ -242,4 +242,34 @@ class AccountController extends Controller
 
         return redirect()->to(url()->previous() . '#profile');
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function experiences(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'   => 'required',
+            'position'   => 'required',
+            'hiring_at'   => 'required|date',
+            'dismissal_at'   => 'nullable|date',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->to(url()->previous() . '#experience')
+                ->withErrors($validator)->withInput();
+        }
+
+        Auth::user()->experiences()->create([
+            'name' => $request->get('name'),
+            'position' => $request->get('position'),
+            'hiring_at' => date('Y-m-d', strtotime($request->get('hiring_at'))),
+            'dismissal_at' => ($request->get('dismissal_at') ? date('Y-m-d', strtotime($request->get('dismissal_at'))) : null),
+        ]);
+
+        flash()->success('Стаж работы добавлен.');
+
+        return redirect()->to(url()->previous() . '#experience');
+    }
 }
