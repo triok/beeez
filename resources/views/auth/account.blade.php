@@ -63,38 +63,21 @@
 
                 </div>
 
-
                 <div role="tabpanel" class="tab-pane fade" id="bio">
                     @include('auth.bio')
                 </div>
+
                 <div role="tabpanel" class="tab-pane fade" id="examples">
                     @include('auth.examples')
                 </div>
                 
                 <div role="tabpanel" class="tab-pane fade" id="experience">
                     @include('auth.experience')
-                </div>                
+                </div>
+
                 <div role="tabpanel" class="tab-pane fade" id="profile">
-                    <div class="base-wrapper">
-                        {!! Form::model($user,['url'=>'/account/profile', 'method' => 'patch']) !!}
-                        <h4>@lang("Password")</h4>
-                        <div class="callout callout-warning">
-                            <label>@lang('auth.new-password')</label>
-                            {!! Form::input('password','password',null,['class'=>'form-control']) !!}
-                            <label>@lang('auth.confirm-password')</label>
-                            {!! Form::input('password','password_confirmation',null,['class'=>'form-control']) !!}
-                        </div>
-                        <br/>
-                        <button class="btn btn-default"><i class="fa fa-save"></i> @lang('Update')</button>
-                        {!! Form::close() !!}                        
-                    </div>
-                    <div class="base-wrapper">
-                     <p>
-                        <span><b>@lang('account.status')</b>  @lang('account.notapproved')</span>
-                        <button class="btn btn-info">@lang('account.approve')</button>
-                    </p>
-                    </div>
-                </div>                                
+                    @include('auth.profile')
+                </div>
             </div>
         </div>
     </div>

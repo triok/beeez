@@ -8,6 +8,7 @@ use App\Models\Organization;
 use App\Models\Structure;
 use App\Models\Team;
 use App\User;
+use Illuminate\Support\Facades\Storage;
 
 class NotificationTransformer extends Transformer
 {
@@ -44,6 +45,9 @@ class NotificationTransformer extends Transformer
             'App\Notifications\CvDeclinedNotification' => 'Соискатель отклонил Ваше предложение',
             'App\Notifications\JobReportNotification' => 'Запрос на отчет',
             'App\Notifications\JobOwnerReportNotification' => 'Новый отчет',
+            'App\Notifications\AccountApproveNotification' => 'Подтверждение аккаунта',
+            'App\Notifications\AccountIsApprovedNotification' => 'Подтверждение аккаунта',
+            'App\Notifications\AccountIsNotApprovedNotification' => 'Подтверждение аккаунта',
         ];
 
         return isset($titles[$notification['type']]) ? $titles[$notification['type']] : '';
@@ -59,6 +63,34 @@ class NotificationTransformer extends Transformer
             } else {
                 return 'Вас приняли в команду.';
             }
+        }
+
+        if ($notification['type'] == 'App\Notifications\AccountApproveNotification') {
+            $user = User::find($notification['data']['user_id']);
+
+            if($user) {
+                $message = 'Подтверждение аккаунта от пользователя "' . $user->username . '"';
+            } else {
+                return 'Подтверждение аккаунта.';
+            }
+
+            if(isset($notification['data']['files'])) {
+                $message .= '<ul>';
+                foreach ($notification['data']['files'] as $file) {
+                    $message .= '<li><a href="' . Storage::url($file['file']) . '">' . $file['original_name'] . '</a></li>';
+                }
+                $message .= '</ul>';
+            }
+
+            return $message;
+        }
+
+        if ($notification['type'] == 'App\Notifications\AccountIsApprovedNotification') {
+            return 'Верификация аккаунта пройдена успешно. Статус Вашего аккаунта - подтвержден.';
+        }
+
+        if ($notification['type'] == 'App\Notifications\AccountIsNotApprovedNotification') {
+            return 'Верификация Вашего аккаунта не пройдена.';
         }
 
         if ($notification['type'] == 'App\Notifications\OrganizationUserNotification') {
@@ -233,6 +265,22 @@ class NotificationTransformer extends Transformer
 
             $actions[] = [
                 'route' => route('notifications.reject'),
+                'title' => 'Отклонить',
+                'class' => 'btn-danger',
+            ];
+
+            return $actions;
+        }
+
+        if ($notification['type'] == 'App\Notifications\AccountApproveNotification') {
+            $actions[] = [
+                'route' => route('notifications.approveAccount'),
+                'title' => 'Принять',
+                'class' => 'btn-success',
+            ];
+
+            $actions[] = [
+                'route' => route('notifications.rejectAccount'),
                 'title' => 'Отклонить',
                 'class' => 'btn-danger',
             ];

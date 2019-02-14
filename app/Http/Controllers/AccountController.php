@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\SocialEvent;
 use App\Models\Billing\Billing;
 use App\Models\User\UserSkills;
+use App\Notifications\AccountApproveNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -202,5 +203,43 @@ class AccountController extends Controller
         }
 
         return redirect()->to(url()->previous() . '#examples');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function approve(Request $request)
+    {
+        if (Auth::user()->approved == 'approved') {
+            flash()->error('Аккаунт уже подтвержден!');
+
+            return redirect()->to(url()->previous() . '#profile');
+        }
+
+        $files = [];
+
+        foreach ($request->file('passports') as $photo) {
+            $file = [
+                'file' => $photo->store('public/passports'),
+                'original_name' => $photo->getClientOriginalName(),
+            ];
+
+            Auth::user()->files()->create($file);
+
+            $files[] = $file;
+        }
+
+        Auth::user()->update(['approved' => 'waiting']);
+
+        $admin = User::where('email', config('app.admin_email'))->first();
+
+        if ($admin) {
+            $admin->notify(new AccountApproveNotification($files));
+        }
+
+        flash()->success('Фото поспарта отправлены.');
+
+        return redirect()->to(url()->previous() . '#profile');
     }
 }

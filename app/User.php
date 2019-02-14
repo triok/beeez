@@ -7,6 +7,7 @@ use App\Http\Controllers\Traits\Commentable;
 use App\Http\Controllers\Traits\Imageable;
 use App\Models\Billing\Stripe;
 use App\Models\Favorite;
+use App\Models\File;
 use App\Models\Image;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\Bookmark;
@@ -150,6 +151,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserPortfolio::class)
             ->orderBy('name');
+    }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 
     public function projects()

@@ -8,6 +8,8 @@ use App\Models\Structure;
 use App\Models\StructureUsers;
 use App\Models\Team;
 use App\Models\TeamUsers;
+use App\Notifications\AccountIsApprovedNotification;
+use App\Notifications\AccountIsNotApprovedNotification;
 use App\Notifications\OrganizationUserApproveNotification;
 use App\Notifications\OrganizationUserRejectNotification;
 use App\Notifications\StructureUserApproveNotification;
@@ -356,6 +358,85 @@ class NotificationsController extends Controller
         $notification->delete();
 
         flash()->success('Уведомление удалено.');
+
+        return redirect($request->get('redirect', route('notifications.index')));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function approveAccount(Request $request)
+    {
+        $notification = auth()->user()
+            ->notifications()
+            ->find($request->get('id'));
+
+        if (!$notification) {
+            flash()->error('Access denied!');
+
+            return redirect($request->get('redirect', $request->get('redirect', route('notifications.index'))));
+        }
+
+        $user_id = isset($notification->data['user_id']) ? $notification->data['user_id'] : 0;
+
+        $user = User::find($user_id);
+
+        if (!$user) {
+            flash()->error('Account not found!');
+
+            return redirect($request->get('redirect', route('notifications.index')));
+        }
+
+        $user->update(['approved' => 'approved']);
+
+        $user->notify(new AccountIsApprovedNotification());
+
+        $notification->delete();
+
+        flash()->success('Аккаунт подтвержден.');
+
+        return redirect($request->get('redirect', route('notifications.index')));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function rejectAccount(Request $request)
+    {
+        $notification = auth()->user()
+            ->notifications()
+            ->find($request->get('id'));
+
+        if (!$notification) {
+            flash()->error('Access denied!');
+
+            return redirect($request->get('redirect', $request->get('redirect', route('notifications.index'))));
+        }
+
+        $user_id = isset($notification->data['user_id']) ? $notification->data['user_id'] : 0;
+
+        $user = User::find($user_id);
+
+        if (!$user) {
+            flash()->error('Account not found!');
+
+            return redirect($request->get('redirect', route('notifications.index')));
+        }
+
+        $user->update(['approved' => 'not_approved']);
+
+        $user->notify(new AccountIsNotApprovedNotification());
+
+        $notification->delete();
+
+        flash()->success('Аккаунт не подтвержден.');
 
         return redirect($request->get('redirect', route('notifications.index')));
     }

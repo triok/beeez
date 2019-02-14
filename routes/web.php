@@ -80,6 +80,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::patch('/profile', 'AccountController@updateProfile');
         Route::post('/bio', 'AccountController@updateBio');
         Route::post('/portfolio', 'AccountController@addPortfolio');
+        Route::post('/approve', 'AccountController@approve');
         Route::delete('/portfolio/{id}', 'AccountController@deletePortfolio');
     });
 
@@ -187,6 +188,9 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('notifications/approveStructure', 'NotificationsController@approveStructure')->name('notifications.approveStructure');
     Route::post('notifications/rejectStructure', 'NotificationsController@rejectStructure')->name('notifications.rejectStructure');
+
+    Route::post('notifications/approveAccount', 'NotificationsController@approveAccount')->name('notifications.approveAccount');
+    Route::post('notifications/rejectAccount', 'NotificationsController@rejectAccount')->name('notifications.rejectAccount');
 
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
