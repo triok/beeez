@@ -82,6 +82,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('/portfolio', 'AccountController@addPortfolio');
         Route::post('/approve', 'AccountController@approve');
         Route::delete('/portfolio/{id}', 'AccountController@deletePortfolio');
+        Route::post('/experiences', 'AccountController@experiences');
     });
 
     //users

@@ -25,6 +25,7 @@ use App\Models\Team;
 use App\Models\TeamUsers;
 use App\Models\Thread;
 use App\Models\Traits\Favoritable;
+use App\Models\UserExperience;
 use App\Models\UserPortfolio;
 use App\Models\UserService;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -145,6 +146,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserService::class)
             ->orderBy('name');
+    }
+
+    public function experiences()
+    {
+        return $this->hasMany(UserExperience::class)
+            ->orderByDesc('hiring_at');
     }
 
     public function portfolio()
