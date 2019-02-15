@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Events\SocialEvent;
 use App\Models\Billing\Billing;
 use App\Models\User\UserSkills;
+use App\Notifications\AccountApproveNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
@@ -119,7 +121,7 @@ class AccountController extends Controller
         $user->working_hours = json_encode($request->get('day'));
 
         $user->save();
-dd($request);
+
         //update skills
         if ($request->has('skills')) {
             $skills = explode(',', $request->skills);
@@ -127,8 +129,147 @@ dd($request);
                 UserSkills::firstOrCreate(['user_id' => Auth::user()->id, 'skill_id' => $skill]);
             }
         }
+
+        //update services
+        Auth::user()->services()->delete();
+        if ($request->has('services') && is_array($request->get('services'))) {
+            foreach ($request->get('services') as $service) {
+                Auth::user()->services()->create([
+                    'name' => $service
+                ]);
+            }
+        }
+
         flash()->success('You profile has been updated!');
-        return redirect()->back();
+
+        return redirect()->to(url()->previous() . '#bio');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function addPortfolio(Request $request)
+    {
+        if (Auth::user()->portfolio()->count() >= 20) {
+            flash()->error('Можно добавить до 20 работ!');
+
+            return redirect()->to(url()->previous() . '#examples');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name'   => 'required|max:250',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $portfolio = Auth::user()->portfolio()->create([
+            'name' => $request->get('name'),
+            'description' => $request->get('description'),
+        ]);
+
+        foreach ($request->file('portfolio') as $file) {
+            $path = $file->store('public/portfolio');
+
+            $portfolio->files()->create([
+                'file' => $path,
+                'original_name' => $file->getClientOriginalName(),
+            ]);
+        }
+
+        flash()->success('Пример работы добавлен.');
+
+        return redirect()->to(url()->previous() . '#examples');
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function deletePortfolio($id)
+    {
+        $portfolio = Auth::user()->portfolio()->where('id', $id)->first();
+
+        if($portfolio) {
+            $portfolio->files()->delete();
+
+            $portfolio->delete();
+
+            flash()->success('Пример работы удален.');
+        } else {
+            flash()->error('Пример работы не найден.');
+        }
+
+        return redirect()->to(url()->previous() . '#examples');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function approve(Request $request)
+    {
+        if (Auth::user()->approved == 'approved') {
+            flash()->error('Аккаунт уже подтвержден!');
+
+            return redirect()->to(url()->previous() . '#profile');
+        }
+
+        $files = [];
+
+        foreach ($request->file('passports') as $photo) {
+            $file = [
+                'file' => $photo->store('public/passports'),
+                'original_name' => $photo->getClientOriginalName(),
+            ];
+
+            Auth::user()->files()->create($file);
+
+            $files[] = $file;
+        }
+
+        Auth::user()->update(['approved' => 'waiting']);
+
+        $admin = User::where('email', config('app.admin_email'))->first();
+
+        if ($admin) {
+            $admin->notify(new AccountApproveNotification($files));
+        }
+
+        flash()->success('Фото поспарта отправлены.');
+
+        return redirect()->to(url()->previous() . '#profile');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function experiences(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'   => 'required',
+            'position'   => 'required',
+            'hiring_at'   => 'required|date',
+            'dismissal_at'   => 'nullable|date',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->to(url()->previous() . '#experience')
+                ->withErrors($validator)->withInput();
+        }
+
+        Auth::user()->experiences()->create([
+            'name' => $request->get('name'),
+            'position' => $request->get('position'),
+            'hiring_at' => date('Y-m-d', strtotime($request->get('hiring_at'))),
+            'dismissal_at' => ($request->get('dismissal_at') ? date('Y-m-d', strtotime($request->get('dismissal_at'))) : null),
+        ]);
+
+        flash()->success('Стаж работы добавлен.');
+
+        return redirect()->to(url()->previous() . '#experience');
+    }
 }

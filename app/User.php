@@ -7,6 +7,7 @@ use App\Http\Controllers\Traits\Commentable;
 use App\Http\Controllers\Traits\Imageable;
 use App\Models\Billing\Stripe;
 use App\Models\Favorite;
+use App\Models\File;
 use App\Models\Image;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\Bookmark;
@@ -24,6 +25,9 @@ use App\Models\Team;
 use App\Models\TeamUsers;
 use App\Models\Thread;
 use App\Models\Traits\Favoritable;
+use App\Models\UserExperience;
+use App\Models\UserPortfolio;
+use App\Models\UserService;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -136,6 +140,29 @@ class User extends Authenticatable
     public function scopeFilterName($query, $value)
     {
         return $query->where('name', 'like', '%' . $value . '%');
+    }
+
+    public function services()
+    {
+        return $this->hasMany(UserService::class)
+            ->orderBy('name');
+    }
+
+    public function experiences()
+    {
+        return $this->hasMany(UserExperience::class)
+            ->orderByDesc('hiring_at');
+    }
+
+    public function portfolio()
+    {
+        return $this->hasMany(UserPortfolio::class)
+            ->orderBy('name');
+    }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 
     public function projects()
