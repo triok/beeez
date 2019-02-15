@@ -6,6 +6,7 @@
             <ul class="media-list">
                 @foreach($job->proposals as $proposal)
                     @include('jobs.proposal')
+                    
                 @endforeach
             </ul>
         @else

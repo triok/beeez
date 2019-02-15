@@ -46847,7 +46847,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n[v-cloak] {\n    display: none;\n}\n#tasks input[type=\"checkbox\"] {\n    position: inherit;\n    right: 0;\n    width: 20px;\n    height: 20px;\n}\n#tasks header {\n    margin-bottom: 20px;\n}\n#tasks .row {\n    margin-bottom: 2px;\n}\n#tasks .row-title {\n    margin-bottom: 4px;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n[v-cloak] {\n    display: none;\n}\n#tasks input[type=\"checkbox\"] {\n    position: inherit;\n    right: 0;\n    width: 20px;\n    height: 20px;\n}\n#tasks header {\n    margin-bottom: 20px;\n}\n#tasks .row {\n    margin-bottom: 2px;\n}\n#tasks .row-title {\n    margin-bottom: 4px;\n    font-weight: bold;\n}\n#tasks table thead th{\n    text-align:center;\n}\n#tasks table td.date {\n    text-align:center;\n}\n", ""]);
 
 // exports
 
@@ -47022,6 +47022,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -47037,7 +47042,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             newTaskDate: '',
 
             editedTask: null,
-            taskComment: ''
+            taskComment: '',
+            taskName: '',
+            taskDate: ''
+
         };
     },
 
@@ -47115,13 +47123,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         saveComment: function saveComment(task) {
             task.comment = this.taskComment;
-
+            task.name = this.taskName;
+            task.do_date = moment(this.taskDate).format('YYYY-MM-DD');
             this.taskComment = null;
 
             this.saveTask(task);
         },
         editTask: function editTask(task) {
             this.editedTask = task;
+            this.taskName = task.name;
+            this.taskComment = task.comment;
+            var d = moment(task.do_date, 'DD-MM-YYYY').toDate();
+            var g = moment(d).format('YYYY-MM-DD');
+
+            this.taskDate = g;
         },
         removeTask: function removeTask(task) {
             var _this4 = this;
@@ -48650,7 +48665,9 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("section", { attrs: { id: "tasks" } }, [
     _c("header", { staticClass: "header" }, [
-      _c("h1", [_vm._v("Задачи")]),
+      _c("h1", [_vm._v(_vm._s(_vm.trans("tasks.title")))]),
+      _vm._v(" "),
+      _c("p", [_vm._v(_vm._s(_vm.trans("tasks.titledesc")))]),
       _vm._v(" "),
       !_vm.showForm
         ? _c(
@@ -48756,109 +48773,185 @@ var render = function() {
         staticClass: "main"
       },
       [
-        _vm._m(0),
+        _c("h2", [_vm._v(_vm._s(_vm.trans("tasks.current")))]),
         _vm._v(" "),
-        _vm._l(_vm.activeTasks, function(task) {
-          return _c("div", { key: task.id, staticClass: "row task" }, [
-            _c("div", { staticClass: "col-md-1" }, [
-              _c("input", {
-                staticClass: "form-control",
-                attrs: { type: "checkbox" },
-                on: {
-                  click: function($event) {
-                    _vm.completeTask(task)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" }, [_vm._v(_vm._s(task.name))]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _vm._v(_vm._s(task.do_date))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" }, [
-              task != _vm.editedTask
-                ? _c("span", [_vm._v(_vm._s(task.comment))])
-                : _vm._e(),
+        _c(
+          "table",
+          { staticClass: "table table-hover table-condensed table-fixed" },
+          [
+            _c("thead", [
+              _c("th", { staticStyle: { width: "5%" } }),
               _vm._v(" "),
-              task == _vm.editedTask
-                ? _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.taskComment,
-                        expression: "taskComment"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { autocomplete: "off" },
-                    domProps: { value: _vm.taskComment },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.taskComment = $event.target.value
-                      }
-                    }
-                  })
-                : _vm._e()
+              _c("th", { staticStyle: { width: "50%" } }, [
+                _vm._v(_vm._s(_vm.trans("tasks.name")))
+              ]),
+              _vm._v(" "),
+              _c("th", { staticStyle: { width: "10%" } }, [
+                _vm._v(_vm._s(_vm.trans("tasks.date")))
+              ]),
+              _vm._v(" "),
+              _c("th", { staticStyle: { width: "30%" } }, [
+                _vm._v(_vm._s(_vm.trans("tasks.comment")))
+              ]),
+              _vm._v(" "),
+              _c("th", { staticStyle: { width: "5%" } })
             ]),
             _vm._v(" "),
             _c(
-              "div",
-              { staticClass: "col-md-1", staticStyle: { "padding-left": "0" } },
-              [
-                task == _vm.editedTask
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-xs btn-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            _vm.saveComment(task)
-                          }
+              "tbody",
+              _vm._l(_vm.activeTasks, function(task) {
+                return _c("tr", { key: task.id }, [
+                  _c("td", [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "checkbox" },
+                      on: {
+                        click: function($event) {
+                          _vm.completeTask(task)
                         }
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fa fa-floppy-o",
-                          attrs: { "aria-hidden": "true" }
-                        })
-                      ]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                !_vm.editedTask
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-xs btn-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            _vm.editTask(task)
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    task != _vm.editedTask
+                      ? _c("span", [_vm._v(_vm._s(task.name))])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    task == _vm.editedTask
+                      ? _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.taskName,
+                              expression: "taskName"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { autocomplete: "off" },
+                          domProps: { value: _vm.taskName },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.taskName = $event.target.value
+                            }
                           }
-                        }
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fa fa-pencil",
-                          attrs: { "aria-hidden": "true" }
                         })
-                      ]
-                    )
-                  : _vm._e()
-              ]
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    { staticClass: "date" },
+                    [
+                      task != _vm.editedTask
+                        ? _c("span", [_vm._v(_vm._s(task.do_date))])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      task == _vm.editedTask
+                        ? _c("datepicker", {
+                            attrs: {
+                              "input-class": "form-control",
+                              autocomplete: "off",
+                              placeholder: "Дата",
+                              format: _vm.customFormatter,
+                              disabledDates: { to: _vm.fromDate() }
+                            },
+                            model: {
+                              value: _vm.taskDate,
+                              callback: function($$v) {
+                                _vm.taskDate = $$v
+                              },
+                              expression: "taskDate"
+                            }
+                          })
+                        : _vm._e()
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("td", [
+                    task != _vm.editedTask
+                      ? _c("span", [_vm._v(_vm._s(task.comment))])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    task == _vm.editedTask
+                      ? _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.taskComment,
+                              expression: "taskComment"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { autocomplete: "off" },
+                          domProps: { value: _vm.taskComment },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.taskComment = $event.target.value
+                            }
+                          }
+                        })
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    task == _vm.editedTask
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-xs btn-primary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.saveComment(task)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-floppy-o",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.editedTask
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-xs btn-primary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.editTask(task)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-pencil",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        )
+                      : _vm._e()
+                  ])
+                ])
+              })
             )
-          ])
-        })
-      ],
-      2
+          ]
+        )
+      ]
     ),
     _vm._v(" "),
     _c(
@@ -48868,115 +48961,101 @@ var render = function() {
           {
             name: "show",
             rawName: "v-show",
-            value: _vm.tasks && _vm.tasks.length,
-            expression: "tasks && tasks.length"
+            value: _vm.tasks && _vm.completedTasks.length,
+            expression: "tasks && completedTasks.length"
           }
         ],
         staticClass: "footer"
       },
       [
-        _c("h2", [_vm._v("Выполнено")]),
+        _c("h2", [_vm._v(_vm._s(_vm.trans("tasks.completed")))]),
         _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _vm._l(_vm.completedTasks, function(task) {
-          return _c(
-            "div",
-            { key: task.id, staticClass: "row task completed" },
-            [
-              _c("div", { staticClass: "col-md-1" }, [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "checkbox", checked: "" },
-                  on: {
-                    click: function($event) {
-                      _vm.uncompleteTask(task)
-                    }
-                  }
-                })
+        _c(
+          "table",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.tasks && _vm.completedTasks.length,
+                expression: "tasks && completedTasks.length"
+              }
+            ],
+            staticClass: "table table-responsive table-hover"
+          },
+          [
+            _c("thead", [
+              _c("th", { staticStyle: { width: "5%" } }),
+              _vm._v(" "),
+              _c("th", { staticStyle: { width: "50%" } }, [
+                _vm._v(_vm._s(_vm.trans("tasks.name")))
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-4" }, [
-                _vm._v(_vm._s(task.name))
+              _c("th", { staticStyle: { width: "10%" } }, [
+                _vm._v(_vm._s(_vm.trans("tasks.date")))
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-2" }, [
-                _vm._v(_vm._s(task.do_date))
+              _c("th", { staticStyle: { width: "30%" } }, [
+                _vm._v(_vm._s(_vm.trans("tasks.comment")))
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-4" }, [
-                _vm._v(_vm._s(task.comment))
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-md-1",
-                  staticStyle: { "padding-left": "0" }
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-xs btn-danger",
-                      attrs: { type: "button" },
+              _c("th", { staticStyle: { width: "5%" } })
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.completedTasks, function(task) {
+                return _c("tr", { key: task.id }, [
+                  _c("td", [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "checkbox", checked: "" },
                       on: {
                         click: function($event) {
-                          _vm.removeTask(task)
+                          _vm.uncompleteTask(task)
                         }
                       }
-                    },
-                    [
-                      _c("i", {
-                        staticClass: "fa fa-trash-o",
-                        attrs: { "aria-hidden": "true" }
-                      })
-                    ]
-                  )
-                ]
-              )
-            ]
-          )
-        })
-      ],
-      2
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_c("s", [_vm._v(_vm._s(task.name))])]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "date" }, [
+                    _vm._v(_vm._s(task.do_date))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(task.comment))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-xs btn-danger",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.removeTask(task)
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "fa fa-trash-o",
+                          attrs: { "aria-hidden": "true" }
+                        })
+                      ]
+                    )
+                  ])
+                ])
+              })
+            )
+          ]
+        )
+      ]
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row row-title" }, [
-      _c("div", { staticClass: "col-md-1" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [_vm._v("Название")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-2" }, [_vm._v("Дата")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [_vm._v("Коментарий")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-1" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row row-title" }, [
-      _c("div", { staticClass: "col-md-1" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [_vm._v("Название")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-2" }, [_vm._v("Дата")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [_vm._v("Коментарий")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-1" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

@@ -37,6 +37,9 @@ return [
     'offers-small'   => 'Add your offer',
     'nooffer'        => 'Your offer will be the first',
     'budget'         => 'Budget',
+    'addcomment'     => 'Add comment',
+    'completetitle'  => 'Task is complete?',
+    'completemsg'    => 'Please check task carefully before you turn to status "Completed"',
 
     //Buttons
     'save'           => 'Save job',
@@ -46,7 +49,9 @@ return [
     'send'           => 'Send',
     'reply'          => 'Reply',
     'addoffer'       => 'Add offer',
-    'report-request' => 'Request a report',           
+    'report-request' => 'Request a report',        
+    'close'          => 'Close',
+    'complete'       => 'Complete',        
 
     //tooltips
     'price'          => 'This is final price with all fees.',

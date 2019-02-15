@@ -52,7 +52,7 @@
                         "data": "created_at",
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
-                                return moment(data, "YYYY-MM-DD mm:ss").format("ll");
+                                return moment(data, "MM-DD-YYYY mm:ss").format("ll");
                             }
 
                             return data;

@@ -84,7 +84,7 @@ class TasksController extends ApiController
             return $this->response([], 404);
         }
 
-        $task->update($request->only(['comment', 'completed']));
+        $task->update($request->only(['name', 'do_date', 'comment', 'completed']));
 
         return $this->index();
     }

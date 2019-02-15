@@ -137,6 +137,12 @@ function complainJob(job_id, jobTitle) {
     modal.find('input[name=job_id]').val(job_id);
     modal.find('.modal-title span').text(jobTitle);
 }
+//confirm modal
+function confirmModal(proposalUser) {
+    var modal = $('#confirmJobModal-'+proposalUser);
+    modal.modal('show');
+    modal.find('.modal-body span').text(proposalUser);    
+}
 //apply job
 function applyJob(job_id, jobTitle) {
     var applyModal = $('#applyJobModal');
@@ -144,7 +150,6 @@ function applyJob(job_id, jobTitle) {
     applyModal.find('.modal-title span').text(jobTitle);
     applyModal.modal('show');
 }
-
 //delete job
 function deleteJob(id) {
     if (!confirm('Are you sure?\n\nThis will also delete bookmarks and applications.')) return false;
@@ -439,6 +444,12 @@ $('document').ready(function () {
         var jobTitle = $(this).attr('data-title');
         complainJob(job_id, jobTitle);
     });
+    //confirm modal
+    $('.confirm-job-btn').click(function () {
+        var proposalUser = $(this).attr('id');
+        confirmModal(proposalUser);
+    });
+
     //complain job form
     $('.complain-job-form').on('submit', function (e) {
         e.preventDefault();

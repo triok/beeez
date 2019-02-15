@@ -97,21 +97,13 @@
             <a href="{{ route('vacancies.index') }}"><i class="fa fa-suitcase fa-fw"></i><span>@lang('layout.vacancies')</span></a>
         </div>
     </div>
-    <div class="card card-caret">
+    <div class="card">
         <div class="card-header" id="headingThree">
-                <a class="carets" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                <a href="{{route('peoples.index')}}">
                     <i class="fa fa-user-circle fa-fw" aria-hidden="true"></i><span>@lang('peoples.title')</span>
                 </a>
         </div>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-            <div class="card-body">
-                <ul class="list-unstyled" role="menu">
-                    <li>
-                        <a href="{{route('peoples.index')}}">- @lang('peoples.find')</a>                    
-                    </li>      
-                </ul>          
-            </div>
-        </div>    
+   
     </div>
     <div class="card card-caret">
         <div class="card-header" id="headingFour">

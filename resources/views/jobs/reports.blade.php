@@ -12,6 +12,8 @@
             @lang('show.noreports')
         @endif
 
+        @if(auth()->id() !== $job->user_id)
+
         {!! Form::open(['url' => route('job.reports', $job), 'method'=>'post']) !!}
 
         <div class="form-group">
@@ -21,17 +23,14 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        @if(auth()->id() == $job->user_id)
-                            @lang('show.report-request')
-                        @else
-                            @lang('show.addreport')
-                        @endif
+                    <button type="submit" class="btn btn-primary">@lang('show.addreport')
                     </button>
                 </div>
             </div>
         </div>
 
         {!! Form::close() !!}
+
+        @endif
     </div>
 </div>

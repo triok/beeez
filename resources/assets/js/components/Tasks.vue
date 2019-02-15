@@ -1,7 +1,8 @@
 <template>
     <section id="tasks">
         <header class="header">
-            <h1>Задачи</h1>
+            <h1>{{ trans('tasks.title') }}</h1>
+            <p>{{ trans('tasks.titledesc') }}</p>
 
             <button type="button"
                     class="btn btn-success"
@@ -39,91 +40,95 @@
         </header>
 
         <section class="main" v-show="tasks && tasks.length" v-cloak>
-            <div class="row row-title">
-                <div class="col-md-1"></div>
-                <div class="col-md-4">Название</div>
-                <div class="col-md-2">Дата</div>
-                <div class="col-md-4">Коментарий</div>
-                <div class="col-md-1"></div>
-            </div>
+            <h2>{{ trans('tasks.current') }}</h2>
+            <table class="table table-hover table-condensed table-fixed">
+                <thead>
+                    <th style="width:5%;"></th>
+                    <th style="width:50%;">{{ trans('tasks.name') }}</th>
+                    <th style="width:10%;">{{ trans('tasks.date') }}</th>
+                    <th style="width:30%;">{{ trans('tasks.comment') }}</th>
+                    <th style="width:5%;"></th>
+                </thead>
+                <tbody>
+                    <tr v-for="task in activeTasks" :key="task.id">
+                        <td><input class="form-control" type="checkbox" @click="completeTask(task)"></td>
+                        <td>
+                            <span v-if="task != editedTask">{{ task.name }}</span>
+                            <input class="form-control"
+                                   autocomplete="off"
+                                   v-if="task == editedTask"
+                                   v-model="taskName" >
+                        </td>
+                        <td class="date">
+                            <span v-if="task != editedTask">{{ task.do_date }}</span>
+                            <datepicker
+                                input-class="form-control"
+                                autocomplete="off"
+                                placeholder="Дата"
+                                v-if="task == editedTask"
+                                v-model="taskDate"
+                                :format="customFormatter"
+                                :disabledDates="{to: fromDate()}"></datepicker>
+                        </td>
+                        <td>
+                            <span v-if="task != editedTask">{{ task.comment}}</span>
+                            <input class="form-control"
+                                   autocomplete="off"
+                                   v-if="task == editedTask"
+                                   v-model="taskComment" >
+                        </td>
+                        <td>
+                            <button type="button"
+                                    class="btn btn-xs btn-primary"
+                                    @click="saveComment(task)"
+                                    v-if="task == editedTask">
 
-            <div class="row task"
-                 v-for="task in activeTasks"
-                 :key="task.id">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                            </button>
 
-                <div class="col-md-1">
-                    <input class="form-control"
-                           type="checkbox"
-                           @click="completeTask(task)">
-                </div>
+                            <button type="button"
+                                    class="btn btn-xs btn-primary"
+                                    @click="editTask(task)"
+                                    v-if="!editedTask">
 
-                <div class="col-md-4">{{ task.name }}</div>
-
-                <div class="col-md-2">{{ task.do_date }}</div>
-
-                <div class="col-md-4">
-                    <span v-if="task != editedTask">{{ task.comment}}</span>
-
-                    <input class="form-control"
-                           autocomplete="off"
-                           v-if="task == editedTask"
-                           v-model="taskComment">
-                </div>
-
-                <div class="col-md-1" style="padding-left: 0;">
-                    <button type="button"
-                            class="btn btn-xs btn-primary"
-                            @click="saveComment(task)"
-                            v-if="task == editedTask">
-
-                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                    </button>
-
-                    <button type="button"
-                            class="btn btn-xs btn-primary"
-                            @click="editTask(task)"
-                            v-if="!editedTask">
-
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
-        <footer class="footer" v-show="tasks && tasks.length" v-cloak>
-            <h2>Выполнено</h2>
+        <footer class="footer" v-show="tasks && completedTasks.length" v-cloak>
+            <h2>{{ trans('tasks.completed') }}</h2>
 
-            <div class="row row-title">
-                <div class="col-md-1"></div>
-                <div class="col-md-4">Название</div>
-                <div class="col-md-2">Дата</div>
-                <div class="col-md-4">Коментарий</div>
-                <div class="col-md-1"></div>
-            </div>
-
-            <div class="row task completed"
-                 v-for="task in completedTasks"
-                 :key="task.id">
-
-                <div class="col-md-1">
-                    <input class="form-control"
-                           type="checkbox"
-                           checked
-                           @click="uncompleteTask(task)">
-                </div>
-
-                <div class="col-md-4">{{ task.name }}</div>
-
-                <div class="col-md-2">{{ task.do_date }}</div>
-
-                <div class="col-md-4">{{ task.comment }}</div>
-
-                <div class="col-md-1" style="padding-left: 0;">
-                    <button type="button" class="btn btn-xs btn-danger" @click="removeTask(task)">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
+            <table v-show="tasks && completedTasks.length" class="table table-responsive table-hover">
+                <thead>
+                    <th style="width:5%;"></th>
+                    <th style="width:50%;">{{ trans('tasks.name') }}</th>
+                    <th style="width:10%;">{{ trans('tasks.date') }}</th>
+                    <th style="width:30%;">{{ trans('tasks.comment') }}</th>
+                    <th style="width:5%;"></th>
+                </thead>
+                <tbody>
+                    <tr v-for="task in completedTasks" :key="task.id">
+                        <td>
+                            <input class="form-control"
+                                type="checkbox"
+                                checked
+                                @click="uncompleteTask(task)">
+                        </td>
+                        <td><s>{{ task.name }}</s></td>
+                        <td class="date">{{ task.do_date }}</td>
+                        <td>{{ task.comment }}</td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-danger" @click="removeTask(task)">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>            
         </footer>
     </section>
 </template>
@@ -144,6 +149,9 @@
 
                 editedTask: null,
                 taskComment: '',
+                taskName: '',
+                taskDate: '',
+
             }
         },
 
@@ -212,7 +220,8 @@
 
             saveComment(task) {
                 task.comment = this.taskComment;
-
+                task.name = this.taskName;
+                task.do_date = moment(this.taskDate).format('YYYY-MM-DD');
                 this.taskComment = null;
 
                 this.saveTask(task);
@@ -220,6 +229,15 @@
 
             editTask(task) {
                 this.editedTask = task;
+                this.taskName = task.name;
+                this.taskComment = task.comment;
+                var d = moment(task.do_date,'DD-MM-YYYY').toDate();
+                var g = moment(d).format('YYYY-MM-DD');
+
+
+
+                this.taskDate = g;
+
             },
 
             removeTask(task) {
@@ -234,6 +252,7 @@
             customFormatter(date) {
                 return moment(date).format('DD.MM.YYYY');
             },
+
 
             fromDate() {
                 var d = new Date();
@@ -273,5 +292,11 @@
     #tasks .row-title {
         margin-bottom: 4px;
         font-weight: bold;
+    }
+    #tasks table thead th{
+        text-align:center;
+    }
+    #tasks table td.date {
+        text-align:center;
     }
 </style>

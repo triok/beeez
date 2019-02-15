@@ -53,11 +53,13 @@ class JobProposalsController extends Controller
      * @param Proposal $proposal
      * @return null|void
      */
-    function apply(Job $job, Proposal $proposal)
+    function apply(Job $job, Proposal $proposal, Request $request)
     {
+
         if (Carbon::now() > $job->end_date || $job->application()->exists()) {
             return redirect()->back();
         }
+        $job->update(['price' => $request->input('amount')]);
 
         $applicant = Application::query()->create([
             'user_id' => $proposal->user->id,

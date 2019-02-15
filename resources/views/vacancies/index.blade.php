@@ -33,7 +33,7 @@
                 @endforeach
             </ul>
             <h3>@lang('vacancies.filter_skills')</h3>
-            <ul class="list-unstyled" id="vacancy-skill-filter">
+            <ul class="list-unstyled speciality skills-list" id="vacancy-skill-filter">
                 @foreach(\App\Models\Jobs\Skill::all() as $skill)
                     <li>
                         <div class="form-check">

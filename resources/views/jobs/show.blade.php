@@ -53,7 +53,7 @@
                             <button id="{{$job->id}}" data-title="{{$job->name}}" class="btn btn-danger complain-job-btn" title="{{ trans('show.complain') }}">
                                 <i class="fa fa-warning" aria-hidden="true"></i> 
                             </button>
-                                                    
+                                                 
                         </div>
                     </header>
 
@@ -81,6 +81,9 @@
                                 <a href="{{ route('peoples.show', $application) }}">
                                     <span class="username">{{ $application->name }}</span>
                                 </a>
+                                 @if($jobTeam)
+                                <span> (Команда: <a href="{{ route('teams.show', $jobTeam) }}">{{ $jobTeam->name }}</a>)</span>
+                                 @endif                                
                             </div>
                         @endif
 
@@ -242,12 +245,12 @@
                 <div class="base-wrapper">@include('jobs.proposals')</div>                
                 </div>
                 <div class="col-lg-5">
-                    <div class="sidebar">
+<!--                     <div class="sidebar">
                         <section >
                             <div class="row buttons">
                                 <div class="primary col-lg-12 col-sm-6 col-xs-6">
                                     @if($job->applications)
-<!--                                         @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
+                                        @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
                                             @if(isset($job->application))
                                                 <button data-id="{{$job->id}}" {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-block btn-review">
                                                     <i class="fa fa-handshake-o" aria-hidden="true"></i>
@@ -256,7 +259,7 @@
                                             @else
                                                 <button disabled class="btn btn-warning btn-block "><i class="fa fa-history" aria-hidden="true"></i> @lang('home.in_progress') </button>
                                             @endif
-                                        @endif -->
+                                        @endif
 
                                         @if (isset($job->application) && auth()->user()->id == $job->application->user_id)
 
@@ -296,11 +299,13 @@
 
                             </div>
                         </section>
-                    </div>
+                    </div> -->
 
-                    @if($job->applications()->count())
+                    @if(auth()->user()->id == $job->user_id || auth()->user()->id == $job->application['user_id'])
                         <div class="base-wrapper">
-                            @if (isset($application))
+                            @include('jobs.reports')
+                            @if (isset($application) && auth()->user()->id == $job->user_id)
+                                <p>
                                 <form action="{{route('job.notify', $job)}}" method="post">
                                     {{csrf_field()}}
                                     <input type="hidden" name="user_id" value="{{ $application->id }}">
@@ -308,11 +313,17 @@
                                         <i class="fa fa-refresh" aria-hidden="true"></i> @lang('show.report-request')
                                     </button>
                                 </form>
-                            @endif                        
-                            @include('jobs.reports')
+                                </p>
+                                <p>
+                                    <button data-id="{{$job->id}}" {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-review">
+                                        <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                        @lang('home.complete')
+                                    </button>
+                                </p>                             
+                            @endif       
                         </div>
                     @endif
-                    
+                       
                 </div>
 
             </div>
@@ -448,23 +459,27 @@
     </div>
 
 
+
+
     <div class="modal fade" id="completeJobForm" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">You can add some comment or files.</h4>
+                    <h4 class="modal-title">@lang('show.completetitle')</h4>
                 </div>
 
                 <form action="" method="post" enctype="multipart/form-data" id="form-complete">
                     {{csrf_field()}}
                     <div class="modal-body">
-                        <textarea name="message" rows="3" class="form-control" placeholder="Enter an optional message" required></textarea>
-                        <input type="file" multiple name="files[]">
+                        @lang('show.completemsg')
+<!--                    <textarea name="message" rows="3" class="form-control" placeholder="Enter an optional message"></textarea>
+                        <input type="file" multiple name="files[]"> -->
                     </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
-                        <button class="btn btn-primary btn-sm "><i class="fa fa-send"></i> Send</button>
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">@lang('show.close')</button>
+                        <button class="btn btn-primary btn-sm "><i class="fa fa-send"></i> @lang('show.complete')</button>
                     </div>
                 </form>
             </div>

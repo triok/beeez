@@ -5,7 +5,7 @@
     <li role="presentation">
         <a data-toggle="tab" href="#client"><i class="fa fa-file-text-o" aria-hidden="true"></i> @lang('application.client')</a>
     </li>
-    <li role="presentation">
+<!--     <li role="presentation">
         <a data-toggle="tab" href="#favorite"><i aria-hidden="true" class="fa fa-star-o"></i> @lang('application.titlebookmarks')</a>
-    </li>
+    </li> -->
 </ul>
