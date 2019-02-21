@@ -7,6 +7,7 @@ use App\Models\Jobs\Job;
 use App\Models\Organization;
 use App\Models\Structure;
 use App\Models\Team;
+use App\Models\UserExperience;
 use App\User;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,6 +49,9 @@ class NotificationTransformer extends Transformer
             'App\Notifications\AccountApproveNotification' => 'Подтверждение аккаунта',
             'App\Notifications\AccountIsApprovedNotification' => 'Подтверждение аккаунта',
             'App\Notifications\AccountIsNotApprovedNotification' => 'Подтверждение аккаунта',
+            'App\Notifications\ExperienceApproveNotification' => 'Подтверждение стажа',
+            'App\Notifications\ExperienceIsApprovedNotification' => 'Подтверждение стажа',
+            'App\Notifications\ExperienceIsNotApprovedNotification' => 'Подтверждение стажа',
         ];
 
         return isset($titles[$notification['type']]) ? $titles[$notification['type']] : '';
@@ -91,6 +95,41 @@ class NotificationTransformer extends Transformer
 
         if ($notification['type'] == 'App\Notifications\AccountIsNotApprovedNotification') {
             return 'Верификация Вашего аккаунта не пройдена.';
+        }
+
+        if ($notification['type'] == 'App\Notifications\ExperienceApproveNotification') {
+            $user = User::find($notification['data']['user_id']);
+            $experience = UserExperience::find($notification['data']['experience_id']);
+
+            if($user) {
+                $message = '<p>Подтверждение стажа от пользователя: ' . $user->username . '</p>';
+            } else {
+                return '<p>Подтверждение стажа.</p>';
+            }
+
+            $message .= '<p>Название компании: ' . $experience->name . '</p>';
+            $message .= '<p>Должность: ' . $experience->position . '</p>';
+            $message .= '<p>Дата зачисления: ' . $experience->hiring_at . '</p>';
+            $message .= '<p>Дата увольнения: ' . $experience->dismissal_at . '</p>';
+
+            $message .= '<p>Файлы для подтверждения:</p>';
+            if(isset($notification['data']['files'])) {
+                $message .= '<ul>';
+                foreach ($notification['data']['files'] as $file) {
+                    $message .= '<li><a href="' . Storage::url($file['file']) . '">' . $file['original_name'] . '</a></li>';
+                }
+                $message .= '</ul>';
+            }
+
+            return $message;
+        }
+
+        if ($notification['type'] == 'App\Notifications\ExperienceIsApprovedNotification') {
+            return 'Подтверждение вашего стажа пройдено успешно.';
+        }
+
+        if ($notification['type'] == 'App\Notifications\ExperienceIsNotApprovedNotification') {
+            return 'Подтверждение вашего стажа не пройдено.';
         }
 
         if ($notification['type'] == 'App\Notifications\OrganizationUserNotification') {
@@ -281,6 +320,22 @@ class NotificationTransformer extends Transformer
 
             $actions[] = [
                 'route' => route('notifications.rejectAccount'),
+                'title' => 'Отклонить',
+                'class' => 'btn-danger',
+            ];
+
+            return $actions;
+        }
+
+        if ($notification['type'] == 'App\Notifications\ExperienceApproveNotification') {
+            $actions[] = [
+                'route' => route('notifications.approveExperience'),
+                'title' => 'Принять',
+                'class' => 'btn-success',
+            ];
+
+            $actions[] = [
+                'route' => route('notifications.rejectExperience'),
                 'title' => 'Отклонить',
                 'class' => 'btn-danger',
             ];

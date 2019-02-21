@@ -6,6 +6,7 @@ use App\Events\SocialEvent;
 use App\Models\Billing\Billing;
 use App\Models\User\UserSkills;
 use App\Notifications\AccountApproveNotification;
+use App\Notifications\ExperienceApproveNotification;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -170,13 +171,15 @@ class AccountController extends Controller
             'description' => $request->get('description'),
         ]);
 
-        foreach ($request->file('portfolio') as $file) {
-            $path = $file->store('public/portfolio');
+        if($request->file('portfolio')){
+            foreach ($request->file('portfolio') as $file) {
+                $path = $file->store('public/portfolio');
 
-            $portfolio->files()->create([
-                'file' => $path,
-                'original_name' => $file->getClientOriginalName(),
-            ]);
+                $portfolio->files()->create([
+                    'file' => $path,
+                    'original_name' => $file->getClientOriginalName(),
+                ]);
+            }
         }
 
         flash()->success('Пример работы добавлен.');
@@ -269,6 +272,56 @@ class AccountController extends Controller
         ]);
 
         flash()->success('Стаж работы добавлен.');
+
+        return redirect()->to(url()->previous() . '#experience');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function approveExperience(Request $request)
+    {
+        $experience = Auth::user()->experiences()
+            ->where('id', $request->get('experience_id'))
+            ->first();
+
+        if (!$experience) {
+            flash()->error('Стаж не найден!');
+
+            return redirect()->to(url()->previous() . '#experience');
+        }
+
+        if (!$experience || $experience->approved == 'approved') {
+            flash()->error('Стаж уже подтвержден!');
+
+            return redirect()->to(url()->previous() . '#experience');
+        }
+
+        $files = [];
+
+        if($request->file('documents')) {
+            foreach ($request->file('documents') as $document) {
+                $file = [
+                    'file' => $document->store('public/documents'),
+                    'original_name' => $document->getClientOriginalName(),
+                ];
+
+                Auth::user()->files()->create($file);
+
+                $files[] = $file;
+            }
+        }
+
+        $experience->update(['approved' => 'waiting']);
+
+        $admin = User::where('email', config('app.admin_email'))->first();
+
+        if ($admin) {
+            $admin->notify(new ExperienceApproveNotification($files, $experience));
+        }
+
+        flash()->success('Файлы для подтверждения вашего стажа отправлены.');
 
         return redirect()->to(url()->previous() . '#experience');
     }
