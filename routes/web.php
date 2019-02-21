@@ -83,6 +83,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('/approve', 'AccountController@approve');
         Route::delete('/portfolio/{id}', 'AccountController@deletePortfolio');
         Route::post('/experiences', 'AccountController@experiences');
+        Route::post('/experiences/approve', 'AccountController@approveExperience')->name('experience.approve');
     });
 
     //users
@@ -192,6 +193,9 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('notifications/approveAccount', 'NotificationsController@approveAccount')->name('notifications.approveAccount');
     Route::post('notifications/rejectAccount', 'NotificationsController@rejectAccount')->name('notifications.rejectAccount');
+
+    Route::post('notifications/approveExperience', 'NotificationsController@approveExperience')->name('notifications.approveExperience');
+    Route::post('notifications/rejectExperience', 'NotificationsController@rejectExperience')->name('notifications.rejectExperience');
 
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
