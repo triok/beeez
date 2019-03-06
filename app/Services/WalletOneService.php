@@ -38,6 +38,18 @@ class WalletOneService
     }
 
     /**
+     * Validate response signature.
+     *
+     * @param string $signature
+     * @param array $data
+     * @return bool
+     */
+    public static function validateSignature($signature, $data)
+    {
+        return $signature == self::getSignature($data);
+    }
+
+    /**
      * Get base api url.
      *
      * @return mixed

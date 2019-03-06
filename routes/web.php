@@ -76,7 +76,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::delete('bookmark', 'BookmarksController@destroy')->name('bookmark-remove');
 
     Route::group(['prefix' => 'account'], function () {
-        Route::get('/', 'AccountController@index');
+        Route::get('/', 'AccountController@index')->name('account');
         Route::patch('/profile', 'AccountController@updateProfile');
         Route::post('/bio', 'AccountController@updateBio');
         Route::post('/portfolio', 'AccountController@addPortfolio');
@@ -239,6 +239,11 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::get('tasks', 'TasksController@index')->name('tasks.index');
+
+    Route::group(['middleware' => 'auth'], function () {
+       Route::post('/escrow/payer-card', 'Escrow\PayerCardsController@store')->name('escrow-payer-card');
+       Route::delete('/escrow/payer-card', 'Escrow\PayerCardsController@destroy')->name('escrow-payer-card-delete');
+    });
 });
 
 // Localization
