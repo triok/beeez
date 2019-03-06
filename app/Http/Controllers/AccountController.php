@@ -7,6 +7,7 @@ use App\Models\Billing\Billing;
 use App\Models\User\UserSkills;
 use App\Notifications\AccountApproveNotification;
 use App\Notifications\ExperienceApproveNotification;
+use App\Services\WalletOneService;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,10 @@ class AccountController extends Controller
 
         $user->socLinks = $user->socialLinks();
 
-        return view('auth.account', compact('user'));
+        $walletOnePayerAction = WalletOneService::payerAction();
+        $walletOnePayerField = WalletOneService::payerFields();
+
+        return view('auth.account', compact('user', 'walletOnePayerField', 'walletOnePayerAction'));
     }
 
     /**
