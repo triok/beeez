@@ -18,6 +18,16 @@ class WalletOneService
     }
 
     /**
+     * Get payer api url.
+     *
+     * @return string
+     */
+    public static function beneficiaryAction()
+    {
+        return self::baseAction() . 'v2/beneficiary';
+    }
+
+    /**
      * Get payer fields.
      *
      * @return array
@@ -29,6 +39,26 @@ class WalletOneService
             'PlatformPayerId' => Auth::id(),
             'PhoneNumber' => Auth::user()->phone,
             'ReturnUrl' => route('escrow-payer-card'),
+            'Timestamp' => Carbon::now('UTC')->format('Y-m-d\TH:i:s'),
+        ];
+
+        $fields['Signature'] = self::getSignature($fields);
+
+        return $fields;
+    }
+
+    /**
+     * Get payer fields.
+     *
+     * @return array
+     */
+    public static function beneficiaryFields()
+    {
+        $fields = [
+            'PlatformId' => config('wallet-one.platform_id'),
+            'PlatformBeneficiaryId' => Auth::id(),
+            'PhoneNumber' => Auth::user()->phone,
+            'ReturnUrl' => route('escrow-beneficiary-card'),
             'Timestamp' => Carbon::now('UTC')->format('Y-m-d\TH:i:s'),
         ];
 

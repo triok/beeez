@@ -37,7 +37,10 @@ class AccountController extends Controller
         $walletOnePayerAction = WalletOneService::payerAction();
         $walletOnePayerField = WalletOneService::payerFields();
 
-        return view('auth.account', compact('user', 'walletOnePayerField', 'walletOnePayerAction'));
+        $walletOneBeneficiaryAction = WalletOneService::beneficiaryAction();
+        $walletOneBeneficiaryField = WalletOneService::beneficiaryFields();
+
+        return view('auth.account', compact('user', 'walletOnePayerField', 'walletOnePayerAction', 'walletOneBeneficiaryAction', 'walletOneBeneficiaryField'));
     }
 
     /**

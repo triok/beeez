@@ -6,6 +6,7 @@ use App\Http\Controllers\Traits\Avatarable;
 use App\Http\Controllers\Traits\Commentable;
 use App\Http\Controllers\Traits\Imageable;
 use App\Models\Billing\Stripe;
+use App\Models\Escrow\BeneficiaryCard;
 use App\Models\Escrow\PayerCard;
 use App\Models\Favorite;
 use App\Models\File;
@@ -74,6 +75,16 @@ class User extends Authenticatable
     function payerCard()
     {
         return $this->payerCards()->first();
+    }
+
+    function beneficiaryCards()
+    {
+        return $this->hasMany(BeneficiaryCard::class);
+    }
+
+    function beneficiaryCard()
+    {
+        return $this->beneficiaryCards()->first();
     }
 
     function applications(){
@@ -398,6 +409,14 @@ class User extends Authenticatable
         return $this->payerCards()->create([
             'platform_payer_id' => $attributes['PlatformPayerId'],
             'payer_payment_tool_id' => $attributes['PayerPaymentToolId'],
+        ]);
+    }
+
+    public function addBeneficiaryCard($attributes)
+    {
+        return $this->beneficiaryCards()->create([
+            'platform_beneficiary_id' => $attributes['PlatformBeneficiaryId'],
+            'beneficiary_payment_tool_id' => $attributes['BeneficiaryPaymentToolId'],
         ]);
     }
 }
