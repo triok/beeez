@@ -243,6 +243,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['middleware' => 'auth'], function () {
        Route::post('/escrow/payer-card', 'Escrow\PayerCardsController@store')->name('escrow-payer-card');
        Route::delete('/escrow/payer-card', 'Escrow\PayerCardsController@destroy')->name('escrow-payer-card-delete');
+
+        Route::post('/escrow/beneficiary-card', 'Escrow\BeneficiaryCardsController@store')->name('escrow-beneficiary-card');
+        Route::delete('/escrow/beneficiary-card', 'Escrow\BeneficiaryCardsController@destroy')->name('escrow-beneficiary-card-delete');
     });
 });
 

@@ -37,7 +37,10 @@ class AccountController extends Controller
         $walletOnePayerAction = WalletOneService::payerAction();
         $walletOnePayerField = WalletOneService::payerFields();
 
-        return view('auth.account', compact('user', 'walletOnePayerField', 'walletOnePayerAction'));
+        $walletOneBeneficiaryAction = WalletOneService::beneficiaryAction();
+        $walletOneBeneficiaryField = WalletOneService::beneficiaryFields();
+
+        return view('auth.account', compact('user', 'walletOnePayerField', 'walletOnePayerAction', 'walletOneBeneficiaryAction', 'walletOneBeneficiaryField'));
     }
 
     /**
@@ -106,6 +109,7 @@ class AccountController extends Controller
             'bio'   => 'nullable|max:2000',
             'avatar' => 'nullable|image|mimes:jpeg,jpg,png,gif',
             'name' => 'required|max:50',
+            'phone' => 'nullable|string|max:30',
             'email' => 'required|email|unique:users,email,' . $id,
         ];
 
@@ -118,6 +122,7 @@ class AccountController extends Controller
         $user->email = $request->email;
         $user->name = $request->name;
         $user->bio = $request->bio;
+        $user->phone = $request->phone;
         $user->country = $request->country;
         $user->city = $request->city;
         $user->speciality = $request->get('speciality');
