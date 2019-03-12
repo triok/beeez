@@ -13,43 +13,49 @@
         @endif
     @if(\Carbon\Carbon::now() <= $job->end_date)
         @if(auth()->id() != $job->user_id && !$job->applications->count())
-            @if(!$job->proposals()->where('user_id', auth()->id())->count())
-                <h2>@lang('show.offers-small')</h2>
+            @if(!auth()->user()->beneficiaryCard())
+                <hr>
+                <p>Чтобы отправить предложение, необходимо сначала добавить карту для получения платежей.</p>
+                <a href="{{route('account')}}#bill" class="btn btn-primary btn-sm">Добавить карту</a>
+            @else
+                @if(!$job->proposals()->where('user_id', auth()->id())->count())
+                    <h2>@lang('show.offers-small')</h2>
 
-                {!! Form::open(['url' => route('job.proposals', $job), 'method'=>'post']) !!}
+                    {!! Form::open(['url' => route('job.proposals', $job), 'method'=>'post']) !!}
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <textarea required rows="5" name="body" class="form-control"></textarea>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <textarea required rows="5" name="body" class="form-control"></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                @if(auth()->user()->proposalTeams()->count())
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <select name="proposal_type" class="form-control">
-                                <option value="0">От себя</option>
-                                @foreach(auth()->user()->proposalTeams() as $team)
-                                    <option value="{{ $team->id }}">От имени команды {{ $team->name }}</option>
-                                @endforeach
-                            </select>
+                    @if(auth()->user()->proposalTeams()->count())
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <select name="proposal_type" class="form-control">
+                                    <option value="0">От себя</option>
+                                    @foreach(auth()->user()->proposalTeams() as $team)
+                                        <option value="{{ $team->id }}">От имени команды {{ $team->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    @endif
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">@lang('show.addoffer')</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {!! Form::close() !!}
                 @endif
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">@lang('show.addoffer')</button>
-                        </div>
-                    </div>
-                </div>
-
-                {!! Form::close() !!}
             @endif
         @endif
     @endif    
