@@ -106,6 +106,7 @@ class AccountController extends Controller
             'bio'   => 'nullable|max:2000',
             'avatar' => 'nullable|image|mimes:jpeg,jpg,png,gif',
             'name' => 'required|max:50',
+            'phone' => 'nullable|string|max:30',
             'email' => 'required|email|unique:users,email,' . $id,
         ];
 
@@ -118,6 +119,7 @@ class AccountController extends Controller
         $user->email = $request->email;
         $user->name = $request->name;
         $user->bio = $request->bio;
+        $user->phone = $request->phone;
         $user->country = $request->country;
         $user->city = $request->city;
         $user->speciality = $request->get('speciality');

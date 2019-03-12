@@ -20,15 +20,18 @@
                     </div>
                 </div>
             @else
-                <p>Вы еще не добавили карту.</p>
+                @if(auth()->user()->phone)
+                    <p>Вы еще не добавили карту.</p>
+                    <form method="post" action="{{ $walletOnePayerAction }}">
+                        @foreach($walletOnePayerField as $name => $value)
+                            <input type="hidden" name="{{ $name }}" value="{{ $value }}"/>
+                        @endforeach
 
-                <form method="post" action="{{ $walletOnePayerAction }}">
-                    @foreach($walletOnePayerField as $name => $value)
-                        <input type="hidden" name="{{ $name }}" value="{{ $value }}"/>
-                    @endforeach
-
-                    <input type="submit" class="btn btn-primary" value="Добавить"/>
-                </form>
+                        <input type="submit" class="btn btn-primary" value="Добавить"/>
+                    </form>
+                @else
+                    <p>Необходимо сначала добавить ваш номер телефона на вкладке <b>"Редактиовать профиль"</b>.</p>
+                @endif
             @endif
         </div>
     </div>

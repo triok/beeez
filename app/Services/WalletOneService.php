@@ -27,7 +27,7 @@ class WalletOneService
         $fields = [
             'PlatformId' => config('wallet-one.platform_id'),
             'PlatformPayerId' => Auth::id(),
-            'PhoneNumber' => '780977777777',
+            'PhoneNumber' => Auth::user()->phone,
             'ReturnUrl' => route('escrow-payer-card'),
             'Timestamp' => Carbon::now('UTC')->format('Y-m-d\TH:i:s'),
         ];
