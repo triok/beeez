@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Escrow\Deal;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -80,6 +81,57 @@ class WalletOneService
     }
 
     /**
+     * Validate response signature.
+     *
+     * @param Deal $deal
+     * @return bool
+     */
+    public static function registerDeal(Deal $deal)
+    {
+        $fields = [
+            'PlatformDealId' => config('wallet-one.platform_id'),
+            'PlatformPayerId' => $deal->payer_id,
+            'PayerPhoneNumber' => auth()->user()->phone,
+            'PayerPaymentToolId' => $deal->payer_tool_id,
+            'PlatformBeneficiaryId' => $deal->beneficiary_id,
+            'BeneficiaryPaymentToolId' => $deal->beneficiary_tool_id,
+            'Amount' => $deal->amount,
+            'CurrencyId' => $deal->currency_id,
+            'ShortDescription' => $deal->short_description,
+            'DeferPayout' => true,
+        ];
+
+        $body = json_encode($fields);
+
+        $url = self::baseAction() . '/api/v3/deals';
+        $timestamp = Carbon::now('UTC')->format('Y-m-d\TH:i:s');
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($body),
+            'X-Wallet-PlatformId: ' . config('wallet-one.platform_id'),
+            'X-Wallet-Signature: ' . self::getApiSignature($url, $timestamp, $body),
+            'X-Wallet-Timestamp: ' . $timestamp,
+        ]);
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+
+        $output = curl_exec($ch);
+
+        curl_close($ch);
+
+        return json_decode($output);
+    }
+
+    /**
      * Get base api url.
      *
      * @return mixed
@@ -110,5 +162,18 @@ class WalletOneService
         }
 
         return base64_encode(mhash(MHASH_SHA256, $fieldValues . config('wallet-one.signature_key')));
+    }
+
+    /**
+     * Process signature from given POST data
+     *
+     * @param $url
+     * @param $timestamp
+     * @param string $body
+     * @return string
+     */
+    protected static function getApiSignature($url, $timestamp, $body)
+    {
+        return base64_encode(mhash(MHASH_SHA256, $url . $timestamp . $body . config('wallet-one.signature_key')));
     }
 }

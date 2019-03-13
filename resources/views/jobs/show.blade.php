@@ -240,7 +240,7 @@
                     </section>
 
                 </div>
-                <div class="base-wrapper">@include('jobs.proposals')</div>                
+                <div class="base-wrapper">@include('jobs.proposals')</div>
                 </div>
                 <div class="col-lg-5">
                     <div class="sidebar">

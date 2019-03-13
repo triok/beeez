@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SocialEvent' => [
             'App\Listeners\SocialEventListener',
         ],
+        'App\Events\ProposalApplied' => [
+            'App\Listeners\RegisterWalletOneDeal',
+        ],
     ];
 
     /**

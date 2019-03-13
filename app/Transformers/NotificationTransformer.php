@@ -52,6 +52,7 @@ class NotificationTransformer extends Transformer
             'App\Notifications\ExperienceApproveNotification' => 'Подтверждение стажа',
             'App\Notifications\ExperienceIsApprovedNotification' => 'Подтверждение стажа',
             'App\Notifications\ExperienceIsNotApprovedNotification' => 'Подтверждение стажа',
+            'App\Notifications\ProposalAppliedNotification' => 'Вас выбрали в качестве исполнителя',
         ];
 
         return isset($titles[$notification['type']]) ? $titles[$notification['type']] : '';
@@ -59,6 +60,12 @@ class NotificationTransformer extends Transformer
 
     protected function getMessage($notification)
     {
+        if ($notification['type'] == 'App\Notifications\ProposalAppliedNotification') {
+            $job = Job::find($notification['data']['job_id']);
+
+            return 'Вас выбрали в качестве исполнителя по заданию "' . $job->name . '".';
+        }
+
         if ($notification['type'] == 'App\Notifications\TeamUserNotification') {
             $team = Team::find($notification['data']['team_id']);
 

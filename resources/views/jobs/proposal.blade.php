@@ -33,12 +33,19 @@
 
         @if(auth()->id() == $job->user_id && !$job->applications->count())
             <div class="footer-comment">
-                <form action="{{route('proposals.apply', [$job, $proposal])}}" method="post">
-                    {{csrf_field()}}
-                    <button class="btn btn-primary btn-sm">
+                @if(auth()->user()->payerCard())
+                    <form action="{{route('proposals.apply', [$job, $proposal])}}" method="post">
+                        {{csrf_field()}}
+                        <button class="btn btn-primary btn-sm">
+                            Принять предложение
+                        </button>
+                    </form>
+                @else
+                    <button class="btn btn-primary btn-sm" disabled>
                         Принять предложение
                     </button>
-                </form>
+                    <p><small>Необходимо сначала добавить карту для <a href="{{route('account')}}#bill">оплаты работы</a>.</small></p>
+                @endif
             </div>
         @endif
     </div>
