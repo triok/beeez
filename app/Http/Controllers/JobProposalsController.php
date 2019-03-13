@@ -9,6 +9,7 @@ use App\Models\Jobs\Application;
 use App\Models\Jobs\Job;
 use App\Models\Jobs\Proposal;
 use App\Models\Team;
+use App\Notifications\ProposalAppliedNotification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -87,6 +88,8 @@ class JobProposalsController extends Controller
 
             $job->update(['team_project_id' => $project->id]);
         }
+
+        $proposal->user->notify(new ProposalAppliedNotification($job));
 
         event(new ProposalApplied($applicant));
 
