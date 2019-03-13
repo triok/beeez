@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ProposalApplied;
 use App\Http\Requests\ProposalRequest;
 use App\Mail\AdminNewJobAppNotice;
 use App\Models\Jobs\Application;
@@ -59,6 +60,12 @@ class JobProposalsController extends Controller
             return redirect()->back();
         }
 
+        if (!auth()->user()->payerCard() || !$proposal->user->beneficiaryCard()) {
+            flash()->error('Необходимо указать карточки для оплаты и получения платежей!');
+
+            return redirect()->back();
+        }
+
         $applicant = Application::query()->create([
             'user_id' => $proposal->user->id,
             'job_id' => $job->id,
@@ -80,6 +87,8 @@ class JobProposalsController extends Controller
 
             $job->update(['team_project_id' => $project->id]);
         }
+
+        event(new ProposalApplied($applicant));
 
         try {
             Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));

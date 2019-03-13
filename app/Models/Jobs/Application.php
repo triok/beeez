@@ -3,6 +3,7 @@
 namespace App\Models\Jobs;
 
 use App\Mail\NotifyUserAppStatus;
+use App\Models\Escrow\Deal;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
@@ -27,6 +28,11 @@ class Application extends Model
     }
     function messages(){
         return $this->hasMany(Conversations::class,'application_id','id');
+    }
+
+    function deals()
+    {
+        return $this->hasMany(Deal::class);
     }
 
     /**
