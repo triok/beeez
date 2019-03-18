@@ -89,7 +89,7 @@ class WalletOneService
     public static function registerDeal(Deal $deal)
     {
         $fields = [
-            'PlatformDealId' => config('wallet-one.platform_id'),
+            'PlatformDealId' => $deal->id,
             'PlatformPayerId' => $deal->payer_id,
             'PayerPhoneNumber' => auth()->user()->phone,
             'PayerPaymentToolId' => $deal->payer_tool_id,
@@ -122,6 +122,44 @@ class WalletOneService
 
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+
+        $output = curl_exec($ch);
+
+        curl_close($ch);
+
+        return json_decode($output);
+    }
+
+    /**
+     * Validate response signature.
+     *
+     * @param Deal $deal
+     * @return bool
+     */
+    public static function completeDeal(Deal $deal)
+    {
+        $body = json_encode([]);
+
+        $url = self::baseAction() . '/api/v3/deals/' . $deal->id . '/complete';
+        $timestamp = Carbon::now('UTC')->format('Y-m-d\TH:i:s');
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($body),
+            'X-Wallet-PlatformId: ' . config('wallet-one.platform_id'),
+            'X-Wallet-Signature: ' . self::getApiSignature($url, $timestamp, $body),
+            'X-Wallet-Timestamp: ' . $timestamp,
+        ]);
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
         $output = curl_exec($ch);

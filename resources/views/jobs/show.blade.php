@@ -248,7 +248,7 @@
                             <div class="row buttons">
                                 <div class="primary col-lg-12 col-sm-6 col-xs-6">
                                     @if($job->applications)
-<!--                                         @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
+                                        @if($job->status != config('enums.jobs.statuses.CLOSED') && $job->status != config('enums.jobs.statuses.COMPLETE'))
                                             @if(isset($job->application))
                                                 <button data-id="{{$job->id}}" {!! $job->status == config('enums.jobs.statuses.IN_REVIEW') ? 'disabled' : '' !!} class="btn btn-success btn-block btn-review">
                                                     <i class="fa fa-handshake-o" aria-hidden="true"></i>
@@ -257,7 +257,7 @@
                                             @else
                                                 <button disabled class="btn btn-warning btn-block "><i class="fa fa-history" aria-hidden="true"></i> @lang('home.in_progress') </button>
                                             @endif
-                                        @endif -->
+                                        @endif
 
                                         @if (isset($job->application) && auth()->user()->id == $job->application->user_id)
 
