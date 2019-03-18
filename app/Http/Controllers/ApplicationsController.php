@@ -13,6 +13,7 @@ use App\Models\Jobs\Application;
 use App\Models\Jobs\conversations;
 use App\Models\Jobs\Job;
 use App\Queries\JobQuery;
+use App\Services\WalletOneService;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -85,6 +86,16 @@ class ApplicationsController extends Controller
 
                 $application->update(['status' => config('enums.jobs.statuses.COMPLETE')]);
                 $job->update(['status' => config('enums.jobs.statuses.COMPLETE')]);
+
+                try {
+                    $deal = $application->deals()->first();
+
+                    WalletOneService::completeDeal($deal);
+
+                    $deal->update(['state' => 'payment_processing']);
+                } catch (Exception $e) {
+                    //
+                }
 
                 return redirect()->back();
             }
