@@ -53,6 +53,9 @@ class NotificationTransformer extends Transformer
             'App\Notifications\ExperienceIsApprovedNotification' => 'Подтверждение стажа',
             'App\Notifications\ExperienceIsNotApprovedNotification' => 'Подтверждение стажа',
             'App\Notifications\ProposalAppliedNotification' => 'Вас выбрали в качестве исполнителя',
+            'App\Notifications\JobDecliningNotification' => 'Отмена сделки',
+            'App\Notifications\JobDeclinedNotification' => 'Отмена сделки',
+            'App\Notifications\JobNotDeclinedNotification' => 'Отмена сделки',
         ];
 
         return isset($titles[$notification['type']]) ? $titles[$notification['type']] : '';
@@ -60,6 +63,34 @@ class NotificationTransformer extends Transformer
 
     protected function getMessage($notification)
     {
+        if ($notification['type'] == 'App\Notifications\JobDeclinedNotification') {
+            $job = Job::find($notification['data']['job_id']);
+
+            $message = '<p>Ваш запрос по заданию <a href="' . route('jobs.show', $job->id) . '">"' . $job->name . '"</a> подтвержден.<p></p>';
+            $message .= '<p>Деньги будут отправлены в ближайшее время.</p>';
+
+            return $message;
+        }
+
+        if ($notification['type'] == 'App\Notifications\JobNotDeclinedNotification') {
+            $job = Job::find($notification['data']['job_id']);
+
+            $message = '<p>Ваш запрос по заданию <a href="' . route('jobs.show', $job->id) . '">"' . $job->name . '"</a> отклонен.<p></p>';
+            $message .= '<p>Деньги отправлены исполнителю.</p>';
+
+            return $message;
+        }
+
+        if ($notification['type'] == 'App\Notifications\JobDecliningNotification') {
+            $job = Job::find($notification['data']['job_id']);
+
+            $message = '<p>По заданию <a href="' . route('jobs.show', $job->id) . '">"' . $job->name . '"</a> отправлен запрос на отмену сделки и возврат денег заказчику.<p></p>';
+            $message .= '<p>Комментарий к запросу:</p>';
+            $message .= '<p>' . $notification['data']['message'] . '</p>';
+
+            return $message;
+        }
+
         if ($notification['type'] == 'App\Notifications\ProposalAppliedNotification') {
             $job = Job::find($notification['data']['job_id']);
 
@@ -301,6 +332,22 @@ class NotificationTransformer extends Transformer
     protected function getActions($notification)
     {
         $actions = [];
+
+        if ($notification['type'] == 'App\Notifications\JobDecliningNotification') {
+            $actions[] = [
+                'route' => route('jobs.approveDecline', $notification['data']['job_id']),
+                'title' => 'Подтвердить возврат денег',
+                'class' => 'btn-success',
+            ];
+
+            $actions[] = [
+                'route' => route('jobs.disapproveDecline', $notification['data']['job_id']),
+                'title' => 'Отклонить',
+                'class' => 'btn-danger',
+            ];
+
+            return $actions;
+        }
 
         if ($notification['type'] == 'App\Notifications\TeamUserNotification') {
             $actions[] = [

@@ -67,6 +67,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('jobs/{job}/review', 'ApplicationsController@review')->name('jobs.review');
     Route::post('jobs/{job}/rating', 'ApplicationsController@rating')->name('jobs.rating');
 
+    Route::post('jobs/{job}/decline', 'ApplicationsController@decline')->name('jobs.decline');
+    Route::post('jobs/{job}/approveDecline', 'ApplicationsController@approveDecline')->name('jobs.approveDecline');
+    Route::post('jobs/{job}/disapproveDecline', 'ApplicationsController@disapproveDecline')->name('jobs.disapproveDecline');
+
     Route::get('jobs/{job}/editProject', 'JobController@editProject')->name('jobs.editProject');
     Route::post('jobs/{job}/updateProject', 'JobController@updateProject')->name('jobs.updateProject');
 

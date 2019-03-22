@@ -30,6 +30,7 @@ window.onload = function(){
     $(document).on('click', '.delete', deleteTask);
     $(document).on('click', '.btn-review', completeJob);
     $(document).on('click', '.btn-rating', ratingJob);
+    $(document).on('click', '.btn-decline', declineJob);
 
     $('#form-complete').submit(function(e) {
         e.preventDefault();
@@ -181,7 +182,13 @@ function ratingJob() {
     container.find('form').attr('action', '/jobs/'+ id +'/rating');
     container.modal({ backdrop: 'static', keyboard: false, 'show': true });
 }
+function declineJob() {
+    var id = parseInt($(this).attr('data-id'));
+    var container = $('#declineJobForm');
 
+    container.find('form').attr('action', '/jobs/'+ id +'/decline');
+    container.modal({ backdrop: 'static', keyboard: false, 'show': true });
+}
 function showSubCategories(id) {
     $('.subcategories').css('display', 'none');
 
