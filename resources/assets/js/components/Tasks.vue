@@ -1,6 +1,6 @@
 <template>
     <section id="tasks">
-        <header class="header">
+        <header class="header base-wrapper">
             <h1>{{ trans('tasks.title') }}</h1>
             <p>{{ trans('tasks.titledesc') }}</p>
 
@@ -39,7 +39,7 @@
             </div>
         </header>
 
-        <section class="main" v-show="tasks && tasks.length" v-cloak>
+        <section class="main base-wrapper" v-show="tasks && tasks.length" v-cloak>
             <h2>{{ trans('tasks.current') }}</h2>
             <table class="table table-hover table-condensed table-fixed">
                 <thead>
@@ -99,7 +99,7 @@
             </table>
         </section>
 
-        <footer class="footer" v-show="tasks && completedTasks.length" v-cloak>
+        <footer class="footer base-wrapper" v-show="tasks && completedTasks.length" v-cloak>
             <h2>{{ trans('tasks.completed') }}</h2>
 
             <table v-show="tasks && completedTasks.length" class="table table-responsive table-hover">

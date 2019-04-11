@@ -27,7 +27,6 @@
                     "url": "{{ $action }}",
                     "dataSrc": "data"
                 },
-
                 "columns": [
                     {
                         "data": "name",

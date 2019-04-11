@@ -22,6 +22,7 @@ use App\Models\Project;
 use App\Models\Page;
 use App\Models\Team;
 use App\Models\TeamType;
+
 use App\Models\Vacancy;
 use Carbon\Carbon;
 use App\User;
@@ -143,6 +144,7 @@ $factory->define(TeamType::class, function (Faker\Generator $faker) {
     ];
 });
 
+
 $factory->define(Page::class, function (Faker\Generator $faker) {
     return [
         'title' => $faker->title,
@@ -204,5 +206,11 @@ $factory->define(Vacancy::class, function (Faker\Generator $faker) {
         'published_at' => $faker->randomElement([null, Carbon::now()]),
         'total_views' => rand(0, 100),
         'total_responses' => rand(0, 10),
+    ];
+});
+
+$factory->define(UserSpeciality::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
     ];
 });

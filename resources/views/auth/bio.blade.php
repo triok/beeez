@@ -28,44 +28,48 @@
     </div>
     <div class="row">
         <div class="base-wrapper">
-            <p>
-            <label for="input-speciality">@lang('account.spec')</label>
-            <select class="form-control" name="speciality" id="input-speciality">
-            <option value="">Нет</option>
-            @foreach(config('enums.account.specialities') as $speciality)
-                @if($speciality == $user->speciality)
-                    <option selected value="{{ $speciality }}">@lang('account.speciality.' . $speciality)</option>
-                @else
-                    <option value="{{ $speciality }}">@lang('account.speciality.' . $speciality)</option>
-                @endif
-            @endforeach
-            </select> 
-            </p>
+            <div>
+                <p>
+                <label for="input-speciality">@lang('account.spec')</label>
+                <select class="form-control" name="speciality" id="input-speciality">
+                <option value="">Нет</option>
+                @foreach(config('vacancy.specializations') as $specialization)
+                    @if($specialization == $user->speciality)
+                        <option selected value="{{ $specialization }}">{{ $specialization }}</option>
+                    @else
+                        <option value="{{ $specialization }}">{{ $specialization }}</option>
+                    @endif
+                @endforeach
+                </select> 
+                </p>
+            </div>
+            <div>
+                <label>@lang('account.joblist')</label>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input type="text" id="input-service" class="form-control" style="width:500px;">
+                        <button type="button" class="btn btn-primary" onclick="addService()">
+                            <i aria-hidden="true" class="fa fa-plus"></i>
+                        </button>
+                    </div>
 
+                    <ul id="services" class="token-input-list services-list">
+                        @foreach(auth()->user()->services as $service)
+                        <li class="token-input-token">
+                            <input type="hidden" name="services[]" value="{{ $service->name }}">
+                            <p>{{ $service->name }}</p>
+                            <span class="token-input-delete-token" onclick="$(this).parent().remove();">×</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>            
             <div id="skills-list" style="position: relative;margin-bottom: 20px;">
                 <label>@lang('account.skills')</label>
                 {!! Form::text('skills',null,['id'=>'skills','class'=>'form-control']) !!}
             </div>
 
-            <label>@lang('account.joblist')</label>
-            <div class="form-inline">
-                <div class="form-group">
-                    <input type="text" id="input-service" class="form-control" style="width:500px;">
-                    <button type="button" class="btn btn-primary" onclick="addService()">
-                        <i aria-hidden="true" class="fa fa-plus"></i>
-                    </button>
-                </div>
 
-                <ul id="services" class="token-input-list services-list">
-                    @foreach(auth()->user()->services as $service)
-                    <li class="token-input-token">
-                        <input type="hidden" name="services[]" value="{{ $service->name }}">
-                        <p>{{ $service->name }}</p>
-                        <span class="token-input-delete-token" onclick="$(this).parent().remove();">×</span>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
         </div>
     </div>
     <div class="row">

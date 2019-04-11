@@ -302,6 +302,8 @@ class JobController extends Controller
 
         flash()->success('Job has been posted!');
 
+
+
         if ($request->get('project_id') && $project = Project::find($request->get('project_id'))) {
             return redirect(route('projects.show', $project));
         } else {

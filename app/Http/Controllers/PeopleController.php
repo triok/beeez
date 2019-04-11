@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Jobs\Skill;
+use App\Models\UserSpeciality;
 use App\Queries\UserQuery;
 use App\User;
 
@@ -17,7 +19,15 @@ class PeopleController extends Controller
     {
         $users = UserQuery::users()->paginate(request('count', 20));
 
-        return view('peoples.peoples-index', compact('users'));
+        $specialities = UserSpeciality::get();
+
+        $skills = Skill::pluck('name');
+
+        $countries = UserQuery::allCountries();
+
+        $cities = UserQuery::allCities();        
+
+        return view('peoples.peoples-index', compact('users', 'skills','countries','cities','specialities'));
     }
 
     public function show(User $user)

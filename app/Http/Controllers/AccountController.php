@@ -176,6 +176,7 @@ class AccountController extends Controller
             $portfolio->files()->create([
                 'file' => $path,
                 'original_name' => $file->getClientOriginalName(),
+                'type' => $file->getMimeType()
             ]);
         }
 

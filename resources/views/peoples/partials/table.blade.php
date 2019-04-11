@@ -17,7 +17,7 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
-            $('#users-table').DataTable({
+            var table = $('#users-table').DataTable({
                 bFilter: false,
                 bInfo: false,
                 "lengthChange": false,
@@ -53,7 +53,7 @@
                         "data": "speciality",
                         "render": function (data, type, row, meta) {
                             if (type === 'display') {
-                                return row.speciality;
+                                return data;
                             }
 
                             return data;
@@ -101,6 +101,18 @@
                         }
                     },
                 ]
+            });
+
+            $('#people-specialization-filter input[type="checkbox"]').on('click', function () {
+                var people_specialization = [];
+
+                $('#people-specialization-filter input[type="checkbox"]').each(function () {
+                    if(this.checked) {
+                        people_specialization.push($(this).val());
+                    }
+                });
+
+                table.ajax.url("{{ $action }}&speciality=" + people_specialization).load();
             });
         });
     </script>

@@ -34,9 +34,16 @@
 
         @if(auth()->id() == $job->user_id && !$job->applications->count())
             <div class="footer-comment">
-                <button id="{{ $proposal->proposal_type ? $proposal->team->name : $proposal->user->username }}" data-title="{{$job->name}}" class="btn btn-primary confirm-job-btn" title="Принять предложение">
-                    <i class="fa fa-handshake" aria-hidden="true"></i>Принять предложение 
+                <p>Актуально до: {{ Carbon\Carbon::parse($proposal->up_to)->format('d.m.Y H:i') }}</p>
+                @if ($proposal->up_to < Carbon\Carbon::now())
+                <button id="up_to" data-title="{{$job->name}}" class="btn btn-primary confirm-job-btn " title="Просрочено" disabled>
+                    <i class="fa fa-handshake" aria-hidden="true"></i>Просрочено
                 </button>
+                @else
+                <button id="{{ $proposal->proposal_type ? $proposal->team->name : $proposal->user->username }}" data-title="{{$job->name}}" class="btn btn-primary confirm-job-btn " title="Принять предложение">
+                    <i class="fa fa-handshake" aria-hidden="true"></i>Принять предложение 
+                </button>                
+                @endif
             </div>
 
         @endif

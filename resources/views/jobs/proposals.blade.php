@@ -20,12 +20,20 @@
                 {!! Form::open(['url' => route('job.proposals', $job), 'method'=>'post']) !!}
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <textarea required rows="5" name="body" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="up_to">Актуально до:</label>
+                        <input type="text" name="up_to" class="form-control timepicker-actions" required="required" autocomplete="off" />
+                    </div>
+                    </div>
+                </div>                
 
                 @if(auth()->user()->proposalTeams()->count())
                 <div class="row">
@@ -39,6 +47,7 @@
                             </select>
                         </div>
                     </div>
+
                 </div>
                 @endif
 
@@ -56,3 +65,29 @@
     @endif    
     </div>
 </div>
+@push('styles')
+
+    <link rel="stylesheet" href="/css/datepicker.min.css"/>
+@endpush
+
+@push('scripts')
+
+    <script src="/js/datepicker.min.js"></script>
+    <script>
+        $('.timepicker-actions').datepicker({
+            timepicker: true,
+            startDate: new Date(),
+            minHours: 9,
+            maxHours: 24,
+            minDate: new Date(),
+            onSelect: function (fd, d, picker) {
+                if (!d) return;
+
+                picker.update({
+                    minHours: 0,
+                    maxHours: 24
+                })
+            }
+        });
+    </script>
+@endpush

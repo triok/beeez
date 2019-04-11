@@ -48664,7 +48664,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("section", { attrs: { id: "tasks" } }, [
-    _c("header", { staticClass: "header" }, [
+    _c("header", { staticClass: "header base-wrapper" }, [
       _c("h1", [_vm._v(_vm._s(_vm.trans("tasks.title")))]),
       _vm._v(" "),
       _c("p", [_vm._v(_vm._s(_vm.trans("tasks.titledesc")))]),
@@ -48770,7 +48770,7 @@ var render = function() {
             expression: "tasks && tasks.length"
           }
         ],
-        staticClass: "main"
+        staticClass: "main base-wrapper"
       },
       [
         _c("h2", [_vm._v(_vm._s(_vm.trans("tasks.current")))]),
@@ -48965,7 +48965,7 @@ var render = function() {
             expression: "tasks && completedTasks.length"
           }
         ],
-        staticClass: "footer"
+        staticClass: "footer base-wrapper"
       },
       [
         _c("h2", [_vm._v(_vm._s(_vm.trans("tasks.completed")))]),
@@ -49162,6 +49162,7 @@ exports.push([module.i, "\n.dataTables_wrapper {\n    padding: 0 20px;\n}\ntable
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //

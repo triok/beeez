@@ -45,6 +45,7 @@ class NotificationTransformer extends Transformer
             'App\Notifications\CvDeclinedNotification' => 'Соискатель отклонил Ваше предложение',
             'App\Notifications\JobReportNotification' => 'Запрос на отчет',
             'App\Notifications\JobOwnerReportNotification' => 'Новый отчет',
+            'App\Notifications\JobConfirmNotification' => 'Вас выбрали исполнителем',            
             'App\Notifications\AccountApproveNotification' => 'Подтверждение аккаунта',
             'App\Notifications\AccountIsApprovedNotification' => 'Подтверждение аккаунта',
             'App\Notifications\AccountIsNotApprovedNotification' => 'Подтверждение аккаунта',
@@ -244,10 +245,17 @@ class NotificationTransformer extends Transformer
         if ($notification['type'] == 'App\Notifications\JobOwnerReportNotification') {
             $job = Job::find($notification['data']['job_id']);
             $user = User::find($notification['data']['user_id']);
-            $report = $notification['data']['report'];
+           
 
             return '<p>Пользователь ' . $user->name . ' ставил отчет в задании <a href="' . route('jobs.show', $job)  . '">' . $job->name . '</a>.</p><p>' . $report . '</p>';
         }
+
+        if ($notification['type'] == 'App\Notifications\JobConfirmNotification') {
+            $job = Job::find($notification['data']['job_id']);
+
+
+            return '<p>Поздравляем, Вас выбрали в качестве исполнителя задания  <a href="' . route('jobs.show', $job) . '">' . $job->name . '</a>. Денежные средств в размере ' . $job->price .' руб. зарезервированы. Вы можете приступать в выполнению задания.</p>';
+        }        
 
         return '';
     }

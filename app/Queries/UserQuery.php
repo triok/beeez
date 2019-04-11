@@ -18,4 +18,13 @@ class UserQuery
     {
         return User::query()->where('id', '<>', auth()->id());
     }
+
+    public static function allCountries()
+    {
+    	return User::query()->whereNotNull('country')->pluck('country')->unique();
+    }
+    public static function allCities()
+    {
+    	return User::query()->whereNotNull('city')->pluck('city')->unique();
+    }    
 }

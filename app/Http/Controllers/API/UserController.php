@@ -34,6 +34,8 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
+
+
         if ($request->get('name')) {
             $users = User::filterName($request->get('name'))->orderBy('name')->limit(5)->get();
         } else {
@@ -45,6 +47,14 @@ class UserController extends Controller
                 return $user->isFavorited();
             });
         }
+
+        if ($request->get('speciality')) {
+            $people_specialization = explode(',', $request->get('speciality'));
+
+           
+             $users = $users->where('speciality', '1');
+
+        }        
 
         return response()->json(
             $this->transformer->transformCollection($users)

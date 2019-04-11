@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
-<div class="container" id="main">
+<div class="container-fluid" id="main">
     <div class="row">
-        <div class="col-md-12 peoples-show">
+        <div class="col-md-6 peoples-show">
             <a href="{{route('peoples.index')}}"><span><i class="fa fa-arrow-left"></i> @lang('peoples.back')</span></a>
             <hr>
             <div class="panel panel-default">
@@ -93,17 +93,25 @@
                                             </td>
                                         </tr>
                                     @endif
-
+                                    @if($user->country)
                                     <tr>
                                         <td><b>Страна</b></td>
                                         <td>{{ $user->country }}</td>
                                     </tr>
-
+                                    @endif
+                                    @if($user->city)
                                     <tr>
                                         <td><b>Город</b></td>
                                         <td>{{ $user->city }}</td>
                                     </tr>
-
+                                    @endif
+                                    @if($user->speciality)
+                                    <tr>
+                                        <td><b>Специальность</b></td>
+                                        <td>{{ $user->speciality }}</td>
+                                    </tr>                                
+                                    @endif
+                                    @if($user->skills)
                                     <tr>
                                         <td><b>@lang('peoples.skills')</b></td>
                                         <td>
@@ -116,6 +124,19 @@
                                             </ul>                                            
                                         </td>
                                     </tr>
+                                    @endif
+                                    @if($user->services)
+                                    <tr>
+                                        <td>Услуги:</td>
+                                        <td>
+                                            <ul>
+                                                @foreach($user->services as $service)
+                                                <li>{{ $service->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    @endif
                                     @if(count($user->teams))
                                     <tr>
                                         <td><b>@lang('peoples.teams')</b></td>
@@ -166,10 +187,7 @@
                                         </tr>
                                     @endif
 
-                                    <tr>
-                                        <td><b>@lang('peoples.company')</b></td>
-                                        <td></td>
-                                    </tr>    
+
                                 </tbody>
                             </table>
                                                         
@@ -220,6 +238,27 @@
                 </div>
             </div>
         </div>
+        @if($user->portfolio)
+        <div class="col-md-6">
+            <div class="base-wrapper">
+                @foreach($user->portfolio as $info)
+                    <h2>{{ $info->name }}</h2>
+                    <p>{!! $info->description !!}</p>
+                    @if($files = $info->files)
+                        <ul>
+                            @foreach($files as $file)
+                            @if(strpos($file->type, 'image/') !== false)
+                                <li><img src="{{Storage::url($file->file)}}" alt="{{ $file->original_name }}" /></li>
+                            @else
+                            <li><a target="_blank" href="{{Storage::url($file->file)}}">{{ $file->original_name }}</a></li>
+                            @endif
+                            @endforeach
+                        </ul>
+                    @endif
+                @endforeach
+            </div>
+        </div>
+        @endif
     </div>
 </div>    
 @endsection

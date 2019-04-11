@@ -13,7 +13,58 @@
             <div v-show="show_title">
                 <h3 v-if="!category">{{ trans('home.title') }}</h3>
             </div>
-                 
+            <div name="table" class="col-xs-12">
+                <div name="head" class="col-xs-12">
+                    <div name="name" class="col-xs-5">{{ trans('home.task') }}</div>
+                    <div name="timefor" class="col-xs-2">{{ trans('home.timefor') }}</div>
+                    <div name="created" class="col-xs-2">{{ trans('home.created') }}</div>
+                    <div name="price" class="col-xs-2">{{ trans('home.price') }}</div>
+                    <div name="status" class="col-xs-1">{{ trans('home.status') }}</div>
+                </div>
+                <div name="body" class="col-xs-12">
+                    <div v-for="job in jobs" name="line" class="col-xs-12">
+                        <div name="job-name" class="col-xs-5">
+                            <a v-if="job.status == 'open'" :href="'/jobs/' + job.id" :id="job.id">{{ job.name }}</a>
+                            <a v-else class="disabled" :href="'/jobs/' + job.id" :id="job.id">{{ job.name }}</a>                        
+                            <span v-html="job.comment"> </span>
+                            <div>
+                                <p>{{ trans('home.before') }} {{ job.end_date }}</p>
+                                <p>Размещено: <a :href="'/peoples/' + job.client_id">{{ job.client }}</a> (<span class="text-success">{{ job.client_rating_positive }}</span>/<span class="text-danger">{{ job.client_rating_negative }}</span>)</p>
+                                <span class="badge" v-for="skill in job.skills">{{ skill.name }}</span>
+                            </div>                            
+                        </div>
+                        <div name="job-timefor" class="col-xs-2">
+                            <span class="hidden">{{ job.time_for_work.id }}</span> {{ job.time_for_work.value }}
+                        </div>
+                        <div name="job-created" class="col-xs-2">
+                            <span class="date-short">{{ customFormatter(job.created_at) }}</span>
+                        </div>
+                        <div name="job-price" class="col-xs-2">{{ job.price }}</div>
+                        <div name="job-status" class="col-xs-1">
+                            <div v-if="job.auth_check">
+                                <span class="searching" v-if="job.allow_apply">
+                                    <i class="fa fa-search"></i> Поиск исполнителя
+                                </span>
+
+                                <span class="disabled" v-if="(job.status == 'in progress' || job.status == 'in review')">
+                                    <i class="fa fa-handshake-o"></i> {{ trans('home.in_progress') }}
+                                </span>
+
+                                <span class="disabled" v-if="job.status == 'complete'">
+                                    <i class="fa fa-check"></i> {{ trans('home.completed') }}
+                                </span>
+
+                                <span class="enddate" v-if="(job.status == 'open' && job.ended) || job.status == 'closed'">
+                                    <i class="fa fa-clock-o"></i> {{ trans('home.enddate') }}
+                                </span>                           
+                            </div>
+                            <span v-if="!job.auth_check">
+                                not authorized
+                            </span>                            
+                        </div>
+                    </div>
+                </div>
+            </div>                     
             <table class="table table-responsive" id="jobs-table" v-show="show_table">
                 <thead>
                 <tr>

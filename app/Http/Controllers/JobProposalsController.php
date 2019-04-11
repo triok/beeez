@@ -8,12 +8,15 @@ use App\Models\Jobs\Application;
 use App\Models\Jobs\Job;
 use App\Models\Jobs\Proposal;
 use App\Models\Team;
+use App\Notifications\JobConfirmNotification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
+
 
 class JobProposalsController extends Controller
 {
@@ -31,6 +34,11 @@ class JobProposalsController extends Controller
      */
     public function store(ProposalRequest $request, Job $job)
     {
+
+        $validator = Validator::make($request->all(), [
+            'up_to'   => 'required'
+        ]);
+
         if ($job->proposals()->where('user_id', auth()->id())->count()) {
             flash()->error('Вы уже добавили предложение!');
 
@@ -40,7 +48,8 @@ class JobProposalsController extends Controller
         $job->proposals()->create([
             'proposal_type' => $this->getProposalType($request),
             'user_id' => auth()->id(),
-            'body' => $request->get('body')
+            'body' => $request->get('body'),
+            'up_to' => Carbon::createFromFormat('d.m.Y H:i', $request->get('up_to'))->format('Y-m-d H:i:s')
         ]);
 
         flash()->success('Ваше предложение добавлено.');
@@ -56,9 +65,11 @@ class JobProposalsController extends Controller
     function apply(Job $job, Proposal $proposal, Request $request)
     {
 
-        if (Carbon::now() > $job->end_date || $job->application()->exists()) {
+        if (Carbon::now() > $proposal->up_to || Carbon::now() > $job->end_date || $job->application()->exists() ) {
+            flash()->error('Просрочена актуальность задания или предложения.');
             return redirect()->back();
         }
+
         $job->update(['price' => $request->input('amount')]);
 
         $applicant = Application::query()->create([
@@ -82,10 +93,14 @@ class JobProposalsController extends Controller
 
             $job->update(['team_project_id' => $project->id]);
         }
+   
+
 
         try {
-            Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));
+            // Mail::to(env('MAIL_FROM_ADDRESS', env('MAIL_FROM_NAME')))->send(new AdminNewJobAppNotice($job, $applicant));
             flash()->success('Предложение принято.');
+            $recipient = User::find($proposal->user->id);
+            $recipient->notify(new JobConfirmNotification($job));            
         } catch (Exception $e) {
             flash()->error('Application has been saved but we had trouble notifying job poster. Please contact them directly.');
         }
