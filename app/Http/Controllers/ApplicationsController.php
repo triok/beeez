@@ -12,7 +12,11 @@ use App\Models\Comment;
 use App\Models\Jobs\Application;
 use App\Models\Jobs\conversations;
 use App\Models\Jobs\Job;
+use App\Notifications\JobDeclinedNotification;
+use App\Notifications\JobDecliningNotification;
+use App\Notifications\JobNotDeclinedNotification;
 use App\Queries\JobQuery;
+use App\Services\WalletOneService;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -71,6 +75,87 @@ class ApplicationsController extends Controller
         return redirect()->back();
     }
 
+    public function decline(Job $job)
+    {
+        if (auth()->user()->id == $job->user_id && $job->status == config('enums.jobs.statuses.IN_REVIEW')) {
+            $job->update(['status' => config('enums.jobs.statuses.DECLINING')]);
+
+            $admin = User::where('email', config('app.admin_email'))->first();
+
+            if ($admin) {
+                $admin->notify(new JobDecliningNotification($job, request('message')));
+            }
+
+            flash()->message('Запрос для отмены сделки отправлен. Ожидайте решения.');
+
+            return redirect()->back();
+        }
+
+        flash()->error('У вас нет доступа для отмены сделки.');
+
+        return redirect()->back();
+    }
+
+    public function approveDecline(Job $job)
+    {
+        if (auth()->user()->isAdmin() && $job->status == config('enums.jobs.statuses.DECLINING')) {
+            $application = $job->applications()->first();
+
+            $job->update(['status' => config('enums.jobs.statuses.CLOSED')]);
+            $application->update(['status' => config('enums.jobs.statuses.CLOSED')]);
+
+            try {
+                $deal = $application->deals()->first();
+
+                WalletOneService::declineDeal($deal);
+
+                $deal->update(['state' => 'canceled']);
+
+                $application->user->notify(new JobDeclinedNotification($job));
+
+                flash()->message('Деньги отправлены заказчику.');
+
+                return redirect()->back();
+            } catch (Exception $e) {
+                //
+            }
+        }
+
+        flash()->error('У вас нет доступа.');
+
+        return redirect()->back();
+    }
+
+    public function disapproveDecline(Job $job)
+    {
+        if (auth()->user()->isAdmin() && $job->status == config('enums.jobs.statuses.DECLINING')) {
+            $application = $job->applications()->first();
+
+            $job->update(['status' => config('enums.jobs.statuses.COMPLETE')]);
+            $application->update(['status' => config('enums.jobs.statuses.COMPLETE')]);
+
+            try {
+                $deal = $application->deals()->first();
+
+                WalletOneService::completeDeal($deal);
+
+                $deal->update(['state' => 'payment_processing']);
+
+                $application->user->notify(new JobNotDeclinedNotification($job));
+
+                flash()->message('Деньги отправлены исполнителю.');
+
+                return redirect()->back();
+            } catch (Exception $e) {
+                //
+            }
+        }
+
+        flash()->error('У вас нет доступа.');
+
+        return redirect()->back();
+    }
+
     public function rating(Job $job)
     {
         if($application = $job->applications()->first()) {
@@ -85,6 +170,16 @@ class ApplicationsController extends Controller
 
                 $application->update(['status' => config('enums.jobs.statuses.COMPLETE')]);
                 $job->update(['status' => config('enums.jobs.statuses.COMPLETE')]);
+
+                try {
+                    $deal = $application->deals()->first();
+
+                    WalletOneService::completeDeal($deal);
+
+                    $deal->update(['state' => 'payment_processing']);
+                } catch (Exception $e) {
+                    //
+                }
 
                 return redirect()->back();
             }

@@ -243,7 +243,7 @@
                     </section>
 
                 </div>
-                <div class="base-wrapper">@include('jobs.proposals')</div>                
+                <div class="base-wrapper">@include('jobs.proposals')</div>
                 </div>
                 <div class="col-lg-5">
 <!--                     <div class="sidebar">
@@ -279,10 +279,16 @@
                                                     @lang('home.complete')
                                                 </button>
                                             @endif
-
-
                                         @endif
 
+                                        @if (auth()->user()->id == $job->user_id)
+                                            @if ($job->status == config('enums.jobs.statuses.IN_REVIEW'))
+                                                <button data-id="{{$job->id}}" class="btn btn-danger btn-block btn-decline" type="button">
+                                                    <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                                                    @lang('home.decline')
+                                                </button>
+                                            @endif
+                                        @endif
                                     @else
                                         @if(\Carbon\Carbon::now() <= $job->end_date)
                                             <form action="{{route('jobs.apply', $job)}}" method="post">
@@ -481,6 +487,28 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">@lang('show.close')</button>
                         <button class="btn btn-primary btn-sm "><i class="fa fa-send"></i> @lang('show.complete')</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="declineJobForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">You can add some comment or files.</h4>
+                </div>
+
+                <form action="" method="post" enctype="multipart/form-data" id="form-decline">
+                    {{csrf_field()}}
+                    <div class="modal-body">
+                        <textarea name="message" rows="3" class="form-control" placeholder="Enter an optional message" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary btn-sm "><i class="fa fa-send"></i> Send</button>
                     </div>
                 </form>
             </div>

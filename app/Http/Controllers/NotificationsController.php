@@ -8,8 +8,11 @@ use App\Models\Structure;
 use App\Models\StructureUsers;
 use App\Models\Team;
 use App\Models\TeamUsers;
+use App\Models\UserExperience;
 use App\Notifications\AccountIsApprovedNotification;
 use App\Notifications\AccountIsNotApprovedNotification;
+use App\Notifications\ExperienceIsApprovedNotification;
+use App\Notifications\ExperienceIsNotApprovedNotification;
 use App\Notifications\OrganizationUserApproveNotification;
 use App\Notifications\OrganizationUserRejectNotification;
 use App\Notifications\StructureUserApproveNotification;
@@ -437,6 +440,85 @@ class NotificationsController extends Controller
         $notification->delete();
 
         flash()->success('Аккаунт не подтвержден.');
+
+        return redirect($request->get('redirect', route('notifications.index')));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function approveExperience(Request $request)
+    {
+        $notification = auth()->user()
+            ->notifications()
+            ->find($request->get('id'));
+
+        if (!$notification) {
+            flash()->error('Access denied!');
+
+            return redirect($request->get('redirect', $request->get('redirect', route('notifications.index'))));
+        }
+
+        $experience_id = isset($notification->data['experience_id']) ? $notification->data['experience_id'] : 0;
+
+        $experience = UserExperience::find($experience_id);
+
+        if (!$experience) {
+            flash()->error('Experience not found!');
+
+            return redirect($request->get('redirect', route('notifications.index')));
+        }
+
+        $experience->update(['approved' => 'approved']);
+
+        $experience->user->notify(new ExperienceIsApprovedNotification());
+
+        $notification->delete();
+
+        flash()->success('Стаж подтвержден.');
+
+        return redirect($request->get('redirect', route('notifications.index')));
+    }
+
+    /**
+     * Update a resource in storage.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function rejectExperience(Request $request)
+    {
+        $notification = auth()->user()
+            ->notifications()
+            ->find($request->get('id'));
+
+        if (!$notification) {
+            flash()->error('Access denied!');
+
+            return redirect($request->get('redirect', $request->get('redirect', route('notifications.index'))));
+        }
+
+        $experience_id = isset($notification->data['experience_id']) ? $notification->data['experience_id'] : 0;
+
+        $experience = UserExperience::find($experience_id);
+
+        if (!$experience) {
+            flash()->error('Experience not found!');
+
+            return redirect($request->get('redirect', route('notifications.index')));
+        }
+
+        $experience->update(['approved' => 'not_approved']);
+
+        $experience->user->notify(new ExperienceIsNotApprovedNotification());
+
+        $notification->delete();
+
+        flash()->success('Стаж не подтвержден.');
 
         return redirect($request->get('redirect', route('notifications.index')));
     }

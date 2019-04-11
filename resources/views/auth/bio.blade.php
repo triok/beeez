@@ -20,6 +20,10 @@
             {!! Form::input('email','email',$user->email,['class'=>'form-control','required'=>'required']) !!}
             </p>
             <p>
+                <label>@lang('account.phone')</label>
+                {!! Form::input('phone','phone',$user->phone,['class'=>'form-control']) !!}
+            </p>
+            <p>
             <label>Расскажите о себе</label>
             {!! Form::textarea('bio', $user->bio,['class'=>'form-control','rows'=>11, 'id' => 'text-counter']) !!}
             <p class="pull-right"><small>Кол-во символов: </small><small id="counter"></small><small>/2000</small></p>

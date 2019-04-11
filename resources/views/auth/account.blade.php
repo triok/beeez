@@ -17,9 +17,13 @@
                 </li>
                 <li role="presentation">
                     <a href="#experience" aria-controls="experience" role="tab" data-toggle="tab">@lang('account.experience')</a>
-                </li>                
-                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
-                                           data-toggle="tab">@lang('account.profile')</a></li>                                
+                </li>
+                <li role="presentation">
+                    <a href="#bill" aria-controls="profile" role="tab" data-toggle="tab">@lang('account.bill')</a>
+                </li>
+                <li role="presentation">
+                    <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">@lang('account.profile')</a>
+                </li>
             </ul>
         </div>
         <div class="col-md-9">
@@ -73,6 +77,10 @@
                 
                 <div role="tabpanel" class="tab-pane fade" id="experience">
                     @include('auth.experience')
+                </div>
+
+                <div role="tabpanel" class="tab-pane fade" id="bill">
+                    @include('auth.bill')
                 </div>
 
                 <div role="tabpanel" class="tab-pane fade" id="profile">

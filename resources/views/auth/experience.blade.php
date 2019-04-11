@@ -8,6 +8,42 @@
                 <p><strong>Должность:</strong> <span>{{ $experience->position }}</span></p>
                 <p><strong>Дата зачисления:</strong> <span class="date-short">{{ $experience->hiring_at }}</span></p>
                 <p><strong>Дата увольнения:</strong> <span class="date-short">{{ $experience->dismissal_at }}</span></p>
+                <p>
+                    <strong>Статус:</strong> @lang('account.' . $experience->approved)
+
+                    @if($experience->approved == 'not_approved')
+                        <div class="form-group">
+                            <button type="button" class="btn btn-default" onclick="$(this).hide();($('#form-{{ $experience->id }}')).attr('class', '');">
+                                @lang('account.approve')
+                            </button>
+                        </div>
+
+                        <form action="{{ route('experience.approve') }}" method="post" enctype="multipart/form-data" id="form-{{ $experience->id }}" class="hide">
+                            {{csrf_field()}}
+                            <input type="hidden" name="experience_id" value="{{ $experience->id }}">
+
+                            <hr>
+
+                            <p>Прикрепите файлы для подтверждения вашего стажа:</p>
+
+                            <div class="files">
+                                <div class="form-group">
+                                    <input type="file" name="documents[]">
+                                </div>
+                            </div>
+
+                            <a href="#" onclick="$(this).parent().find('.files').append('<div class=form-group><input type=file name=documents[]></div>');return false;">
+                                Добавить файл
+                            </a>
+
+                            <hr>
+
+                            <button type="submit" class="btn btn-primary">
+                                @lang('account.send')
+                            </button>
+                        </form>
+                    @endif
+                </p>
             </div>
         </div>
     </div>

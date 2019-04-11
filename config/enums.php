@@ -9,6 +9,8 @@ return [
             'CLOSED'      => 'closed',
             'DRAFT'       => 'draft',
             'COMPLETE'    => 'complete',
+            'DECLINING'   => 'declining',
+            'DECLINED'    => 'declined',
             'IN_PROGRESS' => 'in progress',
             'IN_REVIEW'   => 'in review',
         ]

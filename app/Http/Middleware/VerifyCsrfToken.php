@@ -12,6 +12,6 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        'paypal/success','paypal/cancelled','paypal/notify'
+        'paypal/success','paypal/cancelled','paypal/notify', 'escrow/payer-card', 'escrow/beneficiary-card'
     ];
 }

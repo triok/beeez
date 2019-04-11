@@ -67,6 +67,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('jobs/{job}/review', 'ApplicationsController@review')->name('jobs.review');
     Route::post('jobs/{job}/rating', 'ApplicationsController@rating')->name('jobs.rating');
 
+    Route::post('jobs/{job}/decline', 'ApplicationsController@decline')->name('jobs.decline');
+    Route::post('jobs/{job}/approveDecline', 'ApplicationsController@approveDecline')->name('jobs.approveDecline');
+    Route::post('jobs/{job}/disapproveDecline', 'ApplicationsController@disapproveDecline')->name('jobs.disapproveDecline');
+
     Route::get('jobs/{job}/editProject', 'JobController@editProject')->name('jobs.editProject');
     Route::post('jobs/{job}/updateProject', 'JobController@updateProject')->name('jobs.updateProject');
 
@@ -76,13 +80,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::delete('bookmark', 'BookmarksController@destroy')->name('bookmark-remove');
 
     Route::group(['prefix' => 'account'], function () {
-        Route::get('/', 'AccountController@index');
+        Route::get('/', 'AccountController@index')->name('account');
         Route::patch('/profile', 'AccountController@updateProfile');
         Route::post('/bio', 'AccountController@updateBio');
         Route::post('/portfolio', 'AccountController@addPortfolio');
         Route::post('/approve', 'AccountController@approve');
         Route::delete('/portfolio/{id}', 'AccountController@deletePortfolio');
         Route::post('/experiences', 'AccountController@experiences');
+        Route::post('/experiences/approve', 'AccountController@approveExperience')->name('experience.approve');
     });
 
     //users
@@ -193,6 +198,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('notifications/approveAccount', 'NotificationsController@approveAccount')->name('notifications.approveAccount');
     Route::post('notifications/rejectAccount', 'NotificationsController@rejectAccount')->name('notifications.rejectAccount');
 
+    Route::post('notifications/approveExperience', 'NotificationsController@approveExperience')->name('notifications.approveExperience');
+    Route::post('notifications/rejectExperience', 'NotificationsController@rejectExperience')->name('notifications.rejectExperience');
+
     // Locale
     Route::get('setlocale/{locale}', function ($locale) {
         if (in_array($locale, \Config::get('app.locales'))) {
@@ -235,6 +243,14 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::get('tasks', 'TasksController@index')->name('tasks.index');
+
+    Route::group(['middleware' => 'auth'], function () {
+       Route::post('/escrow/payer-card', 'Escrow\PayerCardsController@store')->name('escrow-payer-card');
+       Route::delete('/escrow/payer-card', 'Escrow\PayerCardsController@destroy')->name('escrow-payer-card-delete');
+
+        Route::post('/escrow/beneficiary-card', 'Escrow\BeneficiaryCardsController@store')->name('escrow-beneficiary-card');
+        Route::delete('/escrow/beneficiary-card', 'Escrow\BeneficiaryCardsController@destroy')->name('escrow-beneficiary-card-delete');
+    });
 });
 
 // Localization
